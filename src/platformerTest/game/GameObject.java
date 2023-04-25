@@ -1,8 +1,7 @@
 package platformerTest.game;
 
 import java.awt.Color;
-
-import platformerTest.Main;
+import java.util.ArrayList;
 
 public class GameObject {
 
@@ -18,6 +17,8 @@ public class GameObject {
 	public int priority;
 	
 	public Color color;
+	public boolean solid;
+	public boolean exists = true;
 	
 	public GameObject(double x, double y, double size_x, double size_y, Color color) {
 		this.x = x;
@@ -37,6 +38,8 @@ public class GameObject {
 	public boolean hasCollided(GameObject obj) {
 		boolean xCollided, yCollided;
 		
+		if (!this.exists || !obj.exists) return false; 
+		
 		if (obj.getLowerBoundX() < this.getHigherBoundX() && obj.getHigherBoundX() > this.getLowerBoundX()) xCollided = true;
 		else xCollided = false;
 		if (obj.getLowerBoundY() < this.getHigherBoundY() && obj.getHigherBoundY() > this.getLowerBoundY()) yCollided = true;
@@ -45,6 +48,8 @@ public class GameObject {
 		return xCollided && yCollided;
 		
 	}
+	
+	
 	
 	public double getLowerBoundX() {
 		return this.x - (this.size_x / 2);
@@ -64,6 +69,19 @@ public class GameObject {
 	
 	public double getArea() {
 		return this.size_x * this.size_y;
+	}
+	
+
+	public ArrayList<GameObject> pushx(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall) {
+		return new ArrayList<GameObject>();
+	}
+	
+	public ArrayList<GameObject> pushy(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall) {
+		return new ArrayList<GameObject>();
+	}
+	
+	public void crush() {
+		
 	}
 	
 }
