@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import platformerTest.Main;
-import platformerTest.assets.decoration.TextObject;
+import platformerTest.assets.decorations.TextObject;
 import platformerTest.levels.Level_0;
 
 @SuppressWarnings("serial")
@@ -22,10 +22,11 @@ public class MainFrame extends JPanel {
 	
 	public static Player player;
 	public static Level level;
-	public static double drag;
+	public static double airDrag;
 	public static double gravity;
 	public static List<GameObject> objects;
-	GameObject platform;
+
+	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE_X+50, Main.SIZE_Y+50, null);
 	
 	public MainFrame() {
 		
@@ -48,46 +49,57 @@ public class MainFrame extends JPanel {
 	}
 	
 	public static void restartLevel(Level newLevel) {
+		
 		objects = new ArrayList<GameObject>();
+		
 		level = newLevel;
-
-		drag = level.drag;
+		
+		player = new Player(level.spawnX, level.spawnY, 40);
+		objects.add(player);
+	
+		airDrag = level.airDrag;
 		gravity = level.gravity;
 		
 		level.drawPlatforms();
 		
-		player = new Player(level.spawnX, level.spawnY, 40);
-		objects.add(player);
+
+
 	}
 	
 	
 	public void paint(Graphics g) {
 		super.paint(g);
-	
 		
 		level.onTick();
 		
-		if (player.y < level.bottomLimit) player.die();
-		if (player.y > level.topLimit) player.die(); 
-		
-		Color bgColor;
-		
-		if (player.y < (level.bottomLimit + 1000)) {
-			bgColor = new Color((int) (1000 - (player.y - level.bottomLimit))/10, 0, 0);
-		} else if (player.y > (level.topLimit - 1000)) {
-			bgColor = new Color((int) (1000 - (level.topLimit - player.y))/10, 0, 0);
-		} else {
-			bgColor = Color.BLACK;
-		}
+		Color bgColor = level.backgroundColor;
+
 		
 		g.setColor(bgColor);
 		g.fillRect(-50, -50, Main.SIZE_X+50, Main.SIZE_Y + 50);
 		
 		for (GameObject obj : objects) {
-			try {
 			obj.move();
-			this.paintObj(g, obj);
-			} catch (Exception e) {}
+			
+			if (obj.hasCollided(MainFrameObj)) this.paintObj(g, obj);
+			
+			if (obj.equals(player)) { 
+				MainFrameObj.x = player.x;
+				MainFrameObj.y = player.y;
+			}
+			
+		}
+		
+		level.drawAmbience(g);
+		
+		if (player.y < (level.bottomLimit + 1000)) {
+			int alpha = (int)(player.y - level.bottomLimit)* 255/1000;
+			g.setColor(new Color(0,0,0,255-alpha));
+			g.fillRect(-50, -50, Main.SIZE_X+50, Main.SIZE_Y + 50);
+		} else if (player.y > (level.topLimit - 1000)) {
+			int alpha = -(int)(player.y - level.topLimit)* 255/1000;
+			g.setColor(new Color(0,0,0,255-alpha));
+			g.fillRect(-50, -50, Main.SIZE_X+50, Main.SIZE_Y + 50);
 		}
 		
 	}
@@ -108,7 +120,7 @@ public class MainFrame extends JPanel {
 			int drawY = (int) (Main.SIZE_Y - (obj.y + obj.size_y/2) + (player.y - Main.SIZE_Y/2));
 			
 			g.setColor(obj.color);
-			g.setFont(new Font(Font.SERIF, Font.PLAIN, 25));
+			g.setFont(((TextObject) obj).font);
 			g.drawString(((TextObject) obj).text, drawX, drawY);
 			
 		} else {
@@ -142,8 +154,5 @@ public class MainFrame extends JPanel {
 			
 		}
 	}
-
-
-	
 	
 }

@@ -13,8 +13,7 @@ public class GameObject {
 	public double vy = 0;
 	
 	public boolean movable = false;
-	
-	public int priority;
+	public double density = 1;
 	
 	public Color color;
 	public boolean solid;
@@ -71,6 +70,10 @@ public class GameObject {
 		return this.size_x * this.size_y;
 	}
 	
+	public double getWeight() {
+		return this.getArea() * this.density;
+	}
+	
 
 	public ArrayList<GameObject> pushx(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall) {
 		return new ArrayList<GameObject>();
@@ -83,5 +86,13 @@ public class GameObject {
 	public void crush() {
 		
 	}
+	
+	//COLORS
+	
+	public static final Color COLOR_GRASS = new Color(20, 200, 20);
+	public static final Color COLOR_WOOD = new Color(133, 94, 30);
+	public static final Color COLOR_STONE = Color.GRAY;
+	
+	public static final Color COLOR_WATER = new Color(0, 50, 255, 100);
 	
 }

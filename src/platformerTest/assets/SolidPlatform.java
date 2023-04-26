@@ -5,11 +5,12 @@ import java.util.ArrayList;
 
 import platformerTest.game.GameObject;
 import platformerTest.game.MainFrame;
+import platformerTest.game.MovableObject;
 import platformerTest.game.Player;
 
 public class SolidPlatform extends GameObject {
 	
-	public double slipperiness = 0.98;
+	public double slipperiness = 1;
 
 	public SolidPlatform(double x, double y, double size_x, double size_y, Color color) {
 		super(x, y, size_x, size_y, color);
@@ -19,36 +20,73 @@ public class SolidPlatform extends GameObject {
 	
 	@Override
 	public void move() {
+		
+		//YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+		
+		ArrayList<GameObject> collisions = new ArrayList<GameObject>();
+		boolean collided = false;
+		
 		this.y += this.vy;
 		
-		for (GameObject obj : MainFrame.objects) { //check for water
+		for (GameObject obj : MainFrame.objects) {
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj instanceof MovableObject) {
-				ArrayList<GameObject> list = new ArrayList<GameObject>();
-				list.add(this);
-				ArrayList<GameObject> pushing = ((MovableObject) obj).pushy(this.vy, this, list, false);
-				if (pushing.size() != 0) {
-					for (GameObject i : pushing) {
-						i.crush();
-					}
-				}
-			}
+				collisions.add(obj);
+				collided = true;
+		}}
+		
+		ArrayList<GameObject> list = new ArrayList<GameObject>();
+		list.add(this);
+		ArrayList<GameObject> resistors = new ArrayList<GameObject>();
+		
+		for (GameObject obj : collisions) {
+			ArrayList<GameObject> pushing = obj.pushy(this.vy, this, list, false);
+			resistors.addAll(pushing);
 		}
+		
+		if (resistors.size() != 0) {
+			for (GameObject i : resistors) {
+				i.crush();
+			}
+			
+			for (GameObject obj : collisions) {
+				obj.pushy(this.vy, this, list, false);
+			}
+			
+		}
+		
+		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+		
+		collisions = new ArrayList<GameObject>();
+		collided = false;
 		
 		this.x += this.vx;
 
-		for (GameObject obj : MainFrame.objects) { //check for water
+		for (GameObject obj : MainFrame.objects) {
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj instanceof MovableObject) {
-				ArrayList<GameObject> list = new ArrayList<GameObject>();
-				list.add(this);
-				ArrayList<GameObject> pushing = ((MovableObject) obj).pushx(this.vx, this, list, false);
-				if (pushing.size() != 0) {
-					for (GameObject i : pushing) {
-						i.crush();
-					}
-				}
+				collisions.add(obj);
+				collided = true;
+		}}
+		
+		list = new ArrayList<GameObject>();
+		list.add(this);
+		resistors = new ArrayList<GameObject>();
+		
+		for (GameObject obj : collisions) {
+			ArrayList<GameObject> pushing = obj.pushx(this.vx, this, list, false);
+			resistors.addAll(pushing);
+		}
+		
+		if (resistors.size() != 0) {
+			for (GameObject i : resistors) {
+				i.crush();
 			}
+			
+			for (GameObject obj : collisions) {
+				obj.pushx(this.vx, this, list, false);
+			}
+			
 		}
 		
 		

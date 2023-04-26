@@ -1,12 +1,15 @@
 package platformerTest.game;
 
 import java.awt.Color;
+import java.awt.Graphics;
+
+import platformerTest.Main;
 
 public class Level {
 	
 	public Color backgroundColor;
-	public double drag;
-	public double gravity;
+	public double airDrag = 0.97;
+	public double gravity = -1.5;
 	
 	public double topLimit = 50000;
 	public double bottomLimit = -1000;
@@ -18,14 +21,14 @@ public class Level {
 		
 	}
 	
-	/**
-	 * Called to draw all platforms and sprites in level.
-	 */
 	public void drawPlatforms() {}
 	
-	/**
-	 * Called each frame to update level components
-	 */
 	public void onTick() {}
+	
+	public void drawAmbience(Graphics g) {
+		
+	}
+	
+	public static final Color COLOR_DAYSKY = new Color(150, 225, 255);
 
 }
