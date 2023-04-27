@@ -23,11 +23,7 @@ public class LiquidPlatform extends GameObject {
 	
 	@Override
 	public void draw(Graphics g, Player player, double x, double y, double size) {
-		int drawX = (int) (this.x - this.size_x/2 - (x - Main.SIZE_X/2));
-		int drawY = (int) (Main.SIZE_Y - (this.y + this.size_y/2) + (y - Main.SIZE_Y/2));
-		
-		g.setColor(this.color);
-		g.fillRoundRect(drawX, drawY, (int) this.size_x, (int) this.size_y, 5, 5);
+		super.draw(g, player, x, y, size);
 	}
 	
 	@Override

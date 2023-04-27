@@ -5,11 +5,13 @@ import java.awt.Graphics;
 
 import platformerTest.Main;
 import platformerTest.assets.LiquidPlatform;
+import platformerTest.assets.MovableObject;
+import platformerTest.menu.GamePanel;
 
 public class Player extends MovableObject {
 
-	double movementSpeed = 0.5;
-	double jumpStrength = 25;
+	double movementSpeed = 0.25;
+	double jumpStrength = 16;
 	
 	boolean movingInLiquid = false;
 	
@@ -27,10 +29,10 @@ public class Player extends MovableObject {
 		
 	}
 	
-	boolean movingUp = false;
-	boolean movingDown = false;
-	boolean movingLeft = false;
-	boolean movingRight = false;
+	public boolean movingUp = false;
+	public boolean movingDown = false;
+	public boolean movingLeft = false;
+	public boolean movingRight = false;
 	
 	@Override
 	public void move() {
@@ -38,8 +40,9 @@ public class Player extends MovableObject {
 		this.movingInLiquid = false;
 		this.liquidDensity = 1;
 		
-		for (GameObject obj : MainFrame.objects) { //check for water
+		for (GameObject obj : GamePanel.objects) { //check for water
 			if (obj.equals(this)) continue;
+			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0) GamePanel.levelWon=1;
 			if (this.hasCollided(obj) && obj.type.equals(ObjType.LiquidPlatform) && obj.exists) {
 				this.movingInLiquid = true;
 				this.inAir = true;
@@ -49,7 +52,7 @@ public class Player extends MovableObject {
 		
 		if (this.inLiquid) {
 			double diff = this.density - liquidDensity;
-			double lift = MainFrame.gravity * Math.atan(2*diff) / (Math.PI / 2) - MainFrame.gravity;
+			double lift = GamePanel.gravity * Math.atan(2*diff) / (Math.PI / 2) - GamePanel.gravity;
 			
 			this.vy += lift;
 
@@ -83,22 +86,22 @@ public class Player extends MovableObject {
 	
 	@Override
 	public void draw(Graphics g, Player player, double x, double y, double size) {
-		int drawX = (int) (this.x - this.size_x/2 - (x - Main.SIZE_X/2));
-		int drawY = (int) (Main.SIZE_Y - (this.y + this.size_y/2) + (y - Main.SIZE_Y/2));
-		
-		g.setColor(this.color);
-		g.fillRoundRect(drawX, drawY, (int) this.size_x, (int) this.size_y, 5, 5);
+		super.draw(g, player, x, y, size);
 	}
 	
 	@Override
 	public void crush() {
-		super.crush();
-		this.die();
+		if (GamePanel.levelWon == 0) { 
+			super.crush();
+			this.die();
+		}
 	}
 	
 	@Override
 	public void die() {
-		MainFrame.restartLevel(MainFrame.level);
+		if (GamePanel.levelWon == 0) {
+			GamePanel.restartLevel(GamePanel.level);
+		}
 	}
 	
 

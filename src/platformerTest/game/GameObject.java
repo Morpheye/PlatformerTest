@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import platformerTest.Main;
-import platformerTest.assets.decorations.TextObject;
 
 public class GameObject {
 
@@ -42,9 +41,15 @@ public class GameObject {
 		
 	}
 	
-	public void draw(Graphics g, Player player, double x, double y, double size) {
+	public void draw(Graphics g, Player player, double cam_x, double cam_y, double size) { //move object center to top left edge
+		int drawX = (int) ( (this.x - (this.size_x)/2 - (cam_x - size/2)) * (Main.SIZE/size));
+		int drawY = (int) ( (size - (this.y + (this.size_y)/2) + (cam_y - size/2)) * (Main.SIZE/size));
 		
+		g.setColor(this.color);
+		g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
+		5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
 	}
+	
 	
 	public boolean hasCollided(GameObject obj) {
 		boolean xCollided, yCollided;

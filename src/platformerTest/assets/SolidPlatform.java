@@ -6,10 +6,9 @@ import java.util.ArrayList;
 
 import platformerTest.Main;
 import platformerTest.game.GameObject;
-import platformerTest.game.MainFrame;
-import platformerTest.game.MovableObject;
 import platformerTest.game.ObjType;
 import platformerTest.game.Player;
+import platformerTest.menu.GamePanel;
 
 public class SolidPlatform extends GameObject {
 
@@ -33,11 +32,12 @@ public class SolidPlatform extends GameObject {
 		
 		this.y += this.vy;
 		
-		for (GameObject obj : MainFrame.objects) {
+		for (GameObject obj : GamePanel.objects) {	
 			if (obj.equals(this)) continue;
-			if (this.hasCollided(obj) && obj.type.equals(ObjType.MovableObject)) {
+			if (this.hasCollided(obj) && (obj.type.equals(ObjType.MovableObject) || obj.type.equals(ObjType.Player))) {
 				collisions.add(obj);
 				collided = true;
+				obj.vx *= this.slipperiness *= obj.slipperiness;
 		}}
 		
 		ArrayList<GameObject> list = new ArrayList<GameObject>();
@@ -67,9 +67,9 @@ public class SolidPlatform extends GameObject {
 		
 		this.x += this.vx;
 
-		for (GameObject obj : MainFrame.objects) {
+		for (GameObject obj : GamePanel.objects) {
 			if (obj.equals(this)) continue;
-			if (this.hasCollided(obj) && obj.type.equals(ObjType.MovableObject)) {
+			if (this.hasCollided(obj) && (obj.type.equals(ObjType.MovableObject) || obj.type.equals(ObjType.Player))) {
 				collisions.add(obj);
 				collided = true;
 		}}
@@ -79,6 +79,7 @@ public class SolidPlatform extends GameObject {
 		resistors = new ArrayList<GameObject>();
 		
 		for (GameObject obj : collisions) {
+			System.out.println(obj + " " + this.vx);
 			ArrayList<GameObject> pushing = obj.pushx(this.vx, this, list, false);
 			resistors.addAll(pushing);
 		}
@@ -114,11 +115,7 @@ public class SolidPlatform extends GameObject {
 	
 	@Override
 	public void draw(Graphics g, Player player, double x, double y, double size) {
-		int drawX = (int) (this.x - this.size_x/2 - (x - Main.SIZE_X/2));
-		int drawY = (int) (Main.SIZE_Y - (this.y + this.size_y/2) + (y - Main.SIZE_Y/2));
-		
-		g.setColor(this.color);
-		g.fillRoundRect(drawX, drawY, (int) this.size_x, (int) this.size_y, 5, 5);
+		super.draw(g, player, x, y, size);
 	}
 	
 	@Override

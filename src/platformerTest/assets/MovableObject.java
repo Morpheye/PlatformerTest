@@ -1,12 +1,14 @@
-package platformerTest.game;
+package platformerTest.assets;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
 import platformerTest.Main;
-import platformerTest.assets.LiquidPlatform;
-import platformerTest.assets.SolidPlatform;
+import platformerTest.game.GameObject;
+import platformerTest.game.ObjType;
+import platformerTest.game.Player;
+import platformerTest.menu.GamePanel;
 
 public class MovableObject extends GameObject {
 	
@@ -43,7 +45,7 @@ public class MovableObject extends GameObject {
 		this.liquidSlip = 1;
 		
 		//CHECK FOR LIQUIDS
-		for (GameObject obj : MainFrame.objects) {
+		for (GameObject obj : GamePanel.objects) {
 			if (!this.exists) continue;
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.exists && obj.type.equals(ObjType.LiquidPlatform)) {
@@ -57,7 +59,7 @@ public class MovableObject extends GameObject {
 		this.dragMultiplier = 1;
 		this.lift = 0;
 		
-		this.vy += MainFrame.gravity;
+		this.vy += GamePanel.gravity;
 
 		//YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 		
@@ -81,8 +83,8 @@ public class MovableObject extends GameObject {
 		//MULTIPLICATION
 		
 		if (this.inAir) {
-			this.vy *= MainFrame.airDrag;
-			this.vx *= MainFrame.airDrag;
+			this.vy *= GamePanel.airDrag;
+			this.vx *= GamePanel.airDrag;
 			
 		}
 		if (!this.inAir) {
@@ -91,8 +93,8 @@ public class MovableObject extends GameObject {
 
 		//CHECK BOUNDS
 
-		if (this.y > MainFrame.level.topLimit) this.die();
-		if (this.y < MainFrame.level.bottomLimit) this.die();
+		if (this.y > GamePanel.level.topLimit) this.die();
+		if (this.y < GamePanel.level.bottomLimit) this.die();
 		
 		//INERTIA THRESHOLD
 		if (Math.abs(vx) < 0.2) vx = 0;
@@ -108,7 +110,7 @@ public class MovableObject extends GameObject {
 		
 		this.x += vx;
 		//check collisions
-		for (GameObject obj : MainFrame.objects) {
+		for (GameObject obj : GamePanel.objects) {
 			if (!this.exists) continue;
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
@@ -138,7 +140,7 @@ public class MovableObject extends GameObject {
 				if (vx > 0) this.x -= 0.01;
 				else if (vx < 0) this.x += 0.01;
 				
-				for (GameObject obj2 : MainFrame.objects) {
+				for (GameObject obj2 : GamePanel.objects) {
 					if (obj2.equals(this) || resistors.contains(obj2)) continue;
 					if (this.hasCollided(obj2) && obj2.solid) {
 						if (obj2.type.equals(ObjType.SolidPlatform)) this.crush();
@@ -165,7 +167,7 @@ public class MovableObject extends GameObject {
 		this.y += vy;
 		
 		//check collisions
-		for (GameObject obj : MainFrame.objects) {
+		for (GameObject obj : GamePanel.objects) {
 			if (!this.exists) continue;
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.exists) {
@@ -206,7 +208,7 @@ public class MovableObject extends GameObject {
 				else if (vy < 0) this.y += 0.01;
 				
 				
-				for (GameObject obj2 : MainFrame.objects) { //check for crush
+				for (GameObject obj2 : GamePanel.objects) { //check for crush
 					if (obj2.equals(this) || resistors.contains(obj2)) continue;
 					if (this.hasCollided(obj2) && obj2.solid) {
 						if (obj2.type.equals(ObjType.SolidPlatform)) this.crush();
@@ -244,7 +246,7 @@ public class MovableObject extends GameObject {
 		this.vx += weightedV;
 		this.x += v;
 
-		for (GameObject obj : MainFrame.objects) {
+		for (GameObject obj : GamePanel.objects) {
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
 				
@@ -278,7 +280,6 @@ public class MovableObject extends GameObject {
 	public ArrayList<GameObject> pushy(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall) {
 		
 		if (v>0) this.inAir = false;
-		if (v>0) this.vx *= pusher.slipperiness *= this.slipperiness;
 		
 		ArrayList<GameObject> resistors = new ArrayList<GameObject>();
 		
@@ -290,7 +291,7 @@ public class MovableObject extends GameObject {
 		this.vy += weightedV;
 		this.y += v;
 
-		for (GameObject obj : MainFrame.objects) {
+		for (GameObject obj : GamePanel.objects) {
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
 				
@@ -328,11 +329,7 @@ public class MovableObject extends GameObject {
 	
 	@Override
 	public void draw(Graphics g, Player player, double x, double y, double size) {
-		int drawX = (int) (this.x - this.size_x/2 - (x - Main.SIZE_X/2));
-		int drawY = (int) (Main.SIZE_Y - (this.y + this.size_y/2) + (y - Main.SIZE_Y/2));
-		
-		g.setColor(this.color);
-		g.fillRoundRect(drawX, drawY, (int) this.size_x, (int) this.size_y, 5, 5);
+		super.draw(g, player, x, y, size);
 	}
 	
 	@Override

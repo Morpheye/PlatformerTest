@@ -4,12 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import platformerTest.Main;
+import platformerTest.levels.LevelWorld;
 
 public class Level {
-	
+
 	public Color backgroundColor;
 	public double airDrag = 0.97;
-	public double gravity = -1.5;
+	public double gravity = -0.5;
 	
 	public double topLimit = 50000;
 	public double bottomLimit = -1000;

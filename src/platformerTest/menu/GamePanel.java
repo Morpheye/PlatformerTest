@@ -1,4 +1,4 @@
-package platformerTest.game;
+package platformerTest.menu;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -14,11 +14,13 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import platformerTest.Main;
-import platformerTest.assets.decorations.TextObject;
-import platformerTest.levels.Level_0;
+import platformerTest.game.GameObject;
+import platformerTest.game.Level;
+import platformerTest.game.Player;
+import platformerTest.levels.world1.Level_1_1;
 
 @SuppressWarnings("serial")
-public class MainFrame extends JPanel {
+public class GamePanel extends JPanel {
 	
 	public static Player player;
 	public static Level level;
@@ -29,26 +31,32 @@ public class MainFrame extends JPanel {
 	public static double camera_x;
 	public static double camera_y;
 	public static int camera_size;
-
-	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE_X+50, Main.SIZE_Y+50, null);
 	
-	public MainFrame() {
+	public static boolean isPaused;
+	public static int levelWon;
+
+	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
+	
+	public GamePanel(Level level) {
 		
 		this.setBackground(Color.BLACK);
-		this.setSize(Main.SIZE_X, Main.SIZE_Y);
+		this.setSize(Main.SIZE, Main.SIZE);
 		this.setVisible(true);
 		this.setFocusable(true);
 		this.addKeyListener(new Keyboard());
 		
-		restartLevel(new Level_0());
+		restartLevel(level);
 		
-		Timer timer = new Timer(1000/60, new ActionListener() {
+		Timer timer = new Timer(1000/120, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
 		}});
 		
 		timer.start();
+		
+		levelWon = 0;
+		isPaused = false;
 		
 	}
 	
@@ -65,7 +73,7 @@ public class MainFrame extends JPanel {
 		
 		camera_x = (int) player.x;
 		camera_y = (int) player.y;
-		camera_size = 800;
+		camera_size = Main.SIZE;
 		
 		level.drawForeground();
 	
@@ -78,22 +86,24 @@ public class MainFrame extends JPanel {
 
 	}
 	
-	
 	public void paint(Graphics g) {
 		super.paint(g);
-		
-		level.onTick();
-		
-		player.move();
-		moveCamera();
+
+		if (!isPaused) {
+			level.onTick();
+			player.move();
+			moveCamera();
+		}
 		
 		Color bgColor = level.backgroundColor;
 		
 		g.setColor(bgColor);
-		g.fillRect(-50, -50, Main.SIZE_X+50, Main.SIZE_Y + 50);
+		g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 		
 		for (GameObject obj : objects) {
-			if (!obj.equals(player)) obj.move();
+			if (!obj.equals(player) && !isPaused) {
+				obj.move();
+			}
 			
 			if (obj.hasCollided(MainFrameObj)) obj.draw(g, player, camera_x, camera_y, camera_size);
 			
@@ -101,15 +111,50 @@ public class MainFrame extends JPanel {
 		
 		level.drawAmbience(g);
 		
-		if (player.y < (level.bottomLimit + 1000)) {
+		if (player.y < (level.bottomLimit + 1000) && levelWon == 0) {
 			int alpha = (int)(player.y - level.bottomLimit)* 255/1000;
 			g.setColor(new Color(0,0,0,255-alpha));
-			g.fillRect(-50, -50, Main.SIZE_X+50, Main.SIZE_Y + 50);
-		} else if (player.y > (level.topLimit - 1000)) {
+			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
+		} else if (player.y > (level.topLimit - 1000) && levelWon == 0) {
 			int alpha = -(int)(player.y - level.topLimit)* 255/1000;
 			g.setColor(new Color(0,0,0,255-alpha));
-			g.fillRect(-50, -50, Main.SIZE_X+50, Main.SIZE_Y + 50);
+			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 		}
+		
+		//pause menu
+		if (isPaused) {
+			g.setColor(new Color(0,0,0,200));
+			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
+			
+			Font font = new Font(Font.MONOSPACED, Font.BOLD, 50);
+			g.setFont(font);
+			g.setColor(Color.WHITE);
+			int lvlSelectStringWidth = g.getFontMetrics(font).stringWidth("Game Paused");
+			g.drawString("Game Paused", Main.SIZE/2 - lvlSelectStringWidth/2, 75);
+			
+		}
+		
+		//check if won
+		if (!(levelWon == 0)) {
+			levelWon++;
+			if (levelWon < 240) {
+				g.setColor(new Color(255,255,255,255*(240-levelWon)/240));
+				g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
+				}
+			if (levelWon > 240) {
+				g.setColor(new Color(0,0,0,255*(levelWon-241)/120));
+				g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
+			}
+			if (levelWon>360) {
+				if (!Main.completedLevels.contains(level)) Main.completedLevels.add(level);
+				Main.jframe.exitGame(level);
+				
+			}
+			
+		}
+		
+
+		
 		
 	}
 	
@@ -117,14 +162,18 @@ public class MainFrame extends JPanel {
 		camera_x = player.x;
 		camera_y = player.y;
 		
-		camera_size = Main.SIZE_Y;
+		//camera_size = Main.SIZE*1;
 		
 		MainFrameObj.x = camera_x;
 		MainFrameObj.y = camera_y;
 		MainFrameObj.size_x = camera_size + 50;
 		MainFrameObj.size_y = camera_size + 50;
+		
+		//temp
+		
 	}
 
+	
 	public class Keyboard extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
@@ -132,6 +181,8 @@ public class MainFrame extends JPanel {
 			if (e.getKeyCode() == KeyEvent.VK_A) player.movingLeft = true; //A
 			if (e.getKeyCode() == KeyEvent.VK_S) player.movingDown = true; //S
 			if (e.getKeyCode() == KeyEvent.VK_D) player.movingRight = true; //D
+			
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE && levelWon == 0) isPaused = isPaused? false : true;
 			
 		}
 
@@ -141,6 +192,7 @@ public class MainFrame extends JPanel {
 			if (e.getKeyCode() == KeyEvent.VK_A) player.movingLeft = false; //A
 			if (e.getKeyCode() == KeyEvent.VK_S) player.movingDown = false; //S
 			if (e.getKeyCode() == KeyEvent.VK_D) player.movingRight = false; //D
+			
 			
 		}
 	}

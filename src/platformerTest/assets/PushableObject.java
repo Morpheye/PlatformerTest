@@ -4,9 +4,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import platformerTest.game.GameObject;
-import platformerTest.game.MainFrame;
-import platformerTest.game.MovableObject;
 import platformerTest.game.ObjType;
+import platformerTest.menu.GamePanel;
 
 public class PushableObject extends MovableObject {
 
@@ -20,7 +19,7 @@ public class PushableObject extends MovableObject {
 		
 		this.inLiquid = false;
 		
-		for (GameObject obj : MainFrame.objects) { //check for water
+		for (GameObject obj : GamePanel.objects) { //check for water
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.type.equals(ObjType.LiquidPlatform) && obj.exists) {
 				this.inLiquid = true;
@@ -30,7 +29,7 @@ public class PushableObject extends MovableObject {
 		
 		if (this.inLiquid) {
 			double diff = this.density - liquidDensity;
-			double lift = MainFrame.gravity * Math.atan(2*diff) / (Math.PI / 2) - MainFrame.gravity;
+			double lift = GamePanel.gravity * Math.atan(2*diff) / (Math.PI / 2) - GamePanel.gravity;
 			
 			this.vy += lift;
 			

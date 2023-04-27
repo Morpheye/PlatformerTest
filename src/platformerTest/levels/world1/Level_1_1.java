@@ -1,25 +1,23 @@
-package platformerTest.levels;
+package platformerTest.levels.world1;
 
-import java.awt.Color;
 import java.util.List;
 
 import platformerTest.assets.PushableObject;
 import platformerTest.assets.SolidPlatform;
-import platformerTest.assets.decorations.TextObject;
 import platformerTest.assets.interactables.FinishFlag;
 import platformerTest.assets.liquidPlatforms.WaterPlatform;
 import platformerTest.assets.solidPlatforms.GrassPlatform;
 import platformerTest.game.GameObject;
 import platformerTest.game.Level;
-import platformerTest.game.MainFrame;
+import platformerTest.menu.GamePanel;
 
-public class Level_0 extends Level {
+public class Level_1_1 extends Level {
 	
-	public Level_0() {
+	public Level_1_1() {
 		this.backgroundColor = COLOR_DAYSKY;
 		
-		this.spawnX = 7600; //-100
-		this.spawnY = 600; //250
+		this.spawnX =7650; //-100
+		this.spawnY = 800; //250
 
 	}
 	
@@ -28,17 +26,16 @@ public class Level_0 extends Level {
 	
 	@Override
 	public void drawBackground() {
-		List<GameObject> objects = MainFrame.objects;
+		List<GameObject> objects = GamePanel.objects;
 		
 		objects.add(new FinishFlag(7750, 700, 50, 100));
 	}
 	
 	@Override
 	public void drawPlatforms() {
-		List<GameObject> objects = MainFrame.objects;
+		List<GameObject> objects = GamePanel.objects;
 		
 		//spawn
-		objects.add(new TextObject(-185, -50, Color.WHITE, "Use the WASD keys to move."));
 		objects.add(new GrassPlatform(0, 100, 500, 200));
 		objects.add(new GrassPlatform(400, 125, 500, 250));
 		objects.add(new GrassPlatform(450, 0, 400, 200));
@@ -57,14 +54,14 @@ public class Level_0 extends Level {
 		
 		//moving platform
 		movingPlatform = new GrassPlatform(2650, 300, 200, 50);
-		movingPlatform.vy = 2;
+		movingPlatform.vy = 1;
 		objects.add(movingPlatform);
 		
 		objects.add(new GrassPlatform(3050, 500, 200, 200));
 		
 		//moving platform2
 		movingPlatform2 = new GrassPlatform(3350, 500, 200, 50);
-		movingPlatform2.vx = 3;
+		movingPlatform2.vx = 1.5;
 		objects.add(movingPlatform2);
 		
 		objects.add(new GrassPlatform(4000, 500, 200, 200));
@@ -98,11 +95,13 @@ public class Level_0 extends Level {
 	
 	@Override
 	public void onTick() {
-		if (movingPlatform.y >= 600) movingPlatform.vy = -2;
-		else if (movingPlatform.y <= 300) movingPlatform.vy = 2;
+		if (movingPlatform.y >= 600) movingPlatform.vy = -1;
+		else if (movingPlatform.y <= 300) movingPlatform.vy = 1;
 		
-		if (movingPlatform2.x >= 3700) movingPlatform2.vx = -3;
-		else if (movingPlatform2.x <= 3350) movingPlatform2.vx = 3;
+		if (movingPlatform2.x >= 3700) movingPlatform2.vx = -1.5;
+		else if (movingPlatform2.x <= 3350) movingPlatform2.vx = 1.5;
+		
+		super.onTick();
 		
 	}
 	

@@ -5,5 +5,6 @@ public enum ObjType {
 	SolidPlatform,
 	LiquidPlatform,
 	MovableObject,
-	DecorationObject
+	DecorationObject,
+	FinishFlag
 }
