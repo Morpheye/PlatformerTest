@@ -25,6 +25,10 @@ public class MainFrame extends JPanel {
 	public static double airDrag;
 	public static double gravity;
 	public static List<GameObject> objects;
+	
+	public static double camera_x;
+	public static double camera_y;
+	public static int camera_size;
 
 	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE_X+50, Main.SIZE_Y+50, null);
 	
@@ -54,8 +58,16 @@ public class MainFrame extends JPanel {
 		
 		level = newLevel;
 		
+		level.drawBackground();
+		
 		player = new Player(level.spawnX, level.spawnY, 40);
 		objects.add(player);
+		
+		camera_x = (int) player.x;
+		camera_y = (int) player.y;
+		camera_size = 800;
+		
+		level.drawForeground();
 	
 		airDrag = level.airDrag;
 		gravity = level.gravity;
@@ -72,21 +84,18 @@ public class MainFrame extends JPanel {
 		
 		level.onTick();
 		
+		player.move();
+		moveCamera();
+		
 		Color bgColor = level.backgroundColor;
-
 		
 		g.setColor(bgColor);
 		g.fillRect(-50, -50, Main.SIZE_X+50, Main.SIZE_Y + 50);
 		
 		for (GameObject obj : objects) {
-			obj.move();
+			if (!obj.equals(player)) obj.move();
 			
-			if (obj.hasCollided(MainFrameObj)) this.paintObj(g, obj);
-			
-			if (obj.equals(player)) { 
-				MainFrameObj.x = player.x;
-				MainFrameObj.y = player.y;
-			}
+			if (obj.hasCollided(MainFrameObj)) obj.draw(g, player, camera_x, camera_y, camera_size);
 			
 		}
 		
@@ -104,53 +113,34 @@ public class MainFrame extends JPanel {
 		
 	}
 	
-	public void paintObj(Graphics g, GameObject obj) {
+	public void moveCamera() {
+		camera_x = player.x;
+		camera_y = player.y;
 		
-		if (obj instanceof Player) {
-			
-			int drawX = (int) (Main.SIZE_X/2 - obj.size_x/2);
-			int drawY = (int) (Main.SIZE_Y - (Main.SIZE_Y/2 + obj.size_y/2));
-			
-			g.setColor(obj.color);
-			g.fillRoundRect(drawX, drawY, (int) obj.size_x, (int) obj.size_y, 5, 5);
-			
-		} else if (obj instanceof TextObject) {
-			
-			int drawX = (int) (obj.x - obj.size_x/2 - (player.x - Main.SIZE_X/2));
-			int drawY = (int) (Main.SIZE_Y - (obj.y + obj.size_y/2) + (player.y - Main.SIZE_Y/2));
-			
-			g.setColor(obj.color);
-			g.setFont(((TextObject) obj).font);
-			g.drawString(((TextObject) obj).text, drawX, drawY);
-			
-		} else {
-			
-			int drawX = (int) (obj.x - obj.size_x/2 - (player.x - Main.SIZE_X/2));
-			int drawY = (int) (Main.SIZE_Y - (obj.y + obj.size_y/2) + (player.y - Main.SIZE_Y/2));
-			
-			g.setColor(obj.color);
-			g.fillRoundRect(drawX, drawY, (int) obj.size_x, (int) obj.size_y, 5, 5);
-			
-		}
+		camera_size = Main.SIZE_Y;
 		
+		MainFrameObj.x = camera_x;
+		MainFrameObj.y = camera_y;
+		MainFrameObj.size_x = camera_size + 50;
+		MainFrameObj.size_y = camera_size + 50;
 	}
-	
+
 	public class Keyboard extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode() == 87) player.movingUp = true; //W
-			if (e.getKeyCode() == 65) player.movingLeft = true; //A
-			if (e.getKeyCode() == 83) player.movingDown = true; //S
-			if (e.getKeyCode() == 68) player.movingRight = true; //D
+			if (e.getKeyCode() == KeyEvent.VK_W) player.movingUp = true; //W
+			if (e.getKeyCode() == KeyEvent.VK_A) player.movingLeft = true; //A
+			if (e.getKeyCode() == KeyEvent.VK_S) player.movingDown = true; //S
+			if (e.getKeyCode() == KeyEvent.VK_D) player.movingRight = true; //D
 			
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			if (e.getKeyCode() == 87) player.movingUp = false; //W
-			if (e.getKeyCode() == 65) player.movingLeft = false; //A
-			if (e.getKeyCode() == 83) player.movingDown = false; //S
-			if (e.getKeyCode() == 68) player.movingRight = false; //D
+			if (e.getKeyCode() == KeyEvent.VK_W) player.movingUp = false; //W
+			if (e.getKeyCode() == KeyEvent.VK_A) player.movingLeft = false; //A
+			if (e.getKeyCode() == KeyEvent.VK_S) player.movingDown = false; //S
+			if (e.getKeyCode() == KeyEvent.VK_D) player.movingRight = false; //D
 			
 		}
 	}

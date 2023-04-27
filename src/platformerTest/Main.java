@@ -13,7 +13,7 @@ import platformerTest.game.MainFrame;
 
 public class Main {
 	
-	public static final int SIZE_X = 1200;
+	public static final int SIZE_X = 800;
 	public static final int SIZE_Y = 800;
 	public static JFrame jframe;
 	public static JPanel game;

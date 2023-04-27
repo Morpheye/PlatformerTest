@@ -25,6 +25,10 @@ public class Level {
 	
 	public void onTick() {}
 	
+	public void drawForeground() {}
+	
+	public void drawBackground() {}
+	
 	public void drawAmbience(Graphics g) {
 		
 	}

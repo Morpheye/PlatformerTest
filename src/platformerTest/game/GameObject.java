@@ -1,10 +1,16 @@
 package platformerTest.game;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
+
+import platformerTest.Main;
+import platformerTest.assets.decorations.TextObject;
 
 public class GameObject {
 
+	public double slipperiness = 1;
+	
 	public double size_x;
 	public double size_y;
 	public double x;
@@ -19,6 +25,8 @@ public class GameObject {
 	public boolean solid;
 	public boolean exists = true;
 	
+	public ObjType type;
+	
 	public GameObject(double x, double y, double size_x, double size_y, Color color) {
 		this.x = x;
 		this.y = y;
@@ -31,6 +39,10 @@ public class GameObject {
 	
 	public void move() {
 		
+		
+	}
+	
+	public void draw(Graphics g, Player player, double x, double y, double size) {
 		
 	}
 	

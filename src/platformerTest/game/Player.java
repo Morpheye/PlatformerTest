@@ -1,8 +1,9 @@
 package platformerTest.game;
 
 import java.awt.Color;
-import java.util.ArrayList;
+import java.awt.Graphics;
 
+import platformerTest.Main;
 import platformerTest.assets.LiquidPlatform;
 
 public class Player extends MovableObject {
@@ -15,11 +16,14 @@ public class Player extends MovableObject {
 	public Player(double initX, double initY, double size) {
 		super(initX, initY, size, size, Color.WHITE, 1.0);
 		
+		this.type = ObjType.Player;
+		
 		this.movable = true;
 		this.x = initX;
 		this.y = initY;
 		this.size_x = size;
 		this.size_y = size;
+		this.slipperiness = 1;
 		
 	}
 	
@@ -36,7 +40,7 @@ public class Player extends MovableObject {
 		
 		for (GameObject obj : MainFrame.objects) { //check for water
 			if (obj.equals(this)) continue;
-			if (this.hasCollided(obj) && obj instanceof LiquidPlatform && obj.exists) {
+			if (this.hasCollided(obj) && obj.type.equals(ObjType.LiquidPlatform) && obj.exists) {
 				this.movingInLiquid = true;
 				this.inAir = true;
 				this.liquidDensity = ((LiquidPlatform) obj).density;
@@ -75,6 +79,15 @@ public class Player extends MovableObject {
 		//then apply movableobject physics
 		super.move();
 		
+	}
+	
+	@Override
+	public void draw(Graphics g, Player player, double x, double y, double size) {
+		int drawX = (int) (this.x - this.size_x/2 - (x - Main.SIZE_X/2));
+		int drawY = (int) (Main.SIZE_Y - (this.y + this.size_y/2) + (y - Main.SIZE_Y/2));
+		
+		g.setColor(this.color);
+		g.fillRoundRect(drawX, drawY, (int) this.size_x, (int) this.size_y, 5, 5);
 	}
 	
 	@Override

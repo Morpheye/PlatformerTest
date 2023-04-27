@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import platformerTest.game.GameObject;
 import platformerTest.game.MainFrame;
 import platformerTest.game.MovableObject;
+import platformerTest.game.ObjType;
 
 public class PushableObject extends MovableObject {
 
@@ -21,7 +22,7 @@ public class PushableObject extends MovableObject {
 		
 		for (GameObject obj : MainFrame.objects) { //check for water
 			if (obj.equals(this)) continue;
-			if (this.hasCollided(obj) && obj instanceof LiquidPlatform && obj.exists) {
+			if (this.hasCollided(obj) && obj.type.equals(ObjType.LiquidPlatform) && obj.exists) {
 				this.inLiquid = true;
 				this.liquidDensity = ((LiquidPlatform) obj).density;
 			}
@@ -33,7 +34,7 @@ public class PushableObject extends MovableObject {
 			
 			this.vy += lift;
 			
-			this.attemptMoveY(lift);
+			this.attemptMoveY(lift, false);
 		}
 		
 		ArrayList<GameObject> collisions = new ArrayList<GameObject>();

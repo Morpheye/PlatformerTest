@@ -1,21 +1,26 @@
 package platformerTest.assets;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
+import platformerTest.Main;
 import platformerTest.game.GameObject;
 import platformerTest.game.MainFrame;
 import platformerTest.game.MovableObject;
+import platformerTest.game.ObjType;
 import platformerTest.game.Player;
 
 public class SolidPlatform extends GameObject {
-	
-	public double slipperiness = 1;
 
 	public SolidPlatform(double x, double y, double size_x, double size_y, Color color) {
 		super(x, y, size_x, size_y, color);
+		
+		this.type = ObjType.SolidPlatform;
+		
 		this.movable = false;
 		this.solid = true;
+		this.slipperiness = 1;
 	}
 	
 	@Override
@@ -30,7 +35,7 @@ public class SolidPlatform extends GameObject {
 		
 		for (GameObject obj : MainFrame.objects) {
 			if (obj.equals(this)) continue;
-			if (this.hasCollided(obj) && obj instanceof MovableObject) {
+			if (this.hasCollided(obj) && obj.type.equals(ObjType.MovableObject)) {
 				collisions.add(obj);
 				collided = true;
 		}}
@@ -64,7 +69,7 @@ public class SolidPlatform extends GameObject {
 
 		for (GameObject obj : MainFrame.objects) {
 			if (obj.equals(this)) continue;
-			if (this.hasCollided(obj) && obj instanceof MovableObject) {
+			if (this.hasCollided(obj) && obj.type.equals(ObjType.MovableObject)) {
 				collisions.add(obj);
 				collided = true;
 		}}
@@ -105,6 +110,15 @@ public class SolidPlatform extends GameObject {
 		ArrayList<GameObject> list = new ArrayList<GameObject>();
 		list.add(this);
 		return list;
+	}
+	
+	@Override
+	public void draw(Graphics g, Player player, double x, double y, double size) {
+		int drawX = (int) (this.x - this.size_x/2 - (x - Main.SIZE_X/2));
+		int drawY = (int) (Main.SIZE_Y - (this.y + this.size_y/2) + (y - Main.SIZE_Y/2));
+		
+		g.setColor(this.color);
+		g.fillRoundRect(drawX, drawY, (int) this.size_x, (int) this.size_y, 5, 5);
 	}
 	
 	@Override

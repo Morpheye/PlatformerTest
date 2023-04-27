@@ -6,6 +6,7 @@ import java.util.List;
 import platformerTest.assets.PushableObject;
 import platformerTest.assets.SolidPlatform;
 import platformerTest.assets.decorations.TextObject;
+import platformerTest.assets.interactables.FinishFlag;
 import platformerTest.assets.liquidPlatforms.WaterPlatform;
 import platformerTest.assets.solidPlatforms.GrassPlatform;
 import platformerTest.game.GameObject;
@@ -17,13 +18,20 @@ public class Level_0 extends Level {
 	public Level_0() {
 		this.backgroundColor = COLOR_DAYSKY;
 		
-		this.spawnX = -100; //-100
-		this.spawnY = 250; //250
+		this.spawnX = 7600; //-100
+		this.spawnY = 600; //250
 
 	}
 	
 	SolidPlatform movingPlatform;
 	SolidPlatform movingPlatform2;
+	
+	@Override
+	public void drawBackground() {
+		List<GameObject> objects = MainFrame.objects;
+		
+		objects.add(new FinishFlag(7750, 700, 50, 100));
+	}
 	
 	@Override
 	public void drawPlatforms() {
@@ -62,20 +70,29 @@ public class Level_0 extends Level {
 		objects.add(new GrassPlatform(4000, 500, 200, 200));
 		
 		//movable object platform
-		objects.add(new GrassPlatform(4400, 450, 200, 400));
+		objects.add(new GrassPlatform(4900, 450, 200, 400));
 		objects.add(new GrassPlatform(4700, 350, 600, 200));
-		objects.add(new PushableObject(4400, 800, 60, 60, GameObject.COLOR_STONE, 2, 0.97));
+		objects.add(new GrassPlatform(4450, 375, 100, 200));
+		objects.add(new PushableObject(4550, 600, 60, 60, GameObject.COLOR_STONE, 2, 0.97));
 		
-		objects.add(new WaterPlatform(5700, 250, 1025, 390));
-		objects.add(new GrassPlatform(5550, 325, 300, 250));
-		objects.add(new GrassPlatform(5450, 340, 100, 280));
-		objects.add(new GrassPlatform(5200, 250, 100, 400));
-		objects.add(new GrassPlatform(6150, 340, 200, 580));
-		objects.add(new GrassPlatform(5675, 100, 925, 100));
+		//floating objet platform
+		objects.add(new WaterPlatform(5800, 250, 1025, 390));
+		objects.add(new GrassPlatform(5650, 325, 300, 250));
+		objects.add(new GrassPlatform(5550, 340, 100, 280));
+		objects.add(new GrassPlatform(5300, 250, 100, 400));
+		objects.add(new GrassPlatform(6250, 340, 200, 580));
+		objects.add(new GrassPlatform(5775, 100, 925, 100));
 		
-		objects.add(new PushableObject(5650, 500, 60, 60, GameObject.COLOR_WOOD, 0.8, 0.97));
-		objects.add(new PushableObject(5200, 500, 60, 60, GameObject.COLOR_STONE, 2, 0.97));
+		objects.add(new PushableObject(5750, 500, 60, 60, GameObject.COLOR_WOOD, 0.8, 0.97));
+		objects.add(new PushableObject(5300, 500, 60, 60, GameObject.COLOR_STONE, 2, 0.97));
+		
+		//islands
+		objects.add(new GrassPlatform(6700, 500, 300, 100));
+		
+		objects.add(new GrassPlatform(7200, 550, 300, 100));
 
+		//finish platform
+		objects.add(new GrassPlatform(7750, 550, 500, 200));
 		
 	}
 	
