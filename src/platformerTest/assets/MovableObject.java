@@ -127,7 +127,7 @@ public class MovableObject extends GameObject {
 		
 		for (GameObject obj : collisions) {
 			if (vx == 0) continue;
-			ArrayList<GameObject> pushing = obj.pushx(vx, this, list, false);
+			ArrayList<GameObject> pushing = obj.pushx(vx, this, list, false, isFinal);
 			resistors.addAll(pushing);
 		}
 		
@@ -193,7 +193,7 @@ public class MovableObject extends GameObject {
 		ArrayList<GameObject> resistors = new ArrayList<GameObject>();
 		
 		for (GameObject obj : collisions) {
-			ArrayList<GameObject> pushing = obj.pushy(vy, this, list, false);
+			ArrayList<GameObject> pushing = obj.pushy(vy, this, list, false, isFinal);
 			
 			resistors.addAll(pushing);
 		}
@@ -235,13 +235,14 @@ public class MovableObject extends GameObject {
 	}
 	
 	@Override
-	public ArrayList<GameObject> pushx(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall) {
+	public ArrayList<GameObject> pushx(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall, boolean keepV) {
 		ArrayList<GameObject> resistors = new ArrayList<GameObject>();
 		
 		double weightedV;
 		
 		if (pusher.type.equals(ObjType.SolidPlatform)) weightedV = v;
 		else weightedV = v * (pusher.getWeight()/this.getWeight());
+		if (!keepV) weightedV = 0;
 		
 		this.vx += weightedV;
 		this.x += v;
@@ -260,7 +261,7 @@ public class MovableObject extends GameObject {
 						continue;
 					}
 					pushers.add(this);
-					ArrayList<GameObject> pushing = obj.pushx(v, this, pushers, false);
+					ArrayList<GameObject> pushing = obj.pushx(v, this, pushers, false, true);
 					resistors.addAll(pushing);
 				}
 				
@@ -277,7 +278,7 @@ public class MovableObject extends GameObject {
 	}
 	
 	@Override
-	public ArrayList<GameObject> pushy(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall) {
+	public ArrayList<GameObject> pushy(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall, boolean keepV) {
 		
 		if (v>0) this.inAir = false;
 		
@@ -287,6 +288,7 @@ public class MovableObject extends GameObject {
 		
 		if (pusher.type.equals(ObjType.SolidPlatform)) weightedV = v;
 		else weightedV = v * (pusher.getWeight()/this.getWeight());
+		if (!keepV) weightedV = 0;
 		
 		this.vy += weightedV;
 		this.y += v;
@@ -309,7 +311,7 @@ public class MovableObject extends GameObject {
 					ArrayList<GameObject> newPushers = new ArrayList<GameObject>();
 					newPushers.addAll(pushers);
 					newPushers.add(this);
-					ArrayList<GameObject> pushing = obj.pushy(v, this, newPushers, false);
+					ArrayList<GameObject> pushing = obj.pushy(v, this, newPushers, false, true);
 					resistors.addAll(pushing);
 				}
 				

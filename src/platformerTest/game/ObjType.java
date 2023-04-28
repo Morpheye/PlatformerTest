@@ -9,5 +9,6 @@ public enum ObjType {
 	
 	FinishFlag,
 	
-	Trigger
+	Trigger,
+	Powerup
 }

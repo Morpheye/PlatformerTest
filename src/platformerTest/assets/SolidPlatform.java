@@ -45,7 +45,7 @@ public class SolidPlatform extends GameObject {
 		ArrayList<GameObject> resistors = new ArrayList<GameObject>();
 		
 		for (GameObject obj : collisions) {
-			ArrayList<GameObject> pushing = obj.pushy(this.vy, this, list, false);
+			ArrayList<GameObject> pushing = obj.pushy(this.vy, this, list, false, false);
 			resistors.addAll(pushing);
 		}
 		
@@ -55,7 +55,7 @@ public class SolidPlatform extends GameObject {
 			}
 			
 			for (GameObject obj : collisions) {
-				obj.pushy(this.vy, this, list, false);
+				obj.pushy(this.vy, this, list, false, false);
 			}
 			
 		}
@@ -80,7 +80,7 @@ public class SolidPlatform extends GameObject {
 		
 		for (GameObject obj : collisions) {
 			System.out.println(obj + " " + this.vx);
-			ArrayList<GameObject> pushing = obj.pushx(this.vx, this, list, false);
+			ArrayList<GameObject> pushing = obj.pushx(this.vx, this, list, false, true);
 			resistors.addAll(pushing);
 		}
 		
@@ -90,7 +90,7 @@ public class SolidPlatform extends GameObject {
 			}
 			
 			for (GameObject obj : collisions) {
-				obj.pushx(this.vx, this, list, false);
+				obj.pushx(this.vx, this, list, false, false);
 			}
 			
 		}
@@ -100,14 +100,14 @@ public class SolidPlatform extends GameObject {
 	
 
 	@Override
-	public ArrayList<GameObject> pushx(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall) {
+	public ArrayList<GameObject> pushx(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall, boolean keepV) {
 		ArrayList<GameObject> list = new ArrayList<GameObject>();
 		list.add(this);
 		return list;
 	}
 	
 	@Override
-	public ArrayList<GameObject> pushy(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall) {
+	public ArrayList<GameObject> pushy(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall, boolean keepV) {
 		ArrayList<GameObject> list = new ArrayList<GameObject>();
 		list.add(this);
 		return list;

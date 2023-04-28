@@ -5,13 +5,14 @@ import java.awt.Graphics;
 
 import platformerTest.assets.LiquidPlatform;
 import platformerTest.assets.MovableObject;
-import platformerTest.assets.triggers.Trigger;
+import platformerTest.assets.Trigger;
+import platformerTest.assets.triggers.Powerup;
 import platformerTest.menu.GamePanel;
 
 public class Player extends MovableObject {
 
-	double movementSpeed = 0.25;
-	double jumpStrength = 16;
+	public double movementSpeed = 0.25;
+	public double jumpStrength = 16;
 	
 	public int health;
 	public boolean isAlive;
@@ -51,8 +52,12 @@ public class Player extends MovableObject {
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0 && obj.exists) {
 				GamePanel.levelWon=1;
 			}
-
-			//text
+			//powerup
+			if (obj.hasCollided(this) && obj.type.equals(ObjType.Powerup) && GamePanel.levelWon==0 && obj.exists) {
+				((Powerup) obj).run();
+				obj.exists = false;
+			}
+			//trigger
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.Trigger) && GamePanel.levelWon==0 && obj.exists) {
 				((Trigger) obj).run();
 				obj.exists = false;
@@ -60,7 +65,6 @@ public class Player extends MovableObject {
 			//liquids
 			if (this.hasCollided(obj) && obj.type.equals(ObjType.LiquidPlatform) && obj.exists) {
 				this.movingInLiquid = true;
-				this.inAir = true;
 				this.liquidDensity = ((LiquidPlatform) obj).density;
 			}
 		}
@@ -113,6 +117,7 @@ public class Player extends MovableObject {
 	@Override
 	public void crush() {
 		if (GamePanel.levelWon == 0) {
+			GamePanel.createFlash(Color.BLACK, 100);
 			this.health = 0;
 			this.die();
 		}

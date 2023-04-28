@@ -2,11 +2,11 @@ package platformerTest.levels.world1;
 
 import java.util.List;
 
-import platformerTest.assets.PushableObject;
 import platformerTest.assets.SolidPlatform;
 import platformerTest.assets.interactables.FinishFlag;
 import platformerTest.assets.liquidPlatforms.WaterPlatform;
 import platformerTest.assets.pushableObjects.PushableBox;
+import platformerTest.assets.pushableObjects.PushableStone;
 import platformerTest.assets.solidPlatforms.GrassPlatform;
 import platformerTest.assets.triggers.TextDisplayTrigger;
 import platformerTest.game.GameObject;
@@ -100,12 +100,12 @@ public class Level_1_1 extends Level {
 		objects.add(new GrassPlatform(4900, 450, 200, 400));
 		objects.add(new GrassPlatform(4700, 350, 600, 200));
 		objects.add(new GrassPlatform(4450, 375, 100, 200));
-		objects.add(new PushableObject(4550, 600, 60, 60, GameObject.COLOR_STONE, 2, 0.965));
+		objects.add(new PushableStone(4550, 600, 60, 60));
 		
 		//floating objet platform
 		objects.add(new TextDisplayTrigger(5300, 500, 100, 100, "Different objects have different densities.", 240));
 		objects.add(new PushableBox(5750, 500, 60, 60));
-		objects.add(new PushableObject(5300, 500, 60, 60, GameObject.COLOR_STONE, 2, 0.965));
+		objects.add(new PushableStone(5300, 500, 60, 60));
 		objects.add(new WaterPlatform(5800, 250, 1025, 390));
 		objects.add(new GrassPlatform(5650, 325, 300, 250));
 		objects.add(new GrassPlatform(5550, 340, 100, 280));

@@ -101,6 +101,8 @@ public class GamePanel extends JPanel {
 		level.drawPlatforms();
 		
 		level.onStart();
+		
+		createFlash(Color.BLACK,100);
 
 	}
 	
@@ -324,6 +326,7 @@ public class GamePanel extends JPanel {
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			if (!isPaused) return;
 			int mouseX = e.getX();
 			int mouseY = e.getY();
 			

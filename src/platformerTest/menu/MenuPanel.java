@@ -76,10 +76,7 @@ public class MenuPanel extends JPanel {
 		
 		for (int i=0; i<9; i++) {
 			try {
-				g2d.setStroke(new BasicStroke(5));
-				g2d.drawRoundRect(levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR, 5, 5);
-				
-				if (levelWorld.levels.size()-1 < i) continue;
+				if (levelWorld.levels.size()-1 < i) break;
 				String lvlName = levelWorld.levels.get(i).getClass().getSimpleName().substring(6);
 				BufferedImage image = ImageIO.read(this.getClass().getResource("/levels/"+lvlName+".png"));
 				g2d.drawImage(image, levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR, null);
