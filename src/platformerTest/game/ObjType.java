@@ -6,5 +6,8 @@ public enum ObjType {
 	LiquidPlatform,
 	MovableObject,
 	DecorationObject,
-	FinishFlag
+	
+	FinishFlag,
+	
+	Trigger
 }

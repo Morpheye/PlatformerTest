@@ -18,17 +18,20 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import platformerTest.Main;
+import platformerTest.game.GameObject;
 import platformerTest.levels.LevelWorld;
 import platformerTest.levels.world1.World1;
 
 @SuppressWarnings("serial")
 public class MenuPanel extends JPanel {
 	
-	public static ArrayList<LevelWorld> worlds = new ArrayList<LevelWorld>();
+	public static ArrayList<LevelWorld> worlds;
+	
 	public static LevelWorld levelWorld;
+	public static Timer timer;
 	
 	public MenuPanel(LevelWorld levelworld) {
-		
+		worlds = new ArrayList<LevelWorld>();
 		worlds.add(new World1());
 		
 		this.setName("Menu");
@@ -39,7 +42,7 @@ public class MenuPanel extends JPanel {
 		this.setFocusable(true);
 		this.addMouseListener(new MenuMouse());
 		
-		Timer timer = new Timer(1000/30, new ActionListener() {
+		timer = new Timer(1000/30, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
@@ -73,20 +76,38 @@ public class MenuPanel extends JPanel {
 		
 		for (int i=0; i<9; i++) {
 			try {
-				String lvlName = levelWorld.levels.get(i).getClass().getSimpleName().substring(6);
-				File imgFile = new File("src/resources/" + lvlName + ".png");
-				BufferedImage image = ImageIO.read(imgFile);
-				String imgName = imgFile.getName().substring(0, imgFile.getName().length()-4);
+				g2d.setStroke(new BasicStroke(5));
+				g2d.drawRoundRect(levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR, 5, 5);
 				
+				if (levelWorld.levels.size()-1 < i) continue;
+				String lvlName = levelWorld.levels.get(i).getClass().getSimpleName().substring(6);
+				BufferedImage image = ImageIO.read(this.getClass().getResource("/levels/"+lvlName+".png"));
 				g2d.drawImage(image, levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR, null);
+				
+				if (Main.completedLevels.containsKey(levelWorld.levels.get(i).getClass().getSimpleName())) {
+					int completions = Main.completedLevels.get(levelWorld.levels.get(i).getClass().getSimpleName());
+					if (completions < 5) {
+						g2d.setColor(GameObject.COLOR_COPPER);
+					} else if (completions < 10) {
+						g2d.setColor(GameObject.COLOR_SILVER);
+					} else if (completions < 20) {
+						g2d.setColor(GameObject.COLOR_GOLD);
+					} else {
+						g2d.setColor(Color.CYAN);
+					}
+				} else {
+					g2d.setColor(Color.WHITE);
+				}
 				
 				g2d.setStroke(new BasicStroke(5));
 				g2d.drawRoundRect(levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR, 5, 5);
 				
-				int lvlTitleWidth = g2d.getFontMetrics(font).stringWidth(imgName);
+				g2d.setColor(Color.WHITE);
+				int lvlTitleWidth = g2d.getFontMetrics(font).stringWidth(lvlName);
 				int lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
-				g2d.drawString(imgName, levelSlotsX[i]-(lvlTitleWidth/2), levelSlotsY[i]);
+				g2d.drawString(lvlName, levelSlotsX[i]-(lvlTitleWidth/2), levelSlotsY[i]);
 			} catch (Exception e) {
+				
 			}
 		}
 		
@@ -100,6 +121,8 @@ public class MenuPanel extends JPanel {
 					if (levelWorld.levels.size()-1 < i) break;
 					g2d.setColor(new Color(255, 255, 255, 100));
 					g2d.fillRect(levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR);
+					
+					g2d.setColor(Color.WHITE);
 					
 					g2d.setStroke(new BasicStroke(5));
 					g2d.drawRoundRect(levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR, 5, 5);
@@ -123,6 +146,7 @@ public class MenuPanel extends JPanel {
 				if (Math.abs(mouseX - levelSlotsX[i]) < imgR && Math.abs(mouseY - levelSlotsY[i]) < imgR) {
 					if (levelWorld.levels.size()-1 < i) break;
 					
+					timer.stop();
 					Main.jframe.startGame(levelWorld.levels.get(i));
 					
 					break;

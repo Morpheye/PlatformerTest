@@ -54,7 +54,7 @@ public class GameObject {
 	public boolean hasCollided(GameObject obj) {
 		boolean xCollided, yCollided;
 		
-		if (!this.exists || !obj.exists) return false; 
+		if (!this.exists || (!obj.exists)) return false; 
 		
 		if (obj.getLowerBoundX() < this.getHigherBoundX() && obj.getHigherBoundX() > this.getLowerBoundX()) xCollided = true;
 		else xCollided = false;
@@ -107,8 +107,14 @@ public class GameObject {
 	//COLORS
 	
 	public static final Color COLOR_GRASS = new Color(20, 200, 20);
+	public static final Color COLOR_DIRT = new Color(155, 118, 83);
 	public static final Color COLOR_WOOD = new Color(133, 94, 30);
+	public static final Color COLOR_PLANKS = new Color(226, 187, 123);
 	public static final Color COLOR_STONE = Color.GRAY;
+	
+	public static final Color COLOR_COPPER = new Color(184, 115, 51);
+	public static final Color COLOR_SILVER = new Color(180, 180, 200);
+	public static final Color COLOR_GOLD = new Color(255, 215, 0);
 	
 	public static final Color COLOR_WATER = new Color(0, 50, 255, 100);
 	

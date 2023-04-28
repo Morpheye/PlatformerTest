@@ -3,15 +3,18 @@ package platformerTest.game;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import platformerTest.Main;
 import platformerTest.assets.LiquidPlatform;
 import platformerTest.assets.MovableObject;
+import platformerTest.assets.triggers.Trigger;
 import platformerTest.menu.GamePanel;
 
 public class Player extends MovableObject {
 
 	double movementSpeed = 0.25;
 	double jumpStrength = 16;
+	
+	public int health;
+	public boolean isAlive;
 	
 	boolean movingInLiquid = false;
 	
@@ -26,6 +29,8 @@ public class Player extends MovableObject {
 		this.size_x = size;
 		this.size_y = size;
 		this.slipperiness = 1;
+		this.health = 10;
+		this.isAlive = true;
 		
 	}
 	
@@ -42,7 +47,17 @@ public class Player extends MovableObject {
 		
 		for (GameObject obj : GamePanel.objects) { //check for water
 			if (obj.equals(this)) continue;
-			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0) GamePanel.levelWon=1;
+			//finish flag
+			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0 && obj.exists) {
+				GamePanel.levelWon=1;
+			}
+
+			//text
+			if (obj.hasCollided(this) && obj.type.equals(ObjType.Trigger) && GamePanel.levelWon==0 && obj.exists) {
+				((Trigger) obj).run();
+				obj.exists = false;
+			}
+			//liquids
 			if (this.hasCollided(obj) && obj.type.equals(ObjType.LiquidPlatform) && obj.exists) {
 				this.movingInLiquid = true;
 				this.inAir = true;
@@ -79,8 +94,14 @@ public class Player extends MovableObject {
 			if (this.movingLeft) this.vx -= this.movementSpeed;
 		}
 		
+		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
+		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
+		
+		if (this.health < 1) this.die();
+		
 		//then apply movableobject physics
 		super.move();
+		
 		
 	}
 	
@@ -91,8 +112,8 @@ public class Player extends MovableObject {
 	
 	@Override
 	public void crush() {
-		if (GamePanel.levelWon == 0) { 
-			super.crush();
+		if (GamePanel.levelWon == 0) {
+			this.health = 0;
 			this.die();
 		}
 	}
@@ -100,7 +121,8 @@ public class Player extends MovableObject {
 	@Override
 	public void die() {
 		if (GamePanel.levelWon == 0) {
-			GamePanel.restartLevel(GamePanel.level);
+			this.isAlive = false;
+			this.exists = false;
 		}
 	}
 	

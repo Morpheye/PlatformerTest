@@ -1,10 +1,10 @@
-package platformerTest.game;
+package platformerTest.levels;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import platformerTest.Main;
-import platformerTest.levels.LevelWorld;
+import platformerTest.menu.GamePanel;
 
 public class Level {
 
@@ -18,6 +18,8 @@ public class Level {
 	public double spawnX = 0;
 	public double spawnY = 0;
 	
+	public String name;
+	
 	public Level() {
 		
 	}
@@ -30,7 +32,14 @@ public class Level {
 	
 	public void drawBackground() {}
 	
-	public void drawAmbience(Graphics g) {
+	public void drawAmbience(Graphics g) {}
+	
+	public void onStart() {}
+	
+	public void moveCamera() { //DEFAULT CAMERA MOVEMENT (fully locked)
+
+		GamePanel.camera_x = GamePanel.player.x;
+		GamePanel.camera_y = GamePanel.player.y;
 		
 	}
 	

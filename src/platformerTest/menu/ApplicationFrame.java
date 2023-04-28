@@ -8,7 +8,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 
 import platformerTest.Main;
-import platformerTest.game.Level;
+import platformerTest.levels.Level;
 import platformerTest.levels.world1.World1;
 
 @SuppressWarnings("serial")

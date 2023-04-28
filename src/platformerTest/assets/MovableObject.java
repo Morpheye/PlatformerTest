@@ -93,8 +93,8 @@ public class MovableObject extends GameObject {
 
 		//CHECK BOUNDS
 
-		if (this.y > GamePanel.level.topLimit) this.die();
-		if (this.y < GamePanel.level.bottomLimit) this.die();
+		if (this.y > GamePanel.level.topLimit && !this.equals(GamePanel.player)) GamePanel.deletedObjects.add(this);
+		if (this.y < GamePanel.level.bottomLimit && !this.equals(GamePanel.player)) GamePanel.deletedObjects.add(this);
 		
 		//INERTIA THRESHOLD
 		if (Math.abs(vx) < 0.2) vx = 0;

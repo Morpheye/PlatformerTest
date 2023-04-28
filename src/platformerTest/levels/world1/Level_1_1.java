@@ -6,9 +6,11 @@ import platformerTest.assets.PushableObject;
 import platformerTest.assets.SolidPlatform;
 import platformerTest.assets.interactables.FinishFlag;
 import platformerTest.assets.liquidPlatforms.WaterPlatform;
+import platformerTest.assets.pushableObjects.PushableBox;
 import platformerTest.assets.solidPlatforms.GrassPlatform;
+import platformerTest.assets.triggers.TextDisplayTrigger;
 import platformerTest.game.GameObject;
-import platformerTest.game.Level;
+import platformerTest.levels.Level;
 import platformerTest.menu.GamePanel;
 
 public class Level_1_1 extends Level {
@@ -16,9 +18,35 @@ public class Level_1_1 extends Level {
 	public Level_1_1() {
 		this.backgroundColor = COLOR_DAYSKY;
 		
-		this.spawnX =7650; //-100
-		this.spawnY = 800; //250
+		this.spawnX = -100; //-100
+		this.spawnY = 250; //250
+		
+		this.name = "Islands";
+		
+		//this.spawnX = 7650;
+		//this.spawnY = 700;
 
+	}
+	
+	@Override
+	public void moveCamera() { //loosely locked
+		double diffX = GamePanel.player.x - GamePanel.camera_x;
+		double diffY = GamePanel.player.y - GamePanel.camera_y;
+		
+		int higherLimitX = 0;
+		int lowerLimitX = -100;
+		int higherLimitY = 100;
+		int lowerLimitY = -100;
+		
+		if (diffX > higherLimitX) GamePanel.camera_x = GamePanel.player.x - higherLimitX;
+		if (diffX < lowerLimitX) GamePanel.camera_x = GamePanel.player.x - lowerLimitX;
+		if (diffY > higherLimitY) GamePanel.camera_y = GamePanel.player.y - higherLimitY;
+		if (diffY < lowerLimitY) GamePanel.camera_y = GamePanel.player.y - lowerLimitY;
+	}
+	
+	@Override
+	public void onStart() {
+		GamePanel.displayText("Use WASD to move around.", 240);
 	}
 	
 	SolidPlatform movingPlatform;
@@ -43,9 +71,10 @@ public class Level_1_1 extends Level {
 		//first island
 		objects.add(new GrassPlatform(1000, 250, 200, 50));
 		objects.add(new GrassPlatform(1100, 300, 200, 150));
-		objects.add(new GrassPlatform(800, 500, 150, 35));
+		objects.add(new GrassPlatform(800, 500, 150, 50));
 		
 		//water
+		objects.add(new TextDisplayTrigger(1500, 450, 100, 100, "Most liquids can be swum in.", 240));
 		objects.add(new WaterPlatform(1875, 200, 800, 390));
 		objects.add(new GrassPlatform(1500, 200, 200, 400));
 		objects.add(new GrassPlatform(2250, 200, 200, 400));
@@ -67,23 +96,26 @@ public class Level_1_1 extends Level {
 		objects.add(new GrassPlatform(4000, 500, 200, 200));
 		
 		//movable object platform
+		objects.add(new TextDisplayTrigger(4450, 525, 100, 100, "Some objects can be pushed.", 240));
 		objects.add(new GrassPlatform(4900, 450, 200, 400));
 		objects.add(new GrassPlatform(4700, 350, 600, 200));
 		objects.add(new GrassPlatform(4450, 375, 100, 200));
-		objects.add(new PushableObject(4550, 600, 60, 60, GameObject.COLOR_STONE, 2, 0.97));
+		objects.add(new PushableObject(4550, 600, 60, 60, GameObject.COLOR_STONE, 2, 0.965));
 		
 		//floating objet platform
+		objects.add(new TextDisplayTrigger(5300, 500, 100, 100, "Different objects have different densities.", 240));
+		objects.add(new PushableBox(5750, 500, 60, 60));
+		objects.add(new PushableObject(5300, 500, 60, 60, GameObject.COLOR_STONE, 2, 0.965));
 		objects.add(new WaterPlatform(5800, 250, 1025, 390));
 		objects.add(new GrassPlatform(5650, 325, 300, 250));
 		objects.add(new GrassPlatform(5550, 340, 100, 280));
 		objects.add(new GrassPlatform(5300, 250, 100, 400));
 		objects.add(new GrassPlatform(6250, 340, 200, 580));
 		objects.add(new GrassPlatform(5775, 100, 925, 100));
-		
-		objects.add(new PushableObject(5750, 500, 60, 60, GameObject.COLOR_WOOD, 0.8, 0.97));
-		objects.add(new PushableObject(5300, 500, 60, 60, GameObject.COLOR_STONE, 2, 0.97));
+
 		
 		//islands
+		objects.add(new TextDisplayTrigger(6700, 600, 100, 100, "Reach the finish flag to complete the level.", 240));
 		objects.add(new GrassPlatform(6700, 500, 300, 100));
 		
 		objects.add(new GrassPlatform(7200, 550, 300, 100));
