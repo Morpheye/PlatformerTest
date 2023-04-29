@@ -62,13 +62,13 @@ public class Level_1_3 extends Level {
 		//first battle
 		objects.add(new StonePlatform(700, 100, 600, 100));
 		objects.add(new StonePlatform(900, 150, 200, 200));
-		objects.add(new CreatureZombie(700, 200, 40, 20, 400));
+		objects.add(new CreatureZombie(700, 200, 40, 30, 20, 400));
 		objects.add(new HealPowerup(900, 300, 50));
 		objects.add(new TextDisplayTrigger(900, 300, 50, 50, "Health regenerates slowly, power-ups are faster.", 300));
 		
 		//bridge platform
-		objects.add(new CreatureZombie(1500, 350, 40, 20, 400));
-		objects.add(new CreatureZombie(1700, 350, 40, 20, 400));
+		objects.add(new CreatureZombie(1500, 350, 40, 30, 20, 400));
+		objects.add(new CreatureZombie(1700, 350, 40, 30, 20, 400));
 		objects.add(new StonePlatform(1300, 250, 200, 200));
 		objects.add(new WoodPlatform(1600, 325, 400, 50));
 		objects.add(new StonePlatform(1900, 250, 200, 200));
@@ -96,7 +96,7 @@ public class Level_1_3 extends Level {
 		//start pking back
 		objects.add(new StonePlatform(2100, 1200, 200, 200));
 		objects.add(new StonePlatform(1500, 1300, 600, 200));
-		objects.add(new CreatureZombie(1500, 1450, 40, 20, 400, 0, 200));
+		objects.add(new CreatureZombie(1500, 1450, 40, 30, 20, 400, 0, 200));
 		
 		objects.add(new StonePlatform(900, 1400, 200, 200));
 		objects.add(new StonePlatform(500, 1500, 200, 200));

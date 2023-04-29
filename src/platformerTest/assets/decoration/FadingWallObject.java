@@ -31,7 +31,7 @@ public class FadingWallObject extends DecorationObject {
 		g.setColor(new Color(this.color.getRed(), this.color.getGreen(), this.color.getBlue(), this.alpha));
 		
 		g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
-		5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
+		(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
 	}
 
 

@@ -47,7 +47,7 @@ public class GameObject {
 		
 		g.setColor(this.color);
 		g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
-		5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
+		(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
 	}
 	
 	

@@ -28,7 +28,7 @@ public class PushableBox extends PushableObject {
 		g.setColor(GameObject.COLOR_WOOD);
 		((Graphics2D) g).setStroke(new BasicStroke(brushSize));
 		g.drawRoundRect(drawX, drawY, (int) ((this.size_x-brushSize/2) * Main.SIZE/size), (int) ((this.size_y-brushSize/2) * Main.SIZE/size), 
-		5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
+		(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
 	}
 
 }

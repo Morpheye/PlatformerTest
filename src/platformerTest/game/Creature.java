@@ -157,13 +157,13 @@ public class Creature extends MovableObject {
 		
 		g.setColor(this.color);
 		g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
-		5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
+				(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
 		
 		if (this.dmgTime != 0) { //draw dmg
 			if (this.overheal > 0) g.setColor(new Color(255, 215, 0, this.dmgTime));
 			else g.setColor(new Color(255, 0, 0, this.dmgTime));
 			g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
-			5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
+			(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
 		}
 		if (this.dmgTime > 0) this.dmgTime -= 5;
 		
