@@ -48,5 +48,7 @@ public class Powerup extends Trigger {
 
 	public static final Color COLOR_POWERUP_CAMERASIZE = new Color(0,255,0); //light green
 	public static final Color COLOR_POWERUP_JUMPBOOST = new Color(255,255,0); //yellow
+	public static final Color COLOR_POWERUP_OVERHEAL = new Color(255,215,0); //gold
+	public static final Color COLOR_POWERUP_HEAL = new Color(255,0,0); //red
 
 }

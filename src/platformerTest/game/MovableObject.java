@@ -126,7 +126,14 @@ public class MovableObject extends GameObject {
 		
 		for (GameObject obj : collisions) {
 			if (vx == 0) continue;
-			ArrayList<GameObject> pushing = obj.pushx(vx, this, list, false, isFinal);
+			ArrayList<GameObject> pushing;
+			if (this.type.equals(ObjType.Player) && obj.type.equals(ObjType.Creature)) { 
+				pushing = obj.pushx(vx, this, list, false, false);
+			} else if (this.type.equals(ObjType.Creature) && obj.type.equals(ObjType.Player)) { 
+				pushing = obj.pushx(vx, this, list, false, false);
+			} else {
+				pushing = obj.pushx(vx, this, list, false, isFinal);
+			}
 			resistors.addAll(pushing);
 		}
 		
@@ -135,14 +142,29 @@ public class MovableObject extends GameObject {
 			boolean stillColliding = false;
 			
 			do {
-				
-				if (vx > 0) this.x -= 0.01;
-				else if (vx < 0) this.x += 0.01;
+				//unregulated movement
+				double push = 0;
+				if (vx > 0) {
+					this.x -= 0.01;
+					push = -0.01;
+				}
+				else if (vx < 0) {
+					this.x += 0.01;
+					push = 0.01;
+				}
 				
 				for (GameObject obj2 : GamePanel.objects) {
 					if (obj2.equals(this) || resistors.contains(obj2)) continue;
 					if (this.hasCollided(obj2) && obj2.solid) {
 						if (obj2.type.equals(ObjType.SolidPlatform)) this.crush();
+						else if (obj2.type.equals(ObjType.MovableObject)
+								|| obj2.type.equals(ObjType.Creature)
+								|| obj2.type.equals(ObjType.Player)) {
+							
+							ArrayList<GameObject> pushing = obj2.pushx(push, this, list, true, false);
+							if (pushing.size() > 0) this.crush();
+							
+						}
 					}
 				}
 				
@@ -192,8 +214,14 @@ public class MovableObject extends GameObject {
 		ArrayList<GameObject> resistors = new ArrayList<GameObject>();
 		
 		for (GameObject obj : collisions) {
-			ArrayList<GameObject> pushing = obj.pushy(vy, this, list, false, isFinal);
-			
+			ArrayList<GameObject> pushing;
+			if (this.type.equals(ObjType.Player) && obj.type.equals(ObjType.Creature)) { 
+				pushing = obj.pushy(vy, this, list, false, false);
+			} else if (this.type.equals(ObjType.Creature) && obj.type.equals(ObjType.Player)) { 
+				pushing = obj.pushy(vy, this, list, false, false);
+			} else {
+				pushing = obj.pushy(vy, this, list, false, isFinal);
+			}
 			resistors.addAll(pushing);
 		}
 		
@@ -202,15 +230,30 @@ public class MovableObject extends GameObject {
 			boolean stillColliding = false;
 			
 			do {
-				
-				if (vy > 0) this.y -= 0.01;
-				else if (vy < 0) this.y += 0.01;
+				double push = 0;
+				//unregulated movement
+				if (vy > 0) {
+					this.y -= 0.01;
+					push = -0.01;
+				}
+				else if (vy < 0) {
+					this.y += 0.01;
+					push = 0.01;
+				}
 				
 				
 				for (GameObject obj2 : GamePanel.objects) { //check for crush
 					if (obj2.equals(this) || resistors.contains(obj2)) continue;
 					if (this.hasCollided(obj2) && obj2.solid) {
 						if (obj2.type.equals(ObjType.SolidPlatform)) this.crush();
+						else if (obj2.type.equals(ObjType.MovableObject)
+								|| obj2.type.equals(ObjType.Creature)
+								|| obj2.type.equals(ObjType.Player)) {
+							
+							ArrayList<GameObject> pushing = obj2.pushy(push, this, list, true, false);
+							
+						}
+						
 					}
 				}
 				
@@ -303,7 +346,7 @@ public class MovableObject extends GameObject {
 					
 				} else { //hit new object
 					if (obj.equals(pusher)) { //ERROR NEEDS FIX
-						System.out.println("Error at " + this);
+						//System.out.println("Error at " + this + ", pusher = " + pusher);
 						resistors.add(this);
 						continue;
 					}
@@ -320,6 +363,7 @@ public class MovableObject extends GameObject {
 		if (resistors.size() != 0) {
 			this.y -= v;
 			this.vy -= weightedV;
+				
 		}
 		
 		

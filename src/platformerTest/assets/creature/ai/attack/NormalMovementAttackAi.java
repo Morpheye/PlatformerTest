@@ -7,15 +7,15 @@ import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
 
 /**
- * AI for creatures which do not follow their targets vertically.
+ * AI for creatures which do not fully follow their targets vertically.
  */
-public class NoVerticalMovementAttackAi extends AttackAi {
+public class NormalMovementAttackAi extends AttackAi {
 
-	public NoVerticalMovementAttackAi(double meleeRange, GameObject target) {
+	public NormalMovementAttackAi(double meleeRange, GameObject target) {
 		super(meleeRange, target);
 	}
 	
-	public NoVerticalMovementAttackAi(double meleeRange, ArrayList<GameObject> targets) {
+	public NormalMovementAttackAi(double meleeRange, ArrayList<GameObject> targets) {
 		super(meleeRange, targets);
 	}
 	
@@ -41,13 +41,7 @@ public class NoVerticalMovementAttackAi extends AttackAi {
 						c.movingUp = true;
 						c.movingDown = false;
 					}
-				} else {
-					c.movingUp = false;
-					c.movingDown = false;
 				}
-			} else {
-				c.movingUp = false;
-				c.movingDown = false;
 			}
 			
 		}

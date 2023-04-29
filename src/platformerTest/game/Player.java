@@ -1,7 +1,9 @@
 package platformerTest.game;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import platformerTest.Main;
@@ -20,6 +22,8 @@ public class Player extends MovableObject {
 	boolean movingInLiquid = false;
 	
 	public int health; //PLAYER HP, MAX=100
+	public int overheal;
+	
 	public int maxAttackCooldown; //MAX ATTACK COOLDOWN
 	public int attackRange;
 	public int attackDamage;
@@ -30,6 +34,8 @@ public class Player extends MovableObject {
 	public int attackCooldown;
 	public int lastAttackRange;
 	public int lastAttackAngle;
+	
+	public int timeSinceDamaged;
 	
 	public Player(double initX, double initY, double size) {
 		super(initX, initY, size, size, Color.WHITE, 1.0);
@@ -43,11 +49,15 @@ public class Player extends MovableObject {
 		this.size_y = size;
 		this.slipperiness = 1;
 		this.isAlive = true;
+		this.density = 1;
 		
 		//combat
 		this.dmgTime = 0;
 		
 		this.health = 100;
+		this.overheal = 0;
+		this.timeSinceDamaged = 0;
+		
 		this.maxAttackCooldown = 40;
 		this.attackCooldown = 0;
 		this.attackRange = 20;
@@ -56,6 +66,8 @@ public class Player extends MovableObject {
 		
 		this.attack = new PlayerAttack(this.size_x, this.size_y);
 
+
+		
 		
 	}
 	
@@ -128,6 +140,13 @@ public class Player extends MovableObject {
 		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		
+		//hp shenanigans
+		if (timeSinceDamaged >= 1320) {
+			this.timeSinceDamaged -= 120;
+			if (this.health < 100) this.health++;
+		}
+		this.timeSinceDamaged++;
+		
 		if (this.health <= 0) this.die();
 		
 		//then attack
@@ -150,8 +169,27 @@ public class Player extends MovableObject {
 		g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
 		5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
 		
+		//eyes
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setStroke(new BasicStroke((float)(4*(Main.SIZE/size))));
+		g2d.setColor(Color.BLACK);
+		int x1, x2;
+		if (this.lastDirection == 1) {
+			x1 = (int) (drawX+(this.size_x*(Main.SIZE/size)*2/5));
+			x2 = (int) (drawX+(this.size_x*(Main.SIZE/size)*3/4));
+		} else {
+			x1 = (int) (drawX+(this.size_x*(Main.SIZE/size)*1/4));
+			x2 = (int) (drawX+(this.size_x*(Main.SIZE/size)*3/5));
+		}
+		int y1 = (int) (drawY+(this.size_y*(Main.SIZE/size)*1/4));
+		int y2 = (int) (drawY+(this.size_y*(Main.SIZE/size)*2/4));
+		g2d.drawLine(x1, y1, x1, y2);
+		g2d.drawLine(x2, y1, x2, y2);
+		
+		//damage
 		if (this.dmgTime != 0) {
-			g.setColor(new Color(255, 0, 0, this.dmgTime));
+			if (this.overheal > 0) g.setColor(new Color(255, 215, 0, this.dmgTime));
+			else g.setColor(new Color(255, 0, 0, this.dmgTime));
 			g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
 			5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
 		}
@@ -163,13 +201,26 @@ public class Player extends MovableObject {
 	public int dmgTime;
 	
 	public void damage(int damage, GameObject source) {
-		this.health -= damage;
+		this.timeSinceDamaged = 0;
+		
+		if (this.overheal != 0) {
+			if (this.overheal >= damage) this.overheal -= damage;
+			else {
+				int newDamage = damage - this.overheal;
+				this.overheal = 0;
+				this.health -= newDamage;
+			}
+		} else this.health -= damage;
+
 		
 		if (damage > 20 & this.dmgTime < 255) this.dmgTime = 255;
-		else if (damage > 5 & this.dmgTime < 150) this.dmgTime = 150;
-		else if (this.dmgTime < 50) this.dmgTime = 50;
+		else if (damage > 5 & this.dmgTime < 175) this.dmgTime = 175;
+		else if (this.dmgTime < 100) this.dmgTime = 100;
 		
-		if (this.health <= 0) this.die();
+		if (this.health <= 0) {
+			this.health = 0;
+			this.die();
+		}
 	}
 	
 	public void attack() {
@@ -212,7 +263,7 @@ public class Player extends MovableObject {
 				list.add(this);
 				
 				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
-				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, true);
+				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, false);
 				
 		}}
 		

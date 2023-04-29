@@ -5,27 +5,41 @@ import platformerTest.game.Creature;
 import platformerTest.game.Player;
 import platformerTest.menu.GamePanel;
 
+/**
+ * Base AI for only horizontal movement following a point. Do not use.
+ */
 public class HorizontalMovementAi extends CreatureAi {
 
 	public double targetX;
-	public double maxRange;
-	public double minRange;
+	public double targetY;
+	public double maxRangeX;
+	public double minRangeX;
+	public double maxRangeY;
+	public double minRangeY;
 	
-	public HorizontalMovementAi(double targetX, double minRange, double maxRange) {
+	public HorizontalMovementAi(double targetX, double minRangeX, double maxRangeX) {
+		this(targetX, 0, minRangeX, maxRangeX, 0, Double.MAX_VALUE);
+	}
+	
+	public HorizontalMovementAi(double targetX, double targetY, double minRangeX, double maxRangeX, double minRangeY, double maxRangeY) {
 		this.targetX = targetX;
-		this.maxRange = maxRange;
-		this.minRange = minRange;
-		
+		this.maxRangeX = maxRangeX;
+		this.minRangeX = minRangeX;
+		this.maxRangeY = maxRangeY;
+		this.minRangeY = minRangeY;
 	}
 	
 	@Override
 	public void run(Creature c) {
-		if (Math.abs(c.x-this.targetX)>this.maxRange) {
+		if (Math.abs(c.y-this.targetY)>this.maxRangeY) return;
+		if (Math.abs(c.y-this.targetY)<this.minRangeY) return;
+		
+		if (Math.abs(c.x-this.targetX)>this.maxRangeX) {
 			c.movingRight = false;
 			c.movingLeft = false;
 			return;
 		}
-		if (Math.abs(c.x-this.targetX)<this.minRange) {
+		if (Math.abs(c.x-this.targetX)<this.minRangeX) {
 			c.movingRight = false;
 			c.movingLeft = false;
 			return;

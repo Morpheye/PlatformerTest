@@ -6,6 +6,9 @@ import platformerTest.assets.creature.CreatureAi;
 import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
 
+/**
+ * General attack AI
+ */
 public class AttackAi extends CreatureAi {
 
 	public double meleeRange;

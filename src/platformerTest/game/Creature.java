@@ -1,7 +1,9 @@
 package platformerTest.game;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import platformerTest.Main;
@@ -18,6 +20,10 @@ public class Creature extends MovableObject {
 	
 	boolean movingInLiquid = false;
 	
+	public Color eyeColor;
+	public boolean friendlyFire;
+	public int overheal;
+	
 	public int health;
 	public int maxHealth;
 	public int maxAttackCooldown; //MAX ATTACK COOLDOWN
@@ -33,12 +39,14 @@ public class Creature extends MovableObject {
 	
 	public ArrayList<CreatureAi> aiList;
 	
-	public Creature(double initX, double initY, double size, Color color, double density,
+	public Creature(double initX, double initY, double size, Color color, Color eyeColor, double density,
 			int maxHealth, double movementSpeed, double jumpStrength, int AttackDamage,
 			int AttackRange, int AttackSpeed, int AttackKnockback) {
 		super(initX, initY, size, size, color, 1.0);
 		
 		this.type = ObjType.Creature;
+		
+		this.eyeColor = eyeColor;
 		
 		this.density = density;
 		this.movable = true;
@@ -57,6 +65,7 @@ public class Creature extends MovableObject {
 		
 		this.maxHealth = maxHealth;
 		this.health = this.maxHealth;
+		this.overheal = 0;
 		this.maxAttackCooldown = AttackSpeed;
 		this.attackCooldown = 0;
 		this.attackRange = AttackRange;
@@ -66,6 +75,7 @@ public class Creature extends MovableObject {
 		this.attack = new CreatureAttack(this.size_x, this.size_y);
 
 		this.aiList = new ArrayList<CreatureAi>();
+		this.friendlyFire = true;
 		
 	}
 	
@@ -149,33 +159,67 @@ public class Creature extends MovableObject {
 		g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
 		5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
 		
-		if (this.dmgTime != 0) {
-			g.setColor(new Color(255, 0, 0, this.dmgTime));
+		if (this.dmgTime != 0) { //draw dmg
+			if (this.overheal > 0) g.setColor(new Color(255, 215, 0, this.dmgTime));
+			else g.setColor(new Color(255, 0, 0, this.dmgTime));
 			g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
 			5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
 		}
 		if (this.dmgTime > 0) this.dmgTime -= 5;
 		
+		//eyes
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setStroke(new BasicStroke((float)(4*(Main.SIZE/size))));
+		g2d.setColor(this.eyeColor);
+		int x1, x2;
+		if (this.movingRight) {
+			x1 = (int) (drawX+(this.size_x*(Main.SIZE/size)*2/5));
+			x2 = (int) (drawX+(this.size_x*(Main.SIZE/size)*3/4));
+		} else {
+			x1 = (int) (drawX+(this.size_x*(Main.SIZE/size)*1/4));
+			x2 = (int) (drawX+(this.size_x*(Main.SIZE/size)*3/5));
+		}
+		int y1 = (int) (drawY+(this.size_y*(Main.SIZE/size)*1/4));
+		int y2 = (int) (drawY+(this.size_y*(Main.SIZE/size)*2/4));
+		g2d.drawLine(x1, y1, x1, y2);
+		g2d.drawLine(x2, y1, x2, y2);
+				
 		//DRAW HEALTHBAR
 		
 		drawX = (int) ( (this.x - (this.size_x)/2 - (x - size/2)) * (Main.SIZE/size)); 
 		drawY = (int) ( (size - (this.y + (this.size_y)/2) + (y - size/2) - 10) * (Main.SIZE/size));
 		
 		g.setColor(Color.BLACK);
-		g.fillRect(drawX, drawY, (int) (this.size_y * Main.SIZE/size), 5*(int)(Main.SIZE/size));
+		g.fillRect(drawX, drawY, (int) (this.size_y * Main.SIZE/size), (int)(5*(Main.SIZE/size)));
 		g.setColor(Color.RED);
-		g.fillRect(drawX, drawY, (int) (this.size_y * ((double) this.health/this.maxHealth) * Main.SIZE/size), 5*(int)(Main.SIZE/size));
+		g.fillRect(drawX, drawY, (int) (this.size_y * ((double) this.health/this.maxHealth) * Main.SIZE/size), (int)(5*(Main.SIZE/size)));
+		
+		if (this.overheal != 0) {
+			int overHeal = this.overheal;
+			if (this.overheal > this.maxHealth) overHeal = this.maxHealth;
+			
+			g.setColor(GameObject.COLOR_GOLD);
+			g.fillRect(drawX, drawY, (int) (this.size_y * ((double) overHeal/this.maxHealth) * Main.SIZE/size), (int)(5*(Main.SIZE/size)));
+			
+		}
 		
 	}
 	
 	public int dmgTime;
 	
 	public void damage(int damage, GameObject source) {
-		this.health -= damage;
+		if (this.overheal != 0) {
+			if (this.overheal >= damage) this.overheal -= damage;
+			else {
+				int newDamage = damage - this.overheal;
+				this.overheal = 0;
+				this.health -= newDamage;
+			}
+		} else this.health -= damage;
 		
 		if (damage > 20 & this.dmgTime < 255) this.dmgTime = 255;
-		else if (damage > 5 & this.dmgTime < 150) this.dmgTime = 150;
-		else if (this.dmgTime < 50) this.dmgTime = 50;
+		else if (damage > 5 & this.dmgTime < 175) this.dmgTime = 175;
+		else if (this.dmgTime < 100) this.dmgTime = 100;
 		
 		if (this.health <= 0) this.die();
 	}
@@ -212,14 +256,14 @@ public class Creature extends MovableObject {
 		//Apply collisions
 		for (GameObject obj : GamePanel.objects) { //check for enemies in range
 			if (obj.equals(this)) continue;
-			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature)) {
+			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature) && this.friendlyFire) {
 				((Creature) obj).damage(this.attackDamage, this);
 				
 				int pushStrength = this.attackKnockback;
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
 				list.add(this);
 				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
-				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, true);
+				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, false);
 				
 			} else if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Player)) {
 				((Player) obj).damage(this.attackDamage, this);
@@ -228,7 +272,7 @@ public class Creature extends MovableObject {
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
 				list.add(this);
 				((Player) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
-				((Player) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, true);
+				((Player) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, false);
 			}
 		}
 		

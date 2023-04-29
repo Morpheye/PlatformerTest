@@ -33,8 +33,6 @@ public class PushableObject extends MovableObject {
 			double lift = GamePanel.gravity * Math.atan(2*diff) / (Math.PI / 2) - GamePanel.gravity;
 			
 			this.vy += lift;
-			
-			this.attemptMoveY(lift, false);
 		}
 		
 		ArrayList<GameObject> collisions = new ArrayList<GameObject>();
