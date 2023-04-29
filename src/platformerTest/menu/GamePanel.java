@@ -38,6 +38,7 @@ public class GamePanel extends JPanel {
 	public static double airDrag;
 	public static double gravity;
 	public static List<GameObject> objects;
+	public static List<GameObject> projectiles;
 	public static List<GameObject> deletedObjects;
 	
 	public static double camera_x;
@@ -86,6 +87,7 @@ public class GamePanel extends JPanel {
 		objects = new ArrayList<GameObject>();
 		deletedObjects = new ArrayList<GameObject>();
 		flashes = new HashMap<Color,Integer>();
+		projectiles = new ArrayList<GameObject>();
 		
 		level = newLevel;
 		
@@ -140,6 +142,9 @@ public class GamePanel extends JPanel {
 		for (GameObject obj : deletedObjects) {
 			objects.remove(obj);
 		}
+		
+		for (GameObject obj : projectiles) objects.add(obj);
+		projectiles.clear();
 		
 		deletedObjects.clear();
 		

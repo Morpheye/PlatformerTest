@@ -1,8 +1,12 @@
 package platformerTest.levels.world1;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import platformerTest.Main;
+import platformerTest.assets.creature.CreatureAi;
+import platformerTest.assets.creature.ai.HorizontalMovementAi;
+import platformerTest.assets.creature.ai.vertical.VerticalFollowAi;
 import platformerTest.assets.creature.creatures.CreatureGoblin;
 import platformerTest.assets.creature.creatures.CreatureZombie;
 import platformerTest.assets.decoration.FadingWallObject;
@@ -17,6 +21,7 @@ import platformerTest.assets.solidPlatforms.StonePlatform;
 import platformerTest.assets.solidPlatforms.WoodPlatform;
 import platformerTest.assets.triggers.Code;
 import platformerTest.assets.triggers.TextDisplayTrigger;
+import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
 import platformerTest.levels.Level;
 import platformerTest.menu.GamePanel;
@@ -26,16 +31,17 @@ public class Level_1_3 extends Level {
 	public Level_1_3() {
 		this.backgroundColor = COLOR_DARKSKY;
 		
-		this.spawnX = 25; //0
-		this.spawnY = 2000; //200
+		this.spawnX = 2850; //0
+		this.spawnY = 2450; //200
 
-		this.name = "Entering Battle LETS GO BOIS";
+		this.name = "Entering Battle";
 		
 	}
 	
 	@Override
 	public void onStart() {
 		GamePanel.displayText("Use space to melee attack. Watch your health!", 240);
+		GamePanel.target_camera_size = (int) (Main.SIZE*1.25);
 	}
 	
 	@Override
@@ -43,6 +49,8 @@ public class Level_1_3 extends Level {
 		List<GameObject> objects = GamePanel.objects;
 		
 		objects.add(new SolidBackgroundObject(2750, 750, 690, 990, GameObject.COLOR_DIRT));
+		objects.add(new SolidBackgroundObject(3050, 2450, 190, 550, GameObject.COLOR_DIRT));
+		objects.add(new SolidBackgroundObject(2450, 2450, 190, 220, GameObject.COLOR_DIRT));
 	}
 	
 	@Override
@@ -51,7 +59,7 @@ public class Level_1_3 extends Level {
 		
 		objects.add(new FadingWallObject(2750, 750, 690, 990, GameObject.COLOR_GRASS));
 	}
-
+	
 	@Override
 	public void drawPlatforms() {
 		List<GameObject> objects = GamePanel.objects;
@@ -86,7 +94,7 @@ public class Level_1_3 extends Level {
 		objects.add(new PushableBox(2650, 1050, 75, 75));
 		objects.add(new PushableBox(2650, 1150, 40, 40));
 		objects.add(new GrassPlatform(2900, 1225, 200, 50));
-		
+		objects.add(new HealPowerup(2500, 1300, 50));
 		objects.add(new CameraSizePowerup(3000, 1300, 50, new Code() {
 			@Override
 			public void run() {
@@ -109,17 +117,33 @@ public class Level_1_3 extends Level {
 		objects.add(new OverhealPowerup(25, 1900, 50, 50));
 		objects.add(new TextDisplayTrigger(25, 1900, 50, 50, "Overheals bypass the normal health limit of 100.", 300));
 		
-		//go forward again
+		//goblin platform
 		objects.add(new StonePlatform(300, 1950, 200, 50));
 		objects.add(new StonePlatform(700, 2000, 200, 200));
 		objects.add(new StonePlatform(1300, 2100, 600, 200));
 		objects.add(new CreatureGoblin(1500, 2150, 30, 20, 400, 0, 200));
 		
+		objects.add(new StonePlatform(1900, 2200, 200, 200));
+		
+		//spear goblin platform
+		objects.add(new GrassPlatform(2700, 2250, 900, 200));
+		objects.add(new GrassPlatform(2900, 2725, 200, 50));
+		objects.add(new GrassPlatform(3050, 2650, 200, 200));
+		objects.add(new PushableBox(3050,2450,80,80));
+		objects.add(new GrassPlatform(2450, 2550, 200, 50));
+		objects.add(new PushableBox(2450,2650,80,80));
+		
+		Creature dartGoblin = new CreatureGoblin(2950, 2450, 30);
+		dartGoblin.jumpStrength = 16;
+		dartGoblin.aiList = new ArrayList<CreatureAi>();
+		dartGoblin.aiList.add(new VerticalFollowAi(50, 100, GamePanel.player)); //jumps to shoot at player
+		dartGoblin.aiList.add(new HorizontalMovementAi(2950, 40, 500)); //tries to return to original spot
+		objects.add(dartGoblin);
+		
 	}
 	
 	@Override
 	public void onTick() {
-		
 	}
 	
 }

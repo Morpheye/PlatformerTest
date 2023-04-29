@@ -31,8 +31,9 @@ public class CreatureGoblin extends Creature {
 		this.friendlyFire = false;
 		
 		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player));
-		this.aiList.add(new VerticalFollowAi(75, 200, 6, 100, minRangeX, maxRangeX, GamePanel.player));
+		this.aiList.add(new VerticalFollowAi(6, 100, 75, 200, minRangeX, maxRangeX, GamePanel.player));
 		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
+		//add projectilemovement
 	}
 
 }

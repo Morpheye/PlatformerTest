@@ -18,11 +18,12 @@ public class VerticalMovementAi extends CreatureAi {
 	public double minRangeYDown;
 	
 	public VerticalMovementAi(double targetY, double minRangeY, double maxRangeY) {
-		this(targetY, 0, minRangeY, maxRangeY, minRangeY, maxRangeY, 0, Double.MAX_VALUE);
+		this(0, targetY, minRangeY, maxRangeY, minRangeY, maxRangeY, 0, Double.MAX_VALUE);
 	}
 	
 	public VerticalMovementAi(double targetX, double targetY, double minRangeYUp, double maxRangeYUp, double minRangeYDown, double maxRangeYDown, double minRangeX, double maxRangeX) {
 		this.targetX = targetX;
+		this.targetY = targetY;
 		this.maxRangeX = maxRangeX;
 		this.minRangeX = minRangeX;
 		this.maxRangeYUp = maxRangeYUp;

@@ -17,7 +17,7 @@ public class VerticalFollowAi extends VerticalMovementAi {
 	}
 	
 	public VerticalFollowAi(double minRangeX, double maxRangeX, double minRangeYUp, double maxRangeYUp, double minRangeYDown, double maxRangeYDown, GameObject target) {
-		super(GamePanel.player.x, GamePanel.player.y, minRangeX, maxRangeX, minRangeYUp, maxRangeYUp, minRangeYDown, maxRangeYDown);
+		super(GamePanel.player.x, GamePanel.player.y, minRangeYUp, maxRangeYUp, minRangeYDown, maxRangeYDown, minRangeX, maxRangeX);
 		this.target = target;
 	}
 	

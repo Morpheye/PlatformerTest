@@ -5,6 +5,8 @@ public enum ObjType {
 	
 	Player,
 	Creature,
+	Projectile,
+	
 	SolidPlatform,
 	LiquidPlatform,
 	MovableObject,
