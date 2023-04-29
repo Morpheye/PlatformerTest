@@ -30,7 +30,7 @@ public class Player extends MovableObject {
 		this.size_x = size;
 		this.size_y = size;
 		this.slipperiness = 1;
-		this.health = 10;
+		this.health = 100;
 		this.isAlive = true;
 		
 	}
@@ -101,7 +101,7 @@ public class Player extends MovableObject {
 		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		
-		if (this.health < 1) this.die();
+		if (this.health <= 0) this.die();
 		
 		//then apply movableobject physics
 		super.move();
@@ -114,10 +114,14 @@ public class Player extends MovableObject {
 		super.draw(g, player, x, y, size);
 	}
 	
+	public void damage(int damage) {
+		this.health -= damage;
+		if (this.health <= 0) this.die();
+	}
+	
 	@Override
 	public void crush() {
 		if (GamePanel.levelWon == 0) {
-			GamePanel.createFlash(Color.BLACK, 100);
 			this.health = 0;
 			this.die();
 		}
@@ -125,7 +129,8 @@ public class Player extends MovableObject {
 	
 	@Override
 	public void die() {
-		if (GamePanel.levelWon == 0) {
+		if (GamePanel.levelWon == 0 && this.isAlive) {
+			GamePanel.createFlash(Color.BLACK, 100);
 			this.isAlive = false;
 			this.exists = false;
 		}

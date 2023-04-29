@@ -3,18 +3,23 @@ package platformerTest.menu;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -86,7 +91,6 @@ public class GamePanel extends JPanel {
 		
 		player = new Player(checkpointX, checkpointY, 40);
 		objects.add(player);
-		player.health = 10;
 		
 		camera_x = (int) player.x;
 		camera_y = (int) player.y;
@@ -102,10 +106,13 @@ public class GamePanel extends JPanel {
 		
 		level.onStart();
 		
-		createFlash(Color.BLACK,100);
+		createFlash(Color.white,100);
 
 	}
 	
+	/**Order: Level tick -> Player move -> Camera move -> Background -> Level Paint -> Draw ambience
+	-> Create flash effects -> Fade out if falling into void -> draw HUD -> display text -> win fading
+	**/
 	public void paint(Graphics g) {
 		super.paint(g);
 		
@@ -163,13 +170,20 @@ public class GamePanel extends JPanel {
 			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 		}
 		
+		//draw hud
+		drawHUD(g);
+		
 		//display text
 		if (textDuration != 0) {
 			int alpha = 255;
 			if (textDuration <= 120) alpha = 255*textDuration/120;
+			Graphics2D g2d = (Graphics2D) g;
+			GradientPaint gp2 = new GradientPaint(0, Main.SIZE-100, new Color(255,255,255,0), 0, Main.SIZE-75, new Color(255,255,255,alpha), false);
+			g2d.setPaint(gp2);
+			g2d.fillRect(-50, Main.SIZE-125, Main.SIZE+50, Main.SIZE);
 			Font font = new Font(Font.MONOSPACED, Font.BOLD, 25);
 			g.setFont(font);
-			g.setColor(new Color(255,255,255,alpha));
+			g.setColor(new Color(100,100,100,alpha));
 			int lvlSelectStringWidth = g.getFontMetrics(font).stringWidth(displayText);
 			g.drawString(displayText, Main.SIZE/2 - lvlSelectStringWidth/2, Main.SIZE-50);
 			
@@ -226,23 +240,31 @@ public class GamePanel extends JPanel {
 		g.setFont(font);
 		
 		g2d.setColor(Color.GRAY);
-		g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/3-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/4-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		g2d.setColor(Color.GRAY);
-		g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*2/3-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/2-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		
+		g2d.setColor(Color.GRAY);
+		g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*3/4-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		if (this.getMousePosition() != null) {
 			int mouseX = this.getMousePosition().x;
 			int mouseY = this.getMousePosition().y;
 			
-			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE/3) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE/4) < buttonSizeY/2) {
 				g2d.setColor(new Color(255, 255, 255, 100));
-				g2d.fillRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/3-buttonSizeY/2, buttonSizeX, buttonSizeY);
+				g2d.fillRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/4-buttonSizeY/2, buttonSizeX, buttonSizeY);
 			}
 			
-			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*2/3) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE/2) < buttonSizeY/2) {
 				g2d.setColor(new Color(255, 255, 255, 100));
-				g2d.fillRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*2/3-buttonSizeY/2, buttonSizeX, buttonSizeY);
+				g2d.fillRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/2-buttonSizeY/2, buttonSizeX, buttonSizeY);
+			}
+			
+			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*3/4) < buttonSizeY/2) {
+				g2d.setColor(new Color(255, 255, 255, 100));
+				g2d.fillRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*3/4-buttonSizeY/2, buttonSizeX, buttonSizeY);
 			}
 			
 			
@@ -250,18 +272,25 @@ public class GamePanel extends JPanel {
 		
 		g2d.setStroke(new BasicStroke(5));
 		g2d.setColor(Color.WHITE);
-		g.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/3-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		g.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/4-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		int StringWidth = g.getFontMetrics(font).stringWidth("Unpause Game");
 		int StringHeight = g.getFontMetrics(font).getHeight();
-		g2d.drawString("Unpause Game", Main.SIZE/2-StringWidth/2, Main.SIZE/3+10);
+		g2d.drawString("Unpause Game", Main.SIZE/2-StringWidth/2, Main.SIZE/4+10);
 		
 		g2d.setStroke(new BasicStroke(5));
 		g2d.setColor(Color.WHITE);
-		g.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*2/3-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		g.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/2-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		
+		StringWidth = g.getFontMetrics(font).stringWidth("Restart Level");
+		g2d.drawString("Restart Level", Main.SIZE/2-StringWidth/2, Main.SIZE/2+10);
+		
+		g2d.setStroke(new BasicStroke(5));
+		g2d.setColor(Color.WHITE);
+		g.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*3/4-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		StringWidth = g.getFontMetrics(font).stringWidth("Exit to Menu");
-		g2d.drawString("Exit to Menu", Main.SIZE/2-StringWidth/2, Main.SIZE*2/3+10);
+		g2d.drawString("Exit to Menu", Main.SIZE/2-StringWidth/2, Main.SIZE*3/4+10);
 		
 		
 		
@@ -290,6 +319,35 @@ public class GamePanel extends JPanel {
 	public static void displayText(String newText, int newDuration) {
 		displayText = newText;
 		textDuration = newDuration;
+	}
+	
+	public void drawHUD(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		//top
+		GradientPaint gp1 = new GradientPaint(0, 50, Color.white, 0, 75, new Color(255,255,255,0), false);
+		g2d.setPaint(gp1);
+		g2d.fillRect(-50, 0, Main.SIZE+50, 75);
+		//render healthbar
+		if (player.health > 100) player.health = 100;
+		if (player.health < 0) player.health = 0;
+		try {
+			BufferedImage image = ImageIO.read(this.getClass().getResource("/gui/health.png"));
+			g2d.drawImage(image, Main.SIZE*3/4+25, 10, 30, 30, null);
+			g2d.setColor(Color.black);
+			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, 100, 30, 5, 5);
+			g2d.setColor(Color.red);
+			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, player.health, 30, 5, 5);
+			
+			g2d.setColor(Color.black);
+			g2d.setStroke(new BasicStroke(3));
+			g2d.drawRoundRect(Main.SIZE*3/4 + 70, 10, 100, 30, 5, 5);
+		} catch (IOException e) {}
+		//render level name
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, 25);
+		g.setFont(font);
+		g.setColor(new Color(100,100,100));
+		g.drawString(level.getClass().getSimpleName().substring(6) + ": " + level.name, 15, 30);
+
 	}
 	
 	public static HashMap<Color,Integer> flashes = new HashMap<Color,Integer>();
@@ -330,11 +388,16 @@ public class GamePanel extends JPanel {
 			int mouseX = e.getX();
 			int mouseY = e.getY();
 			
-			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE/3) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE/4) < buttonSizeY/2) {
 				isPaused = false;
 			}
 			
-			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*2/3) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE/2) < buttonSizeY/2) {
+				isPaused = false;
+				GamePanel.restartLevel(level);
+			}
+			
+			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*3/4) < buttonSizeY/2) {
 				timer.stop();
 				Main.jframe.exitGame(level);
 			}
