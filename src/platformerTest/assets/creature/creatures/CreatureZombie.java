@@ -16,7 +16,7 @@ public class CreatureZombie extends Creature {
 	}
 	
 	public CreatureZombie(double initX, double initY, double size, int maxHealth, double minRange, double maxRange) {
-		super(initX, initY, size, COLOR_ZOMBIE, Color.GRAY, 1, maxHealth, 0.05, 0, 5, 10, 45, 1);
+		super(initX, initY, size, COLOR_ZOMBIE, Color.GRAY, 1, maxHealth, 0.04, 0, 5, 10, 45, 1);
 		this.friendlyFire = true;
 		
 		this.aiList.add(new HorizontalFollowAi(minRange, maxRange, GamePanel.player));
@@ -24,7 +24,7 @@ public class CreatureZombie extends Creature {
 	}
 	
 	public CreatureZombie(double initX, double initY, double size, int maxHealth, double minRangeX, double maxRangeX, double minRangeY, double maxRangeY) {
-		super(initX, initY, size, COLOR_ZOMBIE, Color.GRAY, 1, maxHealth, 0.05, 0, 5, 10, 45, 1);
+		super(initX, initY, size, COLOR_ZOMBIE, Color.GRAY, 1, maxHealth, 0.04, 0, 5, 10, 45, 1);
 		this.friendlyFire = true;
 		
 		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player));

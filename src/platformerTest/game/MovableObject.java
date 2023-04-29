@@ -198,8 +198,10 @@ public class MovableObject extends GameObject {
 					
 					if (obj.type.equals(ObjType.SolidPlatform)) {
 						last_slip = ((SolidPlatform) obj).slipperiness;
-					} if (obj.type.equals(ObjType.MovableObject) || obj.type.equals(ObjType.Creature)) {
+					} else if (obj.type.equals(ObjType.MovableObject)) {
 						last_slip = ((MovableObject) obj).slipperiness;
+					} else if (obj.type.equals(ObjType.Creature)) {
+						last_slip = GamePanel.level.airDrag;
 					}
 					
 					collidedy = true;

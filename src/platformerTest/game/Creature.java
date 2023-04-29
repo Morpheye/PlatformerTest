@@ -54,7 +54,7 @@ public class Creature extends MovableObject {
 		this.y = initY;
 		this.size_x = size;
 		this.size_y = size;
-		this.slipperiness = 0.96;
+		this.slipperiness = 1;
 		this.isAlive = true;
 		
 		//combat

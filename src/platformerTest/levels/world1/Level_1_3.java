@@ -29,7 +29,7 @@ public class Level_1_3 extends Level {
 		this.spawnX = 25; //0
 		this.spawnY = 2000; //200
 
-		this.name = "Entering Battle";
+		this.name = "Entering Battle LETS GO BOIS";
 		
 	}
 	

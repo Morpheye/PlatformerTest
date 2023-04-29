@@ -12,6 +12,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -99,12 +101,35 @@ public class MenuPanel extends JPanel {
 				g2d.setStroke(new BasicStroke(5));
 				g2d.drawRoundRect(levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR, 5, 5);
 				
+				font = new Font(Font.MONOSPACED, Font.BOLD, 50);
+				g2d.setFont(font);
 				g2d.setColor(Color.WHITE);
 				int lvlTitleWidth = g2d.getFontMetrics(font).stringWidth(lvlName);
 				int lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
 				g2d.drawString(lvlName, levelSlotsX[i]-(lvlTitleWidth/2), levelSlotsY[i]);
-			} catch (Exception e) {
 				
+				List<String> lvlTextA = Arrays.asList(levelWorld.levels.get(i).name.split(" "));
+				font = new Font(Font.MONOSPACED, Font.BOLD, 10);
+				g2d.setFont(font);
+				lvlTitleWidth = g2d.getFontMetrics(font).stringWidth(String.join(" ", lvlTextA));
+				lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
+				
+				if (lvlTitleWidth > (2*imgR-10)) {
+					List<String> text1 = lvlTextA.subList(0, lvlTextA.size()/2);
+					List<String> text2 = lvlTextA.subList(lvlTextA.size()/2, lvlTextA.size());
+					
+					lvlTitleWidth = g2d.getFontMetrics(font).stringWidth(String.join(" ", text1));
+					g2d.drawString(String.join(" ", text1), levelSlotsX[i]-(lvlTitleWidth/2), levelSlotsY[i]+50);
+					lvlTitleWidth = g2d.getFontMetrics(font).stringWidth(String.join(" ", text2));
+					g2d.drawString(String.join(" ", text2), levelSlotsX[i]-(lvlTitleWidth/2), levelSlotsY[i]+50+lvlTitleHeight);
+					
+				} else {
+					g2d.drawString(String.join(" ", lvlTextA), levelSlotsX[i]-(lvlTitleWidth/2), levelSlotsY[i]+50);
+					
+				}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		

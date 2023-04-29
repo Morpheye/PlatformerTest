@@ -355,11 +355,6 @@ public class GamePanel extends JPanel {
 			g2d.setStroke(new BasicStroke(3));
 			g2d.drawRoundRect(Main.SIZE*3/4 + 70, 10, 100, 30, 5, 5);
 		} catch (IOException e) {}
-		//render level name
-		Font font = new Font(Font.MONOSPACED, Font.BOLD, 25);
-		g.setFont(font);
-		g.setColor(new Color(100,100,100));
-		g.drawString(level.getClass().getSimpleName().substring(6) + ": " + level.name, 15, 30);
 
 	}
 	
@@ -390,7 +385,7 @@ public class GamePanel extends JPanel {
 				
 				Arc2D arc = new Arc2D.Double(drawX, drawY, sizeX, sizeY, c.lastAttackAngle-45, 90, Arc2D.OPEN);
 				g2d.setColor(new Color(c.color.getRed(),c.color.getGreen(),c.color.getBlue(),alpha));
-				g2d.setStroke(new BasicStroke(5));
+				g2d.setStroke(new BasicStroke((float) (5*Main.SIZE/camera_size)));
 				g2d.draw(arc);
 		}}
 		
@@ -409,7 +404,7 @@ public class GamePanel extends JPanel {
 		
 		Arc2D arc = new Arc2D.Double(drawX, drawY, sizeX, sizeY, player.lastAttackAngle-45, 90, Arc2D.OPEN);
 		g2d.setColor(new Color(player.color.getRed(),player.color.getGreen(),player.color.getBlue(),alpha));
-		g2d.setStroke(new BasicStroke(5));
+		g2d.setStroke(new BasicStroke((float) (5*Main.SIZE/camera_size)));
 		g2d.draw(arc);
 
 		
@@ -433,8 +428,7 @@ public class GamePanel extends JPanel {
 				player.lastDirection = 1;
 			}
 			
-			
-			if (e.getKeyCode() == KeyEvent.VK_R) GamePanel.restartLevel(level); 
+			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0) GamePanel.restartLevel(level); 
 			
 		}
 
