@@ -6,13 +6,13 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +24,9 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import platformerTest.Main;
+import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
+import platformerTest.game.ObjType;
 import platformerTest.game.Player;
 import platformerTest.levels.Level;
 
@@ -40,7 +42,7 @@ public class GamePanel extends JPanel {
 	
 	public static double camera_x;
 	public static double camera_y;
-	public static int camera_size;
+	public static double camera_size;
 	public static int target_camera_size;
 	
 	public static boolean isPaused;
@@ -110,7 +112,7 @@ public class GamePanel extends JPanel {
 
 	}
 	
-	/**Order: Level tick -> Player move -> Camera move -> Background -> Level Paint -> Draw ambience
+	/**Order: Level tick -> Player move -> Camera move -> Background -> Level Paint -> draw attacks -> Draw ambience
 	-> Create flash effects -> Fade out if falling into void -> draw HUD -> display text -> win fading
 	**/
 	public void paint(Graphics g) {
@@ -142,7 +144,10 @@ public class GamePanel extends JPanel {
 		
 		deletedObjects.clear();
 		
-		level.drawAmbience(g);
+		//draw attacks
+		if (!isPaused) drawAttacks(g);
+		
+		if (!isPaused) level.drawAmbience(g);
 		
 		//flash effects
 		ArrayList<Color> removedFlashes = new ArrayList<Color>();
@@ -357,26 +362,82 @@ public class GamePanel extends JPanel {
 		else flashes.put(color, duration);
 	}
 	
+	public void drawAttacks(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		for (GameObject obj : objects) {
+			if (obj.type.equals(ObjType.Creature) && obj.hasCollided(MainFrameObj)) {
+				Creature c = (Creature) obj;
+				
+				if (c.attackCooldown == 0) continue;
+				if (c.maxAttackCooldown - c.attackCooldown > 20) continue;
+				int alpha = (20-(c.maxAttackCooldown - c.attackCooldown))*255/20;
+				
+				int lastAttackX = (int) (c.x);
+				int lastAttackY = (int) (c.y);
+				
+				int drawX = (int) ((lastAttackX - (c.size_x+c.lastAttackRange*2)/2 - (camera_x - camera_size/2)) * (Main.SIZE/camera_size));
+				int drawY = (int) ((camera_size - (lastAttackY + (c.size_y+c.lastAttackRange*2)/2) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size));
+				int sizeX = (int) ((c.size_x+c.lastAttackRange*2) * Main.SIZE/camera_size);
+				int sizeY = (int) ((c.size_y+c.lastAttackRange*2) * Main.SIZE/camera_size);
+				
+				Arc2D arc = new Arc2D.Double(drawX, drawY, sizeX, sizeY, c.lastAttackAngle-45, 90, Arc2D.OPEN);
+				g2d.setColor(new Color(c.color.getRed(),c.color.getGreen(),c.color.getBlue(),alpha));
+				g2d.setStroke(new BasicStroke(5));
+				g2d.draw(arc);
+		}}
+		
+		if (player.attackCooldown == 0) return;
+		if (player.maxAttackCooldown - player.attackCooldown > 20) return;
+		
+		
+		int alpha = (20-(player.maxAttackCooldown - player.attackCooldown))*255/20;
+		
+		int lastAttackX = (int) (player.x);
+		int lastAttackY = (int) (player.y);
+		
+		int drawX = (int) ((lastAttackX - (player.size_x+player.lastAttackRange*2)/2 - (camera_x - camera_size/2)) * (Main.SIZE/camera_size));
+		int drawY = (int) ((camera_size - (lastAttackY + (player.size_y+player.lastAttackRange*2)/2) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size));
+		int sizeX = (int) ((player.size_x+player.lastAttackRange*2) * Main.SIZE/camera_size);
+		int sizeY = (int) ((player.size_y+player.lastAttackRange*2) * Main.SIZE/camera_size);
+		
+		Arc2D arc = new Arc2D.Double(drawX, drawY, sizeX, sizeY, player.lastAttackAngle-45, 90, Arc2D.OPEN);
+		g2d.setColor(new Color(player.color.getRed(),player.color.getGreen(),player.color.getBlue(),alpha));
+		g2d.setStroke(new BasicStroke(5));
+		g2d.draw(arc);
+
+		
+		
+	}
+	
 	public class Keyboard extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE && levelWon == 0 && player.isAlive) isPaused = isPaused? false : true;
+			if (isPaused) return;
 			if (e.getKeyCode() == KeyEvent.VK_W) player.movingUp = true; //W
 			if (e.getKeyCode() == KeyEvent.VK_A) player.movingLeft = true; //A
 			if (e.getKeyCode() == KeyEvent.VK_S) player.movingDown = true; //S
 			if (e.getKeyCode() == KeyEvent.VK_D) player.movingRight = true; //D
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) player.isAttacking = true; //SPACE
 			
-			if (e.getKeyCode() == KeyEvent.VK_ESCAPE && levelWon == 0 && player.isAlive) isPaused = isPaused? false : true;
+			if (e.getKeyCode() == KeyEvent.VK_R) GamePanel.restartLevel(level); 
 			
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_W) player.movingUp = false; //W
-			if (e.getKeyCode() == KeyEvent.VK_A) player.movingLeft = false; //A
+			if (e.getKeyCode() == KeyEvent.VK_A) {
+				player.movingLeft = false; //A
+				player.lastDirection = -1;
+			}
 			if (e.getKeyCode() == KeyEvent.VK_S) player.movingDown = false; //S
-			if (e.getKeyCode() == KeyEvent.VK_D) player.movingRight = false; //D
-			
-			
+			if (e.getKeyCode() == KeyEvent.VK_D) {
+				player.movingRight = false; //D
+				player.lastDirection = 1;
+			}
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) player.isAttacking = false;
+
 		}
 	}
 	

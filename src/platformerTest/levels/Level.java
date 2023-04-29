@@ -44,5 +44,6 @@ public class Level {
 	}
 	
 	public static final Color COLOR_DAYSKY = new Color(150, 225, 255);
+	public static final Color COLOR_DARKSKY = new Color(112, 146, 190);
 
 }

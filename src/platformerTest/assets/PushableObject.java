@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import platformerTest.game.GameObject;
+import platformerTest.game.MovableObject;
 import platformerTest.game.ObjType;
 import platformerTest.menu.GamePanel;
 

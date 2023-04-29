@@ -1,13 +1,12 @@
-package platformerTest.assets;
+package platformerTest.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
 import platformerTest.Main;
-import platformerTest.game.GameObject;
-import platformerTest.game.ObjType;
-import platformerTest.game.Player;
+import platformerTest.assets.LiquidPlatform;
+import platformerTest.assets.SolidPlatform;
 import platformerTest.menu.GamePanel;
 
 public class MovableObject extends GameObject {
@@ -97,8 +96,8 @@ public class MovableObject extends GameObject {
 		if (this.y < GamePanel.level.bottomLimit && !this.equals(GamePanel.player)) GamePanel.deletedObjects.add(this);
 		
 		//INERTIA THRESHOLD
-		if (Math.abs(vx) < 0.2) vx = 0;
-		if (Math.abs(vy) < 0.2) vy = 0;
+		if (Math.abs(vx) < 0.01) vx = 0;
+		if (Math.abs(vy) < 0.01) vy = 0;
 
 		this.liquidDensity = 1;
 	
@@ -177,7 +176,7 @@ public class MovableObject extends GameObject {
 					
 					if (obj.type.equals(ObjType.SolidPlatform)) {
 						last_slip = ((SolidPlatform) obj).slipperiness;
-					} if (obj.type.equals(ObjType.MovableObject)) {
+					} if (obj.type.equals(ObjType.MovableObject) || obj.type.equals(ObjType.Creature)) {
 						last_slip = ((MovableObject) obj).slipperiness;
 					}
 					

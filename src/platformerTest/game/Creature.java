@@ -6,20 +6,20 @@ import java.util.ArrayList;
 
 import platformerTest.Main;
 import platformerTest.assets.LiquidPlatform;
-import platformerTest.assets.Trigger;
-import platformerTest.assets.triggers.Powerup;
+import platformerTest.assets.creature.CreatureAi;
 import platformerTest.menu.GamePanel;
 
-public class Player extends MovableObject {
+public class Creature extends MovableObject {
 
-	public double movementSpeed = 0.25;
-	public double jumpStrength = 16;
+	public double movementSpeed = 0.1;
+	public double jumpStrength = 10;
 	
 	public boolean isAlive;
 	
 	boolean movingInLiquid = false;
 	
-	public int health; //PLAYER HP, MAX=100
+	public int health;
+	public int maxHealth;
 	public int maxAttackCooldown; //MAX ATTACK COOLDOWN
 	public int attackRange;
 	public int attackDamage;
@@ -31,31 +31,41 @@ public class Player extends MovableObject {
 	public int lastAttackRange;
 	public int lastAttackAngle;
 	
-	public Player(double initX, double initY, double size) {
-		super(initX, initY, size, size, Color.WHITE, 1.0);
+	public ArrayList<CreatureAi> aiList;
+	
+	public Creature(double initX, double initY, double size, Color color, double density,
+			int maxHealth, double movementSpeed, double jumpStrength, int AttackDamage,
+			int AttackRange, int AttackSpeed, int AttackKnockback) {
+		super(initX, initY, size, size, color, 1.0);
 		
-		this.type = ObjType.Player;
+		this.type = ObjType.Creature;
 		
+		this.density = density;
 		this.movable = true;
 		this.x = initX;
 		this.y = initY;
 		this.size_x = size;
 		this.size_y = size;
-		this.slipperiness = 1;
+		this.slipperiness = 0.96;
 		this.isAlive = true;
 		
 		//combat
 		this.dmgTime = 0;
 		
-		this.health = 100;
-		this.maxAttackCooldown = 40;
-		this.attackCooldown = 0;
-		this.attackRange = 20;
-		this.attackDamage = 5;
-		this.attackKnockback = 2;
+		this.movementSpeed = movementSpeed;
+		this.jumpStrength = jumpStrength;
 		
-		this.attack = new PlayerAttack(this.size_x, this.size_y);
+		this.maxHealth = maxHealth;
+		this.health = this.maxHealth;
+		this.maxAttackCooldown = AttackSpeed;
+		this.attackCooldown = 0;
+		this.attackRange = AttackRange;
+		this.attackDamage = AttackDamage;
+		this.attackKnockback = AttackKnockback;
+		
+		this.attack = new CreatureAttack(this.size_x, this.size_y);
 
+		this.aiList = new ArrayList<CreatureAi>();
 		
 	}
 	
@@ -75,20 +85,6 @@ public class Player extends MovableObject {
 		
 		for (GameObject obj : GamePanel.objects) { //check for water
 			if (obj.equals(this)) continue;
-			//finish flag
-			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0 && obj.exists) {
-				GamePanel.levelWon=1;
-			}
-			//powerup
-			if (obj.hasCollided(this) && obj.type.equals(ObjType.Powerup) && GamePanel.levelWon==0 && obj.exists) {
-				((Powerup) obj).run();
-				obj.exists = false;
-			}
-			//trigger
-			if (obj.hasCollided(this) && obj.type.equals(ObjType.Trigger) && GamePanel.levelWon==0 && obj.exists) {
-				((Trigger) obj).run();
-				obj.exists = false;
-			}
 			//liquids
 			if (this.hasCollided(obj) && obj.type.equals(ObjType.LiquidPlatform) && obj.exists) {
 				this.movingInLiquid = true;
@@ -131,13 +127,16 @@ public class Player extends MovableObject {
 		if (this.health <= 0) this.die();
 		
 		//then attack
-		
 		if (this.attackCooldown > 0) this.attackCooldown--;
 		if (this.isAttacking && this.attackCooldown == 0) this.attack();
 		
 		//then apply movableobject physics
 		super.move();
 		
+		//AI goes here
+		for (CreatureAi ai : this.aiList) {
+			ai.run(this);
+		}
 		
 	}
 	
@@ -155,8 +154,17 @@ public class Player extends MovableObject {
 			g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
 			5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
 		}
-		
 		if (this.dmgTime > 0) this.dmgTime -= 5;
+		
+		//DRAW HEALTHBAR
+		
+		drawX = (int) ( (this.x - (this.size_x)/2 - (x - size/2)) * (Main.SIZE/size)); 
+		drawY = (int) ( (size - (this.y + (this.size_y)/2) + (y - size/2) - 10) * (Main.SIZE/size));
+		
+		g.setColor(Color.BLACK);
+		g.fillRect(drawX, drawY, (int) (this.size_y * Main.SIZE/size), 5*(int)(Main.SIZE/size));
+		g.setColor(Color.RED);
+		g.fillRect(drawX, drawY, (int) (this.size_y * ((double) this.health/this.maxHealth) * Main.SIZE/size), 5*(int)(Main.SIZE/size));
 		
 	}
 	
@@ -210,45 +218,39 @@ public class Player extends MovableObject {
 				int pushStrength = this.attackKnockback;
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
 				list.add(this);
-				
 				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
 				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, true);
 				
-		}}
+			} else if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Player)) {
+				((Player) obj).damage(this.attackDamage, this);
+				
+				int pushStrength = this.attackKnockback;
+				ArrayList<GameObject> list = new ArrayList<GameObject>();
+				list.add(this);
+				((Player) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
+				((Player) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, true);
+			}
+		}
 		
 	}
 	
-	public class PlayerAttack extends GameObject {
-		public PlayerAttack(double size_x, double size_y) {
+	public class CreatureAttack extends GameObject {
+		public CreatureAttack(double size_x, double size_y) {
 			super(0, 0, size_x, size_y, new Color(0,0,0,50));
 			this.type = ObjType.Null;
-		}
-		
-		@Override
-		public void draw(Graphics g, Player player, double cam_x, double cam_y, double size) {
-			int drawX = (int) ( (this.x - (this.size_x)/2 - (cam_x - size/2)) * (Main.SIZE/size));
-			int drawY = (int) ( (size - (this.y + (this.size_y)/2) + (cam_y - size/2)) * (Main.SIZE/size));
-			
-			g.setColor(this.color);
-			g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
-			5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
-			
 		}
 
 	}
 	
 	@Override
 	public void crush() {
-		if (GamePanel.levelWon == 0) {
-			this.health = 0;
-			this.die();
-		}
+		this.health = 0;
+		this.die();
 	}
 	
 	@Override
 	public void die() {
-		if (GamePanel.levelWon == 0 && this.isAlive) {
-			GamePanel.createFlash(Color.BLACK, 100);
+		if (this.isAlive) {
 			this.isAlive = false;
 			this.exists = false;
 		}
