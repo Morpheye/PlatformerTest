@@ -7,10 +7,12 @@ import platformerTest.Main;
 import platformerTest.assets.creature.CreatureAi;
 import platformerTest.assets.creature.ai.HorizontalMovementAi;
 import platformerTest.assets.creature.ai.vertical.VerticalFollowAi;
+import platformerTest.assets.creature.creatures.CreatureDartGoblin;
 import platformerTest.assets.creature.creatures.CreatureGoblin;
 import platformerTest.assets.creature.creatures.CreatureZombie;
 import platformerTest.assets.decoration.FadingWallObject;
 import platformerTest.assets.decoration.SolidBackgroundObject;
+import platformerTest.assets.interactables.FinishFlag;
 import platformerTest.assets.powerups.CameraSizePowerup;
 import platformerTest.assets.powerups.HealPowerup;
 import platformerTest.assets.powerups.OverhealPowerup;
@@ -31,8 +33,8 @@ public class Level_1_3 extends Level {
 	public Level_1_3() {
 		this.backgroundColor = COLOR_DARKSKY;
 		
-		this.spawnX = 2850; //0
-		this.spawnY = 2450; //200
+		this.spawnX = 0; //0
+		this.spawnY = 200; //200
 
 		this.name = "Entering Battle";
 		
@@ -41,7 +43,6 @@ public class Level_1_3 extends Level {
 	@Override
 	public void onStart() {
 		GamePanel.displayText("Use space to melee attack. Watch your health!", 240);
-		GamePanel.target_camera_size = (int) (Main.SIZE*1.25);
 	}
 	
 	@Override
@@ -51,6 +52,8 @@ public class Level_1_3 extends Level {
 		objects.add(new SolidBackgroundObject(2750, 750, 690, 990, GameObject.COLOR_DIRT));
 		objects.add(new SolidBackgroundObject(3050, 2450, 190, 550, GameObject.COLOR_DIRT));
 		objects.add(new SolidBackgroundObject(2450, 2450, 190, 220, GameObject.COLOR_DIRT));
+		
+		objects.add(new FinishFlag(3050, 2800, 50, 100));
 	}
 	
 	@Override
@@ -122,6 +125,7 @@ public class Level_1_3 extends Level {
 		objects.add(new StonePlatform(700, 2000, 200, 200));
 		objects.add(new StonePlatform(1300, 2100, 600, 200));
 		objects.add(new CreatureGoblin(1500, 2150, 30, 20, 400, 0, 200));
+		objects.add(new CreatureGoblin(1560, 2150, 30, 20, 400, 0, 200));
 		
 		objects.add(new StonePlatform(1900, 2200, 200, 200));
 		
@@ -132,13 +136,8 @@ public class Level_1_3 extends Level {
 		objects.add(new PushableBox(3050,2450,80,80));
 		objects.add(new GrassPlatform(2450, 2550, 200, 50));
 		objects.add(new PushableBox(2450,2650,80,80));
-		
-		Creature dartGoblin = new CreatureGoblin(2950, 2450, 30);
-		dartGoblin.jumpStrength = 16;
-		dartGoblin.aiList = new ArrayList<CreatureAi>();
-		dartGoblin.aiList.add(new VerticalFollowAi(50, 100, GamePanel.player)); //jumps to shoot at player
-		dartGoblin.aiList.add(new HorizontalMovementAi(2950, 40, 500)); //tries to return to original spot
-		objects.add(dartGoblin);
+		objects.add(new CreatureDartGoblin(2950, 2450, 30, 40, 400, 300));
+		objects.add(new TextDisplayTrigger(2300, 2400, 100, 100, "Warning: some creatures have ranged attacks.", 300));
 		
 	}
 	

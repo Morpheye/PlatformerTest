@@ -305,7 +305,7 @@ public class MovableObject extends GameObject {
 						continue;
 					}
 					pushers.add(this);
-					ArrayList<GameObject> pushing = obj.pushx(v, this, pushers, false, true);
+					ArrayList<GameObject> pushing = obj.pushx(v, this, pushers, false, false);
 					resistors.addAll(pushing);
 				}
 				
@@ -355,7 +355,7 @@ public class MovableObject extends GameObject {
 					ArrayList<GameObject> newPushers = new ArrayList<GameObject>();
 					newPushers.addAll(pushers);
 					newPushers.add(this);
-					ArrayList<GameObject> pushing = obj.pushy(v, this, newPushers, false, true);
+					ArrayList<GameObject> pushing = obj.pushy(v, this, newPushers, false, false);
 					resistors.addAll(pushing);
 				}
 				

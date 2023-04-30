@@ -263,7 +263,7 @@ public class Player extends MovableObject {
 				list.add(this);
 				
 				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
-				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, false);
+				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, true);
 				
 		}}
 		

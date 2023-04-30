@@ -30,6 +30,7 @@ public class Creature extends MovableObject {
 	public int attackRange;
 	public int attackDamage;
 	public int attackKnockback;
+	public boolean isMelee;
 	public GameObject attack; //attack hitbox
 	
 	//lastattackinfo
@@ -59,6 +60,7 @@ public class Creature extends MovableObject {
 		
 		//combat
 		this.dmgTime = 0;
+		this.isMelee = true;
 		
 		this.movementSpeed = movementSpeed;
 		this.jumpStrength = jumpStrength;
@@ -135,6 +137,7 @@ public class Creature extends MovableObject {
 		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		
 		if (this.health <= 0) this.die();
+		if (this.health > this.maxHealth) this.health = this.maxHealth; 
 		
 		//then attack
 		if (this.attackCooldown > 0) this.attackCooldown--;
@@ -172,7 +175,7 @@ public class Creature extends MovableObject {
 		g2d.setStroke(new BasicStroke((float)(4*(Main.SIZE/size))));
 		g2d.setColor(this.eyeColor);
 		int x1, x2;
-		if (this.movingRight) {
+		if (this.lastDirection == 1) {
 			x1 = (int) (drawX+(this.size_x*(Main.SIZE/size)*2/5));
 			x2 = (int) (drawX+(this.size_x*(Main.SIZE/size)*3/4));
 		} else {
@@ -263,7 +266,7 @@ public class Creature extends MovableObject {
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
 				list.add(this);
 				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
-				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, false);
+				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, true);
 				
 			} else if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Player)) {
 				((Player) obj).damage(this.attackDamage, this);
@@ -272,7 +275,7 @@ public class Creature extends MovableObject {
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
 				list.add(this);
 				((Player) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
-				((Player) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, false);
+				((Player) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, true);
 			}
 		}
 		

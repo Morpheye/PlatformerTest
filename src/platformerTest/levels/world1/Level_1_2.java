@@ -67,7 +67,7 @@ public class Level_1_2 extends Level {
 		objects.add(new GrassPlatform(0, 50, 400, 100));
 		
 		//box platform
-		objects.add(new TextDisplayTrigger(450,150,100,100,"Use the box wisely, don't softlock yourself.",300));
+		objects.add(new TextDisplayTrigger(450,150,100,100,"Use boxes wisely, don't softlock yourself.",300));
 		objects.add(new PushableBox(700, 180, 60, 60));
 		objects.add(new GrassPlatform(700,325,300,50));
 		objects.add(new GrassPlatform(825,200,50,300));

@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import platformerTest.Main;
+import platformerTest.assets.projectiles.ProjectileDart;
 import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
 import platformerTest.game.ObjType;
@@ -89,6 +90,9 @@ public class GamePanel extends JPanel {
 		flashes = new HashMap<Color,Integer>();
 		projectiles = new ArrayList<GameObject>();
 		
+		displayText = null;
+		textDuration = 0;
+		
 		level = newLevel;
 		
 		level.drawBackground();
@@ -110,6 +114,7 @@ public class GamePanel extends JPanel {
 		level.onStart();
 		
 		createFlash(Color.white,100);
+
 
 	}
 	
@@ -376,7 +381,7 @@ public class GamePanel extends JPanel {
 			if (obj.type.equals(ObjType.Creature) && obj.hasCollided(MainFrameObj)) {
 				Creature c = (Creature) obj;
 				
-				if (c.attackCooldown == 0) continue;
+				if (c.attackCooldown == 0 || !c.isMelee) continue;
 				if (c.maxAttackCooldown - c.attackCooldown > 20) continue;
 				int alpha = (20-(c.maxAttackCooldown - c.attackCooldown))*255/20;
 				
@@ -433,7 +438,7 @@ public class GamePanel extends JPanel {
 				player.lastDirection = 1;
 			}
 			
-			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0) GamePanel.restartLevel(level); 
+			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0) GamePanel.restartLevel(level);
 			
 		}
 
@@ -446,6 +451,7 @@ public class GamePanel extends JPanel {
 			if (e.getKeyCode() == KeyEvent.VK_D) player.movingRight = false;
 	
 
+			
 		}
 	}
 	

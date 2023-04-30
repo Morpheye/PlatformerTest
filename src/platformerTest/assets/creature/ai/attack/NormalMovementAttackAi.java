@@ -7,7 +7,7 @@ import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
 
 /**
- * AI for creatures which do not fully follow their targets vertically.
+ * AI for creatures which do not fully follow their targets vertically but can move vertically.
  */
 public class NormalMovementAttackAi extends AttackAi {
 

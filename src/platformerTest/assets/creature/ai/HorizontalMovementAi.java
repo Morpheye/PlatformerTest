@@ -47,11 +47,13 @@ public class HorizontalMovementAi extends CreatureAi {
 		
 		if (c.x < this.targetX) {
 			c.movingRight = true;
+			c.lastDirection = 1;
 			c.movingLeft = false;
 		}
 		if (c.x > this.targetX) {
 			c.movingLeft = true;
 			c.movingRight = false;
+			c.lastDirection = -1;
 		}
 		
 	}

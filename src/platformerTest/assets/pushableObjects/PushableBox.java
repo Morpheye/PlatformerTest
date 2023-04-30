@@ -20,15 +20,15 @@ public class PushableBox extends PushableObject {
 	public void draw(Graphics g, Player player, double cam_x, double cam_y, double size) {
 		super.draw(g, player, cam_x, cam_y, size);
 		
-		int brushSize = 5*((int)(Main.SIZE/size));
+		int brushSize = (int)(5*(Main.SIZE/size));
 		
 		int drawX = (int) ( (this.x + brushSize/2 - (this.size_x)/2 - (cam_x - size/2)) * (Main.SIZE/size));
 		int drawY = (int) ( (size - (this.y - brushSize/2 + (this.size_y)/2) + (cam_y - size/2)) * (Main.SIZE/size));
 		
 		g.setColor(GameObject.COLOR_WOOD);
 		((Graphics2D) g).setStroke(new BasicStroke(brushSize));
-		g.drawRoundRect(drawX, drawY, (int) ((this.size_x-brushSize/2) * Main.SIZE/size), (int) ((this.size_y-brushSize/2) * Main.SIZE/size), 
-		(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
+		g.drawRoundRect(drawX-1, drawY-1, (int) ((this.size_x-brushSize+2) * Main.SIZE/size), (int) ((this.size_y-brushSize+2) * Main.SIZE/size), 
+		(int)(4*(Main.SIZE/size)), (int)(4*(Main.SIZE/size)));
 	}
 
 }
