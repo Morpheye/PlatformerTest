@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import platformerTest.Main;
+import platformerTest.appdata.DataManager;
 import platformerTest.levels.Level;
 import platformerTest.levels.world1.World1;
 
@@ -28,13 +29,14 @@ public class ApplicationFrame extends JFrame {
 		} catch (Exception e) {}
 		this.addWindowListener(new WindowAdapter() {
 	        @Override
-	        public void windowClosed(WindowEvent e) {
+	        public void windowClosed(WindowEvent e) { //finish up
+	        	DataManager.save();
 	        	System.exit(0);
 	        }
 	    });
 		
 		Container panel = this.getContentPane();
-		panel.add(new MenuPanel(new World1()));
+		panel.add(new MainPanel());
 		
 		this.setVisible(true);
 	}
@@ -55,6 +57,16 @@ public class ApplicationFrame extends JFrame {
 		
 		if (current != null) current.setEnabled(false);
 		current = new MenuPanel(new World1());
+		panel.add(current);
+		current.requestFocus();
+	}
+	
+	public void openMainMenu() {
+		Container panel = this.getContentPane();
+		panel.removeAll();
+		
+		if (current != null) current.setEnabled(false);
+		current = new MainPanel();
 		panel.add(current);
 		current.requestFocus();
 	}

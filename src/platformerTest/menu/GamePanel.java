@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import platformerTest.Main;
+import platformerTest.appdata.DataManager;
 import platformerTest.assets.triggers.Powerup;
 import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
@@ -225,11 +226,11 @@ public class GamePanel extends JPanel {
 				g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 			}
 			if (levelWon>360) {
-				if (!Main.completedLevels.containsKey(level.getClass().getSimpleName())) {
-					Main.completedLevels.put(level.getClass().getSimpleName(), 1);
+				if (!DataManager.saveData.completedLevels.containsKey(level.getClass().getSimpleName())) {
+					DataManager.saveData.completedLevels.put(level.getClass().getSimpleName(), 1);
 				} else {
-					Main.completedLevels.replace(level.getClass().getSimpleName(),
-					Main.completedLevels.get(level.getClass().getSimpleName())+1);
+					DataManager.saveData.completedLevels.replace(level.getClass().getSimpleName(),
+					DataManager.saveData.completedLevels.get(level.getClass().getSimpleName())+1);
 				}
 				timer.stop();
 				Main.jframe.exitGame(level);
@@ -581,8 +582,8 @@ public class GamePanel extends JPanel {
 	
 	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
 	
-	public static BufferedImage healthImage, densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
-	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, marksmanImage;
+	public static BufferedImage healthImage, densityImage, attackSpeedImage, strengthImage, fireResistanceImage,
+	overhealImage, jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, marksmanImage;
 	public void loadImages() {
 		try {
 			healthImage = ImageIO.read(this.getClass().getResource("/gui/health.png"));
@@ -598,7 +599,7 @@ public class GamePanel extends JPanel {
 			punchImage = ImageIO.read(this.getClass().getResource("/powerups/punch.png"));
 			marksmanImage = ImageIO.read(this.getClass().getResource("/powerups/marksman.png"));
 
-		} catch (Exception e) {}
+		} catch (Exception e) {e.printStackTrace();}
 	}
 	
 }

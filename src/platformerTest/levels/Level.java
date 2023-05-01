@@ -20,6 +20,8 @@ public class Level {
 	
 	public String name;
 	
+	public String[] reqs;
+	
 	public Level() {
 		
 	}

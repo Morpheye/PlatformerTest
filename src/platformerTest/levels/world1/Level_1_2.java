@@ -26,6 +26,8 @@ public class Level_1_2 extends Level {
 		
 		this.spawnX = 0; //0
 		this.spawnY = 200; //200
+		
+		this.reqs = new String[] {"Level_1_1"};
 
 		this.name = "Mountain Climbing";
 		

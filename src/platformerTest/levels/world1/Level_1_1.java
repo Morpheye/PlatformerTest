@@ -23,6 +23,8 @@ public class Level_1_1 extends Level {
 		
 		this.name = "Islands";
 		
+		this.reqs = new String[] {};
+		
 		//this.spawnX = 7650;
 		//this.spawnY = 700;
 

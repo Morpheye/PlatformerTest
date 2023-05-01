@@ -33,6 +33,8 @@ public class Level_1_4 extends Level {
 		
 		this.spawnX = 0; //0
 		this.spawnY = 200; //200
+		
+		this.reqs = new String[] {"Level_1_3"};
 
 		this.name = "The Graveyard";
 		
@@ -186,6 +188,7 @@ public class Level_1_4 extends Level {
 		objects.add(new OverhealPowerup(9400,700,50,100));
 		
 		//final boss
+		objects.add(new TextDisplayTrigger(9900,700,200,200,"Make use of the box.",300));
 		objects.add(new GrassPlatform(9900, 500, 200, 200));
 		objects.add(new GrassPlatform(10400, 400, 1200, 200));
 		finalGate = new WoodPlatform(10900, 750, 50, 200);
