@@ -144,13 +144,16 @@ public class MovableObject extends GameObject {
 			do {
 				//unregulated movement
 				double push = 0;
+				double totalPush = 0;
 				if (vx > 0) {
 					this.x -= 0.01;
 					push = -0.01;
+					totalPush += -0.01;
 				}
 				else if (vx < 0) {
 					this.x += 0.01;
 					push = 0.01;
+					totalPush += 0.01;
 				}
 				
 				for (GameObject obj2 : GamePanel.objects) {
@@ -162,7 +165,12 @@ public class MovableObject extends GameObject {
 								|| obj2.type.equals(ObjType.Player)) {
 							
 							ArrayList<GameObject> pushing = obj2.pushx(push, this, list, true, false);
-							if (pushing.size() > 0) this.crush();
+							if (pushing.size() > 0) {
+								this.x -= totalPush;
+								this.x -= vx;
+								pushing = obj2.pushx(push, this, list, true, false);
+								if (pushing.size() > 0) {}
+							}
 							
 						}
 					}
@@ -233,14 +241,17 @@ public class MovableObject extends GameObject {
 			
 			do {
 				double push = 0;
+				double totalPush = 0;
 				//unregulated movement
 				if (vy > 0) {
 					this.y -= 0.01;
 					push = -0.01;
+					totalPush += -0.01;
 				}
 				else if (vy < 0) {
 					this.y += 0.01;
 					push = 0.01;
+					totalPush += 0.01;
 				}
 				
 				
@@ -253,7 +264,7 @@ public class MovableObject extends GameObject {
 								|| obj2.type.equals(ObjType.Player)) {
 							
 							ArrayList<GameObject> pushing = obj2.pushy(push, this, list, true, false);
-							
+							if (pushing.size() > 0) {}
 						}
 						
 					}

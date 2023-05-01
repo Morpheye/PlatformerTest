@@ -46,9 +46,16 @@ public class Powerup extends Trigger {
 		
 	}
 
-	public static final Color COLOR_POWERUP_CAMERASIZE = new Color(0,255,0); //light green
-	public static final Color COLOR_POWERUP_JUMPBOOST = new Color(255,255,0); //yellow
-	public static final Color COLOR_POWERUP_OVERHEAL = new Color(255,215,0); //gold
-	public static final Color COLOR_POWERUP_HEAL = new Color(255,0,0); //red
+	public static final Color COLOR_POWERUP_MARKSMAN = new Color(255,50,255,100); //pink
+	public static final Color COLOR_POWERUP_PUNCH = new Color(170,0,170,100); //purple
+	public static final Color COLOR_POWERUP_SWIFTNESS = new Color(0,255,255,100); //cyan
+	public static final Color COLOR_POWERUP_CAMERASIZE = new Color(0,255,0,100); //light green
+	public static final Color COLOR_POWERUP_JUMPBOOST = new Color(255,255,0,100); //yellow
+	public static final Color COLOR_POWERUP_OVERHEAL = new Color(255,215,0,100); //gold
+	public static final Color COLOR_POWERUP_FIRERESISTANCE = new Color(255,100,0,100); //orange
+	public static final Color COLOR_POWERUP_HEAL = new Color(255,0,0,100); //red
+	public static final Color COLOR_POWERUP_STRENGTH = new Color(160,0,0,100); //crimson
+	public static final Color COLOR_POWERUP_ATTACKSPEED = new Color(110,50,0,100); //brown
+	public static final Color COLOR_POWERUP_DENSITY = new Color(125,125,125,100); //gray
 
 }

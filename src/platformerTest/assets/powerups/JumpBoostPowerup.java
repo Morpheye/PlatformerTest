@@ -14,7 +14,18 @@ import platformerTest.menu.GamePanel;
 
 public class JumpBoostPowerup extends Powerup {
 
-	public int cameraSize;
+	public JumpBoostPowerup(double x, double y, double size, int amount) {
+		this(x,y,size,null);
+		Code code = new Code() {
+			@Override
+			public void run() {
+				GamePanel.player.jumpStrength+=amount;
+			}
+		};
+		
+		this.code = code;
+		
+	}
 	
 	public JumpBoostPowerup(double x, double y, double size, Code code) {
 		super(x, y, size, code);
@@ -27,7 +38,7 @@ public class JumpBoostPowerup extends Powerup {
 	@Override
 	public void run() {
 		this.code.run();
-		GamePanel.createFlash(this.color, 75);
+		GamePanel.createFlash(this.color, 125);
 	}
 	
 	@Override

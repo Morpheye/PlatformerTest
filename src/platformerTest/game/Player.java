@@ -23,19 +23,25 @@ public class Player extends MovableObject {
 	
 	public int health; //PLAYER HP, MAX=100
 	public int overheal;
+	public boolean fireResistant;
 	
-	public int maxAttackCooldown; //MAX ATTACK COOLDOWN
-	public int attackRange;
-	public int attackDamage;
-	public int attackKnockback;
+	public int maxAttackCooldown = 40; //MAX ATTACK COOLDOWN
+	public int attackRange = 20;
+	
+	public int attackDamage = 5;
+	public int rangedAttackDamage = 5; //Not in use
+	
+	public double attackKnockback = 2;
 	public GameObject attack; //attack hitbox
 	
 	//lastattackinfo
 	public int attackCooldown;
+	public int meleeCooldown;
 	public int lastAttackRange;
 	public int lastAttackAngle;
 	
 	public int timeSinceDamaged;
+	public int timeSinceDeath;
 	
 	public Player(double initX, double initY, double size) {
 		super(initX, initY, size, size, Color.WHITE, 1.0);
@@ -57,11 +63,15 @@ public class Player extends MovableObject {
 		this.health = 100;
 		this.overheal = 0;
 		this.timeSinceDamaged = 0;
+		this.timeSinceDeath = 0;
+		this.fireResistant = false;
 		
 		this.maxAttackCooldown = 40;
 		this.attackCooldown = 0;
 		this.attackRange = 20;
 		this.attackDamage = 5;
+		this.rangedAttackDamage = 5;
+		
 		this.attackKnockback = 2;
 		
 		this.attack = new PlayerAttack(this.size_x, this.size_y);
@@ -76,6 +86,7 @@ public class Player extends MovableObject {
 	public boolean movingLeft = false;
 	public boolean movingRight = false;
 	public boolean isAttacking = false;
+	public boolean isRangedAttacking = false;
 	
 	public int lastDirection = 1;
 	
@@ -139,6 +150,7 @@ public class Player extends MovableObject {
 		
 		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
+		if (this.timeSinceDeath > 120 && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		
 		//hp shenanigans
 		if (timeSinceDamaged >= 1320) {
@@ -152,7 +164,12 @@ public class Player extends MovableObject {
 		//then attack
 		
 		if (this.attackCooldown > 0) this.attackCooldown--;
+		if (this.meleeCooldown > 0) this.meleeCooldown--;
 		if (this.isAttacking && this.attackCooldown == 0) this.attack();
+		if (this.isRangedAttacking && this.attackCooldown == 0) this.rangedAttack();
+		
+		//if dead
+		if (!this.exists) this.timeSinceDeath++; 
 		
 		//then apply movableobject physics
 		super.move();
@@ -164,15 +181,15 @@ public class Player extends MovableObject {
 	public void draw(Graphics g, Player player, double x, double y, double size) {
 		int drawX = (int) ( (this.x - (this.size_x)/2 - (x - size/2)) * (Main.SIZE/size));
 		int drawY = (int) ( (size - (this.y + (this.size_y)/2) + (y - size/2)) * (Main.SIZE/size));
-		
-		g.setColor(this.color);
+		//WHITE and modify opacity for deathtime
+		g.setColor(new Color(this.color.getRed(),this.color.getGreen(),this.color.getBlue(),255-(2*this.timeSinceDeath)));
 		g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
 		(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
 		
 		//eyes
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setStroke(new BasicStroke((float)(4*(Main.SIZE/size))));
-		g2d.setColor(Color.BLACK);
+		g2d.setColor(new Color(0,0,0,255-(2*this.timeSinceDeath))); //BLACK and modify opacity for deathtime
 		int x1, x2;
 		if (this.lastDirection == 1) {
 			x1 = (int) (drawX+(this.size_x*(Main.SIZE/size)*2/5));
@@ -188,8 +205,10 @@ public class Player extends MovableObject {
 		
 		//damage
 		if (this.dmgTime != 0) {
-			if (this.overheal > 0) g.setColor(new Color(255, 215, 0, this.dmgTime));
+			if (this.overheal > 100) g.setColor(new Color(0, 255, 255, this.dmgTime));
+			else if (this.overheal > 0) g.setColor(new Color(255, 215, 0, this.dmgTime));
 			else g.setColor(new Color(255, 0, 0, this.dmgTime));
+			
 			g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
 			(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
 		}
@@ -251,6 +270,7 @@ public class Player extends MovableObject {
 		this.lastAttackAngle = angle;
 		this.lastAttackRange = this.attackRange;
 		this.attackCooldown = this.maxAttackCooldown;
+		this.meleeCooldown = this.maxAttackCooldown;
 		
 		//Apply collisions
 		for (GameObject obj : GamePanel.objects) { //check for enemies in range
@@ -258,7 +278,7 @@ public class Player extends MovableObject {
 			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature)) {
 				((Creature) obj).damage(this.attackDamage, this);
 				
-				int pushStrength = this.attackKnockback;
+				double pushStrength = this.attackKnockback;
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
 				list.add(this);
 				
@@ -267,6 +287,10 @@ public class Player extends MovableObject {
 				
 		}}
 		
+	}
+	
+	public void rangedAttack() {
+		if (!this.isAlive) return;
 	}
 	
 	public class PlayerAttack extends GameObject {
@@ -299,7 +323,7 @@ public class Player extends MovableObject {
 	@Override
 	public void die() {
 		if (GamePanel.levelWon == 0 && this.isAlive) {
-			GamePanel.createFlash(Color.BLACK, 100);
+			GamePanel.createFlash(Color.BLACK, 150);
 			this.isAlive = false;
 			this.exists = false;
 		}

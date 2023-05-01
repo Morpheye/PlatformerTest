@@ -13,8 +13,6 @@ import platformerTest.game.Player;
 import platformerTest.menu.GamePanel;
 
 public class CameraSizePowerup extends Powerup {
-
-	public int cameraSize;
 	
 	public CameraSizePowerup(double x, double y, double size, Code code) {
 		super(x, y, size, code);
@@ -27,7 +25,7 @@ public class CameraSizePowerup extends Powerup {
 	@Override
 	public void run() {
 		this.code.run();
-		GamePanel.createFlash(this.color, 75);
+		GamePanel.createFlash(this.color, 125);
 	}
 	
 	@Override

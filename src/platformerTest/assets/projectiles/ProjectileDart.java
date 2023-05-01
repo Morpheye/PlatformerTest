@@ -12,12 +12,11 @@ import platformerTest.menu.GamePanel;
 
 public class ProjectileDart extends Projectile {
 
-	public ProjectileDart(double x, double y, double vx, double vy, GameObject firer) {
-		super(x, y, 10, 10, vx, vy, firer);
+	public ProjectileDart(double x, double y, double vx, double vy, GameObject firer, int damage) {
+		super(x, y, 10, 10, vx, vy, firer, damage);
 		this.lifetime = 300;
 		this.waterResistant = true;
 		this.pushStrength = 1;
-		this.damage = 3;
 		this.rotating = true;
 	}
 	

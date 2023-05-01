@@ -17,26 +17,31 @@ public class Creature extends MovableObject {
 	public double jumpStrength = 10;
 	
 	public boolean isAlive;
+	public boolean required;
 	
 	boolean movingInLiquid = false;
 	
 	public Color eyeColor;
 	public boolean friendlyFire;
 	public int overheal;
+	public boolean fireResistant;
 	
 	public int health;
 	public int maxHealth;
 	public int maxAttackCooldown; //MAX ATTACK COOLDOWN
 	public int attackRange;
 	public int attackDamage;
-	public int attackKnockback;
-	public boolean isMelee;
+	public int rangedAttackDamage;
+	public double attackKnockback;
 	public GameObject attack; //attack hitbox
 	
 	//lastattackinfo
 	public int attackCooldown;
+	public int meleeCooldown;
 	public int lastAttackRange;
 	public int lastAttackAngle;
+	
+	public int timeSinceDeath;
 	
 	public ArrayList<CreatureAi> aiList;
 	
@@ -57,10 +62,12 @@ public class Creature extends MovableObject {
 		this.size_y = size;
 		this.slipperiness = 1;
 		this.isAlive = true;
+		this.required = false;
 		
 		//combat
 		this.dmgTime = 0;
-		this.isMelee = true;
+		this.timeSinceDeath = 0;
+		this.fireResistant = false;
 		
 		this.movementSpeed = movementSpeed;
 		this.jumpStrength = jumpStrength;
@@ -86,6 +93,7 @@ public class Creature extends MovableObject {
 	public boolean movingLeft = false;
 	public boolean movingRight = false;
 	public boolean isAttacking = false;
+	public boolean isRangedAttacking = false;
 	
 	public int lastDirection = 1;
 	
@@ -133,22 +141,30 @@ public class Creature extends MovableObject {
 			if (this.movingLeft) this.vx -= this.movementSpeed;
 		}
 		
-		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
-		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
+		if (this.y > GamePanel.level.topLimit) GamePanel.deletedObjects.add(this);
+		if (this.y < GamePanel.level.bottomLimit) GamePanel.deletedObjects.add(this);
+		if (this.timeSinceDeath > 60) GamePanel.deletedObjects.add(this);
 		
 		if (this.health <= 0) this.die();
 		if (this.health > this.maxHealth) this.health = this.maxHealth; 
 		
 		//then attack
 		if (this.attackCooldown > 0) this.attackCooldown--;
+		if (this.meleeCooldown > 0) this.meleeCooldown--;
 		if (this.isAttacking && this.attackCooldown == 0) this.attack();
+		if (this.isRangedAttacking && this.attackCooldown == 0) this.rangedAttack();
+		
+		//if dead
+		if (!this.isAlive) this.timeSinceDeath++; 
 		
 		//then apply movableobject physics
 		super.move();
 		
 		//AI goes here
-		for (CreatureAi ai : this.aiList) {
-			ai.run(this);
+		if (this.isAlive) {
+			for (CreatureAi ai : this.aiList) {
+				ai.run(this);
+			}
 		}
 		
 	}
@@ -158,7 +174,14 @@ public class Creature extends MovableObject {
 		int drawX = (int) ( (this.x - (this.size_x)/2 - (x - size/2)) * (Main.SIZE/size));
 		int drawY = (int) ( (size - (this.y + (this.size_y)/2) + (y - size/2)) * (Main.SIZE/size));
 		
-		g.setColor(this.color);
+		if (this.required) {
+			g.setColor(new Color(255, 255, 255, 150-(2*this.timeSinceDeath)));
+			g.fillRoundRect(drawX-1, drawY-1, (int) (this.size_x * Main.SIZE/size)+2, (int) (this.size_y * Main.SIZE/size)+2, 
+					(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
+		}
+		
+		
+		g.setColor(new Color(this.color.getRed(),this.color.getGreen(),this.color.getBlue(),255-(4*this.timeSinceDeath)));
 		g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
 				(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
 		
@@ -173,7 +196,7 @@ public class Creature extends MovableObject {
 		//eyes
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setStroke(new BasicStroke((float)(4*(Main.SIZE/size))));
-		g2d.setColor(this.eyeColor);
+		g2d.setColor(new Color(this.eyeColor.getRed(),this.eyeColor.getGreen(),this.eyeColor.getBlue(),255-(4*this.timeSinceDeath)));
 		int x1, x2;
 		if (this.lastDirection == 1) {
 			x1 = (int) (drawX+(this.size_x*(Main.SIZE/size)*2/5));
@@ -192,9 +215,9 @@ public class Creature extends MovableObject {
 		drawX = (int) ( (this.x - (this.size_x)/2 - (x - size/2)) * (Main.SIZE/size)); 
 		drawY = (int) ( (size - (this.y + (this.size_y)/2) + (y - size/2) - 10) * (Main.SIZE/size));
 		
-		g.setColor(Color.BLACK);
+		g.setColor(new Color(0,0,0,255-(4*this.timeSinceDeath)));
 		g.fillRect(drawX, drawY, (int) (this.size_y * Main.SIZE/size), (int)(5*(Main.SIZE/size)));
-		g.setColor(Color.RED);
+		g.setColor(new Color(255,0,0,255-(4*this.timeSinceDeath)));
 		g.fillRect(drawX, drawY, (int) (this.size_y * ((double) this.health/this.maxHealth) * Main.SIZE/size), (int)(5*(Main.SIZE/size)));
 		
 		if (this.overheal != 0) {
@@ -255,6 +278,7 @@ public class Creature extends MovableObject {
 		this.lastAttackAngle = angle;
 		this.lastAttackRange = this.attackRange;
 		this.attackCooldown = this.maxAttackCooldown;
+		this.meleeCooldown = this.maxAttackCooldown;
 		
 		//Apply collisions
 		for (GameObject obj : GamePanel.objects) { //check for enemies in range
@@ -262,7 +286,7 @@ public class Creature extends MovableObject {
 			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature) && this.friendlyFire) {
 				((Creature) obj).damage(this.attackDamage, this);
 				
-				int pushStrength = this.attackKnockback;
+				double pushStrength = this.attackKnockback;
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
 				list.add(this);
 				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
@@ -271,7 +295,7 @@ public class Creature extends MovableObject {
 			} else if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Player)) {
 				((Player) obj).damage(this.attackDamage, this);
 				
-				int pushStrength = this.attackKnockback;
+				double pushStrength = this.attackKnockback;
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
 				list.add(this);
 				((Player) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
@@ -279,6 +303,10 @@ public class Creature extends MovableObject {
 			}
 		}
 		
+	}
+	
+	public void rangedAttack() {
+		if (!this.isAlive) return;
 	}
 	
 	public class CreatureAttack extends GameObject {

@@ -1,9 +1,11 @@
 package platformerTest.assets;
 
 import java.awt.Color;
+import java.awt.Graphics;
 
 import platformerTest.game.GameObject;
 import platformerTest.game.ObjType;
+import platformerTest.game.Player;
 
 public class DecorationObject extends GameObject {
 

@@ -14,8 +14,6 @@ import platformerTest.menu.GamePanel;
 
 public class OverhealPowerup extends Powerup {
 
-	public int cameraSize;
-	
 	public OverhealPowerup(double x, double y, double size, int amount) {
 		this(x,y,size,null);
 		Code code = new Code() {
@@ -40,7 +38,7 @@ public class OverhealPowerup extends Powerup {
 	@Override
 	public void run() {
 		this.code.run();
-		GamePanel.createFlash(this.color, 75);
+		GamePanel.createFlash(this.color, 125);
 	}
 	
 	@Override

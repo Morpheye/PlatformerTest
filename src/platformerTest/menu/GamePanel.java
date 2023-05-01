@@ -14,7 +14,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +24,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import platformerTest.Main;
-import platformerTest.assets.projectiles.ProjectileDart;
+import platformerTest.assets.triggers.Powerup;
 import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
+import platformerTest.game.MovableObject;
 import platformerTest.game.ObjType;
 import platformerTest.game.Player;
 import platformerTest.levels.Level;
@@ -52,8 +53,7 @@ public class GamePanel extends JPanel {
 	
 	public static double checkpointX;
 	public static double checkpointY;
-
-	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
+	
 	public static Timer timer;
 	
 	public GamePanel(Level level) {
@@ -80,6 +80,8 @@ public class GamePanel extends JPanel {
 		
 		levelWon = 0;
 		isPaused = false;
+		
+		loadImages();
 		
 	}
 	
@@ -115,7 +117,6 @@ public class GamePanel extends JPanel {
 		
 		createFlash(Color.white,100);
 
-
 	}
 	
 	/**Order: Level tick -> Player move -> Camera move -> Background -> Level Paint -> draw attacks -> Draw ambience
@@ -140,7 +141,9 @@ public class GamePanel extends JPanel {
 				obj.move();
 			}
 			
-			if (obj.hasCollided(MainFrameObj)) obj.draw(g, player, camera_x, camera_y, camera_size);
+			if (obj.hasCollided(MainFrameObj) || obj.type.equals(ObjType.Creature) || obj.type.equals(ObjType.Player)) {
+				obj.draw(g, player, camera_x, camera_y, camera_size);
+			}
 			
 		}
 		
@@ -334,37 +337,133 @@ public class GamePanel extends JPanel {
 		displayText = newText;
 		textDuration = newDuration;
 	}
+
+	int[] powerupX = new int[] {5, 5, 75, 75, 145, 145, 215, 215, 285, 285, 355, 355};
+	int[] powerupY = new int[] {4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29};
 	
 	public void drawHUD(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		//top
-		GradientPaint gp1 = new GradientPaint(0, 50, Color.white, 0, 75, new Color(255,255,255,0), false);
+		GradientPaint gp1 = new GradientPaint(0, 50, Color.white, 0, 80, new Color(255,255,255,0), false);
 		g2d.setPaint(gp1);
-		g2d.fillRect(-50, 0, Main.SIZE+50, 75);
+		g2d.fillRect(-50, 0, Main.SIZE+50, 80);
 		//render healthbar
 		if (player.health > 100) player.health = 100;
 		if (player.health < 0) player.health = 0;
-		try {
-			BufferedImage image = ImageIO.read(this.getClass().getResource("/gui/health.png"));
-			g2d.drawImage(image, Main.SIZE*3/4+25, 10, 30, 30, null);
-			g2d.setColor(Color.black);
-			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, 100, 30, 5, 5);
-			g2d.setColor(Color.red);
-			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, player.health, 30, 5, 5);
+		
+		g2d.drawImage(healthImage, Main.SIZE*3/4+25, 10, 30, 30, null);
+		g2d.setColor(Color.black);
+		g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, 100, 30, 5, 5);
+		g2d.setColor(Color.red);
+		g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, player.health, 30, 5, 5);
+	
+		if (player.overheal != 0) {
+			int overHeal = player.overheal;
+			if (player.overheal > 100) overHeal = 100;
+			g2d.setColor(GameObject.COLOR_GOLD);
+			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, overHeal, 30, 5, 5);
+		}
+		
+		if (player.overheal > 100) {
+			int gigaHeal = player.overheal-100;
+			if (gigaHeal > 100) gigaHeal = 100;
+			g2d.setColor(Color.CYAN);
+			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, gigaHeal, 30, 5, 5);
+		}
 			
-			if (player.overheal != 0) {
-				int overHeal = player.overheal;
-				if (player.overheal > 100) overHeal = 100;
-				
-				g2d.setColor(GameObject.COLOR_GOLD);
-				g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, overHeal, 30, 5, 5);
-				
-			}
+		g2d.setColor(Color.black);
+		g2d.setStroke(new BasicStroke(3));
+		g2d.drawRoundRect(Main.SIZE*3/4 + 70, 10, 100, 30, 5, 5);
+		
+		//POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS 
+		g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 11));
+		
+		int i = 0;
+		BufferedImage image;
+		DecimalFormat df = new DecimalFormat("#");
+		df.setMaximumFractionDigits(2);
+		df.setMinimumIntegerDigits(1);
 			
-			g2d.setColor(Color.black);
-			g2d.setStroke(new BasicStroke(3));
-			g2d.drawRoundRect(Main.SIZE*3/4 + 70, 10, 100, 30, 5, 5);
-		} catch (IOException e) {}
+		//density
+		if (player.density != 1) {
+			g2d.setColor(Powerup.COLOR_POWERUP_DENSITY);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(densityImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((player.density > 1) ? Color.darkGray : Color.gray);
+			g2d.drawString("x"+df.format(player.density), powerupX[i]+23, powerupY[i]+15);
+			i++;}
+		//attack speed
+		if (player.maxAttackCooldown != 40) {
+			g2d.setColor(Powerup.COLOR_POWERUP_ATTACKSPEED);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(attackSpeedImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((player.maxAttackCooldown < 40) ? Color.green : Color.red);
+			g2d.drawString("x"+df.format(40.0/player.maxAttackCooldown), powerupX[i]+23, powerupY[i]+15);
+			i++;}
+		//strength
+		if (player.attackDamage != 5) {
+			g2d.setColor(Powerup.COLOR_POWERUP_STRENGTH);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(strengthImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((player.attackDamage>5) ? Color.green : Color.red);
+			g2d.drawString("x"+df.format(player.attackDamage/5.0), powerupX[i]+23, powerupY[i]+15);
+			i++;}
+		//fire resistance
+		if (player.fireResistant) {
+			g2d.setColor(Powerup.COLOR_POWERUP_FIRERESISTANCE);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(fireResistanceImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor(new Color(255,100,0));
+			g2d.drawString("✔", powerupX[i]+23, powerupY[i]+15);
+			i++;}
+		//overheal
+		if (player.overheal > 0) {
+			g2d.setColor(Powerup.COLOR_POWERUP_OVERHEAL);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(overhealImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((player.overheal>100) ? Color.cyan : new Color(230,230,0));
+			g2d.drawString(""+player.overheal, powerupX[i]+23, powerupY[i]+15);
+			i++;}
+		//jump boost
+		if (player.jumpStrength != 16) {
+			g2d.setColor(Powerup.COLOR_POWERUP_JUMPBOOST);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(jumpBoostImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((player.jumpStrength>16) ? Color.green : Color.red);
+			g2d.drawString(((player.jumpStrength>16)?"+":"-")+Math.abs(player.jumpStrength-16), powerupX[i]+23, powerupY[i]+15);
+			i++;}
+		//camera size
+		if (camera_size != Main.SIZE) {
+			g2d.setColor(Powerup.COLOR_POWERUP_CAMERASIZE);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(cameraSizeImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((camera_size>Main.SIZE) ? Color.green : Color.red);
+			g2d.drawString("x"+df.format(camera_size/Main.SIZE), powerupX[i]+23, powerupY[i]+15);
+			i++;}
+		//swiftness
+		if (player.movementSpeed != 0.25) {
+			g2d.setColor(Powerup.COLOR_POWERUP_SWIFTNESS);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(swiftnessImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((player.movementSpeed>0.25) ? Color.green : Color.red);
+			g2d.drawString("x"+df.format(player.movementSpeed/0.25), powerupX[i]+23, powerupY[i]+15);
+			i++;}
+		//punch
+		if (player.attackKnockback != 2) {
+			g2d.setColor(Powerup.COLOR_POWERUP_PUNCH);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(punchImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((player.attackKnockback>2) ? Color.green : Color.red);
+			g2d.drawString("x"+df.format(player.attackKnockback/2), powerupX[i]+23, powerupY[i]+15);
+			i++;}
+		//marksman
+		if (player.rangedAttackDamage != 5) {
+			g2d.setColor(Powerup.COLOR_POWERUP_MARKSMAN);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(marksmanImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((player.rangedAttackDamage>5) ? Color.green : Color.red);
+			g2d.drawString("x"+df.format(player.rangedAttackDamage/5), powerupX[i]+23, powerupY[i]+15);
+			i++;}
 
 	}
 	
@@ -375,15 +474,15 @@ public class GamePanel extends JPanel {
 		else flashes.put(color, duration);
 	}
 	
-	public void drawAttacks(Graphics g) {
+	public void drawAttacks(Graphics g) {  //ONLY DRAWS MELEE ATTACKS
 		Graphics2D g2d = (Graphics2D) g;
 		for (GameObject obj : objects) {
 			if (obj.type.equals(ObjType.Creature) && obj.hasCollided(MainFrameObj)) {
 				Creature c = (Creature) obj;
 				
-				if (c.attackCooldown == 0 || !c.isMelee) continue;
-				if (c.maxAttackCooldown - c.attackCooldown > 20) continue;
-				int alpha = (20-(c.maxAttackCooldown - c.attackCooldown))*255/20;
+				if (c.meleeCooldown == 0) continue;
+				if (c.maxAttackCooldown - c.meleeCooldown > 20) continue;
+				int alpha = (20-(c.maxAttackCooldown - c.meleeCooldown))*255/20;
 				
 				int lastAttackX = (int) (c.x + c.lastAttackRange * Math.cos(c.lastAttackAngle * Math.PI/180));
 				int lastAttackY = (int) (c.y + c.lastAttackRange * Math.sin(c.lastAttackAngle * Math.PI/180));
@@ -399,10 +498,10 @@ public class GamePanel extends JPanel {
 				g2d.draw(arc);
 		}}
 		
-		if (player.attackCooldown == 0) return;
-		if (player.maxAttackCooldown - player.attackCooldown > 20) return;
+		if (player.meleeCooldown == 0) return;
+		if (player.maxAttackCooldown - player.meleeCooldown > 20) return;
 		
-		int alpha = (20-(player.maxAttackCooldown - player.attackCooldown))*255/20;
+		int alpha = (20-(player.maxAttackCooldown - player.meleeCooldown))*255/20;
 		
 		int lastAttackX = (int) (player.x + player.lastAttackRange * Math.cos(player.lastAttackAngle * Math.PI/180));
 		int lastAttackY = (int) (player.y + player.lastAttackRange * Math.sin(player.lastAttackAngle * Math.PI/180));
@@ -478,6 +577,28 @@ public class GamePanel extends JPanel {
 			}
 			
 		}
+	}
+	
+	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
+	
+	public static BufferedImage healthImage, densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
+	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, marksmanImage;
+	public void loadImages() {
+		try {
+			healthImage = ImageIO.read(this.getClass().getResource("/gui/health.png"));
+			
+			densityImage = ImageIO.read(this.getClass().getResource("/powerups/density.png"));
+			attackSpeedImage = ImageIO.read(this.getClass().getResource("/powerups/attackspeed.png"));
+			strengthImage = ImageIO.read(this.getClass().getResource("/powerups/strength.png"));
+			fireResistanceImage = ImageIO.read(this.getClass().getResource("/powerups/fireresistance.png"));
+			overhealImage = ImageIO.read(this.getClass().getResource("/powerups/overheal.png"));
+			jumpBoostImage = ImageIO.read(this.getClass().getResource("/powerups/jumpboost.png"));
+			cameraSizeImage = ImageIO.read(this.getClass().getResource("/powerups/camerasize.png"));
+			swiftnessImage = ImageIO.read(this.getClass().getResource("/powerups/swiftness.png"));
+			punchImage = ImageIO.read(this.getClass().getResource("/powerups/punch.png"));
+			marksmanImage = ImageIO.read(this.getClass().getResource("/powerups/marksman.png"));
+
+		} catch (Exception e) {}
 	}
 	
 }

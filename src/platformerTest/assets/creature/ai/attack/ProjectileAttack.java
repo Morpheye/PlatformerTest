@@ -9,8 +9,10 @@ import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
 import platformerTest.menu.GamePanel;
 
-/*
- * AI for creatures firing projectiles as their primary attack
+/**
+ * AI for creatures firing projectiles as their primary attack.
+ * No need for min-bounds as melees always take priority over ranged.
+ * Basic, does not take into account if the creature can see its target
  */
 public class ProjectileAttack extends AttackAi {
 
@@ -53,7 +55,7 @@ public class ProjectileAttack extends AttackAi {
 	@Override
 	public void run(Creature c) {
 		for (GameObject i : targets) {
-			c.isAttacking = false;
+			c.isRangedAttacking = false;
 			
 			if (c.x>i.x && c.x-i.x>xBoundLeft) return;
 			if (c.x<i.x && i.x-c.x>xBoundRight) return;
@@ -64,7 +66,7 @@ public class ProjectileAttack extends AttackAi {
 			if (c.x<i.x) c.lastDirection = 1;
 			
 			//FIRE
-			c.isAttacking = true;
+			c.isRangedAttacking = true;
 			
 		}
 		

@@ -31,15 +31,23 @@ public class HorizontalMovementAi extends CreatureAi {
 	
 	@Override
 	public void run(Creature c) {
-		if (Math.abs(c.y-this.targetY)>this.maxRangeY) return;
-		if (Math.abs(c.y-this.targetY)<this.minRangeY) return;
-		
-		if (Math.abs(c.x-this.targetX)>this.maxRangeX) {
+		if (Math.abs(c.y-this.targetY)>this.maxRangeY) { //out of range on y
 			c.movingRight = false;
 			c.movingLeft = false;
 			return;
 		}
-		if (Math.abs(c.x-this.targetX)<this.minRangeX) {
+		if (Math.abs(c.y-this.targetY)<this.minRangeY) { //too close on y
+			c.movingRight = false;
+			c.movingLeft = false;
+			return;
+		}
+		
+		if (Math.abs(c.x-this.targetX)>this.maxRangeX) { //out of range on x
+			c.movingRight = false;
+			c.movingLeft = false;
+			return;
+		}
+		if (Math.abs(c.x-this.targetX)<this.minRangeX) { //too close on x
 			c.movingRight = false;
 			c.movingLeft = false;
 			return;

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import platformerTest.Main;
 import platformerTest.assets.creature.CreatureAi;
 import platformerTest.assets.creature.ai.HorizontalMovementAi;
+import platformerTest.assets.creature.ai.attack.NormalMovementAttackAi;
 import platformerTest.assets.creature.ai.attack.ProjectileAttack;
 import platformerTest.assets.creature.ai.horizontal.HorizontalFollowAi;
 import platformerTest.assets.creature.ai.vertical.VerticalFollowAi;
@@ -36,15 +37,15 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		
 		this.jumpStrength = 16;
 		this.projectileRange = projectileRange;
-		this.isMelee = false;
 		this.health = 30;
 		this.maxHealth = 30;
+		this.rangedAttackDamage = 3;
 		
 		this.aiList = new ArrayList<CreatureAi>();
 		this.aiList.add(new VerticalFollowAi(minRange, maxRange, 50, 100, 50, 100, GamePanel.player)); //jumps to shoot at player
 		this.aiList.add(new HorizontalMovementAi(this.x, 40, Double.MAX_VALUE)); //tries to return to original spot
 		this.aiList.add(new ProjectileAttack(maxRange, 10, GamePanel.player));
-		
+		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
 	}
 	
 	/**
@@ -55,19 +56,20 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		
 		this.jumpStrength = 16;
 		this.projectileRange = projectileRange;
-		this.isMelee = false;
 		this.health = 30;
 		this.maxHealth = 30;
+		this.rangedAttackDamage = 3;
 		
 		this.aiList = new ArrayList<CreatureAi>();
 		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, minRangeY, maxRangeY, GamePanel.player)); //jumps to shoot at player
 		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player)); //follow player
 		this.aiList.add(new ProjectileAttack(maxRangeX, 10, GamePanel.player));
+		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
 	}
 	
 	@Override
-	public void attack() {
-		GamePanel.projectiles.add(new ProjectileDart(this.x, this.y, 15*this.lastDirection, 1, this));
+	public void rangedAttack() {
+		GamePanel.projectiles.add(new ProjectileDart(this.x, this.y, 15*this.lastDirection, 1, this, this.rangedAttackDamage));
 		this.attackCooldown = this.maxAttackCooldown;
 	}
 	

@@ -4,7 +4,7 @@ import java.util.List;
 
 import platformerTest.Main;
 import platformerTest.assets.SolidPlatform;
-import platformerTest.assets.decoration.SolidBackgroundObject;
+import platformerTest.assets.decoration.walls.SolidBackgroundObject;
 import platformerTest.assets.interactables.FinishFlag;
 import platformerTest.assets.liquidPlatforms.WaterPlatform;
 import platformerTest.assets.powerups.CameraSizePowerup;
@@ -33,6 +33,7 @@ public class Level_1_2 extends Level {
 	
 	@Override
 	public void onStart() {
+		GamePanel.displayText("Use boxes wisely, don't softlock yourself.", 300);
 		
 	}
 	
@@ -67,7 +68,6 @@ public class Level_1_2 extends Level {
 		objects.add(new GrassPlatform(0, 50, 400, 100));
 		
 		//box platform
-		objects.add(new TextDisplayTrigger(450,150,100,100,"Use boxes wisely, don't softlock yourself.",300));
 		objects.add(new PushableBox(700, 180, 60, 60));
 		objects.add(new GrassPlatform(700,325,300,50));
 		objects.add(new GrassPlatform(825,200,50,300));
@@ -135,11 +135,8 @@ public class Level_1_2 extends Level {
 		objects.add( new StonePlatform(8200,1250,300,100));
 		
 		//jumpboost
-		objects.add(new JumpBoostPowerup(8200, 1350, 50, new Code() {
-			@Override
-			public void run() {
-				GamePanel.player.jumpStrength = 20;
-		}}));
+		objects.add(new TextDisplayTrigger(8200,1350,50,50,"Jump boost power-ups grant a higher jump.",300));
+		objects.add(new JumpBoostPowerup(8200, 1350, 50, 4));
 		
 	}
 	

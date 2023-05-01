@@ -1,4 +1,4 @@
-package platformerTest.assets.decoration;
+package platformerTest.assets.decoration.walls;
 
 import java.awt.Color;
 

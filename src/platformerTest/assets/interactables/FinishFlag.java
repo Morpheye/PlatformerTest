@@ -31,6 +31,8 @@ public class FinishFlag extends DecorationObject {
 	@Override
 	public void draw(Graphics g, Player player, double cam_x, double cam_y, double size) {
 		
+		if (!(this.size_y > this.size_x)) return;
+		
 		//flag
 		int drawX = (int) ( (this.flag.x - (this.flag.size_x)/2 - (cam_x - size/2)) * (Main.SIZE/size));
 		int drawY = (int) ( (size - (this.flag.y + (this.flag.size_y)/2) + (cam_y - size/2)) * (Main.SIZE/size));

@@ -5,6 +5,7 @@ import java.awt.Container;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import platformerTest.Main;
@@ -17,11 +18,14 @@ public class ApplicationFrame extends JFrame {
 	public static Component current;
 	
 	public ApplicationFrame() {
-		this.setTitle("Platformer Test");
+		this.setTitle("SkyCubed Platformer");
 		this.setSize(Main.SIZE,Main.SIZE);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		try {
+		this.setIconImage(ImageIO.read(this.getClass().getResource("/icon.png")));
+		} catch (Exception e) {}
 		this.addWindowListener(new WindowAdapter() {
 	        @Override
 	        public void windowClosed(WindowEvent e) {

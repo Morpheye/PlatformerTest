@@ -29,7 +29,7 @@ public class Projectile extends MovableObject {
 	public GameObject firer;
 
 	
-	public Projectile(double x, double y, double size_x, double size_y, double vx, double vy, GameObject firer) {
+	public Projectile(double x, double y, double size_x, double size_y, double vx, double vy, GameObject firer, int damage) {
 		super(x, y, size_x, size_y, Color.black, 1);
 		this.firer = firer;
 		this.vx = vx;
@@ -39,7 +39,7 @@ public class Projectile extends MovableObject {
 		this.hitTarget = false;
 		this.pushStrength = 1;
 		this.rotating = false;
-		this.damage = 0;
+		this.damage = damage;
 		this.type = ObjType.Projectile;
 		this.solid = false;
 	}

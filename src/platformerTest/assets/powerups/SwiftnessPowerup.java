@@ -12,14 +12,14 @@ import platformerTest.assets.triggers.Powerup;
 import platformerTest.game.Player;
 import platformerTest.menu.GamePanel;
 
-public class HealPowerup extends Powerup {
-
-	public HealPowerup(double x, double y, double size) {
+public class SwiftnessPowerup extends Powerup {
+	
+	public SwiftnessPowerup(double x, double y, double size, int amount) {
 		this(x,y,size,null);
 		Code code = new Code() {
 			@Override
 			public void run() {
-				GamePanel.player.health = 100;
+				GamePanel.player.movementSpeed+=amount;
 			}
 		};
 		
@@ -27,10 +27,10 @@ public class HealPowerup extends Powerup {
 		
 	}
 	
-	public HealPowerup(double x, double y, double size, Code code) {
+	public SwiftnessPowerup(double x, double y, double size, Code code) {
 		super(x, y, size, code);
-		this.color = Powerup.COLOR_POWERUP_HEAL;
-		try {this.image = ImageIO.read(this.getClass().getResource("/powerups/heal.png"));
+		this.color = Powerup.COLOR_POWERUP_SWIFTNESS;
+		try {this.image = ImageIO.read(this.getClass().getResource("/powerups/swiftness.png"));
 		} catch (IOException e) {}
 		
 	}
@@ -38,7 +38,7 @@ public class HealPowerup extends Powerup {
 	@Override
 	public void run() {
 		this.code.run();
-		GamePanel.createFlash(this.color, 50);
+		GamePanel.createFlash(this.color, 125);
 	}
 	
 	@Override

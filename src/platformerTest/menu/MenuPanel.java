@@ -129,7 +129,6 @@ public class MenuPanel extends JPanel {
 				}
 				
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 		
