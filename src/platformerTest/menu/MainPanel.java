@@ -78,7 +78,7 @@ public class MainPanel extends JPanel {
 				g2d.fillRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/3-buttonSizeY/2, buttonSizeX, buttonSizeY);
 			}
 			
-			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX*2 && Math.abs(mouseY - Main.SIZE*2/3) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*2/3) < buttonSizeY/2) {
 				g2d.setColor(new Color(255, 255, 255, 100));
 				g2d.fillRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*2/3-buttonSizeY/2, buttonSizeX, buttonSizeY);
 			}
@@ -121,7 +121,7 @@ public class MainPanel extends JPanel {
 				Main.jframe.exitGame(new Level_1_1());
 			}
 			
-			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX*2 && Math.abs(mouseY - Main.SIZE*2/3) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*2/3) < buttonSizeY/2) {
 				timer.stop();
 				DataManager.save();
 				System.exit(0);

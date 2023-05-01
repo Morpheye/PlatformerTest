@@ -288,18 +288,18 @@ public class Creature extends MovableObject {
 				
 				double pushStrength = this.attackKnockback;
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
-				list.add(this);
-				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
-				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, true);
+				list.add(this.attack);
+				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
+				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
 				
 			} else if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Player)) {
 				((Player) obj).damage(this.attackDamage, this);
 				
 				double pushStrength = this.attackKnockback;
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
-				list.add(this);
-				((Player) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this, list, false, true);
-				((Player) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this, list, false, true);
+				list.add(this.attack);
+				((Player) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
+				((Player) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
 			}
 		}
 		
@@ -313,6 +313,7 @@ public class Creature extends MovableObject {
 		public CreatureAttack(double size_x, double size_y) {
 			super(0, 0, size_x, size_y, new Color(0,0,0,50));
 			this.type = ObjType.Null;
+			this.density = 1;
 		}
 
 	}

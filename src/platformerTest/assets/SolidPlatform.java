@@ -37,7 +37,6 @@ public class SolidPlatform extends GameObject {
 			if (this.hasCollided(obj) && (obj.type.equals(ObjType.MovableObject) || obj.type.equals(ObjType.Player))) {
 				collisions.add(obj);
 				collided = true;
-				obj.vx *= this.slipperiness *= obj.slipperiness;
 		}}
 		
 		ArrayList<GameObject> list = new ArrayList<GameObject>();
@@ -79,7 +78,6 @@ public class SolidPlatform extends GameObject {
 		resistors = new ArrayList<GameObject>();
 		
 		for (GameObject obj : collisions) {
-			System.out.println(obj + " " + this.vx);
 			ArrayList<GameObject> pushing = obj.pushx(this.vx, this, list, false, true);
 			resistors.addAll(pushing);
 		}
