@@ -65,7 +65,7 @@ public class Level_1_2 extends Level {
 	@Override
 	public void drawPlatforms() {
 		List<GameObject> objects = GamePanel.objects;
-		
+
 		//spawn platform
 		objects.add(new GrassPlatform(0, 50, 400, 100));
 		
@@ -107,6 +107,10 @@ public class Level_1_2 extends Level {
 		objects.add(new StonePlatform(5000,550,200,50));
 		
 		//mountain
+		objects.add(new PushableStone(6200,650,60,60));
+		objects.add(new PushableStone(6500,650,60,60));
+		objects.add(new PushableBox(6350,650,60,60));
+		
 		objects.add(new WaterPlatform(5800,400,800,395));
 		objects.add(new StonePlatform(5400,400,150,400));
 		objects.add(new StonePlatform(5800,275,800,150));
@@ -118,10 +122,6 @@ public class Level_1_2 extends Level {
 		objects.add(new StonePlatform(5800,750,150,600));
 		objects.add(new StonePlatform(6125,1075,800,150));
 		objects.add(new StonePlatform(5850,750,150,100));
-		
-		objects.add(new PushableStone(6200,650,60,60));
-		objects.add(new PushableStone(6500,650,60,60));
-		objects.add(new PushableBox(6350,650,60,60));
 		
 		objects.add(new StonePlatform(6400,800,500,100));
 		

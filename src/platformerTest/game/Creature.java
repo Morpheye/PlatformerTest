@@ -112,14 +112,6 @@ public class Creature extends MovableObject {
 			}
 		}
 		
-		if (this.inLiquid) {
-			double diff = this.density - liquidDensity;
-			double lift = GamePanel.gravity * Math.atan(2*diff) / (Math.PI / 2) - GamePanel.gravity;
-			
-			this.vy += lift;
-
-		}
-		
 		if (movingInLiquid) {
 			double slowdown = 1;
 			double diff = this.density - liquidDensity;

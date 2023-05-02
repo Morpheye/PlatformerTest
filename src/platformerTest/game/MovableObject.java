@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-import platformerTest.Main;
 import platformerTest.assets.LiquidPlatform;
 import platformerTest.assets.SolidPlatform;
 import platformerTest.menu.GamePanel;
@@ -39,7 +38,7 @@ public class MovableObject extends GameObject {
 		
 		//speed threshold
 		this.last_slip = 1;
-		
+
 		this.inLiquid = false;
 		this.liquidSlip = 1;
 		
@@ -58,6 +57,13 @@ public class MovableObject extends GameObject {
 		this.dragMultiplier = 1;
 		this.lift = 0;
 		
+		if (this.inLiquid) {
+			double diff = this.density - liquidDensity;
+			double lift = GamePanel.gravity * Math.atan(2*diff) / (Math.PI / 2) - GamePanel.gravity;
+			
+			this.vy += lift;
+		}
+		
 		this.vy += GamePanel.gravity;
 
 		//YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
@@ -69,36 +75,30 @@ public class MovableObject extends GameObject {
 		this.attemptMoveX(this.vx, true);
 		
 		//LIQUID DRAG
-		
 		if (this.inLiquid) {
-			
 			this.vx *= Math.pow(liquidSlip, dragMultiplier);
 			this.vy *= Math.pow(liquidSlip, dragMultiplier);
-			
 			//-1 as -approaches infinity, 0 if 0, 1 as approaches infinity
-			
 		}
 		
-		//MULTIPLICATION
-		
+		//AIR DRAG
 		if (this.inAir) {
 			this.vy *= GamePanel.airDrag;
 			this.vx *= GamePanel.airDrag;
-			
 		}
+		
+		//GROUND DRAG
 		if (!this.inAir) {
 			this.vx *= last_slip *= this.slipperiness;
 		}
 
 		//CHECK BOUNDS
-
 		if (this.y > GamePanel.level.topLimit && !this.equals(GamePanel.player)) GamePanel.deletedObjects.add(this);
 		if (this.y < GamePanel.level.bottomLimit && !this.equals(GamePanel.player)) GamePanel.deletedObjects.add(this);
 		
 		//INERTIA THRESHOLD
 		if (Math.abs(vx) < 0.01) vx = 0;
 		if (Math.abs(vy) < 0.01) vy = 0;
-
 		this.liquidDensity = 1;
 	
 	}
@@ -107,178 +107,149 @@ public class MovableObject extends GameObject {
 		ArrayList<GameObject> collisions = new ArrayList<GameObject>();
 		boolean collidedx = false;
 		
-		this.x += vx;
-		//check collisions
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.objects) { //check for all collisions after moving
 			if (!this.exists) continue;
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
-				
-				collidedx = true;
-				collisions.add(obj);
-			
+				System.out.println("ass");	
 		}}
 		
-		//BONK
-		ArrayList<GameObject> list = new ArrayList<GameObject>();
-		list.add(this);
-		ArrayList<GameObject> resistors = new ArrayList<GameObject>();
+		this.x += vx; //move the object
+
+		for (GameObject obj : GamePanel.objects) { //check for all collisions after moving
+			if (!this.exists) continue;
+			if (obj.equals(this)) continue;
+			if (this.hasCollided(obj) && obj.solid && obj.exists) {
+				collidedx = true;
+				collisions.add(obj);
+		}}
 		
+		ArrayList<GameObject> list = new ArrayList<GameObject>(); //start pushing the objects.
+		list.add(this);
+		ArrayList<GameObject> resistors = new ArrayList<GameObject>(); //total objects resisting the push
 		for (GameObject obj : collisions) {
-			if (vx == 0) continue;
 			ArrayList<GameObject> pushing;
-			if (this.type.equals(ObjType.Player) && obj.type.equals(ObjType.Creature)) { 
-				pushing = obj.pushx(vx, this, list, false, false);
+			if (this.type.equals(ObjType.Player) && obj.type.equals(ObjType.Creature)) { //push by amount you moved
+				pushing = obj.pushx(this.vx, this, list, false, false);
 			} else if (this.type.equals(ObjType.Creature) && obj.type.equals(ObjType.Player)) { 
-				pushing = obj.pushx(vx, this, list, false, false);
+				pushing = obj.pushx(this.vx, this, list, false, false);
 			} else {
-				pushing = obj.pushx(vx, this, list, false, isFinal);
+				pushing = obj.pushx(this.vx, this, list, false, isFinal);
 			}
 			resistors.addAll(pushing);
 		}
 		
-		if (resistors.size() != 0) {
+		if (resistors.size() != 0) { //something is resisting
+			//of the resistors, find the lowest bounding box to snap to
+			double closestBound = (this.vx > 0) ? Double.MAX_VALUE : -Double.MAX_VALUE;
+			GameObject closestObj = resistors.get(0);
+			for (GameObject i : resistors) { //loop through
+				if (this.vx > 0) if (i.getLowerBoundX() < closestBound) {
+					closestBound = i.getLowerBoundX();
+					closestObj = i;
+				}
+				if (this.vx < 0) if (i.getHigherBoundX() > closestBound) {
+					closestBound = i.getHigherBoundX();
+					closestObj = i;
+				}
+				
+				
+			}
 			
-			boolean stillColliding = false;
+			//now attempt to move object back!
+			double oldX = this.x;
+			if (this.vx > 0) this.x = closestBound - this.size_x/2;
+			if (this.vx < 0) this.x = closestBound + this.size_x/2;
+			double snapback = this.x - oldX; //will be positive if originally moving left, negative if originally moving right
 			
-			do {
-				//unregulated movement
-				double push = 0;
-				double totalPush = 0;
-				if (vx > 0) {
-					this.x -= 0.01;
-					push = -0.01;
-					totalPush += -0.01;
-				}
-				else if (vx < 0) {
-					this.x += 0.01;
-					push = 0.01;
-					totalPush += 0.01;
-				}
-				
-				for (GameObject obj2 : GamePanel.objects) {
-					if (obj2.equals(this) || resistors.contains(obj2)) continue;
-					if (this.hasCollided(obj2) && obj2.solid) {
-						if (obj2.type.equals(ObjType.SolidPlatform)) this.crush();
-						else if (obj2.type.equals(ObjType.MovableObject)
-								|| obj2.type.equals(ObjType.Creature)
-								|| obj2.type.equals(ObjType.Player)) {
-							
-							ArrayList<GameObject> pushing = obj2.pushx(push, this, list, true, false);
-							if (pushing.size() > 0) {
-								this.x -= totalPush;
-								this.x -= vx;
-								pushing = obj2.pushx(push, this, list, true, false);
-								if (pushing.size() > 0) {}
-							}
-							
-						}
-					}
-				}
-				
-				stillColliding = false;
-				
-				for (GameObject obj : collisions) {
-					stillColliding = stillColliding || this.hasCollided(obj);
-				}
-				
-			} while (stillColliding);
+			//now check if the snapback caused any collisions (SOMETHING IS GETTING CRUSHED)
+			for (GameObject obj : GamePanel.objects) {
+				if (!this.exists) continue;
+				if (obj.equals(this)) continue;
+				if (this.hasCollided(obj) && obj.solid && obj.exists) {
+					if (obj.type.equals(ObjType.SolidPlatform)) this.crush();
+					else System.out.println(this.getClass().getSimpleName() + " " + obj.getClass().getSimpleName() + " " + snapback);
+					
+			}}
 			
 		}
 		
-		if (collidedx) this.vx = 0;
+		
+		
+		if (collidedx) this.vx = 0; //if anything was hit, stop moving.
 	}
 	
 	public void attemptMoveY(double vy, boolean isFinal) {
 		ArrayList<GameObject> collisions = new ArrayList<GameObject>();
 		boolean collidedy = false;
 		
-		this.y += vy;
-		
-		//check collisions
-		for (GameObject obj : GamePanel.objects) {
+		this.y += vy; //move the object
+
+		for (GameObject obj : GamePanel.objects) { //check for all collisions after moving
 			if (!this.exists) continue;
 			if (obj.equals(this)) continue;
-			if (this.hasCollided(obj) && obj.exists) {
-				if (obj.solid) {
-					
-					if (vy < 0) this.inAir = false;
-					
-					if (obj.type.equals(ObjType.SolidPlatform)) {
-						last_slip = ((SolidPlatform) obj).slipperiness;
-					} else if (obj.type.equals(ObjType.MovableObject)) {
-						last_slip = ((MovableObject) obj).slipperiness;
-					} else if (obj.type.equals(ObjType.Creature)) {
-						last_slip = GamePanel.level.airDrag;
-					}
-					
-					collidedy = true;
-					collisions.add(obj);
-					
+			if (this.hasCollided(obj) && obj.solid && obj.exists) {
+				if (vy < 0) this.inAir = false;
+				
+				if (obj.type.equals(ObjType.SolidPlatform)) {
+					last_slip = ((SolidPlatform) obj).slipperiness;
+				} else if (obj.type.equals(ObjType.MovableObject)) {
+					last_slip = ((MovableObject) obj).slipperiness;
+				} else if (obj.type.equals(ObjType.Creature)) {
+					last_slip = GamePanel.level.airDrag;
 				}
-		}}	
+				
+				collidedy = true;
+				collisions.add(obj);
+		}}
 		
-		//BONK
-		ArrayList<GameObject> list = new ArrayList<GameObject>();
+		ArrayList<GameObject> list = new ArrayList<GameObject>(); //start pushing the objects.
 		list.add(this);
-		ArrayList<GameObject> resistors = new ArrayList<GameObject>();
-		
+		ArrayList<GameObject> resistors = new ArrayList<GameObject>(); //total objects resisting the push
 		for (GameObject obj : collisions) {
 			ArrayList<GameObject> pushing;
-			if (this.type.equals(ObjType.Player) && obj.type.equals(ObjType.Creature)) { 
-				pushing = obj.pushy(vy, this, list, false, false);
+			if (this.type.equals(ObjType.Player) && obj.type.equals(ObjType.Creature)) { //push by amount you moved
+				pushing = obj.pushy(this.vy, this, list, false, false);
 			} else if (this.type.equals(ObjType.Creature) && obj.type.equals(ObjType.Player)) { 
-				pushing = obj.pushy(vy, this, list, false, false);
+				pushing = obj.pushy(this.vy, this, list, false, false);
 			} else {
-				pushing = obj.pushy(vy, this, list, false, isFinal);
+				pushing = obj.pushy(this.vy, this, list, false, isFinal);
 			}
 			resistors.addAll(pushing);
 		}
 		
-		if (resistors.size() != 0) {
+		if (resistors.size() != 0) { //something is resisting
+			//of the resistors, find the lowest bounding box to snap to
+			double closestBound = (this.vy > 0) ? Double.MAX_VALUE : -Double.MAX_VALUE;
+			GameObject closestObj = resistors.get(0);
+			for (GameObject i : resistors) { //loop through
+				if (this.vy > 0) if (i.getLowerBoundY() < closestBound) {
+					closestBound = i.getLowerBoundY();
+					closestObj = i;
+				}
+				if (this.vy < 0) if (i.getHigherBoundY() > closestBound) {
+					closestBound = i.getHigherBoundY();
+					closestObj = i;
+				}
+				
+				
+			}
 			
-			boolean stillColliding = false;
+			//now attempt to move object back!
+			double oldY = this.y;
+			if (this.vy > 0) this.y = closestBound - this.size_y/2;
+			if (this.vy < 0) this.y = closestBound + this.size_y/2;
+			double snapback = this.y - oldY; //will be positive if originally moving left, negative if originally moving right
 			
-			do {
-				double push = 0;
-				double totalPush = 0;
-				//unregulated movement
-				if (vy > 0) {
-					this.y -= 0.01;
-					push = -0.01;
-					totalPush += -0.01;
-				}
-				else if (vy < 0) {
-					this.y += 0.01;
-					push = 0.01;
-					totalPush += 0.01;
-				}
-				
-				
-				for (GameObject obj2 : GamePanel.objects) { //check for crush
-					if (obj2.equals(this) || resistors.contains(obj2)) continue;
-					if (this.hasCollided(obj2) && obj2.solid) {
-						if (obj2.type.equals(ObjType.SolidPlatform)) this.crush();
-						else if (obj2.type.equals(ObjType.MovableObject)
-								|| obj2.type.equals(ObjType.Creature)
-								|| obj2.type.equals(ObjType.Player)) {
-							
-							ArrayList<GameObject> pushing = obj2.pushy(push, this, list, true, false);
-							if (pushing.size() > 0) {}
-						}
-						
-					}
-				}
-				
-				stillColliding = false;
-				
-				for (GameObject obj : collisions) {
-					stillColliding = stillColliding || this.hasCollided(obj);
-				}
-				
-				if (vy == 0) stillColliding = true;
-				
-			} while (stillColliding);
+			//now check if the snapback caused any collisions (SOMETHING IS GETTING CRUSHED)
+			for (GameObject obj : GamePanel.objects) {
+				if (!this.exists) continue;
+				if (obj.equals(this)) continue;
+				if (this.hasCollided(obj) && obj.solid && obj.exists) {
+					if (obj.type.equals(ObjType.SolidPlatform)) this.crush();
+					else System.out.println(this.getClass().getSimpleName() + " " + obj.getClass().getSimpleName() + " " + snapback);
+					
+			}}
 			
 		}
 		
@@ -292,38 +263,39 @@ public class MovableObject extends GameObject {
 	@Override
 	public ArrayList<GameObject> pushx(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall, boolean keepV) {
 		ArrayList<GameObject> resistors = new ArrayList<GameObject>();
-		
 		double weightedV;
 		
-		if (pusher.type.equals(ObjType.SolidPlatform)) weightedV = v;
+		if (pusher.type.equals(ObjType.SolidPlatform)) weightedV = v; //calculations for density & force & physics shit
 		else weightedV = v * (pusher.getWeight()/this.getWeight());
 		if (!keepV) weightedV = 0;
 		
-		this.vx += weightedV;
-		this.x += v;
+		this.vx += weightedV; //change density
+		this.x += v; //move the object
 
 		for (GameObject obj : GamePanel.objects) {
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
-				
 				if (v == 0) { //ERROR NEEDS FIX
+					//System.out.println("Error at " + this.getClass().getSimpleName() + ": Physics error");
 					resistors.add(this);
 				} else if (obj.type.equals(ObjType.SolidPlatform)) { //imediately pushes into wall
 					resistors.add(this);
 				} else { //hit new object
 					if (obj.equals(pusher)) { //ERROR NEEDS FIX
+						//System.out.println("Error at " + this.getClass().getSimpleName() + ": Physics error on x");
 						resistors.add(this);
 						continue;
 					}
 					pushers.add(this);
 					ArrayList<GameObject> pushing = obj.pushx(v, this, pushers, false, false);
 					resistors.addAll(pushing);
+					if (pushing.size() != 0 ) resistors.add(this);
 				}
 				
 				
 			}}
 		
-		if (resistors.size() != 0) {
+		if (resistors.size() != 0) { //I cannot move so I'm not moving.
 			this.x -= v;
 			this.vx -= weightedV;
 		}
@@ -353,21 +325,21 @@ public class MovableObject extends GameObject {
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
 				
 				if (v == 0) { //ERROR NEEDS FIX
+					//System.out.println("Error at " + this.getClass().getSimpleName() + ": Physics error");
 					resistors.add(this);
 				} else if (obj.type.equals(ObjType.SolidPlatform)) { //imediately pushes into wall
 					resistors.add(this);
 					
 				} else { //hit new object
 					if (obj.equals(pusher)) { //ERROR NEEDS FIX
-						//System.out.println("Error at " + this + ", pusher = " + pusher);
+						//System.out.println("Error at " + this.getClass().getSimpleName() + ": Physics error on y");
 						resistors.add(this);
 						continue;
 					}
-					ArrayList<GameObject> newPushers = new ArrayList<GameObject>();
-					newPushers.addAll(pushers);
-					newPushers.add(this);
-					ArrayList<GameObject> pushing = obj.pushy(v, this, newPushers, false, false);
+					pushers.add(this);
+					ArrayList<GameObject> pushing = obj.pushx(v, this, pushers, false, false);
 					resistors.addAll(pushing);
+					if (pushing.size() != 0 ) resistors.add(this);
 				}
 				
 				

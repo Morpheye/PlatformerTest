@@ -177,12 +177,12 @@ public class Level_1_4 extends Level {
 		objects.add(new StrengthPowerup(7800, 500, 50, 5));
 		objects.add(new TextDisplayTrigger(7800, 500, 50, 50, "Strength power-ups increase melee damage.", 300));
 		
+		objects.add(new CreatureZombie(8800, 600, 40, 30, 30, 400));
+		objects.add(new CreatureZombie(8900, 600, 40, 30, 30, 400));
 		objects.add(new WaterPlatform(8600, 450, 800, 195));
 		objects.add(new GrassPlatform(8200, 450, 100, 200));
 		objects.add(new GrassPlatform(8600, 400, 800, 100));
 		objects.add(new GrassPlatform(8900, 450, 400, 200));
-		objects.add(new CreatureZombie(8800, 600, 40, 30, 30, 400));
-		objects.add(new CreatureZombie(8900, 600, 40, 30, 30, 400));
 		
 		objects.add(new GrassPlatform(9400, 550, 200, 200));
 		objects.add(new OverhealPowerup(9400,700,50,100));

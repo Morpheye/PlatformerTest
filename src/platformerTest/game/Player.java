@@ -96,6 +96,7 @@ public class Player extends MovableObject {
 		this.movingInLiquid = false;
 		this.liquidDensity = 1;
 		
+		//Check interactables and water
 		for (GameObject obj : GamePanel.objects) { //check for water
 			if (obj.equals(this)) continue;
 			//finish flag
@@ -119,14 +120,6 @@ public class Player extends MovableObject {
 			}
 		}
 		
-		if (this.inLiquid) {
-			double diff = this.density - liquidDensity;
-			double lift = GamePanel.gravity * Math.atan(2*diff) / (Math.PI / 2) - GamePanel.gravity;
-			
-			this.vy += lift;
-
-		}
-		
 		if (movingInLiquid) {
 			double slowdown = 1;
 			double diff = this.density - liquidDensity;
@@ -148,6 +141,7 @@ public class Player extends MovableObject {
 			if (this.movingLeft) this.vx -= this.movementSpeed;
 		}
 		
+		//CHECK BOUNDS
 		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		if (this.timeSinceDeath > 120 && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
