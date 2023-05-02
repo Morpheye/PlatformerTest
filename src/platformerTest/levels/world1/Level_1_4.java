@@ -35,7 +35,7 @@ public class Level_1_4 extends Level {
 		this.spawnY = 200; //200
 		
 		this.reqs = new String[] {"Level_1_3"};
-
+		this.reward = 60;
 		this.name = "The Graveyard";
 		
 		this.raindrops = new ArrayList<Raindrop>();

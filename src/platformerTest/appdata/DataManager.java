@@ -31,6 +31,9 @@ public class DataManager {
 		File save = FileLoader.saveFile;
 		
 		try {
+			if (saveData.gems < 0) saveData.gems = Long.MAX_VALUE;
+			if (saveData.coins < 0) saveData.coins = Long.MAX_VALUE;
+			
 			String saveValue = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(saveData);
 			FileWriter writer = new FileWriter(save);
 			

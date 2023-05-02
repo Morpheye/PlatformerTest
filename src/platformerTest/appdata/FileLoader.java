@@ -12,7 +12,7 @@ public class FileLoader {
 	
 	public static void run() {
 		String OS = (System.getProperty("os.name")).toUpperCase();
-
+		
 		if (OS.contains("WIN")) rootDirectory = System.getenv("AppData"); //windows
 		else {
 			rootDirectory = System.getProperty("user.home");

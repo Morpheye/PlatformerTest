@@ -19,7 +19,7 @@ public class Level {
 	public double spawnY = 0;
 	
 	public String name;
-	
+	public int reward = 50;
 	public String[] reqs;
 	
 	public Level() {

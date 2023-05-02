@@ -69,6 +69,7 @@ public class CreatureDartGoblin extends CreatureGoblin {
 	
 	@Override
 	public void rangedAttack() {
+		if (!this.isAlive) return;
 		GamePanel.projectiles.add(new ProjectileDart(this.x, this.y, 15*this.lastDirection, 1, this, this.rangedAttackDamage));
 		this.attackCooldown = this.maxAttackCooldown;
 	}

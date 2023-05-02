@@ -102,6 +102,7 @@ public class Player extends MovableObject {
 			//finish flag
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0 && obj.exists) {
 				GamePanel.levelWon=1;
+				GamePanel.targetCoins += GamePanel.level.reward;
 			}
 			//powerup
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.Powerup) && GamePanel.levelWon==0 && obj.exists) {

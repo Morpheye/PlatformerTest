@@ -27,12 +27,11 @@ public class NormalMovementAttackAi extends AttackAi {
 			double yDist = Math.abs(c.y - i.y) - (0.5 * Math.abs(c.size_y + i.size_y));
 			
 			if (xDist < 0) xDist = 0;
-			if (yDist < 0) yDist = 0;
 			
-			double distance = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
+			double distance = Math.sqrt(Math.pow(xDist, 2) + Math.pow(((yDist<0)?0:yDist), 2));
 			if (distance <= this.meleeRange) {
 				c.isAttacking = true;
-				if (yDist > 0) {
+				if (yDist >= 0) {
 					if (c.y > i.y) {
 						c.movingUp = false;
 						c.movingDown= true;

@@ -37,7 +37,7 @@ public class Level_1_5 extends Level {
 		this.spawnY = 200; //200
 
 		this.reqs = new String[] {"Level_1_4"};
-		
+		this.reward = 70;
 		this.name = "Goblin Lands";
 		
 	}
@@ -73,9 +73,12 @@ public class Level_1_5 extends Level {
 	
 	@Override
 	public void onTick() {
-		//check bounds
-		if ((GamePanel.camera_x - GamePanel.player.x > GamePanel.camera_size/2 + 100) && GamePanel.player.isAlive) {
-			GamePanel.player.die();
+		//Autoscroll
+		if ((GamePanel.camera_x - GamePanel.player.x > GamePanel.camera_size/2 + 100) && GamePanel.levelWon == 0) {
+			if (GamePanel.player.isAlive) {
+				GamePanel.player.health = 0;
+				GamePanel.player.die();
+			}
 		}
 		
 		

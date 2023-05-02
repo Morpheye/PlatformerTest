@@ -54,6 +54,7 @@ public class ApplicationFrame extends JFrame {
 	public void exitGame(Level level) {
 		Container panel = this.getContentPane();
 		panel.removeAll();
+		DataManager.save();
 		
 		if (current != null) current.setEnabled(false);
 		current = new MenuPanel(new World1());
@@ -64,6 +65,7 @@ public class ApplicationFrame extends JFrame {
 	public void openMainMenu() {
 		Container panel = this.getContentPane();
 		panel.removeAll();
+		DataManager.save();
 		
 		if (current != null) current.setEnabled(false);
 		current = new MainPanel();

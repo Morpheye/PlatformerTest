@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -38,6 +39,7 @@ public class GamePanel extends JPanel {
 	
 	public static Player player;
 	public static Level level;
+	
 	public static double airDrag;
 	public static double gravity;
 	public static List<GameObject> objects;
@@ -56,6 +58,8 @@ public class GamePanel extends JPanel {
 	public static double checkpointY;
 	
 	public static Timer timer;
+	public static long coins;
+	public static long targetCoins;
 	
 	public GamePanel(Level level) {
 		
@@ -69,6 +73,7 @@ public class GamePanel extends JPanel {
 		checkpointX = level.spawnX;
 		checkpointY = level.spawnY;
 		
+		coins = 0;
 		restartLevel(level);
 		
 		timer = new Timer(1000/120, new ActionListener() {
@@ -88,6 +93,7 @@ public class GamePanel extends JPanel {
 	
 	public static void restartLevel(Level newLevel) {
 		
+		targetCoins = 0;
 		objects = new ArrayList<GameObject>();
 		deletedObjects = new ArrayList<GameObject>();
 		flashes = new HashMap<Color,Integer>();
@@ -232,6 +238,8 @@ public class GamePanel extends JPanel {
 					DataManager.saveData.completedLevels.replace(level.getClass().getSimpleName(),
 					DataManager.saveData.completedLevels.get(level.getClass().getSimpleName())+1);
 				}
+				
+				DataManager.saveData.coins += targetCoins;
 				timer.stop();
 				Main.jframe.exitGame(level);
 				
@@ -266,9 +274,10 @@ public class GamePanel extends JPanel {
 		g2d.setColor(Color.GRAY);
 		g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*3/4-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
-		if (this.getMousePosition() != null) {
-			int mouseX = this.getMousePosition().x;
-			int mouseY = this.getMousePosition().y;
+		Point mousePosition = this.getMousePosition();
+		if (mousePosition != null) {
+			int mouseX = mousePosition.x;
+			int mouseY = mousePosition.y;
 			
 			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE/4) < buttonSizeY/2) {
 				g2d.setColor(new Color(255, 255, 255, 100));
@@ -375,6 +384,34 @@ public class GamePanel extends JPanel {
 		g2d.setColor(Color.black);
 		g2d.setStroke(new BasicStroke(3));
 		g2d.drawRoundRect(Main.SIZE*3/4 + 70, 10, 100, 30, 5, 5);
+		
+		//COINS COINS COINS COINS COINS COINS COINS COINS COINS COINS
+		
+		if (coins != targetCoins) {
+			//smooth movement
+			if (coins > targetCoins + 100) coins -= 9;
+			else if (coins > targetCoins + 20) coins -= 3;
+			else if (coins > targetCoins) coins--;
+			else if (coins < targetCoins - 100) coins += 9;
+			else if (coins < targetCoins - 20) coins += 3;
+			else if (coins < targetCoins) coins++;
+		}
+		
+		int diff = Main.SIZE*3/5;
+		
+		g2d.setColor(GameObject.COLOR_GOLD);
+		g2d.setColor(new Color(200,200,200));
+		g2d.fillRoundRect(diff+50,10,80,30,5,5);
+		g2d.drawImage(coinImage, diff+5, 10, 30, 30, null);
+		g2d.setColor(Color.BLACK);
+		g2d.drawRoundRect(diff+50,10,80,30,5,5);
+		
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, 20);
+		g2d.setFont(font);
+		g2d.setColor(Color.BLACK);
+		int coinTextWidth = g2d.getFontMetrics(font).stringWidth(coins+"");
+		int coinTextHeight = g2d.getFontMetrics(font).getHeight();
+		g2d.drawString(coins+"", diff+90-(coinTextWidth/2), 31);
 		
 		//POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS 
 		g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 11));
@@ -540,6 +577,8 @@ public class GamePanel extends JPanel {
 			
 			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0) GamePanel.restartLevel(level);
 			
+			if (e.getKeyCode() == KeyEvent.VK_X) targetCoins = 1000;
+			
 		}
 
 		@Override
@@ -582,11 +621,14 @@ public class GamePanel extends JPanel {
 	
 	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
 	
-	public static BufferedImage healthImage, densityImage, attackSpeedImage, strengthImage, fireResistanceImage,
-	overhealImage, jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, marksmanImage;
+	public static BufferedImage healthImage, coinImage, gemImage,
+	densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
+	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, marksmanImage;
 	public void loadImages() {
 		try {
 			healthImage = ImageIO.read(this.getClass().getResource("/gui/health.png"));
+			coinImage = ImageIO.read(this.getClass().getResource("/gui/goldcoin.png"));
+			gemImage = ImageIO.read(this.getClass().getResource("/gui/gem.png"));
 			
 			densityImage = ImageIO.read(this.getClass().getResource("/powerups/density.png"));
 			attackSpeedImage = ImageIO.read(this.getClass().getResource("/powerups/attackspeed.png"));

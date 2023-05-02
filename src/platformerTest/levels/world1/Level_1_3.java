@@ -37,7 +37,7 @@ public class Level_1_3 extends Level {
 		this.spawnY = 200; //200
 		
 		this.reqs = new String[] {"Level_1_2"};
-
+		this.reward = 60;
 		this.name = "Entering Battle";
 		
 	}

@@ -6,11 +6,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +36,6 @@ public class MenuPanel extends JPanel {
 	
 	public static LevelWorld levelWorld;
 	public static Timer timer;
-	public Image lockImage;
 	
 	public MenuPanel(LevelWorld levelworld) {
 		worlds = new ArrayList<LevelWorld>();
@@ -47,8 +49,12 @@ public class MenuPanel extends JPanel {
 		this.setFocusable(true);
 		this.addMouseListener(new MenuMouse());
 		try {
-			this.lockImage = ImageIO.read(this.getClass().getResource("/gui/lock.png"));
+			this.lockImage = ImageIO.read(this.getClass().getResource("/gui/lock.png")); //lockimage
+			this.coinImage = ImageIO.read(this.getClass().getResource("/gui/goldcoin.png"));
+			this.gemImage = ImageIO.read(this.getClass().getResource("/gui/gem.png"));
 		} catch (Exception e) {}
+		
+		loadLevelImages();
 		
 		timer = new Timer(1000/30, new ActionListener() {
 			@Override
@@ -67,6 +73,8 @@ public class MenuPanel extends JPanel {
 	int[] levelSlotsY = new int[] {Main.SIZE/4-20, Main.SIZE/4-20, Main.SIZE/4-20,
 									Main.SIZE/2-20, Main.SIZE/2-20, Main.SIZE/2-20,
 									Main.SIZE*3/4-20, Main.SIZE*3/4-20, Main.SIZE*3/4-20};
+	
+	BufferedImage[] lvlImages = new BufferedImage[9];
 	
 	int buttonSizeX=200;
 	int buttonSizeY=50;
@@ -90,8 +98,7 @@ public class MenuPanel extends JPanel {
 				if (levelWorld.levels.size()-1 < i) break;
 				Level level = levelWorld.levels.get(i);
 				String lvlName = level.getClass().getSimpleName().substring(6);
-				BufferedImage image = ImageIO.read(this.getClass().getResource("/levels/"+lvlName+".png"));
-				g2d.drawImage(image, levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR, null);
+				g2d.drawImage(lvlImages[i], levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR, null);
 				
 				if (DataManager.saveData.completedLevels.containsKey(level.getClass().getSimpleName())) {
 					int completions = DataManager.saveData.completedLevels.get(level.getClass().getSimpleName());
@@ -169,9 +176,10 @@ public class MenuPanel extends JPanel {
 		
 		
 		//now check mouse
-		if (this.getMousePosition() != null) {
-			int mouseX = this.getMousePosition().x;
-			int mouseY = this.getMousePosition().y;
+		Point mousePosition = this.getMousePosition();
+		if (mousePosition != null) {
+			int mouseX = mousePosition.x;
+			int mouseY = mousePosition.y;
 			
 			for (int i=0; i<9; i++) {
 				if (Math.abs(mouseX - levelSlotsX[i]) < imgR && Math.abs(mouseY - levelSlotsY[i]) < imgR) {
@@ -215,6 +223,73 @@ public class MenuPanel extends JPanel {
 			
 		}
 		
+		//draw coin counter & gem counter
+		DecimalFormat df = new DecimalFormat("#");
+		df.setMaximumFractionDigits(3);
+		
+		BigDecimal coins = BigDecimal.valueOf(DataManager.saveData.coins);
+		String coinText;
+		if (coins.compareTo(BigDecimal.valueOf(1_000_000_000_000_000_000L)) == 1) {
+			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000_000_000_000L))) + "♚";} //Quintillion
+		else if (coins.compareTo(BigDecimal.valueOf(1_000_000_000_000_000L)) == 1) {
+			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000_000_000L))) + "Q";} //Quadrillion
+		else if (coins.compareTo(BigDecimal.valueOf(1_000_000_000_000L)) == 1) {
+			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000_000L))) + "T";} //Trillion
+		else if (coins.compareTo(BigDecimal.valueOf(1_000_000_000L)) == 1) {
+			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000L))) + "B";} //Billion
+		else if (coins.compareTo(BigDecimal.valueOf(1_000_000L)) == 1) {
+			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000L))) + "M";} //Million
+		else if (coins.compareTo(BigDecimal.valueOf(1_000L)) == 1) {
+			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000L))) + "T";} //Thousand
+		else coinText = df.format(coins);
+		
+		BigDecimal gems = BigDecimal.valueOf(0);
+		gems = BigDecimal.valueOf(0);
+		String gemText;
+		if (gems.compareTo(BigDecimal.valueOf(1_000_000_000_000_000_000L)) == 1) {
+			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000_000_000_000L))) + "♚";} //Quintillion
+		else if (gems.compareTo(BigDecimal.valueOf(1_000_000_000_000_000L)) == 1) {
+			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000_000_000L))) + "Q";} //Quadrillion
+		else if (gems.compareTo(BigDecimal.valueOf(1_000_000_000_000L)) == 1) {
+			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000_000L))) + "T";} //Trillion
+		else if (gems.compareTo(BigDecimal.valueOf(1_000_000_000L)) == 1) {
+			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000L))) + "B";} //Billion
+		else if (gems.compareTo(BigDecimal.valueOf(1_000_000L)) == 1) {
+			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000L))) + "M";} //Million
+		else if (gems.compareTo(BigDecimal.valueOf(1_000L)) == 1) {
+			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000L))) + "T";} //Thousand
+		else gemText = df.format(gems);
+		
+		g2d.setColor(GameObject.COLOR_GOLD);
+		g2d.fillRoundRect(13, 13, 20, 34, 5, 5);
+		g2d.fillRect(19, 13, 28, 34);
+		g2d.setColor(new Color(30,30,30));
+		g2d.fillRect(47,13,70,34);
+		g2d.fillRoundRect(65,13,80,34,5,5);
+		g2d.drawImage(coinImage, 15, 15, 30, 30, null);
+		
+		int diff = Main.SIZE*11/14;
+		g2d.setColor(Color.CYAN);
+		g2d.fillRoundRect(13+diff, 13, 20, 34, 5, 5);
+		g2d.fillRect(19+diff, 13, 28, 34);
+		g2d.setColor(new Color(30,30,30));
+		g2d.fillRect(47+diff,13,70,34);
+		g2d.fillRoundRect(65+diff,13,80,34,5,5);
+		g2d.drawImage(gemImage, 15+diff, 15, 30, 30, null);
+		
+		g2d.setColor(Color.WHITE);
+		font = new Font(Font.MONOSPACED, Font.BOLD, 15);
+		g2d.setFont(font);
+		g2d.setColor(Color.WHITE);
+		
+		int coinTextWidth = g2d.getFontMetrics(font).stringWidth(coinText);
+		int coinTextHeight = g2d.getFontMetrics(font).getHeight();
+		g2d.drawString(coinText, 97-(coinTextWidth/2), 35);
+		
+		int gemTextWidth = g2d.getFontMetrics(font).stringWidth(gemText);
+		int gemTextHeight = g2d.getFontMetrics(font).getHeight();
+		g2d.drawString(gemText, 97+diff-(gemTextWidth/2), 35);
+		
 	}
 	
 	public class MenuMouse extends MouseAdapter {
@@ -246,6 +321,21 @@ public class MenuPanel extends JPanel {
 			}
 			
 		}
+	}
+	
+	public Image lockImage, coinImage, gemImage;
+	
+	public void loadLevelImages() {
+		try {
+			for (int i=0; i<9; i++) {
+				if (levelWorld.levels.size()-1 < i) break;
+				
+				Level level = levelWorld.levels.get(i);
+				String lvlName = level.getClass().getSimpleName().substring(6);
+				lvlImages[i] = ImageIO.read(this.getClass().getResource("/levels/"+lvlName+".png"));
+				
+			}
+		} catch (Exception e) {}
 	}
 	
 }
