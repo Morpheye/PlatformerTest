@@ -3,7 +3,7 @@ package platformerTest.assets.creature.ai.attack;
 import java.util.ArrayList;
 
 import platformerTest.assets.creature.ai.AttackAi;
-import platformerTest.game.Creature;
+import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.game.GameObject;
 
 /**

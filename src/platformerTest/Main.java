@@ -20,7 +20,6 @@ public class Main {
 		
 		//start the app up
 		jframe = new ApplicationFrame();
-
 	}
 	
 

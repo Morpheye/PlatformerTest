@@ -1,4 +1,4 @@
-package platformerTest.game;
+package platformerTest.assets.creature.creatures;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import platformerTest.Main;
 import platformerTest.assets.LiquidPlatform;
 import platformerTest.assets.creature.CreatureAi;
+import platformerTest.game.GameObject;
+import platformerTest.game.MovableObject;
+import platformerTest.game.ObjType;
+import platformerTest.game.Player;
 import platformerTest.menu.GamePanel;
 
 public class Creature extends MovableObject {
@@ -112,6 +116,8 @@ public class Creature extends MovableObject {
 			}
 		}
 		
+		if (this.vy > 0) this.inAir = true;
+		
 		if (movingInLiquid) {
 			double slowdown = 1;
 			double diff = this.density - liquidDensity;
@@ -163,17 +169,18 @@ public class Creature extends MovableObject {
 	
 	@Override
 	public void draw(Graphics g, Player player, double x, double y, double size) {
+		int alpha = (this.timeSinceDeath > 25) ? 0 : 255 - (this.timeSinceDeath * 10);
 		int drawX = (int) ( (this.x - (this.size_x)/2 - (x - size/2)) * (Main.SIZE/size));
 		int drawY = (int) ( (size - (this.y + (this.size_y)/2) + (y - size/2)) * (Main.SIZE/size));
 		
 		if (this.required) {
-			g.setColor(new Color(255, 255, 255, 150-(2*this.timeSinceDeath)));
+			g.setColor(new Color(255, 255, 255, alpha));
 			g.fillRoundRect(drawX-1, drawY-1, (int) (this.size_x * Main.SIZE/size)+2, (int) (this.size_y * Main.SIZE/size)+2, 
 					(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
 		}
 		
 		
-		g.setColor(new Color(this.color.getRed(),this.color.getGreen(),this.color.getBlue(),255-(4*this.timeSinceDeath)));
+		g.setColor(new Color(this.color.getRed(),this.color.getGreen(),this.color.getBlue(), alpha));
 		g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
 				(int)(5*(Main.SIZE/size)), (int)(5*(Main.SIZE/size)));
 		
@@ -188,7 +195,7 @@ public class Creature extends MovableObject {
 		//eyes
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setStroke(new BasicStroke((float)(4*(Main.SIZE/size))));
-		g2d.setColor(new Color(this.eyeColor.getRed(),this.eyeColor.getGreen(),this.eyeColor.getBlue(),255-(4*this.timeSinceDeath)));
+		g2d.setColor(new Color(this.eyeColor.getRed(),this.eyeColor.getGreen(),this.eyeColor.getBlue(), alpha));
 		int x1, x2;
 		if (this.lastDirection == 1) {
 			x1 = (int) (drawX+(this.size_x*(Main.SIZE/size)*2/5));
@@ -207,9 +214,9 @@ public class Creature extends MovableObject {
 		drawX = (int) ( (this.x - (this.size_x)/2 - (x - size/2)) * (Main.SIZE/size)); 
 		drawY = (int) ( (size - (this.y + (this.size_y)/2) + (y - size/2) - 10) * (Main.SIZE/size));
 		
-		g.setColor(new Color(0,0,0,255-(4*this.timeSinceDeath)));
+		g.setColor(new Color(0,0,0,alpha));
 		g.fillRect(drawX, drawY, (int) (this.size_y * Main.SIZE/size), (int)(5*(Main.SIZE/size)));
-		g.setColor(new Color(255,0,0,255-(4*this.timeSinceDeath)));
+		g.setColor(new Color(255,0,0,alpha));
 		g.fillRect(drawX, drawY, (int) (this.size_y * ((double) this.health/this.maxHealth) * Main.SIZE/size), (int)(5*(Main.SIZE/size)));
 		
 		if (this.overheal != 0) {
@@ -239,7 +246,13 @@ public class Creature extends MovableObject {
 		else if (damage > 5 & this.dmgTime < 175) this.dmgTime = 175;
 		else if (this.dmgTime < 100) this.dmgTime = 100;
 		
-		if (this.health <= 0) this.die();
+		if (this.health <= 0 && this.isAlive) {
+			this.die();
+			if (source.equals(GamePanel.player)) {
+				this.dropLoot();
+			}
+			
+		}
 	}
 	
 	public void attack() {
@@ -322,6 +335,10 @@ public class Creature extends MovableObject {
 			this.isAlive = false;
 			this.exists = false;
 		}
+	}
+	
+	public void dropLoot() {
+		
 	}
 	
 

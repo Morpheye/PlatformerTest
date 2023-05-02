@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import platformerTest.assets.Projectile;
 import platformerTest.assets.creature.ai.AttackAi;
+import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.assets.projectiles.ProjectileDart;
-import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
 import platformerTest.menu.GamePanel;
 

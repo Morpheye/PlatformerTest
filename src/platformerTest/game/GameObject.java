@@ -37,7 +37,7 @@ public class GameObject {
 	}
 	
 	public void move() {
-		
+
 		
 	}
 	

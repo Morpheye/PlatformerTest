@@ -26,10 +26,10 @@ import javax.swing.Timer;
 
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
+import platformerTest.assets.creature.creatures.Creature;
+import platformerTest.assets.decoration.particles.CoinParticle;
 import platformerTest.assets.triggers.Powerup;
-import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
-import platformerTest.game.MovableObject;
 import platformerTest.game.ObjType;
 import platformerTest.game.Player;
 import platformerTest.levels.Level;
@@ -44,6 +44,7 @@ public class GamePanel extends JPanel {
 	public static double gravity;
 	public static List<GameObject> objects;
 	public static List<GameObject> projectiles;
+	public static List<GameObject> particles;
 	public static List<GameObject> deletedObjects;
 	
 	public static double camera_x;
@@ -76,7 +77,7 @@ public class GamePanel extends JPanel {
 		coins = 0;
 		restartLevel(level);
 		
-		timer = new Timer(1000/120, new ActionListener() {
+		timer = new Timer(1000/90, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
@@ -98,6 +99,7 @@ public class GamePanel extends JPanel {
 		deletedObjects = new ArrayList<GameObject>();
 		flashes = new HashMap<Color,Integer>();
 		projectiles = new ArrayList<GameObject>();
+		particles = new ArrayList<GameObject>();
 		
 		displayText = null;
 		textDuration = 0;
@@ -159,7 +161,9 @@ public class GamePanel extends JPanel {
 		}
 		
 		for (GameObject obj : projectiles) objects.add(obj);
+		for (GameObject obj : particles) objects.add(obj);
 		projectiles.clear();
+		particles.clear();
 		
 		deletedObjects.clear();
 		
@@ -389,11 +393,15 @@ public class GamePanel extends JPanel {
 		
 		if (coins != targetCoins) {
 			//smooth movement
-			if (coins > targetCoins + 100) coins -= 9;
-			else if (coins > targetCoins + 20) coins -= 3;
+			if (coins > targetCoins + 2500) coins -= 189;
+			if (coins > targetCoins + 500) coins -= 63;
+			if (coins > targetCoins + 100) coins -= 21;
+			else if (coins > targetCoins + 20) coins -= 7;
 			else if (coins > targetCoins) coins--;
-			else if (coins < targetCoins - 100) coins += 9;
-			else if (coins < targetCoins - 20) coins += 3;
+			else if (coins < targetCoins - 2500) coins += 189;
+			else if (coins < targetCoins - 500) coins += 63;
+			else if (coins < targetCoins - 100) coins += 21;
+			else if (coins < targetCoins - 20) coins += 7;
 			else if (coins < targetCoins) coins++;
 		}
 		
@@ -402,7 +410,7 @@ public class GamePanel extends JPanel {
 		g2d.setColor(GameObject.COLOR_GOLD);
 		g2d.setColor(new Color(200,200,200));
 		g2d.fillRoundRect(diff+50,10,80,30,5,5);
-		g2d.drawImage(coinImage, diff+5, 10, 30, 30, null);
+		g2d.drawImage(goldCoinImage, diff+5, 10, 30, 30, null);
 		g2d.setColor(Color.BLACK);
 		g2d.drawRoundRect(diff+50,10,80,30,5,5);
 		
@@ -577,8 +585,6 @@ public class GamePanel extends JPanel {
 			
 			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0) GamePanel.restartLevel(level);
 			
-			if (e.getKeyCode() == KeyEvent.VK_X) targetCoins = 1000;
-			
 		}
 
 		@Override
@@ -621,13 +627,15 @@ public class GamePanel extends JPanel {
 	
 	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
 	
-	public static BufferedImage healthImage, coinImage, gemImage,
+	public static BufferedImage healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
 	densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
 	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, marksmanImage;
 	public void loadImages() {
 		try {
 			healthImage = ImageIO.read(this.getClass().getResource("/gui/health.png"));
-			coinImage = ImageIO.read(this.getClass().getResource("/gui/goldcoin.png"));
+			copperCoinImage = ImageIO.read(this.getClass().getResource("/gui/coppercoin.png"));
+			silverCoinImage = ImageIO.read(this.getClass().getResource("/gui/silvercoin.png"));
+			goldCoinImage = ImageIO.read(this.getClass().getResource("/gui/goldcoin.png"));
 			gemImage = ImageIO.read(this.getClass().getResource("/gui/gem.png"));
 			
 			densityImage = ImageIO.read(this.getClass().getResource("/powerups/density.png"));

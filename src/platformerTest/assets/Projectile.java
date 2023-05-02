@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import platformerTest.Main;
-import platformerTest.game.Creature;
+import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.game.GameObject;
 import platformerTest.game.MovableObject;
 import platformerTest.game.ObjType;

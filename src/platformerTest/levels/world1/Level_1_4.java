@@ -9,8 +9,11 @@ import java.util.List;
 
 import platformerTest.Main;
 import platformerTest.assets.SolidPlatform;
-import platformerTest.assets.creature.creatures.CreatureZombie;
+import platformerTest.assets.creature.creatures.Creature;
+import platformerTest.assets.creature.creatures.zombie.CreatureBabyZombie;
+import platformerTest.assets.creature.creatures.zombie.CreatureZombie;
 import platformerTest.assets.decoration.objects.Gravestone;
+import platformerTest.assets.decoration.particles.CoinParticle;
 import platformerTest.assets.decoration.walls.SolidBackgroundObject;
 import platformerTest.assets.interactables.FinishFlag;
 import platformerTest.assets.liquidPlatforms.WaterPlatform;
@@ -21,7 +24,6 @@ import platformerTest.assets.pushableObjects.PushableBox;
 import platformerTest.assets.solidPlatforms.GrassPlatform;
 import platformerTest.assets.solidPlatforms.WoodPlatform;
 import platformerTest.assets.triggers.TextDisplayTrigger;
-import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
 import platformerTest.levels.Level;
 import platformerTest.menu.GamePanel;
@@ -110,9 +112,7 @@ public class Level_1_4 extends Level {
 
 		objects.add(new GrassPlatform(1200, 150, 400, 100));
 		objects.add(new CreatureZombie(1350, 250, 40, 30, 30, 400));
-		CreatureZombie babyZombie = new CreatureZombie(1300, 250, 30, 20, 30, 400); //baby zombie
-		babyZombie.movementSpeed = 0.135;
-		objects.add(babyZombie);
+		objects.add(new CreatureBabyZombie(1300, 250, 20, 30, 400));
 		
 		//locked gate
 		objects.add(new TextDisplayTrigger(1650,300,100,100,"Enemies requiring killing will glow.",300));
@@ -155,9 +155,7 @@ public class Level_1_4 extends Level {
 		gatekeeper2.overheal = 30;
 		gatekeeper2.required = true;
 		objects.add(gatekeeper2);
-		CreatureZombie babyZombie2 = new CreatureZombie(5950, 400, 30, 20, 30, 400); //baby zombie
-		babyZombie2.movementSpeed = 0.135;
-		objects.add(babyZombie2);
+		objects.add(new CreatureBabyZombie(5950, 400, 20, 30, 400));
 		
 		objects.add(new GrassPlatform(6600, 300, 200, 200));
 		objects.add(new HealPowerup(6600, 450, 50));
@@ -168,7 +166,12 @@ public class Level_1_4 extends Level {
 		gate2 = new WoodPlatform(7500, 450, 50, 200);
 		objects.add(gate2);
 		objects.add(new GrassPlatform(7500, 650, 200, 200));
-		gatekeeper3 = new CreatureZombie(7200, 450, 50, 50, 30, 400);
+		gatekeeper3 = new CreatureZombie(7200, 450, 50, 50, 30, 400) { //big beefy zombie
+			@Override
+			public void dropLoot() { //3 drops totalling 3-6 coins
+				CoinParticle.spawnCoins(this.x, this.y, 3, 3+(int)(Math.random()*4));
+			}
+		};
 		gatekeeper3.required = true;
 		gatekeeper3.movementSpeed = 0.06;
 		gatekeeper3.attackKnockback = 3;
@@ -195,7 +198,12 @@ public class Level_1_4 extends Level {
 		objects.add(finalGate);
 		objects.add(new GrassPlatform(10900, 500, 200, 300));
 		objects.add(new GrassPlatform(10900, 950, 200, 200));
-		miniboss = new CreatureZombie(10600, 600, 100, 150, 40, 400);
+		miniboss = new CreatureZombie(10600, 600, 100, 150, 40, 400) {
+			@Override
+			public void dropLoot() { //5 drops totalling 5-15 coins
+				CoinParticle.spawnCoins(this.x, this.y, 5, 5+(int)(Math.random()*11));
+			}
+		};
 		miniboss.movementSpeed = 0.05;
 		miniboss.attackKnockback = 2;
 		miniboss.attackDamage = 10;

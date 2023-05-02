@@ -225,7 +225,7 @@ public class MenuPanel extends JPanel {
 		
 		//draw coin counter & gem counter
 		DecimalFormat df = new DecimalFormat("#");
-		df.setMaximumFractionDigits(3);
+		df.setMaximumFractionDigits(2);
 		
 		BigDecimal coins = BigDecimal.valueOf(DataManager.saveData.coins);
 		String coinText;
@@ -240,7 +240,7 @@ public class MenuPanel extends JPanel {
 		else if (coins.compareTo(BigDecimal.valueOf(1_000_000L)) == 1) {
 			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000L))) + "M";} //Million
 		else if (coins.compareTo(BigDecimal.valueOf(1_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000L))) + "T";} //Thousand
+			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000L))) + "k";} //Thousand
 		else coinText = df.format(coins);
 		
 		BigDecimal gems = BigDecimal.valueOf(0);
@@ -257,7 +257,7 @@ public class MenuPanel extends JPanel {
 		else if (gems.compareTo(BigDecimal.valueOf(1_000_000L)) == 1) {
 			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000L))) + "M";} //Million
 		else if (gems.compareTo(BigDecimal.valueOf(1_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000L))) + "T";} //Thousand
+			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000L))) + "k";} //Thousand
 		else gemText = df.format(gems);
 		
 		g2d.setColor(GameObject.COLOR_GOLD);

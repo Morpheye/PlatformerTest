@@ -1,4 +1,4 @@
-package platformerTest.assets.creature.creatures;
+package platformerTest.assets.creature.creatures.goblin;
 
 import java.awt.Color;
 
@@ -6,7 +6,8 @@ import platformerTest.assets.creature.ai.AttackAi;
 import platformerTest.assets.creature.ai.attack.NormalMovementAttackAi;
 import platformerTest.assets.creature.ai.horizontal.HorizontalFollowAi;
 import platformerTest.assets.creature.ai.vertical.VerticalFollowAi;
-import platformerTest.game.Creature;
+import platformerTest.assets.creature.creatures.Creature;
+import platformerTest.assets.decoration.particles.CoinParticle;
 import platformerTest.menu.GamePanel;
 
 public class CreatureGoblin extends Creature {
@@ -43,6 +44,13 @@ public class CreatureGoblin extends Creature {
 		this.aiList.add(new VerticalFollowAi(6, 100, 75, 200, minRangeX, maxRangeX, GamePanel.player));
 		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
 		//add projectilemovement
+	}
+	
+	@Override
+	public void dropLoot() { //1-2 drops totalling 1-6 coins
+		for (int i=0; i< 1 + (int)(Math.random() * 2); i++) {
+			GamePanel.particles.add(new CoinParticle(this.x, this.y, 1 + (int) (Math.random() * 3)));
+		}
 	}
 
 }

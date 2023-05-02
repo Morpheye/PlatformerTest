@@ -1,10 +1,11 @@
-package platformerTest.assets.creature.creatures;
+package platformerTest.assets.creature.creatures.zombie;
 
 import java.awt.Color;
 
 import platformerTest.assets.creature.ai.attack.NoVerticalMovementAttackAi;
 import platformerTest.assets.creature.ai.horizontal.HorizontalFollowAi;
-import platformerTest.game.Creature;
+import platformerTest.assets.creature.creatures.Creature;
+import platformerTest.assets.decoration.particles.CoinParticle;
 import platformerTest.menu.GamePanel;
 
 public class CreatureZombie extends Creature {
@@ -38,6 +39,13 @@ public class CreatureZombie extends Creature {
 		
 		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player));
 		this.aiList.add(new NoVerticalMovementAttackAi(this.attackRange/2, GamePanel.player));
+	}
+	
+	@Override
+	public void dropLoot() { //1-3 drops totalling 1-6 coins
+		for (int i=0; i< 1 + (int)(Math.random() * 3); i++) {
+			GamePanel.particles.add(new CoinParticle(this.x, this.y, 1 + (int) (Math.random() * 2)));
+		}
 	}
 
 }

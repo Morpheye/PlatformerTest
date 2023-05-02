@@ -1,5 +1,5 @@
 package platformerTest.assets.creature;
-import platformerTest.game.Creature;
+import platformerTest.assets.creature.creatures.Creature;
 
 public class CreatureAi {
 

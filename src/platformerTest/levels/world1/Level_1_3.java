@@ -7,9 +7,10 @@ import platformerTest.Main;
 import platformerTest.assets.creature.CreatureAi;
 import platformerTest.assets.creature.ai.HorizontalMovementAi;
 import platformerTest.assets.creature.ai.vertical.VerticalFollowAi;
-import platformerTest.assets.creature.creatures.CreatureDartGoblin;
-import platformerTest.assets.creature.creatures.CreatureGoblin;
-import platformerTest.assets.creature.creatures.CreatureZombie;
+import platformerTest.assets.creature.creatures.Creature;
+import platformerTest.assets.creature.creatures.goblin.CreatureDartGoblin;
+import platformerTest.assets.creature.creatures.goblin.CreatureGoblin;
+import platformerTest.assets.creature.creatures.zombie.CreatureZombie;
 import platformerTest.assets.decoration.walls.FadingWallObject;
 import platformerTest.assets.decoration.walls.SolidBackgroundObject;
 import platformerTest.assets.interactables.FinishFlag;
@@ -23,7 +24,6 @@ import platformerTest.assets.solidPlatforms.StonePlatform;
 import platformerTest.assets.solidPlatforms.WoodPlatform;
 import platformerTest.assets.triggers.Code;
 import platformerTest.assets.triggers.TextDisplayTrigger;
-import platformerTest.game.Creature;
 import platformerTest.game.GameObject;
 import platformerTest.levels.Level;
 import platformerTest.menu.GamePanel;
@@ -80,11 +80,11 @@ public class Level_1_3 extends Level {
 		objects.add(new TextDisplayTrigger(900, 300, 50, 50, "Health regenerates slowly, power-ups are faster.", 300));
 		
 		//bridge platform
-		objects.add(new CreatureZombie(1500, 350, 40, 30, 20, 400));
-		objects.add(new CreatureZombie(1700, 350, 40, 30, 20, 400));
 		objects.add(new StonePlatform(1300, 250, 200, 200));
 		objects.add(new WoodPlatform(1600, 325, 400, 50));
 		objects.add(new StonePlatform(1900, 250, 200, 200));
+		objects.add(new CreatureZombie(1500, 350, 40, 30, 20, 400));
+		objects.add(new CreatureZombie(1700, 350, 40, 30, 20, 400));
 		
 		//fading mountain
 		objects.add(new TextDisplayTrigger(2350, 500, 100, 100, "This wall is fake.", 300));

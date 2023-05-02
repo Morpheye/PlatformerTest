@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import platformerTest.Main;
 import platformerTest.assets.LiquidPlatform;
 import platformerTest.assets.Trigger;
+import platformerTest.assets.creature.creatures.Creature;
+import platformerTest.assets.decoration.particles.CoinParticle;
 import platformerTest.assets.triggers.Powerup;
 import platformerTest.menu.GamePanel;
 
@@ -102,7 +104,7 @@ public class Player extends MovableObject {
 			//finish flag
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0 && obj.exists) {
 				GamePanel.levelWon=1;
-				GamePanel.targetCoins += GamePanel.level.reward;
+				CoinParticle.spawnCoins(this.x, this.y, 5+(int)(Math.random() * 6), GamePanel.level.reward);
 			}
 			//powerup
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.Powerup) && GamePanel.levelWon==0 && obj.exists) {
@@ -120,6 +122,8 @@ public class Player extends MovableObject {
 				this.liquidDensity = ((LiquidPlatform) obj).density;
 			}
 		}
+		
+		if (this.vy > 0) this.inAir = true;
 		
 		if (movingInLiquid) {
 			double slowdown = 1;

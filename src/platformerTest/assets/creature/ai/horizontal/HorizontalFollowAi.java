@@ -1,7 +1,7 @@
 package platformerTest.assets.creature.ai.horizontal;
 
 import platformerTest.assets.creature.ai.HorizontalMovementAi;
-import platformerTest.game.Creature;
+import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.game.GameObject;
 import platformerTest.menu.GamePanel;
 

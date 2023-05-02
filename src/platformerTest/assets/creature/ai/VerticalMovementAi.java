@@ -1,7 +1,7 @@
 package platformerTest.assets.creature.ai;
 
 import platformerTest.assets.creature.CreatureAi;
-import platformerTest.game.Creature;
+import platformerTest.assets.creature.creatures.Creature;
 
 /**
  * Base AI for only vertical movement following a point. Do not use.

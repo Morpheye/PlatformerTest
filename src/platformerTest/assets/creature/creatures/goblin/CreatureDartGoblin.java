@@ -1,4 +1,4 @@
-package platformerTest.assets.creature.creatures;
+package platformerTest.assets.creature.creatures.goblin;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -13,6 +13,7 @@ import platformerTest.assets.creature.ai.attack.NormalMovementAttackAi;
 import platformerTest.assets.creature.ai.attack.ProjectileAttack;
 import platformerTest.assets.creature.ai.horizontal.HorizontalFollowAi;
 import platformerTest.assets.creature.ai.vertical.VerticalFollowAi;
+import platformerTest.assets.decoration.particles.CoinParticle;
 import platformerTest.assets.projectiles.ProjectileDart;
 import platformerTest.game.GameObject;
 import platformerTest.game.Player;
@@ -110,6 +111,15 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		g2d.setColor(Color.BLACK);
 		g2d.drawLine(x3, y3, x3, y3);
 		
+	}
+	
+	@Override
+	public void dropLoot() { //2-3 drops totalling 6-11 coins, guaranteed 1 silver coin drop
+		GamePanel.particles.add(new CoinParticle(this.x, this.y, 5));
+		
+		for (int i=0; i< 1 + (int)(Math.random() * 2); i++) {
+			GamePanel.particles.add(new CoinParticle(this.x, this.y, 1 + (int) (Math.random() * 3)));
+		}
 	}
 	
 
