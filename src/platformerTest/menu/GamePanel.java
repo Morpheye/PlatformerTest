@@ -28,6 +28,7 @@ import platformerTest.Main;
 import platformerTest.appdata.DataManager;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.assets.decoration.particles.CoinParticle;
+import platformerTest.assets.decoration.particles.GemParticle;
 import platformerTest.assets.triggers.Powerup;
 import platformerTest.game.GameObject;
 import platformerTest.game.ObjType;
@@ -381,7 +382,7 @@ public class GamePanel extends JPanel {
 		if (player.overheal > 100) {
 			int gigaHeal = player.overheal-100;
 			if (gigaHeal > 100) gigaHeal = 100;
-			g2d.setColor(Color.CYAN);
+			g2d.setColor(GameObject.COLOR_DIAMOND);
 			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, gigaHeal, 30, 5, 5);
 		}
 			
@@ -467,7 +468,7 @@ public class GamePanel extends JPanel {
 			g2d.setColor(Powerup.COLOR_POWERUP_OVERHEAL);
 			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
 			g2d.drawImage(overhealImage, powerupX[i], powerupY[i], 22, 22, null);
-			g2d.setColor((player.overheal>100) ? Color.cyan : new Color(230,230,0));
+			g2d.setColor((player.overheal>100) ? GameObject.COLOR_DIAMOND : new Color(230,230,0));
 			g2d.drawString(""+player.overheal, powerupX[i]+23, powerupY[i]+15);
 			i++;}
 		//jump boost
@@ -501,14 +502,6 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(punchImage, powerupX[i], powerupY[i], 22, 22, null);
 			g2d.setColor((player.attackKnockback>2) ? Color.green : Color.red);
 			g2d.drawString("x"+df.format(player.attackKnockback/2), powerupX[i]+23, powerupY[i]+15);
-			i++;}
-		//marksman
-		if (player.rangedAttackDamage != 5) {
-			g2d.setColor(Powerup.COLOR_POWERUP_MARKSMAN);
-			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
-			g2d.drawImage(marksmanImage, powerupX[i], powerupY[i], 22, 22, null);
-			g2d.setColor((player.rangedAttackDamage>5) ? Color.green : Color.red);
-			g2d.drawString("x"+df.format(player.rangedAttackDamage/5), powerupX[i]+23, powerupY[i]+15);
 			i++;}
 
 	}
@@ -582,21 +575,16 @@ public class GamePanel extends JPanel {
 				player.movingRight = true; //D
 				player.lastDirection = 1;
 			}
-			
 			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0) GamePanel.restartLevel(level);
-			
 		}
 
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_SPACE) player.isAttacking = false;
 			if (e.getKeyCode() == KeyEvent.VK_W) player.movingUp = false; //W
-			if (e.getKeyCode() == KeyEvent.VK_A) player.movingLeft = false;
+			if (e.getKeyCode() == KeyEvent.VK_A) player.movingLeft = false; //A
 			if (e.getKeyCode() == KeyEvent.VK_S) player.movingDown = false; //S
-			if (e.getKeyCode() == KeyEvent.VK_D) player.movingRight = false;
-	
-
-			
+			if (e.getKeyCode() == KeyEvent.VK_D) player.movingRight = false; //D
 		}
 	}
 	
@@ -629,7 +617,7 @@ public class GamePanel extends JPanel {
 	
 	public static BufferedImage healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
 	densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
-	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, marksmanImage;
+	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage;
 	public void loadImages() {
 		try {
 			healthImage = ImageIO.read(this.getClass().getResource("/gui/health.png"));
@@ -647,7 +635,6 @@ public class GamePanel extends JPanel {
 			cameraSizeImage = ImageIO.read(this.getClass().getResource("/powerups/camerasize.png"));
 			swiftnessImage = ImageIO.read(this.getClass().getResource("/powerups/swiftness.png"));
 			punchImage = ImageIO.read(this.getClass().getResource("/powerups/punch.png"));
-			marksmanImage = ImageIO.read(this.getClass().getResource("/powerups/marksman.png"));
 
 		} catch (Exception e) {e.printStackTrace();}
 	}

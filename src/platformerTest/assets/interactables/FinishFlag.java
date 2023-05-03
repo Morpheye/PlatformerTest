@@ -29,6 +29,22 @@ public class FinishFlag extends DecorationObject {
 	}
 	
 	@Override
+	public void move() {
+		this.flag.vx = this.vx;
+		this.flag.vy = this.vy;
+		this.pole.vx = this.vx;
+		this.pole.vy = this.vy;
+		
+		this.flag.x += this.flag.vx;
+		this.flag.y += this.flag.vy;
+		this.pole.x += this.pole.vx;
+		this.pole.y += this.pole.vy;
+		
+		this.x += this.vx;
+		this.y += this.vy;
+	}
+	
+	@Override
 	public void draw(Graphics g, Player player, double cam_x, double cam_y, double size) {
 		
 		if (!(this.size_y > this.size_x)) return;

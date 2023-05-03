@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -69,9 +70,11 @@ public class MainPanel extends JPanel {
 		g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*2/3-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		//Mouse
-		if (this.getMousePosition() != null) {
-			int mouseX = this.getMousePosition().x;
-			int mouseY = this.getMousePosition().y;
+		Point mousePosition = this.getMousePosition();
+		
+		if (mousePosition != null) {
+			int mouseX = mousePosition.x;
+			int mouseY = mousePosition.y;
 			
 			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE/3) < buttonSizeY/2) {
 				g2d.setColor(new Color(255, 255, 255, 100));

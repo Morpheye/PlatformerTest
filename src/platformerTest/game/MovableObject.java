@@ -111,7 +111,6 @@ public class MovableObject extends GameObject {
 			if (!this.exists) continue;
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
-				System.out.println("ass");	
 		}}
 		
 		this.x += vx; //move the object

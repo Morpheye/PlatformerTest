@@ -109,7 +109,7 @@ public class MenuPanel extends JPanel {
 					} else if (completions < 20) {
 						g2d.setColor(GameObject.COLOR_GOLD);
 					} else {
-						g2d.setColor(Color.CYAN);
+						g2d.setColor(GameObject.COLOR_DIAMOND);
 					}
 				} else {
 					g2d.setColor(Color.WHITE);
@@ -200,7 +200,7 @@ public class MenuPanel extends JPanel {
 						} else if (completions < 20) {
 							g2d.setColor(GameObject.COLOR_GOLD);
 						} else {
-							g2d.setColor(Color.CYAN);
+							g2d.setColor(GameObject.COLOR_DIAMOND);
 						}
 					} else {
 						g2d.setColor(Color.WHITE);
@@ -243,8 +243,7 @@ public class MenuPanel extends JPanel {
 			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000L))) + "k";} //Thousand
 		else coinText = df.format(coins);
 		
-		BigDecimal gems = BigDecimal.valueOf(0);
-		gems = BigDecimal.valueOf(0);
+		BigDecimal gems = BigDecimal.valueOf(DataManager.saveData.gems);
 		String gemText;
 		if (gems.compareTo(BigDecimal.valueOf(1_000_000_000_000_000_000L)) == 1) {
 			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000_000_000_000L))) + "♚";} //Quintillion
@@ -269,7 +268,7 @@ public class MenuPanel extends JPanel {
 		g2d.drawImage(coinImage, 15, 15, 30, 30, null);
 		
 		int diff = Main.SIZE*11/14;
-		g2d.setColor(Color.CYAN);
+		g2d.setColor(GameObject.COLOR_DIAMOND);
 		g2d.fillRoundRect(13+diff, 13, 20, 34, 5, 5);
 		g2d.fillRect(19+diff, 13, 28, 34);
 		g2d.setColor(new Color(30,30,30));

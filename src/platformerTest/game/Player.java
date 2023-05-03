@@ -152,8 +152,8 @@ public class Player extends MovableObject {
 		if (this.timeSinceDeath > 120 && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		
 		//hp shenanigans
-		if (timeSinceDamaged >= 1320) {
-			this.timeSinceDamaged -= 120;
+		if (timeSinceDamaged >= 450) {
+			this.timeSinceDamaged -= 180;
 			if (this.health < 100) this.health++;
 		}
 		this.timeSinceDamaged++;

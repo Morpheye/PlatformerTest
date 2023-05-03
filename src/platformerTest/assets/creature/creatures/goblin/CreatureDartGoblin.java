@@ -14,6 +14,7 @@ import platformerTest.assets.creature.ai.attack.ProjectileAttack;
 import platformerTest.assets.creature.ai.horizontal.HorizontalFollowAi;
 import platformerTest.assets.creature.ai.vertical.VerticalFollowAi;
 import platformerTest.assets.decoration.particles.CoinParticle;
+import platformerTest.assets.decoration.particles.GemParticle;
 import platformerTest.assets.projectiles.ProjectileDart;
 import platformerTest.game.GameObject;
 import platformerTest.game.Player;
@@ -40,12 +41,12 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		this.projectileRange = projectileRange;
 		this.health = 30;
 		this.maxHealth = 30;
-		this.rangedAttackDamage = 3;
+		this.rangedAttackDamage = 2;
 		
 		this.aiList = new ArrayList<CreatureAi>();
-		this.aiList.add(new VerticalFollowAi(minRange, maxRange, 50, 100, 50, 100, GamePanel.player)); //jumps to shoot at player
+		this.aiList.add(new VerticalFollowAi(minRange, maxRange, 50, 150, 50, 150, GamePanel.player)); //jumps to shoot at player
 		this.aiList.add(new HorizontalMovementAi(this.x, 40, Double.MAX_VALUE)); //tries to return to original spot
-		this.aiList.add(new ProjectileAttack(maxRange, 10, GamePanel.player));
+		this.aiList.add(new ProjectileAttack(projectileRange, 10, GamePanel.player));
 		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
 	}
 	
@@ -59,11 +60,11 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		this.projectileRange = projectileRange;
 		this.health = 30;
 		this.maxHealth = 30;
-		this.rangedAttackDamage = 3;
+		this.rangedAttackDamage = 2;
 		
 		this.aiList = new ArrayList<CreatureAi>();
 		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, minRangeY, maxRangeY, GamePanel.player)); //jumps to shoot at player
-		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player)); //follow player
+		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, 0, maxRangeY, GamePanel.player)); //follow player
 		this.aiList.add(new ProjectileAttack(maxRangeX, 10, GamePanel.player));
 		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
 	}
@@ -117,9 +118,10 @@ public class CreatureDartGoblin extends CreatureGoblin {
 	public void dropLoot() { //2-3 drops totalling 6-11 coins, guaranteed 1 silver coin drop
 		GamePanel.particles.add(new CoinParticle(this.x, this.y, 5));
 		
-		for (int i=0; i< 1 + (int)(Math.random() * 2); i++) {
-			GamePanel.particles.add(new CoinParticle(this.x, this.y, 1 + (int) (Math.random() * 3)));
-		}
+		int amount = 1 + (int) (Math.random()*2);
+		CoinParticle.spawnCoins(this.x, this.y, amount, amount+(int)(Math.random()*(2*amount+1)));
+		
+		if (Math.random() > 0.995) GemParticle.spawnGem(this.x, this.y, 1); //0.5% chance of a gem
 	}
 	
 

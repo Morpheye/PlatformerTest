@@ -27,6 +27,22 @@ public class Gravestone extends DecorationObject {
 	}
 	
 	@Override
+	public void move() {
+		this.stone.vx = this.vx;
+		this.stone.vy = this.vy;
+		this.cross.vx = this.vx;
+		this.cross.vy = this.vy;
+		
+		this.stone.x += this.stone.vx;
+		this.stone.y += this.stone.vy;
+		this.cross.x += this.cross.vx;
+		this.cross.y += this.cross.vy;
+		
+		this.x += this.vx;
+		this.y += this.vy;
+	}
+	
+	@Override
 	public void draw(Graphics g, Player player, double cam_x, double cam_y, double size) {
 		Graphics2D g2d = (Graphics2D) g;
 		if (size_x > size_y) { 

@@ -8,6 +8,7 @@ import platformerTest.assets.creature.ai.horizontal.HorizontalFollowAi;
 import platformerTest.assets.creature.ai.vertical.VerticalFollowAi;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.assets.decoration.particles.CoinParticle;
+import platformerTest.assets.decoration.particles.GemParticle;
 import platformerTest.menu.GamePanel;
 
 public class CreatureGoblin extends Creature {
@@ -18,7 +19,7 @@ public class CreatureGoblin extends Creature {
 	* Create a goblin with unlimited range
 	*/
 	public CreatureGoblin(double initX, double initY, double size) {
-		this(initX, initY, size, 0, Double.MAX_VALUE);
+		this(initX, initY, size, 20, Double.MAX_VALUE);
 	}
 	
 	/**
@@ -29,7 +30,7 @@ public class CreatureGoblin extends Creature {
 		this.friendlyFire = false;
 		
 		this.aiList.add(new HorizontalFollowAi(minRange, maxRange, GamePanel.player));
-		this.aiList.add(new VerticalFollowAi(0, 200, GamePanel.player));
+		this.aiList.add(new VerticalFollowAi(75, 200, GamePanel.player));
 		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
 	}
 	
@@ -41,16 +42,16 @@ public class CreatureGoblin extends Creature {
 		this.friendlyFire = false;
 		
 		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player));
-		this.aiList.add(new VerticalFollowAi(6, 100, 75, 200, minRangeX, maxRangeX, GamePanel.player));
+		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, 75, maxRangeY, 0, maxRangeY, GamePanel.player));
 		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
 		//add projectilemovement
 	}
 	
 	@Override
-	public void dropLoot() { //1-2 drops totalling 1-6 coins
-		for (int i=0; i< 1 + (int)(Math.random() * 2); i++) {
-			GamePanel.particles.add(new CoinParticle(this.x, this.y, 1 + (int) (Math.random() * 3)));
-		}
+	public void dropLoot() { //3 drops totalling 3 coins
+		CoinParticle.spawnCoins(this.x, this.y, 3, 3);
+		
+		if (Math.random() > 0.9975) GemParticle.spawnGem(this.x, this.y, 1); //0.25% chance of a gem
 	}
 
 }

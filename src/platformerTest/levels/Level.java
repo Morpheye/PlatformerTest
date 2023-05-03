@@ -26,6 +26,7 @@ public class Level {
 		
 	}
 	
+	
 	public void drawPlatforms() {}
 	
 	public void onTick() {}
