@@ -117,6 +117,7 @@ public class GameObject {
 	public static final Color COLOR_SILVER = new Color(180, 180, 200);
 	public static final Color COLOR_GOLD = new Color(255, 215, 0);
 	public static final Color COLOR_DIAMOND = new Color(0,255,255);
+	public static final Color COLOR_CRIMSONADE = new Color(180, 0, 0);
 	
 	public static final Color COLOR_WATER = new Color(0, 50, 255, 100);
 	

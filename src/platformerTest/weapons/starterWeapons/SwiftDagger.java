@@ -18,6 +18,7 @@ public class SwiftDagger extends Weapon {
 			
 			this.size = 25;
 			this.name = "Swift Dagger";
+			this.tier = 1;
 			
 			this.stats = new String[]{"Attack speed +100%", "Attack Range -15%", "Attack Knockback -40%"}; //x2 dmg
 			this.statMap = new int[] {1, -1, -1};
@@ -25,11 +26,12 @@ public class SwiftDagger extends Weapon {
 			this.lore = "Inflicts painful damage on vulnerable enemies within a close distance, but lacks the reach of"
 					+ " many other weapons.";
 			
-			this.image = ImageIO.read(this.getClass().getResource("/weapons/SwiftDagger.png"));
+			this.image = ImageIO.read(this.getClass().getResource("/weapons/starterWeapons/SwiftDagger.png"));
 
 		} catch (Exception e) {}
 	}
 	
+	@Override
 	public void init(LivingObject l) {
 		l.maxAttackCooldown += this.attackCooldown;
 		l.attackRange += this.attackRange;

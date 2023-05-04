@@ -65,6 +65,7 @@ public class WeaponsPanel extends JPanel {
 				Main.SIZE*3/5-of, Main.SIZE*3/5-of, Main.SIZE*3/5-of, Main.SIZE*3/5-of,
 				Main.SIZE*4/5-of, Main.SIZE*4/5-of, Main.SIZE*4/5-of, Main.SIZE*4/5-of,};
 	BufferedImage[] slotImg = new BufferedImage[slotX.length];
+	Weapon[] weaponList = new Weapon[slotX.length];
 	String[] slotNames = new String[slotX.length];
 	
 	final int imgR = 70;
@@ -94,17 +95,22 @@ public class WeaponsPanel extends JPanel {
 		for (int i=0; i<slotImg.length; i++) {
 			if (slotNames[i] != null && !inShop) {
 				if (slotNames[i].equals(DataManager.saveData.selectedWeapon)) {
-					g2d.setColor(new Color(255, 255, 255, 225));
-					g2d.fillRoundRect(slotX[i]-imgR-7, slotY[i]-imgR-7, 2*imgR+14, 2*imgR+14, 5, 5);
+					int tier = weaponList[i].tier;
+					Color borderColor = (tier == 1) ? GameObject.COLOR_COPPER :
+						(tier == 2) ? GameObject.COLOR_SILVER : (tier == 3) ? GameObject.COLOR_GOLD : 
+						(tier == 4) ? GameObject.COLOR_DIAMOND : (tier == 5) ? GameObject.COLOR_CRIMSONADE : Color.white;
+					g2d.setColor(borderColor);
+					g2d.fillRoundRect(slotX[i]-imgR-10, slotY[i]-imgR-10, 2*imgR+20, 2*imgR+20, 5, 5);
 				}
 			}
 			
 			g2d.setColor(Color.darkGray);
 			g2d.fillRoundRect(slotX[i]-imgR, slotY[i]-imgR, 2*imgR, 2*imgR, 5, 5);
-			
+			int tier = 0;
 			
 			if (slotImg[i] != null) {
 				g2d.drawImage(slotImg[i], slotX[i]-imgR, slotY[i]-imgR, 2*imgR, 2*imgR, null);
+				tier = weaponList[i].tier;
 			}
 			
 			if (mousePosition != null && !guiOpen) { //draw highlight if mouse on position
@@ -116,8 +122,11 @@ public class WeaponsPanel extends JPanel {
 				}
 				
 			}
-			
-			Color borderColor = Color.white;
+
+			//BORDER COLORS
+			Color borderColor = (tier == 1) ? GameObject.COLOR_COPPER :
+				(tier == 2) ? GameObject.COLOR_SILVER : (tier == 3) ? GameObject.COLOR_GOLD : 
+				(tier == 4) ? GameObject.COLOR_DIAMOND : (tier == 5) ? GameObject.COLOR_CRIMSONADE : Color.white;
 			g2d.setColor(borderColor);;
 			g2d.setStroke(new BasicStroke(5));
 			g2d.drawRoundRect(slotX[i]-imgR, slotY[i]-imgR, 2*imgR, 2*imgR, 5, 5);
@@ -125,6 +134,7 @@ public class WeaponsPanel extends JPanel {
 			if (inShop && slotNames[i] != null) {
 				if (DataManager.saveData.ownedWeapons.contains(slotNames[i])) {
 					g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
+					g2d.setColor(Color.WHITE);
 					g2d.drawString("OWNED", slotX[i]-imgR+5, slotY[i]-imgR+20);
 					
 				} else {
@@ -134,19 +144,17 @@ public class WeaponsPanel extends JPanel {
 					if (coinCost != 0) {
 						g2d.drawImage(coinImage, slotX[i]-imgR+5, slotY[i]-imgR+5, 20, 20, null);
 						g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
+						g2d.setColor(Color.WHITE);
 						g2d.drawString(coinCost+"", slotX[i]-imgR+30, slotY[i]-imgR+20);
 					}
 					if (gemCost != 0) {
 						g2d.drawImage(gemImage, slotX[i]-imgR+5, slotY[i]-imgR+30, 20, 20, null);
 						g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
+						g2d.setColor(Color.WHITE);
 						g2d.drawString(gemCost+"", slotX[i]-imgR+30, slotY[i]-imgR+45);
 					}
-					
 				}
-				
 			}
-			
-			
 			
 		}
 		
@@ -213,11 +221,55 @@ public class WeaponsPanel extends JPanel {
 			g2d.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		}
 		
+		//SIDE BUTTONS
+		drawScrollButtons(g2d, mousePosition);
+		
 		//DRAW GUI
 		drawGui(g2d, mousePosition);
 		
 		//COINS N GEMS
 		drawCurrency(g2d);
+		
+	}
+	
+	private void drawScrollButtons(Graphics2D g2d, Point mousePosition) {
+		int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-of, w = 50;
+		if (scroll > 0) {
+			g2d.setColor(Color.gray);
+			g2d.fillRoundRect(x1-w/2, y-w/2, w, w, 5, 5);
+			g2d.setColor(Color.WHITE);
+			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
+			g2d.drawString("<", x1-w/2+13, y+10);
+			if (mousePosition != null) {
+				int mouseX = mousePosition.x;
+				int mouseY= mousePosition.y;
+				if (Math.abs(mouseX - x1) < w/2 && Math.abs(mouseY - y) < w/2 && !guiOpen) {
+					g2d.setColor(new Color(255,255,255,100));
+					g2d.fillRoundRect(x1-w/2, y-w/2, w, w, 5, 5);
+				}
+			}
+			g2d.setColor(Color.white);
+			g2d.drawRoundRect(x1-w/2, y-w/2, w, w, 5, 5);
+		}
+		
+		if ((inShop && ((scroll+1)*16 < Weapon.weaponNames.size())) ||
+				(!inShop && ((scroll+1)*16 < DataManager.saveData.ownedWeapons.size()))) {
+			g2d.setColor(Color.gray);
+			g2d.fillRoundRect(x2-w/2, y-w/2, w, w, 5, 5);
+			g2d.setColor(Color.WHITE);
+			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
+			g2d.drawString(">", x2-w/2+13, y+10);
+			if (mousePosition != null) {
+				int mouseX = mousePosition.x;
+				int mouseY= mousePosition.y;
+				if (Math.abs(mouseX - x2) < w/2 && Math.abs(mouseY - y) < w/2 && !guiOpen) {
+					g2d.setColor(new Color(255,255,255,100));
+					g2d.fillRoundRect(x2-w/2, y-w/2, w, w, 5, 5);
+				}
+			}
+			g2d.setColor(Color.white);
+			g2d.drawRoundRect(x2-w/2, y-w/2, w, w, 5, 5);
+		}
 		
 	}
 	
@@ -240,9 +292,9 @@ public class WeaponsPanel extends JPanel {
 			g2d.drawRoundRect(Main.SIZE/2+w/6-5, Main.SIZE/2-h/2+10, w/3-5, w/3-5, 5, 5);
 			
 			drawString(g2d, 25, slotNames[guiSelected], w*2/3, Main.SIZE/2-w/2+5, Main.SIZE/2-h/2+10);
-			String[] stats = Weapon.getWeapon(slotNames[guiSelected]).stats;
-			int[] statMap = Weapon.getWeapon(slotNames[guiSelected]).statMap;
-			String lore = Weapon.getWeapon(slotNames[guiSelected]).lore;
+			String[] stats = weaponList[guiSelected].stats;
+			int[] statMap = weaponList[guiSelected].statMap;
+			String lore = weaponList[guiSelected].lore;
 			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
 			for (int i=0; i<stats.length; i++) {
 				int cInt = 0;
@@ -256,8 +308,8 @@ public class WeaponsPanel extends JPanel {
 			drawString(g2d, 15, lore, w-20, Main.SIZE/2-w/2+10, Main.SIZE*2/5);
 			
 			if (inShop) {
-				int coinCost = Weapon.getWeapon(slotNames[guiSelected]).coinCost;
-				int gemCost = Weapon.getWeapon(slotNames[guiSelected]).gemCost;
+				int coinCost = weaponList[guiSelected].coinCost;
+				int gemCost = weaponList[guiSelected].gemCost;
 			
 				if (coinCost != 0) {
 					g2d.drawImage(coinImage, Main.SIZE/2+w/6, Main.SIZE/2-h/2+w/3+10, 20, 20, null);
@@ -270,9 +322,6 @@ public class WeaponsPanel extends JPanel {
 					g2d.drawString(gemCost+"", Main.SIZE/2+w/6 + 25, Main.SIZE/2-h/2+w/3+50);
 				}
 			}
-			
-
-			
 			
 			//CLOSE BUTTON
 			g2d.setColor(Color.RED.darker());
@@ -302,8 +351,8 @@ public class WeaponsPanel extends JPanel {
 				int mouseY= mousePosition.y;
 				if (Math.abs(mouseX - (Main.SIZE/2)) < 100 && Math.abs(mouseY - (Main.SIZE/2+h/2-45)) < 35) {
 					if (inShop) {
-						int coinCost = Weapon.getWeapon(slotNames[guiSelected]).coinCost;
-						int gemCost = Weapon.getWeapon(slotNames[guiSelected]).gemCost;
+						int coinCost = weaponList[guiSelected].coinCost;
+						int gemCost = weaponList[guiSelected].gemCost;
 						if (DataManager.saveData.coins < coinCost || DataManager.saveData.gems < gemCost) {
 						} else if (DataManager.saveData.ownedWeapons.contains(slotNames[guiSelected])) {
 						} else {
@@ -336,6 +385,7 @@ public class WeaponsPanel extends JPanel {
 		}
 	}
 	
+
 	private void drawCurrency(Graphics2D g2d) {
 		DecimalFormat df = new DecimalFormat("#");
 		df.setMaximumFractionDigits(2);
@@ -444,6 +494,24 @@ public class WeaponsPanel extends JPanel {
 					DataManager.saveData.selectedWeapon = null;
 					
 				}
+				
+				//SIDE BUTTONS
+				int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-of, w = 50;
+				
+				if (scroll > 0) { //Left
+					if (Math.abs(mouseX - x1) < w/2 && Math.abs(mouseY - y) < w/2 && !guiOpen) {
+						scroll--;
+						reloadImages();
+
+				}}
+				
+				if ((inShop && ((scroll+1)*16 < Weapon.weaponNames.size())) || //Right
+						(!inShop && ((scroll+1)*16 < DataManager.saveData.ownedWeapons.size()))) {
+					if (Math.abs(mouseX - x2) < w/2 && Math.abs(mouseY - y) < w/2 && !guiOpen) {
+						scroll++;
+						reloadImages();
+						
+				}}
 			}
 			
 			//GUI
@@ -472,14 +540,12 @@ public class WeaponsPanel extends JPanel {
 					} else {
 						DataManager.saveData.selectedWeapon = slotNames[guiSelected];
 						guiOpen = false;
-					}
-					
-					
+					}	
 				}
+				
 			}
 			
-		}
-	}
+	}}
 
 	BufferedImage coinImage, gemImage, lockImage;
 	public void reloadImages() {
@@ -505,6 +571,7 @@ public class WeaponsPanel extends JPanel {
 			//load individual slot images;
 			for (int i=0; i<filteredWeapons.size(); i++) {
 				try {
+					weaponList[i] = Weapon.getWeapon(filteredWeapons.get(i));
 					slotImg[i] = Weapon.getWeapon(filteredWeapons.get(i)).image;
 					slotNames[i] = Weapon.getWeapon(filteredWeapons.get(i)).name;
 					

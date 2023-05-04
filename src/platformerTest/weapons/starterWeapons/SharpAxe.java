@@ -17,17 +17,19 @@ public class SharpAxe extends Weapon {
 			
 			this.size = 35;
 			this.name = "Sharp Axe";
+			this.tier = 1;
 			
 			this.stats = new String[]{"Attack Damage +120%", "Attack Range +60%", "Attack Speed -38.5%"}; //1.23x dmg
 			this.statMap = new int[] {1, 1, -1};
 			
 			this.lore = "Longer ranged melee weapon, reliable for heavier damage at a greater distance.";
 			
-			this.image = ImageIO.read(this.getClass().getResource("/weapons/SharpAxe.png"));
+			this.image = ImageIO.read(this.getClass().getResource("/weapons/starterWeapons/SharpAxe.png"));
 
 		} catch (Exception e) {}
 	}
 	
+	@Override
 	public void init(LivingObject l) {
 		l.attackDamage += this.attackDamage;
 		l.maxAttackCooldown += this.attackCooldown;

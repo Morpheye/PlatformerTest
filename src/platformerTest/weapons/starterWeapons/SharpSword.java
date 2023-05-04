@@ -18,17 +18,19 @@ public class SharpSword extends Weapon {
 			
 			this.size = 30;
 			this.name = "Sharp Sword";
+			this.tier = 1;
 			
 			this.stats = new String[]{"Attack Damage +60%", "Attack Range +20%", "Attack Speed -20%"}; //1.28x dmg
 			this.statMap = new int[] {1, 1, -1};
 			
 			this.lore = "Reliable melee weapon for any adventure, but a bit slow to swing for the untrained user.";
 			
-			this.image = ImageIO.read(this.getClass().getResource("/weapons/SharpSword.png"));
+			this.image = ImageIO.read(this.getClass().getResource("/weapons/starterWeapons/SharpSword.png"));
 
 		} catch (Exception e) {}
 	}
 	
+	@Override
 	public void init(LivingObject l) {
 		l.attackDamage += this.attackDamage;
 		l.maxAttackCooldown += this.attackCooldown;

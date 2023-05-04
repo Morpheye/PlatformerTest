@@ -19,17 +19,19 @@ public class WoodenClub extends Weapon {
 			
 			this.size = 30;
 			this.name = "Wooden Club";
+			this.tier = 1;
 			
 			this.stats = new String[]{"Attack Knockback +300%", "Attack Range +25%", "Attack Damage -20%"}; //0.8x dmg
 			this.statMap = new int[] {1, 1, -1};
 			
 			this.lore = "Hits with the push of a beast but the pain of a sunflower. BONK!";
 			
-			this.image = ImageIO.read(this.getClass().getResource("/weapons/WoodenClub.png"));
+			this.image = ImageIO.read(this.getClass().getResource("/weapons/starterWeapons/WoodenClub.png"));
 
 		} catch (Exception e) {}
 	}
 	
+	@Override
 	public void init(LivingObject l) {
 		l.attackKnockback += this.attackKnockback;
 		l.attackRange += this.attackRange;

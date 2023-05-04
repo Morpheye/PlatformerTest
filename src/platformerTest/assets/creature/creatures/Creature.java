@@ -55,6 +55,7 @@ public class Creature extends LivingObject {
 		//combat
 		this.dmgTime = 0;
 		this.timeSinceDeath = 0;
+		this.timeSinceDamaged = 0;
 		this.fireResistant = false;
 		
 		this.movementSpeed = movementSpeed;
@@ -207,6 +208,8 @@ public class Creature extends LivingObject {
 	public int dmgTime;
 	
 	public void damage(int damage, GameObject source) {
+		this.timeSinceDamaged = 0;
+		
 		if (this.overheal != 0) {
 			if (this.overheal >= damage) this.overheal -= damage;
 			else {
@@ -224,6 +227,7 @@ public class Creature extends LivingObject {
 			this.die();
 			if (source.equals(GamePanel.player)) {
 				this.dropLoot();
+				if (GamePanel.player.weapon != null) GamePanel.player.weapon.onKill(GamePanel.player, this); //WEAPON TRIGGER
 			}
 			
 		}
@@ -263,6 +267,7 @@ public class Creature extends LivingObject {
 		for (GameObject obj : GamePanel.objects) { //check for enemies in range
 			if (obj.equals(this)) continue;
 			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature) && this.friendlyFire) {
+				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
 				((Creature) obj).damage(this.attackDamage, this);
 				
 				double pushStrength = this.attackKnockback;
@@ -270,8 +275,10 @@ public class Creature extends LivingObject {
 				list.add(this.attack);
 				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
 				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
+				if (this.weapon != null) this.weapon.onAttackEnd(this, (LivingObject) obj); //WEAPON TRIGGER
 				
 			} else if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Player)) {
+				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
 				((Player) obj).damage(this.attackDamage, this);
 				
 				double pushStrength = this.attackKnockback;
@@ -279,6 +286,7 @@ public class Creature extends LivingObject {
 				list.add(this.attack);
 				((Player) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
 				((Player) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
+				if (this.weapon != null) this.weapon.onAttackEnd(this, (LivingObject) obj); //WEAPON TRIGGER
 			}
 		}
 		

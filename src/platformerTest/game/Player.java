@@ -242,6 +242,7 @@ public class Player extends LivingObject {
 		for (GameObject obj : GamePanel.objects) { //check for enemies in range
 			if (obj.equals(this)) continue;
 			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature)) {
+				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
 				((Creature) obj).damage(this.attackDamage, this);
 				
 				double pushStrength = this.attackKnockback;
@@ -250,6 +251,8 @@ public class Player extends LivingObject {
 				
 				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
 				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
+				
+				if (this.weapon != null) this.weapon.onAttackEnd(this, (LivingObject) obj); //WEAPON TRIGGER
 				
 		}}
 		
