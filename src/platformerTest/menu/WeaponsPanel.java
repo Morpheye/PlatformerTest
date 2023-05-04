@@ -301,8 +301,8 @@ public class WeaponsPanel extends JPanel {
 				try {
 					cInt = statMap[i];
 				} catch (Exception e) {}
-				g2d.setColor(cInt == 1 ? Color.green : cInt == -1 ? Color.red : Color.white);
-				g2d.drawString(stats[i], Main.SIZE/2-w/2+10, Main.SIZE/2-h/2+90+(18*i));
+				g2d.setColor(cInt == 1 ? Color.green : cInt == -1 ? Color.red : cInt == 2 ? Color.cyan : Color.white);
+				g2d.drawString(stats[i], Main.SIZE/2-w/2+10, Main.SIZE/2-h/2+100+(18*i));
 			}
 			
 			drawString(g2d, 15, lore, w-20, Main.SIZE/2-w/2+10, Main.SIZE*2/5);
