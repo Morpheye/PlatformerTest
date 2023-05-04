@@ -48,7 +48,6 @@ public class Player extends LivingObject {
 		this.attackRange = 20;
 		this.attackDamage = 5;
 		this.rangedAttackDamage = 5;
-		
 		this.attackKnockback = 2;
 		
 		this.attack = new PlayerAttack(this.size_x, this.size_y);

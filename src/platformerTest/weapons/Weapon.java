@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import platformerTest.game.LivingObject;
-import platformerTest.weapons.axes.SharpAxe;
-import platformerTest.weapons.swords.SharpSword;
+import platformerTest.weapons.starterWeapons.*;
 
 public class Weapon {
 
@@ -14,6 +13,7 @@ public class Weapon {
 	public int size;
 	public String name;
 	public String[] stats;
+	public int[] statMap;
 	public String lore;
 	public int coinCost = 0;
 	public int gemCost = 0;
@@ -22,8 +22,15 @@ public class Weapon {
 	public Weapon() {
 		
 	}
-	
-	public static String getName() {return null;}
+
+	public static void weaponListInit() {
+		addWeapon(new SharpSword());
+		addWeapon(new SharpAxe());
+		addWeapon(new PointedSpear());
+		addWeapon(new WoodenClub());
+		addWeapon(new SwiftDagger());
+		
+	}
 	
 	public void init(LivingObject creature) {}
 	
@@ -33,11 +40,6 @@ public class Weapon {
 	public static Weapon getWeapon(String name) {
 		if (weapons.containsKey(name)) return weapons.get(name);
 		else return null;
-	}
-	public static void weaponListInit() {
-		addWeapon(new SharpSword());
-		addWeapon(new SharpAxe());
-		
 	}
 	private static void addWeapon(Weapon weapon) {
 		weapons.put(weapon.name, weapon);

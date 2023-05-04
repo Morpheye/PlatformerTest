@@ -241,11 +241,19 @@ public class WeaponsPanel extends JPanel {
 			
 			drawString(g2d, 25, slotNames[guiSelected], w*2/3, Main.SIZE/2-w/2+5, Main.SIZE/2-h/2+10);
 			String[] stats = Weapon.getWeapon(slotNames[guiSelected]).stats;
+			int[] statMap = Weapon.getWeapon(slotNames[guiSelected]).statMap;
 			String lore = Weapon.getWeapon(slotNames[guiSelected]).lore;
 			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
 			for (int i=0; i<stats.length; i++) {
+				int cInt = 0;
+				try {
+					cInt = statMap[i];
+				} catch (Exception e) {}
+				g2d.setColor(cInt == 1 ? Color.green : cInt == -1 ? Color.red : Color.white);
 				g2d.drawString(stats[i], Main.SIZE/2-w/2+10, Main.SIZE/2-h/2+90+(18*i));
 			}
+			
+			drawString(g2d, 15, lore, w-20, Main.SIZE/2-w/2+10, Main.SIZE*2/5);
 			
 			if (inShop) {
 				int coinCost = Weapon.getWeapon(slotNames[guiSelected]).coinCost;
@@ -263,7 +271,7 @@ public class WeaponsPanel extends JPanel {
 				}
 			}
 			
-			drawString(g2d, 15, lore, w, Main.SIZE/2-w/2+10, Main.SIZE*2/5);
+
 			
 			
 			//CLOSE BUTTON
