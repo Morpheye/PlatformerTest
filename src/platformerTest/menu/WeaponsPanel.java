@@ -23,9 +23,9 @@ import javax.swing.Timer;
 
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
-import platformerTest.assets.weapons.Weapon;
 import platformerTest.game.GameObject;
 import platformerTest.levels.world1.Level_1_1;
+import platformerTest.weapons.Weapon;
 
 @SuppressWarnings("serial")
 public class WeaponsPanel extends JPanel {
@@ -33,7 +33,7 @@ public class WeaponsPanel extends JPanel {
 	public static Timer timer;
 	
 	public WeaponsPanel() {
-		this.setName("Items");
+		this.setName("Weapons");
 		this.setBackground(Color.BLACK);
 		this.setSize(Main.SIZE, Main.SIZE);
 		this.setVisible(true);
@@ -213,10 +213,15 @@ public class WeaponsPanel extends JPanel {
 			g2d.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		}
 		
-		
-		
-		
 		//DRAW GUI
+		drawGui(g2d, mousePosition);
+		
+		//COINS N GEMS
+		drawCurrency(g2d);
+		
+	}
+	
+	private void drawGui(Graphics2D g2d, Point mousePosition) {
 		if (guiOpen) {
 			g2d.setColor(new Color(0,0,0,200));
 			g2d.fillRect(0, 0, Main.SIZE, Main.SIZE);
@@ -257,7 +262,8 @@ public class WeaponsPanel extends JPanel {
 					g2d.drawString(gemCost+"", Main.SIZE/2+w/6 + 25, Main.SIZE/2-h/2+w/3+50);
 				}
 			}
-			drawString(g2d, 15, lore, w*2, Main.SIZE/2-w/2+10, Main.SIZE*2/5);
+			
+			drawString(g2d, 15, lore, w, Main.SIZE/2-w/2+10, Main.SIZE*2/5);
 			
 			
 			//CLOSE BUTTON
@@ -304,9 +310,10 @@ public class WeaponsPanel extends JPanel {
 				}
 			}
 			
+			//Purchase
 			g2d.setColor(Color.WHITE);
 			g2d.drawRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
-			font = new Font(Font.MONOSPACED, Font.BOLD, 30);
+			Font font = new Font(Font.MONOSPACED, Font.BOLD, 30);
 			g2d.setFont(font);
 			String buttonText;
 			if (inShop) {
@@ -315,14 +322,13 @@ public class WeaponsPanel extends JPanel {
 			}
 			else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)) buttonText = "Equipped";
 			else buttonText = "Equip";
-			int strWidth = g.getFontMetrics(font).stringWidth(buttonText);
+			int strWidth = g2d.getFontMetrics(font).stringWidth(buttonText);
 			g2d.drawString(buttonText, Main.SIZE/2-strWidth/2, Main.SIZE/2+h/2-40);
 			
 		}
-		
-		//COINS N GEMS
-		
-		//draw coin counter & gem counter
+	}
+	
+	private void drawCurrency(Graphics2D g2d) {
 		DecimalFormat df = new DecimalFormat("#");
 		df.setMaximumFractionDigits(2);
 		
@@ -376,7 +382,7 @@ public class WeaponsPanel extends JPanel {
 		g2d.drawImage(gemImage, 15+diff, 15, 30, 30, null);
 		
 		g2d.setColor(Color.WHITE);
-		font = new Font(Font.MONOSPACED, Font.BOLD, 15);
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, 15);
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		
@@ -387,7 +393,6 @@ public class WeaponsPanel extends JPanel {
 		int gemTextWidth = g2d.getFontMetrics(font).stringWidth(gemText);
 		int gemTextHeight = g2d.getFontMetrics(font).getHeight();
 		g2d.drawString(gemText, 97+diff-(gemTextWidth/2), 35);
-		
 	}
 	
 	public class ShopMouse extends MouseAdapter {
@@ -467,9 +472,8 @@ public class WeaponsPanel extends JPanel {
 			
 		}
 	}
-	
+
 	BufferedImage coinImage, gemImage, lockImage;
-	
 	public void reloadImages() {
 		slotNames = new String[slotX.length];
 		slotImg = new BufferedImage[slotX.length];

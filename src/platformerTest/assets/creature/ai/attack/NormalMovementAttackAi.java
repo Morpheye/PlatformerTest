@@ -5,17 +5,18 @@ import java.util.ArrayList;
 import platformerTest.assets.creature.ai.AttackAi;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.game.GameObject;
+import platformerTest.game.LivingObject;
 
 /**
  * AI for creatures which do not fully follow their targets vertically but can move vertically.
  */
 public class NormalMovementAttackAi extends AttackAi {
 
-	public NormalMovementAttackAi(double meleeRange, GameObject target) {
+	public NormalMovementAttackAi(double meleeRange, LivingObject target) {
 		super(meleeRange, target);
 	}
 	
-	public NormalMovementAttackAi(double meleeRange, ArrayList<GameObject> targets) {
+	public NormalMovementAttackAi(double meleeRange, ArrayList<LivingObject> targets) {
 		super(meleeRange, targets);
 	}
 	

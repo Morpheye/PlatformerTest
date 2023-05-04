@@ -3,7 +3,7 @@ package platformerTest.appdata;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import platformerTest.assets.weapons.Weapon;
+import platformerTest.weapons.Weapon;
 
 public class SaveData {
 	public HashMap<String,Integer> completedLevels = new HashMap<String,Integer>();

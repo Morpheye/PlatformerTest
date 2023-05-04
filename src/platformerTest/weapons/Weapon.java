@@ -1,13 +1,12 @@
-package platformerTest.assets.weapons;
+package platformerTest.weapons;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import platformerTest.assets.creature.creatures.Creature;
-import platformerTest.assets.weapons.axes.*;
-import platformerTest.assets.weapons.swords.*;
-import platformerTest.game.Player;
+import platformerTest.game.LivingObject;
+import platformerTest.weapons.axes.SharpAxe;
+import platformerTest.weapons.swords.SharpSword;
 
 public class Weapon {
 
@@ -26,9 +25,7 @@ public class Weapon {
 	
 	public static String getName() {return null;}
 	
-	public void init(Creature creature) {}
-	
-	public void init(Player player) {}
+	public void init(LivingObject creature) {}
 	
 	public static HashMap<String,Weapon> weapons = new HashMap<String,Weapon>();
 	public static ArrayList<Weapon> weaponList = new ArrayList<Weapon>();

@@ -51,7 +51,7 @@ public class CreatureGoblin extends Creature {
 	public void dropLoot() { //3 drops totalling 3 coins
 		CoinParticle.spawnCoins(this.x, this.y, 3, 3);
 		
-		if (Math.random() > 0.9975) GemParticle.spawnGem(this.x, this.y, 1); //0.25% chance of a gem
+		if (Math.random() > 0.999) GemParticle.spawnGem(this.x, this.y, 1); //0.1% chance of a gem
 	}
 
 }

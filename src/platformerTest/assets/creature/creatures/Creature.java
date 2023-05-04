@@ -9,45 +9,25 @@ import java.util.ArrayList;
 import platformerTest.Main;
 import platformerTest.assets.LiquidPlatform;
 import platformerTest.assets.creature.CreatureAi;
-import platformerTest.assets.weapons.Weapon;
 import platformerTest.game.GameObject;
+import platformerTest.game.LivingObject;
 import platformerTest.game.MovableObject;
 import platformerTest.game.ObjType;
 import platformerTest.game.Player;
 import platformerTest.menu.GamePanel;
+import platformerTest.weapons.Weapon;
 
-public class Creature extends MovableObject {
+public class Creature extends LivingObject {
 
 	public double movementSpeed = 0.1;
 	public double jumpStrength = 10;
-	
-	public boolean isAlive;
+
 	public boolean required;
-	
-	boolean movingInLiquid = false;
 	
 	public Color eyeColor;
 	public boolean friendlyFire;
-	public int overheal;
-	public boolean fireResistant;
-	
-	public int health;
+
 	public int maxHealth;
-	public int maxAttackCooldown; //MAX ATTACK COOLDOWN
-	public int attackRange;
-	public int attackDamage;
-	public int rangedAttackDamage;
-	public double attackKnockback;
-	public GameObject attack; //attack hitbox
-	public Weapon weapon;
-	
-	//lastattackinfo
-	public int attackCooldown;
-	public int meleeCooldown;
-	public int lastAttackRange;
-	public int lastAttackAngle;
-	
-	public int timeSinceDeath;
 	
 	public ArrayList<CreatureAi> aiList;
 	
@@ -57,6 +37,8 @@ public class Creature extends MovableObject {
 		super(initX, initY, size, size, color, 1.0);
 		
 		this.type = ObjType.Creature;
+		this.movementSpeed = 0.1;
+		this.jumpStrength = 10;
 		
 		this.eyeColor = eyeColor;
 		
@@ -94,18 +76,8 @@ public class Creature extends MovableObject {
 		
 	}
 	
-	public boolean movingUp = false;
-	public boolean movingDown = false;
-	public boolean movingLeft = false;
-	public boolean movingRight = false;
-	public boolean isAttacking = false;
-	public boolean isRangedAttacking = false;
-	
-	public int lastDirection = 1;
-	
 	@Override
 	public void move() {
-		
 		this.movingInLiquid = false;
 		this.liquidDensity = 1;
 		

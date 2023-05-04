@@ -47,7 +47,7 @@ public class CreatureUndead extends Creature {
 		int amount = 1 + (int) (Math.random()*3);
 		CoinParticle.spawnCoins(this.x, this.y, amount, amount+(int)(Math.random()*(amount+1)));
 		
-		if (Math.random() > 0.9975) GemParticle.spawnGem(this.x, this.y, 1); //0.25% chance of a gem
+		if (Math.random() > 0.999) GemParticle.spawnGem(this.x, this.y, 1); //0.1% chance of a gem
 	}
 
 }

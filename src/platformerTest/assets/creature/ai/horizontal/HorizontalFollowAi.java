@@ -3,6 +3,7 @@ package platformerTest.assets.creature.ai.horizontal;
 import platformerTest.assets.creature.ai.HorizontalMovementAi;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.game.GameObject;
+import platformerTest.game.LivingObject;
 import platformerTest.menu.GamePanel;
 
 /**
@@ -12,11 +13,11 @@ public class HorizontalFollowAi extends HorizontalMovementAi {
 
 	public GameObject target;
 	
-	public HorizontalFollowAi(double minRange, double maxRange, GameObject target) {
+	public HorizontalFollowAi(double minRange, double maxRange, LivingObject target) {
 		this(minRange, maxRange, 0, Double.MAX_VALUE, target);
 	}
 	
-	public HorizontalFollowAi(double minRangeX, double maxRangeX, double minRangeY, double maxRangeY, GameObject target) {
+	public HorizontalFollowAi(double minRangeX, double maxRangeX, double minRangeY, double maxRangeY, LivingObject target) {
 		super(GamePanel.player.x, GamePanel.player.y, minRangeX, maxRangeX, minRangeY, maxRangeY);
 		this.target = target;
 	}

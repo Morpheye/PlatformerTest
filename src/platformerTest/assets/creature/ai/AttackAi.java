@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import platformerTest.assets.creature.CreatureAi;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.game.GameObject;
+import platformerTest.game.LivingObject;
 
 /**
  * General attack AI
@@ -12,15 +13,15 @@ import platformerTest.game.GameObject;
 public class AttackAi extends CreatureAi {
 
 	public double meleeRange;
-	public ArrayList<GameObject> targets;
+	public ArrayList<LivingObject> targets;
 	
-	public AttackAi(double meleeRange, GameObject target) {
+	public AttackAi(double meleeRange, LivingObject target) {
 		this.meleeRange = meleeRange;
-		this.targets = new ArrayList<GameObject>();
+		this.targets = new ArrayList<LivingObject>();
 		this.targets.add(target);
 	}
 	
-	public AttackAi(double meleeRange, ArrayList<GameObject> targets) {
+	public AttackAi(double meleeRange, ArrayList<LivingObject> targets) {
 		this.meleeRange = meleeRange;
 		this.targets = targets;
 	}

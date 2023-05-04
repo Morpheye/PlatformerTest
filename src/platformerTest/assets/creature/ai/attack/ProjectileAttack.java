@@ -2,12 +2,10 @@ package platformerTest.assets.creature.ai.attack;
 
 import java.util.ArrayList;
 
-import platformerTest.assets.Projectile;
 import platformerTest.assets.creature.ai.AttackAi;
 import platformerTest.assets.creature.creatures.Creature;
-import platformerTest.assets.projectiles.ProjectileDart;
 import platformerTest.game.GameObject;
-import platformerTest.menu.GamePanel;
+import platformerTest.game.LivingObject;
 
 /**
  * AI for creatures firing projectiles as their primary attack.
@@ -22,15 +20,15 @@ public class ProjectileAttack extends AttackAi {
 	double yBoundUp;
 
 	
-	public ProjectileAttack(double xBound, double yBound, ArrayList<GameObject> targets) {
+	public ProjectileAttack(double xBound, double yBound, ArrayList<LivingObject> targets) {
 		this(xBound, xBound, yBound, yBound, targets);
 	}
 	
-	public ProjectileAttack(double xBound, double yBound, GameObject target) {
+	public ProjectileAttack(double xBound, double yBound, LivingObject target) {
 		this(xBound, xBound, yBound, yBound, target);
 	}
 	
-	public ProjectileAttack(double xBoundLeft, double xBoundRight, double yBoundDown, double yBoundUp, GameObject target) {
+	public ProjectileAttack(double xBoundLeft, double xBoundRight, double yBoundDown, double yBoundUp, LivingObject target) {
 		super(0, target);
 		
 		this.xBoundLeft = xBoundLeft;
@@ -40,7 +38,7 @@ public class ProjectileAttack extends AttackAi {
 
 	}
 	
-	public ProjectileAttack(double xBoundLeft, double xBoundRight, double yBoundDown, double yBoundUp, ArrayList<GameObject> targets) {
+	public ProjectileAttack(double xBoundLeft, double xBoundRight, double yBoundDown, double yBoundUp, ArrayList<LivingObject> targets) {
 		super(0, targets);
 		
 		this.xBoundLeft = xBoundLeft;

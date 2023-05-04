@@ -13,45 +13,17 @@ import platformerTest.assets.Trigger;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.assets.decoration.particles.CoinParticle;
 import platformerTest.assets.triggers.Powerup;
-import platformerTest.assets.weapons.Weapon;
 import platformerTest.menu.GamePanel;
+import platformerTest.weapons.Weapon;
 
-public class Player extends MovableObject {
+public class Player extends LivingObject {
 
-	public double movementSpeed = 0.25;
-	public double jumpStrength = 16;
-	
-	public boolean isAlive;
-	
-	boolean movingInLiquid = false;
-	
-	public int health; //PLAYER HP, MAX=100
-	public int overheal;
-	public boolean fireResistant;
-	
-	public int maxAttackCooldown = 40; //MAX ATTACK COOLDOWN
-	public int attackRange = 20;
-	
-	public int attackDamage = 5;
-	public int rangedAttackDamage = 5; //Not in use
-	
-	public double attackKnockback = 2;
-	public GameObject attack; //attack hitbox
-	public Weapon weapon;
-	
-	//lastattackinfo
-	public int attackCooldown;
-	public int meleeCooldown;
-	public int lastAttackRange;
-	public int lastAttackAngle;
-	
-	public int timeSinceDamaged;
-	public int timeSinceDeath;
-	
 	public Player(double initX, double initY, double size) {
-		super(initX, initY, size, size, Color.WHITE, 1.0);
-		
+		super(initX, initY, size, size, Color.WHITE, 1.0);	
 		this.type = ObjType.Player;
+		
+		this.movementSpeed = 0.25;
+		this.jumpStrength = 16;
 		
 		this.movable = true;
 		this.x = initX;
@@ -86,15 +58,6 @@ public class Player extends MovableObject {
 		}
 		
 	}
-	
-	public boolean movingUp = false;
-	public boolean movingDown = false;
-	public boolean movingLeft = false;
-	public boolean movingRight = false;
-	public boolean isAttacking = false;
-	public boolean isRangedAttacking = false;
-	
-	public int lastDirection = 1;
 	
 	@Override
 	public void move() {

@@ -3,6 +3,7 @@ package platformerTest.assets.creature.ai.vertical;
 import platformerTest.assets.creature.ai.VerticalMovementAi;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.game.GameObject;
+import platformerTest.game.LivingObject;
 import platformerTest.menu.GamePanel;
 
 /**
@@ -12,11 +13,11 @@ public class VerticalFollowAi extends VerticalMovementAi {
 
 	public GameObject target;
 	
-	public VerticalFollowAi(double minRange, double maxRange, GameObject target) {
+	public VerticalFollowAi(double minRange, double maxRange, LivingObject target) {
 		this(0, Double.MAX_VALUE, minRange, maxRange, 0, maxRange, target);
 	}
 	
-	public VerticalFollowAi(double minRangeX, double maxRangeX, double minRangeYUp, double maxRangeYUp, double minRangeYDown, double maxRangeYDown, GameObject target) {
+	public VerticalFollowAi(double minRangeX, double maxRangeX, double minRangeYUp, double maxRangeYUp, double minRangeYDown, double maxRangeYDown, LivingObject target) {
 		super(GamePanel.player.x, GamePanel.player.y, minRangeYUp, maxRangeYUp, minRangeYDown, maxRangeYDown, minRangeX, maxRangeX);
 		this.target = target;
 	}
