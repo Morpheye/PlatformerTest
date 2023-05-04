@@ -1,7 +1,11 @@
 package platformerTest.levels.world1;
 
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
 import java.util.List;
 
+import platformerTest.Main;
 import platformerTest.assets.SolidPlatform;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.assets.creature.creatures.goblin.CreatureDartGoblin;
@@ -29,6 +33,26 @@ public class Level_1_5 extends Level {
 		this.reward = 70;
 		this.name = "Goblin Sands";
 		
+	}
+	
+	int[] Fx1 = {0, 100, 600, 800, 1100, 1400, 1600};
+	int[] Fy1 = {400, 500, 700, 400, 300, 600, 700};
+	int[] Fsize1 = {250, 250, 400, 250, 500, 250, 350};
+	
+	int[] Fx2 = {-100, 200, 300, 500, 700, 800, 900, 1100, 1200, 1400, 1500, 1800, 1900, 2200, 2300};
+	int[] Fy2 = {400, 350, 500, 400, 250, 550, 400, 300, 550, 300, 500, 550, 350, 600, 400};
+	int[] Fsize2 = {200, 175, 250, 200, 125, 275, 200, 150, 275, 150, 250, 275, 175, 300, 200};
+	
+	@Override
+	public void fill(Graphics2D g) {
+		Color gc1 = new Color(40, 115, 160);
+		Color gc2 = new Color(50, 127, 190);
+		g.setPaint(new GradientPaint(Main.SIZE,Main.SIZE/2,gc1,0,Main.SIZE/2,gc2));
+		g.fillRect(-50,-50,Main.SIZE+50,Main.SIZE+50);
+		
+		drawRoundScenery(g, Color.YELLOW.darker().darker(), Fx1, Fy1, Fsize1, 12);
+		drawFloorScenery(g, Color.YELLOW.darker().darker(), 150, 10);
+		drawRoundScenery(g, Color.YELLOW.darker(), Fx2, Fy2, Fsize2, 7);
 	}
 	
 	@Override

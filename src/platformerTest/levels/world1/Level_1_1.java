@@ -1,7 +1,11 @@
 package platformerTest.levels.world1;
 
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics2D;
 import java.util.List;
 
+import platformerTest.Main;
 import platformerTest.assets.SolidPlatform;
 import platformerTest.assets.interactables.FinishFlag;
 import platformerTest.assets.liquidPlatforms.WaterPlatform;
@@ -28,6 +32,27 @@ public class Level_1_1 extends Level {
 		
 		//this.spawnX = 7650;
 		//this.spawnY = 700;
+
+	}
+	
+	int[] Fx1 = {0, 100, 600, 800, 1100};
+	int[] Fy1 = {700, 500, 400, 600, 300};
+	int[] Fsize1 = {250, 250, 400, 250, 500};
+	
+	int[] Fx2 = {-100, 200, 300, 500, 700, 800, 900, 1200, 1400, 1500, 1800, 1900, 2300};
+	int[] Fy2 = {400, 350, 500, 400, 250, 550, 400, 550, 300, 500, 550, 350, 400};
+	int[] Fsize2 = {175, 250, 150, 175, 150, 150, 200, 175, 150, 225, 150, 250, 200};
+	
+	@Override
+	public void fill(Graphics2D g) {
+		Color gc1 = new Color(180, 235, 235);
+		Color gc2 = new Color(130, 205, 235);
+		g.setPaint(new GradientPaint(0,0,gc1,Main.SIZE,Main.SIZE,gc2));
+		g.fillRect(-50,-50,Main.SIZE+50,Main.SIZE+50);
+
+		drawRoundScenery(g, GameObject.COLOR_GRASS.darker().darker().darker(), Fx1, Fy1, Fsize1, 10);
+		drawFloorScenery(g, GameObject.COLOR_GRASS.darker().darker().darker(), 150, 10);
+		drawRoundScenery(g, GameObject.COLOR_GRASS.darker().darker(), Fx2, Fy2, Fsize2, 5);
 
 	}
 	

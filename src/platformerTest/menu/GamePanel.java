@@ -13,7 +13,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Arc2D;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -27,8 +29,6 @@ import javax.swing.Timer;
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
 import platformerTest.assets.creature.creatures.Creature;
-import platformerTest.assets.decoration.particles.CoinParticle;
-import platformerTest.assets.decoration.particles.GemParticle;
 import platformerTest.assets.triggers.Powerup;
 import platformerTest.game.GameObject;
 import platformerTest.game.ObjType;
@@ -141,10 +141,7 @@ public class GamePanel extends JPanel {
 			moveCamera();
 		}
 		
-		Color bgColor = level.backgroundColor;
-		
-		g.setColor(bgColor);
-		g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
+		level.fill((Graphics2D) g);
 		
 		for (GameObject obj : objects) {
 			if (!obj.equals(player) && !isPaused) {
@@ -513,49 +510,113 @@ public class GamePanel extends JPanel {
 		else flashes.put(color, duration);
 	}
 	
-	public void drawAttacks(Graphics g) {  //ONLY DRAWS MELEE ATTACKS
+	public void drawAttacks(Graphics g) {  //ONLY DRAWS MELEE ATTACKS and Render Weapons
 		Graphics2D g2d = (Graphics2D) g;
 		for (GameObject obj : objects) {
 			if (obj.type.equals(ObjType.Creature) && obj.hasCollided(MainFrameObj)) {
-				Creature c = (Creature) obj;
-				
-				if (c.meleeCooldown == 0) continue;
-				if (c.maxAttackCooldown - c.meleeCooldown > 20) continue;
-				int alpha = (20-(c.maxAttackCooldown - c.meleeCooldown))*255/20;
-				
-				int lastAttackX = (int) (c.x + c.lastAttackRange * Math.cos(c.lastAttackAngle * Math.PI/180));
-				int lastAttackY = (int) (c.y + c.lastAttackRange * Math.sin(c.lastAttackAngle * Math.PI/180));
-				
-				int drawX = (int) ((lastAttackX - (c.size_x)/2 - (camera_x - camera_size/2)) * (Main.SIZE/camera_size));
-				int drawY = (int) ((camera_size - (lastAttackY + (c.size_y)/2) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size));
-				int sizeX = (int) ((c.size_x) * Main.SIZE/camera_size);
-				int sizeY = (int) ((c.size_y) * Main.SIZE/camera_size);
-				
-				Arc2D arc = new Arc2D.Double(drawX, drawY, sizeX, sizeY, c.lastAttackAngle-45, 90, Arc2D.OPEN);
-				g2d.setColor(new Color(c.color.getRed(),c.color.getGreen(),c.color.getBlue(),alpha));
-				g2d.setStroke(new BasicStroke((float) (5*Main.SIZE/camera_size)));
-				g2d.draw(arc);
+					Creature c = (Creature) obj;
+					if (!(c.meleeCooldown == 0) && !(c.maxAttackCooldown - c.meleeCooldown > 20)) {
+						int alpha = (20-(c.maxAttackCooldown - c.meleeCooldown))*255/20;
+						
+						int lastAttackX = (int) (c.x + c.lastAttackRange * Math.cos(c.lastAttackAngle * Math.PI/180));
+						int lastAttackY = (int) (c.y + c.lastAttackRange * Math.sin(c.lastAttackAngle * Math.PI/180));
+						
+						int drawX = (int) ((lastAttackX - (c.size_x)/2 - (camera_x - camera_size/2)) * (Main.SIZE/camera_size));
+						int drawY = (int) ((camera_size - (lastAttackY + (c.size_y)/2) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size));
+						int sizeX = (int) ((c.size_x) * Main.SIZE/camera_size);
+						int sizeY = (int) ((c.size_y) * Main.SIZE/camera_size);
+						
+						Arc2D arc = new Arc2D.Double(drawX, drawY, sizeX, sizeY, c.lastAttackAngle-45, 90, Arc2D.OPEN);
+						g2d.setColor(new Color(c.color.getRed(),c.color.getGreen(),c.color.getBlue(),alpha));
+						g2d.setStroke(new BasicStroke((float) (5*Main.SIZE/camera_size)));
+						g2d.draw(arc);
+					}
+					if (c.weapon != null) {
+						int size = (int) (c.weapon.size*(Main.SIZE/camera_size));
+						Graphics2D g2 = (Graphics2D) g2d.create();
+						BufferedImage image = player.weapon.image;
+						int angle = (c.maxAttackCooldown - c.attackCooldown < c.maxAttackCooldown/8) ? 
+								90 * (c.maxAttackCooldown - c.attackCooldown)/(c.maxAttackCooldown/8) :
+									(c.maxAttackCooldown - c.attackCooldown)<(c.maxAttackCooldown/2) ?
+										90 : 90*(c.attackCooldown)/(c.maxAttackCooldown/2);
+						
+						if (c.attackCooldown != 0) {
+							if (c.lastAttackAngle > 45 && c.lastAttackAngle < 135) angle -= 90;
+							else if (c.lastAttackAngle > 0) angle -= 45;
+							else if (c.lastAttackAngle < -45 && c.lastAttackAngle > -135) angle += 90;
+							else if (c.lastAttackAngle < 0) angle += 45;
+						} else angle = 0;
+						
+						double rads = Math.toRadians(angle);
+						
+						int drawX, drawY;
+						if (c.lastDirection == 1) {
+							drawX = (int) ( (c.x + (c.size_x)/2 - (camera_x - camera_size/2) - 5) * (Main.SIZE/camera_size)); //upwards
+							drawY = (int) ( (camera_size - (c.y + (c.size_y/2)) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size)) + ((int) (0.75 * c.size_y * (Main.SIZE/camera_size) - size));
+						} else {
+							drawX = (int) ( (c.x - (c.size_x)/2 - (camera_x - camera_size/2) + 5) * (Main.SIZE/camera_size)); //upwards
+							drawY = (int) ( (camera_size - (c.y + (c.size_y/2)) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size)) + ((int) (0.75 * c.size_y * (Main.SIZE/camera_size) - size));
+						}
+						
+						g2.rotate(rads * (c.lastDirection), drawX, drawY+size);
+						g2.drawImage(image, drawX, drawY, (c.lastDirection) * size, size, null);
+					}
+					
 		}}
 		
-		if (player.meleeCooldown == 0) return;
-		if (player.maxAttackCooldown - player.meleeCooldown > 20) return;
+		//Draw the swing
 		
 		int alpha = (20-(player.maxAttackCooldown - player.meleeCooldown))*255/20;
 		
 		int lastAttackX = (int) (player.x + player.lastAttackRange * Math.cos(player.lastAttackAngle * Math.PI/180));
 		int lastAttackY = (int) (player.y + player.lastAttackRange * Math.sin(player.lastAttackAngle * Math.PI/180));
 		
-		int drawX = (int) ((lastAttackX - (player.size_x)/2 - (camera_x - camera_size/2)) * (Main.SIZE/camera_size));
-		int drawY = (int) ((camera_size - (lastAttackY + (player.size_y)/2) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size));
-		int sizeX = (int) ((player.size_x) * Main.SIZE/camera_size);
-		int sizeY = (int) ((player.size_y) * Main.SIZE/camera_size);
+		if (!(player.meleeCooldown == 0) && !(player.maxAttackCooldown - player.meleeCooldown > 20)) {
+			
+			int drawX = (int) ((lastAttackX - (player.size_x)/2 - (camera_x - camera_size/2)) * (Main.SIZE/camera_size));
+			int drawY = (int) ((camera_size - (lastAttackY + (player.size_y)/2) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size));
+			int sizeX = (int) ((player.size_x) * Main.SIZE/camera_size);
+			int sizeY = (int) ((player.size_y) * Main.SIZE/camera_size);
+			
+			Arc2D arc = new Arc2D.Double(drawX, drawY, sizeX, sizeY, player.lastAttackAngle-45, 90, Arc2D.OPEN);
+			g2d.setColor(new Color(player.color.getRed(),player.color.getGreen(),player.color.getBlue(),alpha));
+			g2d.setStroke(new BasicStroke((float) (5*Main.SIZE/camera_size)));
+			g2d.draw(arc);
+			
+		}
 		
-		Arc2D arc = new Arc2D.Double(drawX, drawY, sizeX, sizeY, player.lastAttackAngle-45, 90, Arc2D.OPEN);
-		g2d.setColor(new Color(player.color.getRed(),player.color.getGreen(),player.color.getBlue(),alpha));
-		g2d.setStroke(new BasicStroke((float) (5*Main.SIZE/camera_size)));
-		g2d.draw(arc);
+		//weapon
+		if (player.weapon != null) {
+			int size = (int) (player.weapon.size*(Main.SIZE/camera_size));
+			Graphics2D g2 = (Graphics2D) g2d.create();
+			BufferedImage image = player.weapon.image;
+			int angle = (player.maxAttackCooldown - player.attackCooldown < player.maxAttackCooldown/8) ? 
+					90 * (player.maxAttackCooldown - player.attackCooldown)/(player.maxAttackCooldown/8) :
+						(player.maxAttackCooldown - player.attackCooldown)<(player.maxAttackCooldown/2) ?
+							90 : 90*(player.attackCooldown)/(player.maxAttackCooldown/2);
+			
+			if (player.attackCooldown != 0) {
+				if (player.lastAttackAngle > 45 && player.lastAttackAngle < 135) angle -= 90;
+				else if (player.lastAttackAngle > 0) angle -= 45;
+				else if (player.lastAttackAngle < -45 && player.lastAttackAngle > -135) angle += 90;
+				else if (player.lastAttackAngle < 0) angle += 45;
+			} else angle = 0;
+			
+			double rads = Math.toRadians(angle);
+			
+			int drawX, drawY;
+			if (player.lastDirection == 1) {
+				drawX = (int) ( (player.x + (player.size_x)/2 - (camera_x - camera_size/2) - 5) * (Main.SIZE/camera_size)); //upwards
+				drawY = (int) ( (camera_size - (player.y + (player.size_y/2)) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size)) + ((int) (0.75 * player.size_y * (Main.SIZE/camera_size) - size));
+			} else {
+				drawX = (int) ( (player.x - (player.size_x)/2 - (camera_x - camera_size/2) + 5) * (Main.SIZE/camera_size)); //upwards
+				drawY = (int) ( (camera_size - (player.y + (player.size_y/2)) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size)) + ((int) (0.75 * player.size_y * (Main.SIZE/camera_size) - size));
+			}
+			
+			g2.rotate(rads * (player.lastDirection), drawX, drawY+size);
+			g2.drawImage(image, drawX, drawY, (player.lastDirection) * size, size, null);
+		}
 
-		
 		
 	}
 	

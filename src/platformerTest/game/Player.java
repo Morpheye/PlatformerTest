@@ -7,11 +7,13 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 
 import platformerTest.Main;
+import platformerTest.appdata.DataManager;
 import platformerTest.assets.LiquidPlatform;
 import platformerTest.assets.Trigger;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.assets.decoration.particles.CoinParticle;
 import platformerTest.assets.triggers.Powerup;
+import platformerTest.assets.weapons.Weapon;
 import platformerTest.menu.GamePanel;
 
 public class Player extends MovableObject {
@@ -35,6 +37,7 @@ public class Player extends MovableObject {
 	
 	public double attackKnockback = 2;
 	public GameObject attack; //attack hitbox
+	public Weapon weapon;
 	
 	//lastattackinfo
 	public int attackCooldown;
@@ -77,9 +80,10 @@ public class Player extends MovableObject {
 		this.attackKnockback = 2;
 		
 		this.attack = new PlayerAttack(this.size_x, this.size_y);
-
-
-		
+		this.weapon = Weapon.getWeapon(DataManager.saveData.selectedWeapon);
+		if (this.weapon != null) {
+			this.weapon.init(this);
+		}
 		
 	}
 	
@@ -94,7 +98,6 @@ public class Player extends MovableObject {
 	
 	@Override
 	public void move() {
-		
 		this.movingInLiquid = false;
 		this.liquidDensity = 1;
 		
@@ -138,8 +141,11 @@ public class Player extends MovableObject {
 			if (this.movingLeft) this.vx -= Math.pow(1, slowdown)*this.movementSpeed;
 			
 		} else {
-			if (this.movingUp & !this.inAir) { //jump
+			if (this.movingUp & !this.inAir && !Main.testMode) { //jump
 				this.vy += this.jumpStrength;
+				this.inAir = true;
+			} else if (this.movingUp && Main.testMode) {
+				this.vy += 5*this.movementSpeed;
 				this.inAir = true;
 			}
 			if (this.movingRight) this.vx += this.movementSpeed;

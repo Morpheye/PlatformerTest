@@ -2,12 +2,17 @@ package platformerTest.levels;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
 
 import platformerTest.Main;
 import platformerTest.menu.GamePanel;
 
 public class Level {
 
+	/**
+	 * Only for if generation fails
+	 */
 	public Color backgroundColor;
 	public double airDrag = 0.97;
 	public double gravity = -0.5;
@@ -31,6 +36,11 @@ public class Level {
 	
 	public void onTick() {}
 	
+	public void fill(Graphics2D g) {
+		g.setColor(this.backgroundColor);
+		g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE+50);
+	}
+	
 	public void drawForeground() {}
 	
 	public void drawBackground() {}
@@ -49,5 +59,20 @@ public class Level {
 	public static final Color COLOR_DAYSKY = new Color(150, 225, 255);
 	public static final Color COLOR_DARKSKY = new Color(112, 146, 190);
 	public static final Color COLOR_NIGHTSKY = new Color(0, 20, 70);
+	
+	public static void drawRoundScenery(Graphics g, Color color, int[] x, int[] y, int[] size, int scale) {
+		g.setColor(color);
+		for (int i=0; i<x.length; i++) {
+			int drawX = x[i] - size[i]/2 - (int) (GamePanel.camera_x/scale);
+			int drawY = Main.SIZE - (int)(y[i] - GamePanel.camera_y/scale);
+			g.fillRoundRect(drawX, drawY, size[i], Main.SIZE*10, 150, 150);
+		}
+	}
+	
+	
+	public static void drawFloorScenery(Graphics g, Color color, int y, int scale) {
+		g.setColor(color);
+		g.fillRect(0, Main.SIZE-(y - (int)(GamePanel.camera_y / scale)), Main.SIZE, Main.SIZE*10);
+	}
 
 }

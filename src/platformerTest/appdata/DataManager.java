@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import platformerTest.assets.weapons.Weapon;
+
 public class DataManager {
 	public static ObjectMapper mapper = new ObjectMapper();
 	public static SaveData saveData;
@@ -23,6 +25,8 @@ public class DataManager {
 			saveData = new SaveData();
 			e.printStackTrace();
 		}
+		
+		Weapon.weaponListInit();
 		
 	}
 	

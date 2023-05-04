@@ -2,6 +2,7 @@ package platformerTest.levels.world1;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -50,10 +51,16 @@ public class Level_1_4 extends Level {
 	}
 	
 	@Override
+	public void fill(Graphics2D g) {
+		Color gc1 = new Color(52, 0, 151);
+		Color gc2 = new Color(0, 20, 70);
+		g.setPaint(new GradientPaint(Main.SIZE/2,0,gc1,Main.SIZE/2,Main.SIZE,gc2));
+		g.fillRect(-50,-50,Main.SIZE+50,Main.SIZE+50);
+	}
+	
+	@Override
 	public void onStart() {
 		GamePanel.displayText("Undead are everywhere, conserve your health.",300);
-		
-
 		
 	}
 	

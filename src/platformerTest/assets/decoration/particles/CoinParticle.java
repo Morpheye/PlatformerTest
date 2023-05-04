@@ -83,7 +83,7 @@ public class CoinParticle extends Particle {
 		} else {
 			coins = new int[count];
 			for (int i=0; i<coins.length; i++) coins[i] = 1;
-			for (int i=0; i<(total-3); i++) {
+			for (int i=0; i<(total-coins.length); i++) {
 				coins[(int) (Math.random() * coins.length)]++;
 			}
 		}

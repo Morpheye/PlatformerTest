@@ -111,7 +111,7 @@ public class GameObject {
 	public static final Color COLOR_SAND = new Color(255, 255, 150);
 	public static final Color COLOR_WOOD = new Color(133, 94, 30);
 	public static final Color COLOR_PLANKS = new Color(226, 187, 123);
-	public static final Color COLOR_STONE = Color.GRAY;
+	public static final Color COLOR_STONE = new Color(100, 100, 100);
 	
 	public static final Color COLOR_COPPER = new Color(184, 115, 51);
 	public static final Color COLOR_SILVER = new Color(180, 180, 200);

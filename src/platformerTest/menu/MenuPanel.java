@@ -49,7 +49,7 @@ public class MenuPanel extends JPanel {
 		this.setFocusable(true);
 		this.addMouseListener(new MenuMouse());
 		try {
-			this.lockImage = ImageIO.read(this.getClass().getResource("/gui/lock.png")); //lockimage
+			this.lockImage = ImageIO.read(this.getClass().getResource("/gui/lock.png"));
 			this.coinImage = ImageIO.read(this.getClass().getResource("/gui/goldcoin.png"));
 			this.gemImage = ImageIO.read(this.getClass().getResource("/gui/gem.png"));
 		} catch (Exception e) {}
@@ -66,11 +66,11 @@ public class MenuPanel extends JPanel {
 		
 	}
 	
-	int imgR = 75;
-	int[] levelSlotsX = new int[] {Main.SIZE/4, Main.SIZE/2, Main.SIZE*3/4,
+	final int imgR = 75;
+	final int[] levelSlotsX = new int[] {Main.SIZE/4, Main.SIZE/2, Main.SIZE*3/4,
 									Main.SIZE/4, Main.SIZE/2, Main.SIZE*3/4,
 									Main.SIZE/4, Main.SIZE/2, Main.SIZE*3/4};
-	int[] levelSlotsY = new int[] {Main.SIZE/4-20, Main.SIZE/4-20, Main.SIZE/4-20,
+	final int[] levelSlotsY = new int[] {Main.SIZE/4-20, Main.SIZE/4-20, Main.SIZE/4-20,
 									Main.SIZE/2-20, Main.SIZE/2-20, Main.SIZE/2-20,
 									Main.SIZE*3/4-20, Main.SIZE*3/4-20, Main.SIZE*3/4-20};
 	
@@ -160,19 +160,29 @@ public class MenuPanel extends JPanel {
 			}
 		}
 		
-		g2d.setColor(Color.gray);
-		g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
-		
 		//return to main menu
+		g2d.setColor(Color.gray);
+		g2d.fillRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		font = new Font(Font.MONOSPACED, Font.BOLD, 40);
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		int lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Back");
 		int lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
-		g2d.drawString("Back", Main.SIZE/2-(lvlTitleWidth/2), Main.SIZE*8/9+10);
+		g2d.drawString("Back", Main.SIZE*1/6-(lvlTitleWidth/2), Main.SIZE*8/9+10);
 
-		g2d.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		g2d.drawRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
+		//weapons
+		g2d.setColor(Color.gray);
+		g2d.fillRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		font = new Font(Font.MONOSPACED, Font.BOLD, 40);
+		g2d.setFont(font);
+		g2d.setColor(Color.WHITE);
+		lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Weapons");
+		lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
+		g2d.drawString("Weapons", Main.SIZE*5/6-(lvlTitleWidth/2), Main.SIZE*8/9+10);
+
+		g2d.drawRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		
 		//now check mouse
@@ -212,13 +222,22 @@ public class MenuPanel extends JPanel {
 				}
 			}
 			
-			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
 				g2d.setColor(new Color(255, 255, 255, 100));
-				g2d.fillRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY);
+				g2d.fillRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY);
 				
 				g2d.setColor(Color.WHITE);
 				g2d.setStroke(new BasicStroke(5));
-				g2d.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+				g2d.drawRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+			}
+			
+			if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
+				g2d.setColor(new Color(255, 255, 255, 100));
+				g2d.fillRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY);
+				
+				g2d.setColor(Color.WHITE);
+				g2d.setStroke(new BasicStroke(5));
+				g2d.drawRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 			}
 			
 		}
@@ -314,9 +333,14 @@ public class MenuPanel extends JPanel {
 				}
 			}
 			
-			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
 				timer.stop();
 				Main.jframe.openMainMenu();
+			}
+			
+			if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
+				timer.stop();
+				Main.jframe.openWeaponsMenu();
 			}
 			
 		}

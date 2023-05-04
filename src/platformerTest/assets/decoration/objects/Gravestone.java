@@ -30,13 +30,17 @@ public class Gravestone extends DecorationObject {
 	public void move() {
 		this.stone.vx = this.vx;
 		this.stone.vy = this.vy;
-		this.cross.vx = this.vx;
-		this.cross.vy = this.vy;
+		
+		if (this.cross != null) {
+			this.cross.vx = this.vx;
+			this.cross.vy = this.vy;
+			this.cross.x += this.cross.vx;
+			this.cross.y += this.cross.vy;
+		}
 		
 		this.stone.x += this.stone.vx;
 		this.stone.y += this.stone.vy;
-		this.cross.x += this.cross.vx;
-		this.cross.y += this.cross.vy;
+
 		
 		this.x += this.vx;
 		this.y += this.vy;

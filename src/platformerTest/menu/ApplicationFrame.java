@@ -62,6 +62,17 @@ public class ApplicationFrame extends JFrame {
 		current.requestFocus();
 	}
 	
+	public void openWeaponsMenu() {
+		Container panel = this.getContentPane();
+		panel.removeAll();
+		DataManager.save();
+		
+		if (current != null) current.setEnabled(false);
+		current = new WeaponsPanel();
+		panel.add(current);
+		current.requestFocus();
+	}
+	
 	public void openMainMenu() {
 		Container panel = this.getContentPane();
 		panel.removeAll();

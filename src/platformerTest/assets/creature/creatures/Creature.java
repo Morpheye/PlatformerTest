@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import platformerTest.Main;
 import platformerTest.assets.LiquidPlatform;
 import platformerTest.assets.creature.CreatureAi;
+import platformerTest.assets.weapons.Weapon;
 import platformerTest.game.GameObject;
 import platformerTest.game.MovableObject;
 import platformerTest.game.ObjType;
@@ -38,6 +39,7 @@ public class Creature extends MovableObject {
 	public int rangedAttackDamage;
 	public double attackKnockback;
 	public GameObject attack; //attack hitbox
+	public Weapon weapon;
 	
 	//lastattackinfo
 	public int attackCooldown;
