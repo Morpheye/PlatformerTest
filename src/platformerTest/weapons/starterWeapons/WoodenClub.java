@@ -19,6 +19,7 @@ public class WoodenClub extends Weapon {
 			
 			this.size = 30;
 			this.name = "Wooden Club";
+			this.hitSound = this.getClass().getResourceAsStream("/sounds/attack/club/attack.wav");
 			this.tier = 1;
 			
 			this.stats = new String[]{"Attack Knockback +300%", "Attack Range +25%", "Attack Damage -20%"}; //0.8x dmg
@@ -33,6 +34,7 @@ public class WoodenClub extends Weapon {
 	
 	@Override
 	public void init(LivingObject l) {
+		this.hitSound = this.getClass().getResourceAsStream("/sounds/attack/club/attack.wav");
 		l.attackKnockback += this.attackKnockback;
 		l.attackRange += this.attackRange;
 		l.attackDamage += this.attackDamage;

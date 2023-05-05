@@ -4,7 +4,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import platformerTest.Main;
 import platformerTest.assets.LiquidPlatform;
@@ -74,6 +79,32 @@ public class Creature extends LivingObject {
 
 		this.aiList = new ArrayList<CreatureAi>();
 		this.friendlyFire = true;
+		
+		InputStream inputAttack;
+		InputStream inputHit;
+		
+		if (this.weapon != null) { //sounds
+			this.weapon.init(this);
+			if (this.weapon.attackSound != null) inputAttack = this.weapon.attackSound;
+			else inputAttack = this.getClass().getResourceAsStream("/sounds/attack/default/attack.wav");
+			
+			if (this.weapon.hitSound != null) inputHit = this.weapon.hitSound;
+			else inputHit = this.getClass().getResourceAsStream("/sounds/attack/default/hit.wav");
+			
+		} else {
+			inputAttack = this.getClass().getResourceAsStream("/sounds/attack/default/attack.wav");
+			inputHit = this.getClass().getResourceAsStream("/sounds/attack/default/hit.wav");
+		}
+			try {
+			AudioInputStream audioStreamAttack = AudioSystem.getAudioInputStream(inputAttack);
+			AudioInputStream audioStreamHit = AudioSystem.getAudioInputStream(inputHit);
+			
+			this.attackSound = AudioSystem.getClip();
+			this.hitSound = AudioSystem.getClip();
+			this.attackSound.open(audioStreamAttack);
+			this.hitSound.open(audioStreamHit);
+			
+			} catch (Exception e) {}
 		
 	}
 	
@@ -209,7 +240,7 @@ public class Creature extends LivingObject {
 	
 	public void damage(int damage, GameObject source) {
 		this.timeSinceDamaged = 0;
-		
+
 		if (this.overheal != 0) {
 			if (this.overheal >= damage) this.overheal -= damage;
 			else {
@@ -263,12 +294,18 @@ public class Creature extends LivingObject {
 		this.attackCooldown = this.maxAttackCooldown;
 		this.meleeCooldown = this.maxAttackCooldown;
 		
+		//play sound
+		this.playAttackSound();
+		
 		//Apply collisions
 		for (GameObject obj : GamePanel.objects) { //check for enemies in range
 			if (obj.equals(this)) continue;
 			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature) && this.friendlyFire) {
 				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
 				((Creature) obj).damage(this.attackDamage, this);
+				
+				//SOUND
+				((LivingObject) obj).playHitSound(this);
 				
 				double pushStrength = this.attackKnockback;
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
@@ -280,6 +317,9 @@ public class Creature extends LivingObject {
 			} else if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Player)) {
 				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
 				((Player) obj).damage(this.attackDamage, this);
+				
+				//SOUND
+				((LivingObject) obj).playHitSound(this);
 				
 				double pushStrength = this.attackKnockback;
 				ArrayList<GameObject> list = new ArrayList<GameObject>();

@@ -4,7 +4,12 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
@@ -17,7 +22,7 @@ import platformerTest.menu.GamePanel;
 import platformerTest.weapons.Weapon;
 
 public class Player extends LivingObject {
-
+	
 	public Player(double initX, double initY, double size) {
 		super(initX, initY, size, size, Color.WHITE, 1.0);	
 		this.type = ObjType.Player;
@@ -52,9 +57,32 @@ public class Player extends LivingObject {
 		
 		this.attack = new PlayerAttack(this.size_x, this.size_y);
 		this.weapon = Weapon.getWeapon(DataManager.saveData.selectedWeapon);
-		if (this.weapon != null) {
+		
+		InputStream inputAttack;
+		InputStream inputHit;
+		
+		if (this.weapon != null) { //sounds
 			this.weapon.init(this);
+			if (this.weapon.attackSound != null) inputAttack = new BufferedInputStream(this.weapon.attackSound);
+			else inputAttack = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/attack.wav"));
+			
+			if (this.weapon.hitSound != null) new BufferedInputStream(inputHit = this.weapon.hitSound);
+			else inputHit = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/hit.wav"));
+			
+		} else {
+			inputAttack = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/attack.wav"));
+			inputHit = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/hit.wav"));
 		}
+			try {
+			AudioInputStream audioStreamAttack = AudioSystem.getAudioInputStream(inputAttack);
+			AudioInputStream audioStreamHit = AudioSystem.getAudioInputStream(inputHit);
+			
+			this.attackSound = AudioSystem.getClip();
+			this.hitSound = AudioSystem.getClip();
+			this.attackSound.open(audioStreamAttack);
+			this.hitSound.open(audioStreamHit);
+			
+			} catch (Exception e) {e.printStackTrace();}
 		
 	}
 	
@@ -62,6 +90,8 @@ public class Player extends LivingObject {
 	public void move() {
 		this.movingInLiquid = false;
 		this.liquidDensity = 1;
+		
+		//SOUND
 		
 		//Check interactables and water
 		for (GameObject obj : GamePanel.objects) { //check for water
@@ -132,8 +162,12 @@ public class Player extends LivingObject {
 		
 		if (this.attackCooldown > 0) this.attackCooldown--;
 		if (this.meleeCooldown > 0) this.meleeCooldown--;
-		if (this.isAttacking && this.attackCooldown == 0) this.attack();
-		if (this.isRangedAttacking && this.attackCooldown == 0) this.rangedAttack();
+		if (this.isAttacking && this.attackCooldown == 0) {
+			if (this.weapon != null) {
+				if (this.weapon.isRanged) this.rangedAttack();
+				else this.attack();
+			} else this.attack();
+		}
 		
 		//if dead
 		if (!this.exists) this.timeSinceDeath++; 
@@ -211,7 +245,7 @@ public class Player extends LivingObject {
 	
 	public void attack() {
 		if (!this.isAlive) return;
-		
+
 		//move attackbox
 		this.attack.x = this.x + 0;
 		this.attack.y = this.y + 0;
@@ -238,12 +272,18 @@ public class Player extends LivingObject {
 		this.attackCooldown = this.maxAttackCooldown;
 		this.meleeCooldown = this.maxAttackCooldown;
 		
+		//play sound
+		this.playAttackSound();
+		
 		//Apply collisions
 		for (GameObject obj : GamePanel.objects) { //check for enemies in range
 			if (obj.equals(this)) continue;
 			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature)) {
 				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
 				((Creature) obj).damage(this.attackDamage, this);
+				
+				//SOUND
+				((LivingObject) obj).playHitSound(this);
 				
 				double pushStrength = this.attackKnockback;
 				ArrayList<GameObject> list = new ArrayList<GameObject>();
@@ -260,6 +300,21 @@ public class Player extends LivingObject {
 	
 	public void rangedAttack() {
 		if (!this.isAlive) return;
+		
+		int calcX = 0, calcY = 0, angle = 0;
+		if (this.movingUp) calcY++;
+		if (this.movingDown) calcY--;
+		if (this.movingRight || this.movingLeft) calcX += this.lastDirection;
+		if (calcX == 0 && calcY == 0) calcX += this.lastDirection; //no input
+		if (calcX == 0) angle = 90 * calcY;
+		
+		if (calcX == 0) angle = 90 * calcY;
+		else if (calcY == 0) angle = 90 - (90*calcX);
+		else if (calcY == 1) angle = 90 - (45*calcX);
+		else if (calcY == -1) angle = -90 + (45*calcX);
+		
+		if (this.weapon != null) this.weapon.rangedAttack(this, angle);
+		this.attackCooldown = this.maxAttackCooldown;
 	}
 	
 	public class PlayerAttack extends GameObject {

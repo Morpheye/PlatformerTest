@@ -2,10 +2,15 @@ package platformerTest.game;
 
 import java.awt.Color;
 
+import javax.sound.sampled.Clip;
+
 import platformerTest.weapons.Weapon;
 
 public class LivingObject extends MovableObject {
 
+	public Clip attackSound;
+	public Clip hitSound;
+	
 	public double movementSpeed;
 	public double jumpStrength;
 	
@@ -50,6 +55,20 @@ public class LivingObject extends MovableObject {
 	public LivingObject(double x, double y, double size_x, double size_y, Color color, double density) {
 		super(x, y, size_x, size_y, color, density);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public void playHitSound(LivingObject attacker) {
+		if (attacker.hitSound != null) {
+			attacker.hitSound.setMicrosecondPosition(0);
+			attacker.hitSound.start();
+		}
+	}
+	
+	public void playAttackSound() {
+		if (this.attackSound != null) {
+			this.attackSound.setMicrosecondPosition(0);
+			this.attackSound.start();
+		}
 	}
 
 }

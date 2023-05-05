@@ -1,10 +1,12 @@
 package platformerTest.weapons;
 
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import platformerTest.game.LivingObject;
+import platformerTest.weapons.shopWeaponsT2.*;
 import platformerTest.weapons.starterWeapons.*;
 
 public class Weapon {
@@ -18,7 +20,10 @@ public class Weapon {
 	public String lore;
 	public int coinCost = 0;
 	public int gemCost = 0;
+	public boolean isRanged = false;
 	public boolean inShop = false;
+	public InputStream attackSound;
+	public InputStream hitSound;
 	
 	public Weapon() {
 		
@@ -41,6 +46,11 @@ public class Weapon {
 	 */
 	public void onKill(LivingObject wielder, LivingObject victim) {}
 	
+	/**
+	 * What the weapon does when used if it is ranged
+	 */
+	public void rangedAttack(LivingObject wielder, int angle) {}
+	
 	public static HashMap<String,Weapon> weapons = new HashMap<String,Weapon>();
 	public static ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
 	public static ArrayList<String> weaponNames = new ArrayList<String>();
@@ -61,7 +71,8 @@ public class Weapon {
 		addWeapon(new WoodenClub());
 		addWeapon(new SwiftDagger());
 		//moderate weapons (tier 2: Silver)
-		
+		addWeapon(new DuelingFoil());
+		addWeapon(new HeavyMace());
 		//high-class weapons (tier 3: Gold)
 		
 		//exotic weapons (tier 4: diamond)

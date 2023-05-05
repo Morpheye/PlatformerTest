@@ -498,6 +498,14 @@ public class GamePanel extends JPanel {
 			g2d.setColor((player.attackKnockback>2) ? Color.green : Color.red);
 			g2d.drawString("x"+df.format(player.attackKnockback/2), powerupX[i]+23, powerupY[i]+15);
 			i++;}
+		//marksman
+		if (player.rangedAttackDamage != 5) {
+			g2d.setColor(Powerup.COLOR_POWERUP_MARKSMAN);
+			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
+			g2d.drawImage(strengthImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((player.rangedAttackDamage>5) ? Color.green : Color.red);
+			g2d.drawString("x"+df.format(player.rangedAttackDamage/5.0), powerupX[i]+23, powerupY[i]+15);
+			i++;}
 
 	}
 	
