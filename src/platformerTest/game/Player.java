@@ -63,10 +63,10 @@ public class Player extends LivingObject {
 		
 		if (this.weapon != null) { //sounds
 			this.weapon.init(this);
-			if (this.weapon.attackSound != null) inputAttack = new BufferedInputStream(this.weapon.attackSound);
+			if (this.weapon.attackSound != null) inputAttack = this.weapon.attackSound;
 			else inputAttack = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/attack.wav"));
 			
-			if (this.weapon.hitSound != null) new BufferedInputStream(inputHit = this.weapon.hitSound);
+			if (this.weapon.hitSound != null) inputHit = this.weapon.hitSound;
 			else inputHit = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/hit.wav"));
 			
 		} else {
