@@ -167,8 +167,8 @@ public class Level_1_2 extends Level {
 	
 	@Override
 	public void onTick() {
-		if (crusherPlatform.y >= 750) crusherPlatform.vy = -2.5;
-		else if (crusherPlatform.y <= 625) crusherPlatform.vy = 2.5;
+		if (crusherPlatform.y >= 750) crusherPlatform.vy = -1.5;
+		else if (crusherPlatform.y <= 625) crusherPlatform.vy = 1.5;
 		
 		if (mountainCrusher.y >= 550) mountainCrusher.vy = -1;
 		else if (mountainCrusher.y <= 450) mountainCrusher.vy = 1;

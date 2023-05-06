@@ -8,7 +8,7 @@ import platformerTest.weapons.Weapon;
 public class SwiftDagger extends Weapon {
 	
 	public int attackCooldown = -20;
-	public int attackRange = -3;
+	public int attackRange = -4;
 	public double attackKnockback = -0.8;
 	
 	public SwiftDagger() {
@@ -20,7 +20,7 @@ public class SwiftDagger extends Weapon {
 			this.name = "Swift Dagger";
 			this.tier = 1;
 			
-			this.stats = new String[]{"Attack speed +100%", "Attack Range -15%", "Attack Knockback -40%"}; //x2 dmg
+			this.stats = new String[]{"Attack speed +100%", "Attack Range -20%", "Attack Knockback -40%"}; //x2 dmg
 			this.statMap = new int[] {1, -1, -1};
 			
 			this.lore = "Inflicts painful damage on vulnerable enemies within a close distance, but lacks the reach of"

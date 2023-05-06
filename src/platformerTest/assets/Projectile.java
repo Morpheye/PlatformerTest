@@ -2,15 +2,13 @@ package platformerTest.assets;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import platformerTest.Main;
+import javax.sound.sampled.Clip;
+
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.game.GameObject;
+import platformerTest.game.LivingObject;
 import platformerTest.game.MovableObject;
 import platformerTest.game.ObjType;
 import platformerTest.game.Player;
@@ -18,6 +16,9 @@ import platformerTest.menu.GamePanel;
 
 public class Projectile extends MovableObject {
 
+	public Clip hitSound;
+	public Clip attackSound;
+	
 	public int lifetime;
 	
 	public boolean waterResistant;
@@ -51,11 +52,14 @@ public class Projectile extends MovableObject {
 		
 		int direction = (vx > 0) ? 1 : -1;
 		
+		boolean hasCollided = false;
 		for (GameObject obj : GamePanel.objects) {
 			if (!this.exists || this.hitTarget) continue;
 			if (obj.equals(this) || obj.equals(this.firer)) continue;
 			if (this.hasCollided(obj) && obj.exists) {
-
+				
+				if (obj.solid) hasCollided = true;
+				
 				if (obj.type.equals(ObjType.Player))  {
 					this.hitTarget = true;
 					this.lifetime = 0;
@@ -85,11 +89,29 @@ public class Projectile extends MovableObject {
 					if (obj.type.equals(ObjType.MovableObject)) obj.pushx(direction * this.pushStrength, this, list, false, true);
 				}
 					
-		}}
+		}
+			
+		if (hasCollided) this.playHitSound();
+			
+		}
 		
 		this.lifetime--;
 		if (this.lifetime <= 0) {
 			this.exists = false;
+		}
+	}
+	
+	public void playHitSound() {
+		if (this.hitSound != null) {
+			this.hitSound.setMicrosecondPosition(0);
+			this.hitSound.start();
+		} else System.out.println(hitSound);
+	}
+	
+	public void playAttackSound() {
+		if (this.attackSound != null) {
+			this.attackSound.setMicrosecondPosition(0);
+			this.attackSound.start();
 		}
 	}
 	

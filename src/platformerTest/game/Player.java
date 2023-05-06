@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
@@ -22,6 +23,8 @@ import platformerTest.menu.GamePanel;
 import platformerTest.weapons.Weapon;
 
 public class Player extends LivingObject {
+	
+	Clip finishSound;
 	
 	public Player(double initX, double initY, double size) {
 		super(initX, initY, size, size, Color.WHITE, 1.0);	
@@ -73,16 +76,22 @@ public class Player extends LivingObject {
 			inputAttack = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/attack.wav"));
 			inputHit = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/hit.wav"));
 		}
-			try {
+		
+		InputStream finish = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/finish.wav"));
+		
+		try {
 			AudioInputStream audioStreamAttack = AudioSystem.getAudioInputStream(inputAttack);
 			AudioInputStream audioStreamHit = AudioSystem.getAudioInputStream(inputHit);
-			
+			AudioInputStream finishStream = AudioSystem.getAudioInputStream(finish);
+				
 			this.attackSound = AudioSystem.getClip();
 			this.hitSound = AudioSystem.getClip();
+			this.finishSound = AudioSystem.getClip();
 			this.attackSound.open(audioStreamAttack);
 			this.hitSound.open(audioStreamHit);
+			this.finishSound.open(finishStream);
 			
-			} catch (Exception e) {e.printStackTrace();}
+		} catch (Exception e) {e.printStackTrace();}
 		
 	}
 	
@@ -99,6 +108,7 @@ public class Player extends LivingObject {
 			//finish flag
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0 && obj.exists) {
 				GamePanel.levelWon=1;
+				finishSound.start();
 				CoinParticle.spawnCoins(this.x, this.y, 5+(int)(Math.random() * 6), GamePanel.level.reward);
 			}
 			//powerup
@@ -354,6 +364,10 @@ public class Player extends LivingObject {
 		}
 	}
 	
-
+	@Override
+	public void destroy() {
+		this.finishSound.close();
+		super.destroy();
+	}
 	
 }

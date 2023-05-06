@@ -45,6 +45,8 @@ public class ApplicationFrame extends JFrame {
 		Container panel = this.getContentPane();
 		panel.removeAll();
 		
+		System.gc();
+		
 		if (current != null) current.setEnabled(false);
 		current = new GamePanel(level);
 		panel.add(current);
@@ -55,6 +57,8 @@ public class ApplicationFrame extends JFrame {
 		Container panel = this.getContentPane();
 		panel.removeAll();
 		DataManager.save();
+		
+		System.gc();
 		
 		if (current != null) current.setEnabled(false);
 		current = new MenuPanel(new World1());
@@ -67,6 +71,8 @@ public class ApplicationFrame extends JFrame {
 		panel.removeAll();
 		DataManager.save();
 		
+		System.gc();
+		
 		if (current != null) current.setEnabled(false);
 		current = new WeaponsPanel();
 		panel.add(current);
@@ -77,6 +83,8 @@ public class ApplicationFrame extends JFrame {
 		Container panel = this.getContentPane();
 		panel.removeAll();
 		DataManager.save();
+		
+		System.gc();
 		
 		if (current != null) current.setEnabled(false);
 		current = new MainPanel();

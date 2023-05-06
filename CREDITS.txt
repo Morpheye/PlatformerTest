@@ -1,3 +1,5 @@
+/sounds/finish.wav: "pixabay.com/ spooky gong.wav Veiler"
+
 /sounds/attacks/default/attack.wav: "https://mixkit.co/ Fast sword whoosh"
 /sounds/attacks/default/hit.wav: "https://mixkit.co/ Cartoon Hit"
 

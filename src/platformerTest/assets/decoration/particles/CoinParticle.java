@@ -3,7 +3,12 @@ package platformerTest.assets.decoration.particles;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.Arrays;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 import platformerTest.Main;
 import platformerTest.assets.decoration.Particle;
@@ -25,6 +30,15 @@ public class CoinParticle extends Particle {
 		this.vy = 5 + (Math.random() * 10);
 		
 		this.coinAmount = coinAmount;
+		
+		try {
+			InputStream sound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/coin/coin.wav"));
+			AudioInputStream audioStreamAttack = AudioSystem.getAudioInputStream(sound);
+		
+			this.despawnSound = AudioSystem.getClip();
+			this.despawnSound.open(audioStreamAttack);
+			
+		} catch (Exception e) {}
 		
 	}
 	
@@ -60,6 +74,7 @@ public class CoinParticle extends Particle {
 			((Graphics2D) g).drawImage(image, drawX, drawY, 
 					(int) (this.size_x * Main.SIZE/size), (int) (this.size_x * Main.SIZE/size), null);
 		} else {
+			if (this.lifetime == 30) this.despawnSound.start();
 			Graphics2D g2d = (Graphics2D) g;
 			
 			this.x = GamePanel.camera_x;

@@ -61,8 +61,9 @@ public class GamePanel extends JPanel {
 	public static long coins;
 	public static long targetCoins;
 	
+	public static int timeSinceRestart = 0;
+	
 	public GamePanel(Level level) {
-		
 		this.setBackground(Color.BLACK);
 		this.setSize(Main.SIZE, Main.SIZE);
 		this.setVisible(true);
@@ -75,6 +76,9 @@ public class GamePanel extends JPanel {
 		
 		coins = 0;
 		restartLevel(level);
+		timeSinceRestart = 180;
+		
+		loadImages();
 		
 		timer = new Timer(1000/90, new ActionListener() {
 			@Override
@@ -87,18 +91,15 @@ public class GamePanel extends JPanel {
 		levelWon = 0;
 		isPaused = false;
 		
-		loadImages();
-		
 	}
 	
 	public static void restartLevel(Level newLevel) {
+		timeSinceRestart = 0;
+		
+		//wipe old data if old data exists
+		destroyAll();
 		
 		targetCoins = 0;
-		objects = new ArrayList<GameObject>();
-		deletedObjects = new ArrayList<GameObject>();
-		flashes = new HashMap<Color,Integer>();
-		projectiles = new ArrayList<GameObject>();
-		particles = new ArrayList<GameObject>();
 		
 		displayText = null;
 		textDuration = 0;
@@ -124,6 +125,8 @@ public class GamePanel extends JPanel {
 		level.onStart();
 		
 		createFlash(Color.white,100);
+		
+		System.gc();
 
 	}
 	
@@ -132,6 +135,8 @@ public class GamePanel extends JPanel {
 	**/
 	public void paint(Graphics g) {
 		super.paint(g);
+		
+		if (timeSinceRestart < 1000) timeSinceRestart++;
 		
 		if (!isPaused) {
 			level.onTick();
@@ -154,6 +159,7 @@ public class GamePanel extends JPanel {
 		
 		for (GameObject obj : deletedObjects) {
 			objects.remove(obj);
+			obj.destroy();
 		}
 		
 		for (GameObject obj : projectiles) objects.add(obj);
@@ -248,8 +254,8 @@ public class GamePanel extends JPanel {
 		}
 	}
 	
-	int buttonSizeX=400;
-	int buttonSizeY=100;
+	static int buttonSizeX=400;
+	static int buttonSizeY=100;
 	
 	public void drawPauseMenu(Graphics g) {
 		g.setColor(new Color(0,0,0,200));
@@ -591,7 +597,7 @@ public class GamePanel extends JPanel {
 				player.movingRight = true; //D
 				player.lastDirection = 1;
 			}
-			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0) GamePanel.restartLevel(level);
+			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0 && timeSinceRestart > 90) GamePanel.restartLevel(level);
 		}
 
 		@Override
@@ -623,6 +629,7 @@ public class GamePanel extends JPanel {
 			
 			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*3/4) < buttonSizeY/2) {
 				timer.stop();
+				destroyAll();
 				Main.jframe.exitGame(level);
 			}
 			
@@ -653,6 +660,22 @@ public class GamePanel extends JPanel {
 			punchImage = ImageIO.read(this.getClass().getResource("/powerups/punch.png"));
 
 		} catch (Exception e) {e.printStackTrace();}
+	}
+	
+	public static void destroyAll() {
+		//wipe all shit in all objects
+		if (objects != null) {
+			for (GameObject obj : objects) {
+				obj.destroy();
+			}
+		}
+		
+		//now wipe the arrays
+		objects = new ArrayList<GameObject>();
+		deletedObjects = new ArrayList<GameObject>();
+		flashes = new HashMap<Color,Integer>();
+		projectiles = new ArrayList<GameObject>();
+		particles = new ArrayList<GameObject>();
 	}
 	
 }

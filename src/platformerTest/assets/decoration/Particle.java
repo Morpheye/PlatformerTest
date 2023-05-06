@@ -3,12 +3,17 @@ package platformerTest.assets.decoration;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.sound.sampled.Clip;
+
 import platformerTest.assets.DecorationObject;
 import platformerTest.game.Player;
 import platformerTest.menu.GamePanel;
 
 public class Particle extends DecorationObject{
 
+	public Clip spawnSound;
+	public Clip despawnSound;
+	
 	public boolean gravity;
 	public int lifetime;
 	
@@ -34,7 +39,10 @@ public class Particle extends DecorationObject{
 		this.vy *= GamePanel.airDrag;
 		
 		this.lifetime--;
-		if (this.lifetime < 0) GamePanel.deletedObjects.add(this);
+		if (this.lifetime < 0) {
+			this.destroy();
+			GamePanel.deletedObjects.add(this);
+		}
 		
 	}
 	

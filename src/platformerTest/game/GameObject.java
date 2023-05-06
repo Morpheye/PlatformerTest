@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import platformerTest.Main;
+import platformerTest.assets.Projectile;
+import platformerTest.assets.decoration.Particle;
 
 public class GameObject {
 
@@ -120,5 +122,26 @@ public class GameObject {
 	public static final Color COLOR_CRIMSONADE = new Color(180, 0, 0);
 	
 	public static final Color COLOR_WATER = new Color(0, 50, 255, 100);
+
+	public void destroy() { //on restart or end
+		if (this instanceof LivingObject) {
+			LivingObject livingObj = (LivingObject) this;
+			if (livingObj.attackSound != null) if (livingObj.attackSound.isOpen()) livingObj.attackSound.close();
+			if (livingObj.hitSound != null) if (livingObj.hitSound.isOpen()) livingObj.hitSound.close();
+		}
+
+		if (this instanceof Projectile) {
+			Projectile projectile = (Projectile) this;
+			if (projectile.attackSound != null) if (projectile.attackSound.isOpen()) projectile.attackSound.close();
+			if (projectile.hitSound != null) if (projectile.hitSound.isOpen()) projectile.hitSound.close();
+		}
+		
+		if (this instanceof Particle) {
+			Particle particle = (Particle) this;
+			if (particle.spawnSound != null) if (particle.spawnSound.isOpen()) particle.spawnSound.close();
+			if (particle.despawnSound != null) if (particle.despawnSound.isOpen()) particle.despawnSound.close();
+		}
+		
+	}
 	
 }

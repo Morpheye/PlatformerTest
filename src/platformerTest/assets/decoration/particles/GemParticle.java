@@ -3,7 +3,11 @@ package platformerTest.assets.decoration.particles;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
@@ -24,6 +28,17 @@ public class GemParticle extends Particle {
 		this.vy = 2+(Math.random() * 1);
 		
 		DataManager.saveData.gems++;
+		
+		try {
+			InputStream sound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/coin/gem.wav"));
+			AudioInputStream audioStreamAttack = AudioSystem.getAudioInputStream(sound);
+		
+			this.spawnSound = AudioSystem.getClip();
+			this.spawnSound.open(audioStreamAttack);
+			
+			this.spawnSound.start();
+			
+		} catch (Exception e) {}
 		
 	}
 	

@@ -3,6 +3,11 @@ package platformerTest.assets.projectiles;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 import platformerTest.Main;
 import platformerTest.assets.Projectile;
@@ -12,12 +17,22 @@ import platformerTest.menu.GamePanel;
 
 public class ProjectileDart extends Projectile {
 
+	public InputStream inputHit = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/thud.wav"));
+	
 	public ProjectileDart(double x, double y, double vx, double vy, GameObject firer, int damage) {
 		super(x, y, 10, 10, vx, vy, firer, damage);
 		this.lifetime = 300;
 		this.waterResistant = true;
 		this.pushStrength = 1;
 		this.rotating = true;
+		
+		try {
+			AudioInputStream audioStreamHit = AudioSystem.getAudioInputStream(inputHit);
+			
+			this.hitSound = AudioSystem.getClip();
+			this.hitSound.open(audioStreamHit);
+		
+		} catch (Exception e) {e.printStackTrace();}
 	}
 	
 	@Override
