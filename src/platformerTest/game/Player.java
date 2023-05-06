@@ -114,6 +114,7 @@ public class Player extends LivingObject {
 			//powerup
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.Powerup) && GamePanel.levelWon==0 && obj.exists) {
 				((Powerup) obj).run();
+				((Powerup) obj).playSound();
 				obj.exists = false;
 			}
 			//trigger

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import platformerTest.Main;
 import platformerTest.assets.Projectile;
 import platformerTest.assets.decoration.Particle;
+import platformerTest.assets.triggers.Powerup;
 
 public class GameObject {
 
@@ -140,6 +141,11 @@ public class GameObject {
 			Particle particle = (Particle) this;
 			if (particle.spawnSound != null) if (particle.spawnSound.isOpen()) particle.spawnSound.close();
 			if (particle.despawnSound != null) if (particle.despawnSound.isOpen()) particle.despawnSound.close();
+		}
+		
+		if (this instanceof Powerup) {
+			Powerup powerup = (Powerup) this;
+			if (powerup.sound != null) if (powerup.sound.isOpen()) powerup.sound.close();
 		}
 		
 	}

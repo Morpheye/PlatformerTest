@@ -173,8 +173,8 @@ public class Level_1_2 extends Level {
 		if (mountainCrusher.y >= 550) mountainCrusher.vy = -1;
 		else if (mountainCrusher.y <= 450) mountainCrusher.vy = 1;
 		
-		if (mountainPlatform.y >= 1130) mountainPlatform.vy = -1;
-		else if (mountainPlatform.y <= 830) mountainPlatform.vy = 2;
+		if (mountainPlatform.y >= 1130) mountainPlatform.vy = -1.5;
+		else if (mountainPlatform.y <= 830) mountainPlatform.vy = 1.5;
 	}
 	
 }

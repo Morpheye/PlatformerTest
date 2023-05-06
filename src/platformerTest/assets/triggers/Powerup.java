@@ -4,9 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 
-import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import platformerTest.Main;
 import platformerTest.assets.Trigger;
@@ -15,6 +18,7 @@ import platformerTest.game.Player;
 
 public class Powerup extends Trigger {
 
+	public Clip sound;
 	public Image image;
 	
 	public Powerup(double x, double y, double size, Code code) {
@@ -22,11 +26,24 @@ public class Powerup extends Trigger {
 		this.type = ObjType.Powerup;
 		this.color = null;
 		this.visible = true;
+		
+		try {
+			InputStream sound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/powerup.wav"));
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(sound);
+			this.sound = AudioSystem.getClip();
+			this.sound.open(audioStream);
+			
+		} catch (Exception e) {}
 	}
 	
 	@Override
 	public void run() {
 		
+	}
+	
+	public void playSound() {
+		this.sound.setMicrosecondPosition(0);
+		this.sound.start();
 	}
 	
 	@Override
