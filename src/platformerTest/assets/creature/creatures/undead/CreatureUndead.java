@@ -26,6 +26,7 @@ public class CreatureUndead extends Creature {
 	public CreatureUndead(double initX, double initY, double size, int maxHealth, double minRange, double maxRange) {
 		super(initX, initY, size, COLOR_ZOMBIE, Color.GRAY, 1, maxHealth, 0.04, 0, 5, 10, 45, 1);
 		this.friendlyFire = true;
+		this.gemChance = 0.001;
 		
 		this.aiList.add(new HorizontalFollowAi(minRange, maxRange, GamePanel.player));
 		this.aiList.add(new NoVerticalMovementAttackAi(this.attackRange/2, GamePanel.player));
@@ -37,6 +38,7 @@ public class CreatureUndead extends Creature {
 	public CreatureUndead(double initX, double initY, double size, int maxHealth, double minRangeX, double maxRangeX, double minRangeY, double maxRangeY) {
 		super(initX, initY, size, COLOR_ZOMBIE, Color.GRAY, 1, maxHealth, 0.04, 0, 5, 10, 45, 1);
 		this.friendlyFire = true;
+		this.gemChance = 0.001;
 		
 		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player));
 		this.aiList.add(new NoVerticalMovementAttackAi(this.attackRange/2, GamePanel.player));
@@ -47,7 +49,7 @@ public class CreatureUndead extends Creature {
 		int amount = 1 + (int) (Math.random()*3);
 		CoinParticle.spawnCoins(this.x, this.y, amount, amount+(int)(Math.random()*(amount+1)));
 		
-		if (Math.random() > 0.999) GemParticle.spawnGem(this.x, this.y, 1); //0.1% chance of a gem
+		if (Math.random() > (1 - this.gemChance)) GemParticle.spawnGem(this.x, this.y, 1); //0.1% chance of a gem
 	}
 
 }

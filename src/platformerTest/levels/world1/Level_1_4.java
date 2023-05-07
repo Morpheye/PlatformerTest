@@ -178,9 +178,10 @@ public class Level_1_4 extends Level {
 			@Override
 			public void dropLoot() { //3 drops totalling 3-6 coins
 				CoinParticle.spawnCoins(this.x, this.y, 3, 3+(int)(Math.random()*4));
-				if (Math.random() > 0.995) GemParticle.spawnGem(this.x, this.y, 1); //0.5% chance of a gem
+				if (Math.random() > (1 - this.gemChance)) GemParticle.spawnGem(this.x, this.y, 1); //0.5% chance of a gem
 			}
 		};
+		gatekeeper3.gemChance = 0.005;
 		gatekeeper3.required = true;
 		gatekeeper3.movementSpeed = 0.06;
 		gatekeeper3.attackKnockback = 3;
@@ -211,9 +212,10 @@ public class Level_1_4 extends Level {
 			@Override
 			public void dropLoot() { //5 drops totalling 10-20 coins
 				CoinParticle.spawnCoins(this.x, this.y, 5, 10+(int)(Math.random()*11));
-				if (Math.random() > 0.99) GemParticle.spawnGem(this.x, this.y, 1); //1% chance of a gem
+				if (Math.random() > (1 - this.gemChance)) GemParticle.spawnGem(this.x, this.y, 1); //1% chance of a gem
 			}
 		};
+		miniboss.gemChance = 0.01;
 		miniboss.movementSpeed = 0.05;
 		miniboss.attackKnockback = 2;
 		miniboss.attackDamage = 10;

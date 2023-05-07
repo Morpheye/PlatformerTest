@@ -21,6 +21,7 @@ import platformerTest.menu.GamePanel;
 
 public class Creature extends LivingObject {
 
+	public double gemChance = 0;
 	public boolean required;
 	
 	public Color eyeColor;
@@ -289,7 +290,7 @@ public class Creature extends LivingObject {
 	@Override
 	public void die() {
 		if (this.isAlive) {
-			this.effects.clear();
+			this.removeEffects.addAll(this.effects);
 			this.isAlive = false;
 			this.exists = false;
 		}

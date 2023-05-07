@@ -292,7 +292,7 @@ public class Player extends LivingObject {
 	public void die() {
 		if (GamePanel.levelWon == 0 && this.isAlive) {
 			GamePanel.createFlash(Color.BLACK, 150);
-			this.effects.clear();
+			this.removeEffects.addAll(this.effects);
 			this.isAlive = false;
 			this.exists = false;
 		}

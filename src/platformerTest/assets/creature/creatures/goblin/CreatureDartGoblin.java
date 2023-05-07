@@ -42,6 +42,7 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		this.health = 30;
 		this.maxHealth = 30;
 		this.rangedAttackDamage = 2;
+		this.gemChance = 0.005;
 		
 		this.aiList = new ArrayList<CreatureAi>();
 		this.aiList.add(new VerticalFollowAi(minRange, maxRange, 50, 150, 50, 150, GamePanel.player)); //jumps to shoot at player
@@ -61,6 +62,7 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		this.health = 30;
 		this.maxHealth = 30;
 		this.rangedAttackDamage = 2;
+		this.gemChance = 0.005;
 		
 		this.aiList = new ArrayList<CreatureAi>();
 		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, minRangeY, maxRangeY, GamePanel.player)); //jumps to shoot at player
@@ -121,7 +123,7 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		int amount = 1 + (int) (Math.random()*2);
 		CoinParticle.spawnCoins(this.x, this.y, amount, amount+(int)(Math.random()*(2*amount+1)));
 		
-		if (Math.random() > 0.995) GemParticle.spawnGem(this.x, this.y, 1); //0.25% chance of a gem
+		if (Math.random() > (1 - this.gemChance)) GemParticle.spawnGem(this.x, this.y, 1); //0.25% chance of a gem
 	}
 	
 

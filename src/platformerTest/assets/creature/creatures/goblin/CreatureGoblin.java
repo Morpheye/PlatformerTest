@@ -28,6 +28,7 @@ public class CreatureGoblin extends Creature {
 	public CreatureGoblin(double initX, double initY, double size, double minRange, double maxRange) {
 		super(initX, initY, size, COLOR_GOBLIN, Color.RED, 1, 20, 0.15, 12, 3, 7, 30, 1);
 		this.friendlyFire = false;
+		this.gemChance = 0.001;
 		
 		this.aiList.add(new HorizontalFollowAi(minRange, maxRange, GamePanel.player));
 		this.aiList.add(new VerticalFollowAi(75, 200, GamePanel.player));
@@ -40,6 +41,7 @@ public class CreatureGoblin extends Creature {
 	public CreatureGoblin(double initX, double initY, double size, double minRangeX, double maxRangeX, double minRangeY, double maxRangeY) {
 		super(initX, initY, size, COLOR_GOBLIN, Color.RED, 1, 20, 0.15, 12, 3, 7, 30, 1);
 		this.friendlyFire = false;
+		this.gemChance = 0.001;
 		
 		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player));
 		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, 75, maxRangeY, 0, maxRangeY, GamePanel.player));
@@ -51,7 +53,7 @@ public class CreatureGoblin extends Creature {
 	public void dropLoot() { //3 drops totalling 3 coins
 		CoinParticle.spawnCoins(this.x, this.y, 3, 3);
 		
-		if (Math.random() > 0.999) GemParticle.spawnGem(this.x, this.y, 1); //0.1% chance of a gem
+		if (Math.random() > (1 - this.gemChance)) GemParticle.spawnGem(this.x, this.y, 1); //0.1% chance of a gem
 	}
 
 }

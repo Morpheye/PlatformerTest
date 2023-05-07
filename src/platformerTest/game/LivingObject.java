@@ -65,6 +65,8 @@ public class LivingObject extends MovableObject {
 		// TODO Auto-generated constructor stub
 	}
 	
+	protected ArrayList<Effect> removeEffects = new ArrayList<Effect>();
+	
 	@Override
 	public void move() {
 		this.movingInLiquid = false;
@@ -115,11 +117,12 @@ public class LivingObject extends MovableObject {
 		if (!this.isAlive) this.timeSinceDeath++; 
 		
 		//Apply effects
-		ArrayList<Effect> removeEffects = new ArrayList<Effect>();
 		for (Effect e: this.effects) {
 			e.update(this);
 			if (e.lifetime <= 0) removeEffects.add(e);
-		} this.effects.removeAll(removeEffects);
+		}
+		this.effects.removeAll(removeEffects);
+		removeEffects.clear();
 		
 		//then apply movableobject physics
 		super.move();
@@ -165,12 +168,12 @@ public class LivingObject extends MovableObject {
 			this.die();
 			if (source != null) {
 				if (source.equals(GamePanel.player) && this.type.equals(ObjType.Creature)) {
-					((Creature )this).dropLoot();
 					if (GamePanel.player.weapon != null) GamePanel.player.weapon.onKill(GamePanel.player, this); //WEAPON TRIGGER
+					((Creature) this).dropLoot();
 			}}
 		}
 		
-		if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) source); //WEAPON TRIGGER
+		if (this.weapon != null) this.weapon.onUserHit(this, (LivingObject) source); //WEAPON TRIGGER
 	}
 	
 	public void damage(int amount, LivingObject source, String effect) {
