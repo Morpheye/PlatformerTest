@@ -145,10 +145,6 @@ public class Creature extends LivingObject {
 			if (this.movingLeft) this.vx -= this.movementSpeed;
 		}
 		
-		if (this.y > GamePanel.level.topLimit) GamePanel.deletedObjects.add(this);
-		if (this.y < GamePanel.level.bottomLimit) GamePanel.deletedObjects.add(this);
-		if (this.timeSinceDeath > 60) GamePanel.deletedObjects.add(this);
-		
 		if (this.health <= 0) this.die();
 		if (this.health > this.maxHealth) this.health = this.maxHealth; 
 		
@@ -160,6 +156,11 @@ public class Creature extends LivingObject {
 		
 		//if dead
 		if (!this.isAlive) this.timeSinceDeath++; 
+		
+		//CHECK BOUNDS
+		if (this.y > GamePanel.level.topLimit) GamePanel.deletedObjects.add(this);
+		if (this.y < GamePanel.level.bottomLimit) GamePanel.deletedObjects.add(this);
+		if (this.timeSinceDeath > 60) GamePanel.deletedObjects.add(this);
 		
 		//then apply movableobject physics
 		super.move();
@@ -238,6 +239,7 @@ public class Creature extends LivingObject {
 	
 	public int dmgTime;
 	
+	@Override
 	public void damage(int damage, GameObject source) {
 		this.timeSinceDamaged = 0;
 

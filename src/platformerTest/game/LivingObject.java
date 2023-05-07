@@ -1,9 +1,11 @@
 package platformerTest.game;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import javax.sound.sampled.Clip;
 
+import platformerTest.assets.effects.Effect;
 import platformerTest.weapons.Weapon;
 
 public class LivingObject extends MovableObject {
@@ -31,6 +33,7 @@ public class LivingObject extends MovableObject {
 	public double attackKnockback;
 	public GameObject attack; //attack hitbox
 	public Weapon weapon;
+	public ArrayList<Effect> effects;
 	
 	//lastattackinfo
 	public int attackCooldown;
@@ -54,7 +57,12 @@ public class LivingObject extends MovableObject {
 	
 	public LivingObject(double x, double y, double size_x, double size_y, Color color, double density) {
 		super(x, y, size_x, size_y, color, density);
+		this.effects = new ArrayList<Effect>();
 		// TODO Auto-generated constructor stub
+	}
+	
+	public void damage(int amount, GameObject source) {
+		
 	}
 	
 	public void playHitSound(LivingObject attacker) {

@@ -50,7 +50,7 @@ public class Level_1_5 extends Level {
 		g.setPaint(new GradientPaint(Main.SIZE,Main.SIZE/2,gc1,0,Main.SIZE/2,gc2));
 		g.fillRect(-50,-50,Main.SIZE+50,Main.SIZE+50);
 		
-		drawRoundScenery(g, Color.YELLOW.darker().darker(), Fx1, Fy1, Fsize1, 12);
+		drawRoundScenery(g, Color.YELLOW.darker().darker(), Fx1, Fy1, Fsize1, 10);
 		drawFloorScenery(g, Color.YELLOW.darker().darker(), 150, 10);
 		drawRoundScenery(g, Color.YELLOW.darker(), Fx2, Fy2, Fsize2, 7);
 	}

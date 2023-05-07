@@ -73,6 +73,9 @@ public class Weapon {
 		//moderate weapons (tier 2: Silver)
 		addWeapon(new DuelingFoil());
 		addWeapon(new HeavyMace());
+		addWeapon(new AquaforgedTrident());
+		addWeapon(new AerialStaff());
+		addWeapon(new GoldenKnife());
 		//high-class weapons (tier 3: Gold)
 		
 		//exotic weapons (tier 4: diamond)

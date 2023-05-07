@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -18,6 +20,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -31,6 +36,8 @@ import platformerTest.weapons.Weapon;
 public class WeaponsPanel extends JPanel {
 
 	public static Timer timer;
+	public Clip equipSound;
+	public Clip purchaseSound;
 	
 	public WeaponsPanel() {
 		this.setName("Weapons");
@@ -43,6 +50,18 @@ public class WeaponsPanel extends JPanel {
 		this.reloadImages();
 		this.guiOpen = false;
 		this.inShop = false;
+		
+		try {
+			InputStream sound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/inventory/equip.wav"));
+			InputStream sound2 = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/inventory/purchase.wav"));
+			AudioInputStream audioStream = AudioSystem.getAudioInputStream(sound);
+			AudioInputStream audioStream2 = AudioSystem.getAudioInputStream(sound2);
+			this.equipSound = AudioSystem.getClip();
+			this.equipSound.open(audioStream);
+			this.purchaseSound = AudioSystem.getClip();
+			this.purchaseSound.open(audioStream2);
+			
+		} catch (Exception e) {}
 		
 		timer = new Timer(1000/30, new ActionListener() {
 			@Override
@@ -291,7 +310,7 @@ public class WeaponsPanel extends JPanel {
 			g2d.setColor(Color.white);
 			g2d.drawRoundRect(Main.SIZE/2+w/6-5, Main.SIZE/2-h/2+10, w/3-5, w/3-5, 5, 5);
 			
-			drawString(g2d, 25, slotNames[guiSelected], w*2/3, Main.SIZE/2-w/2+5, Main.SIZE/2-h/2+10);
+			drawString(g2d, 25, slotNames[guiSelected], w*2/3, Main.SIZE/2-w/2+10, Main.SIZE/2-h/2+10);
 			String[] stats = weaponList[guiSelected].stats;
 			int[] statMap = weaponList[guiSelected].statMap;
 			String lore = weaponList[guiSelected].lore;
@@ -476,6 +495,7 @@ public class WeaponsPanel extends JPanel {
 						scroll = 0;
 						reloadImages();
 					} else {
+						stop();
 						timer.stop();
 						Main.jframe.exitGame(new Level_1_1());
 					}
@@ -491,7 +511,14 @@ public class WeaponsPanel extends JPanel {
 				
 				//deselect
 				if (!inShop && Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*11/12) < buttonSizeY/2) {
+					if (DataManager.saveData.selectedWeapon != null) {
+						equipSound.setMicrosecondPosition(0);
+						equipSound.start();
+					}
+					
 					DataManager.saveData.selectedWeapon = null;
+					
+
 					
 				}
 				
@@ -530,16 +557,22 @@ public class WeaponsPanel extends JPanel {
 						int gemCost = Weapon.getWeapon(slotNames[guiSelected]).gemCost;
 						if (DataManager.saveData.coins < coinCost || DataManager.saveData.gems < gemCost) {
 						} else if (DataManager.saveData.ownedWeapons.contains(slotNames[guiSelected])) {
-						} else {
+						} else { //purchase successful
 							DataManager.saveData.ownedWeapons.add(slotNames[guiSelected]);
 							DataManager.saveData.coins -= coinCost;
 							DataManager.saveData.gems -= gemCost;
 							guiOpen = false;
+							
+							purchaseSound.setMicrosecondPosition(0);
+							purchaseSound.start();
 						}
 					} else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)){
 					} else {
 						DataManager.saveData.selectedWeapon = slotNames[guiSelected];
 						guiOpen = false;
+						
+						equipSound.setMicrosecondPosition(0);
+						equipSound.start();
 					}	
 				}
 				
@@ -617,5 +650,9 @@ public class WeaponsPanel extends JPanel {
 		
 	}
 		
+	public void stop() {
+		if (this.equipSound != null) if (this.equipSound.isOpen()) this.equipSound.close();
+		if (this.purchaseSound != null) if (this.purchaseSound.isOpen()) this.purchaseSound.close();
+	}
 	
 }

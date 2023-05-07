@@ -18,6 +18,7 @@ import platformerTest.assets.LiquidPlatform;
 import platformerTest.assets.Trigger;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.assets.decoration.particles.CoinParticle;
+import platformerTest.assets.effects.Effect;
 import platformerTest.assets.triggers.Powerup;
 import platformerTest.menu.GamePanel;
 import platformerTest.weapons.Weapon;
@@ -99,9 +100,7 @@ public class Player extends LivingObject {
 	public void move() {
 		this.movingInLiquid = false;
 		this.liquidDensity = 1;
-		
-		//SOUND
-		
+
 		//Check interactables and water
 		for (GameObject obj : GamePanel.objects) { //check for water
 			if (obj.equals(this)) continue;
@@ -147,20 +146,18 @@ public class Player extends LivingObject {
 			if (this.movingUp & !this.inAir && !Main.testMode) { //jump
 				this.vy += this.jumpStrength;
 				this.inAir = true;
-			} else if (this.movingUp && Main.testMode) {
-				this.vy += 5*this.movementSpeed;
-				this.inAir = true;
 			}
 			if (this.movingRight) this.vx += this.movementSpeed;
 			if (this.movingLeft) this.vx -= this.movementSpeed;
 		}
 		
-		//CHECK BOUNDS
-		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
-		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
-		if (this.timeSinceDeath > 120 && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
+		//Apply effects
+		for (Effect e: this.effects) {
+			e.update(this);
+			if (e.lifetime <= 0) this.effects.remove(e);
+		}
 		
-		//hp shenanigans
+		//Health
 		if (timeSinceDamaged >= 450) {
 			this.timeSinceDamaged -= 180;
 			if (this.health < 100) this.health++;
@@ -169,19 +166,19 @@ public class Player extends LivingObject {
 		
 		if (this.health <= 0) this.die();
 		
-		//then attack
-		
+		//Attack
 		if (this.attackCooldown > 0) this.attackCooldown--;
 		if (this.meleeCooldown > 0) this.meleeCooldown--;
-		if (this.isAttacking && this.attackCooldown == 0) {
-			if (this.weapon != null) {
-				if (this.weapon.isRanged) this.rangedAttack();
-				else this.attack();
-			} else this.attack();
-		}
+		if (this.isAttacking && this.attackCooldown == 0) this.attack();
+		if (this.isRangedAttacking && this.attackCooldown == 0) this.rangedAttack();
 		
-		//if dead
+		//If dead
 		if (!this.exists) this.timeSinceDeath++; 
+		
+		//CHECK BOUNDS
+		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
+		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
+		if (this.timeSinceDeath > 120 && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		
 		//then apply movableobject physics
 		super.move();
@@ -231,6 +228,7 @@ public class Player extends LivingObject {
 	
 	public int dmgTime;
 	
+	@Override
 	public void damage(int damage, GameObject source) {
 		this.timeSinceDamaged = 0;
 		

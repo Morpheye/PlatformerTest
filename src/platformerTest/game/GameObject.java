@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import platformerTest.Main;
 import platformerTest.assets.Projectile;
 import platformerTest.assets.decoration.Particle;
+import platformerTest.assets.effects.Effect;
 import platformerTest.assets.triggers.Powerup;
 
 public class GameObject {
@@ -129,6 +130,8 @@ public class GameObject {
 			LivingObject livingObj = (LivingObject) this;
 			if (livingObj.attackSound != null) if (livingObj.attackSound.isOpen()) livingObj.attackSound.close();
 			if (livingObj.hitSound != null) if (livingObj.hitSound.isOpen()) livingObj.hitSound.close();
+			
+			livingObj.effects = new ArrayList<Effect>(); //wipe effects
 		}
 
 		if (this instanceof Projectile) {

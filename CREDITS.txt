@@ -1,4 +1,5 @@
-/sounds/finish.wav: "pixabay.com/ spooky gong.wav Veiler"
+/sounds/finish.wav: "https://pixabay.com/ spooky gong.wav Veiler"
+/sounds/inventory/equip.wav: "https://pixabay.com/ Item Equip mrickey13"
 
 /sounds/attacks/default/attack.wav: "https://mixkit.co/ Fast sword whoosh"
 /sounds/attacks/default/hit.wav: "https://mixkit.co/ Cartoon Hit"
@@ -6,4 +7,4 @@
 /sounds/attacks/sword/attack.wav: "https://pixabay.com/ Sword sound 2 Merrick079"
 /sounds/attacks/axe/attack.wav: "https://pixabay.com/ Sword sound 2 Merrick079"
 
-/sounds/attacks/dagger/attack.wav: "https://mixkit.co/ Dagger woosh"
+/sounds/attacks/knife/attack.wav: "https://pixabay.com/ Small Knife Whoosh meggiepie"
