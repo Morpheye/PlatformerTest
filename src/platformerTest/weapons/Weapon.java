@@ -31,26 +31,6 @@ public class Weapon {
 
 	public void init(LivingObject creature) {}
 	
-	/**
-	 * Triggers when wielder hits something. Use this for modifying damage
-	 */
-	public void onAttackStart(LivingObject wielder, LivingObject victim) {}
-	
-	/**
-	 * Triggers after damage dealt. Use this to undo effects of onAttackStart()
-	 */
-	public void onAttackEnd(LivingObject wielder, LivingObject victim) {}
-	
-	/**
-	 * Triggers when victim takes damage, if it dies.
-	 */
-	public void onKill(LivingObject wielder, LivingObject victim) {}
-	
-	/**
-	 * What the weapon does when used if it is ranged
-	 */
-	public void rangedAttack(LivingObject wielder, int angle) {}
-	
 	public static HashMap<String,Weapon> weapons = new HashMap<String,Weapon>();
 	public static ArrayList<Weapon> weaponList = new ArrayList<Weapon>();
 	public static ArrayList<String> weaponNames = new ArrayList<String>();
@@ -82,5 +62,31 @@ public class Weapon {
 		
 		//ultra-exotic weapons (tier 5: crimsonade)
 	}
+	
+	/**
+	 * Triggers when wielder hits something. Use this for modifying damage
+	 */
+	public void onAttackStart(LivingObject wielder, LivingObject victim) {}
+	
+	/**
+	 * Triggers after damage dealt. Use this to undo effects of onAttackStart()
+	 */
+	public void onAttackEnd(LivingObject wielder, LivingObject victim) {}
+	
+	/**
+	 * Triggers when victim takes damage, if it dies.
+	 */
+	public void onKill(LivingObject wielder, LivingObject victim) {}
+	
+	/**
+	 * 
+	 */
+	public void onUserHit(LivingObject wielder, LivingObject attacker) {}
+	
+	/**
+	 * What the weapon does when used if it is ranged
+	 */
+	public void rangedAttack(LivingObject wielder, int angle) {}
+	
 	
 }

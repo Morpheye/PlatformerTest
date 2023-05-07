@@ -5,12 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.util.Arrays;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import platformerTest.Main;
+import platformerTest.appdata.DataManager;
 import platformerTest.assets.decoration.Particle;
 import platformerTest.game.GameObject;
 import platformerTest.game.Player;
@@ -46,6 +46,7 @@ public class CoinParticle extends Particle {
 	public void move() {
 		if (this.lifetime == 0) {
 			GamePanel.targetCoins += this.coinAmount;
+			DataManager.saveData.coins += this.coinAmount;
 			
 		}
 		super.move();

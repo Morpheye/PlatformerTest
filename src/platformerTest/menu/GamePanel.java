@@ -26,6 +26,8 @@ import javax.swing.Timer;
 
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
+import platformerTest.assets.effects.Effect;
+import platformerTest.assets.effects.EffectPoison;
 import platformerTest.assets.triggers.Powerup;
 import platformerTest.game.GameObject;
 import platformerTest.game.LivingObject;
@@ -244,8 +246,7 @@ public class GamePanel extends JPanel {
 					DataManager.saveData.completedLevels.replace(level.getClass().getSimpleName(),
 					DataManager.saveData.completedLevels.get(level.getClass().getSimpleName())+1);
 				}
-				
-				DataManager.saveData.coins += targetCoins;
+
 				timer.stop();
 				Main.jframe.exitGame(level);
 				
@@ -354,8 +355,8 @@ public class GamePanel extends JPanel {
 		textDuration = newDuration;
 	}
 
-	int[] powerupX = new int[] {5, 5, 75, 75, 145, 145, 215, 215, 285, 285, 355, 355};
-	int[] powerupY = new int[] {4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29};
+	int[] powerupX = new int[] {5, 5, 75, 75, 145, 145, 215, 215, 285, 285, 355, 355, 425, 425, 495, 495, 565, 565, 635, 635};
+	int[] powerupY = new int[] {4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29};
 	
 	public void drawHUD(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
@@ -512,6 +513,13 @@ public class GamePanel extends JPanel {
 			g2d.setColor((player.rangedAttackDamage>5) ? Color.green : Color.red);
 			g2d.drawString("x"+df.format(player.rangedAttackDamage/5.0), powerupX[i]+23, powerupY[i]+15);
 			i++;}
+		//effects
+		for (int j=0; j<player.effects.size(); j++) {
+			Effect e = player.effects.get(j);
+			g2d.drawImage(e.image, powerupX[j+i], powerupY[j+i], 22, 22, null);
+			g2d.setColor(e.color);
+			g2d.drawString(e.strength + "x" + (e.lifetime / e.delay), powerupX[j+i]+23, powerupY[j+i]+15);
+		}
 
 	}
 	
@@ -598,6 +606,9 @@ public class GamePanel extends JPanel {
 				player.lastDirection = 1;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0 && timeSinceRestart > 90) GamePanel.restartLevel(level);
+			
+			//testing only
+			if (e.getKeyCode() == KeyEvent.VK_X && levelWon == 0) player.applyEffect(new EffectPoison(900, 1, null));
 		}
 
 		@Override

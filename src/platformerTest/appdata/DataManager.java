@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import platformerTest.levels.LevelWorld;
 import platformerTest.weapons.Weapon;
 
 public class DataManager {
@@ -27,6 +28,7 @@ public class DataManager {
 		}
 		
 		Weapon.weaponListInit();
+		LevelWorld.init();
 		
 	}
 	

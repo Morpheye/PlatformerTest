@@ -28,21 +28,19 @@ import platformerTest.game.GameObject;
 import platformerTest.levels.Level;
 import platformerTest.levels.LevelWorld;
 import platformerTest.levels.world1.World1;
+import platformerTest.weapons.Weapon;
 
 @SuppressWarnings("serial")
 public class MenuPanel extends JPanel {
-	
-	public static ArrayList<LevelWorld> worlds;
-	
 	public static LevelWorld levelWorld;
 	public static Timer timer;
+	public int scroll = 0;
 	
 	public MenuPanel(LevelWorld levelworld) {
-		worlds = new ArrayList<LevelWorld>();
-		worlds.add(new World1());
 		
 		this.setName("Menu");
-		levelWorld = levelworld;
+		this.scroll = 0;
+		levelWorld = LevelWorld.levelWorlds.get(this.scroll);
 		this.setBackground(levelWorld.menuBGColor);
 		this.setSize(Main.SIZE, Main.SIZE);
 		this.setVisible(true);
@@ -241,8 +239,14 @@ public class MenuPanel extends JPanel {
 			}
 			
 		}
+
+		drawCurrency(g2d);
 		
-		//draw coin counter & gem counter
+		drawScrollButtons(g2d, mousePosition);
+		
+	}
+	
+	private void drawCurrency(Graphics2D g2d) {
 		DecimalFormat df = new DecimalFormat("#");
 		df.setMaximumFractionDigits(2);
 		
@@ -296,7 +300,7 @@ public class MenuPanel extends JPanel {
 		g2d.drawImage(gemImage, 15+diff, 15, 30, 30, null);
 		
 		g2d.setColor(Color.WHITE);
-		font = new Font(Font.MONOSPACED, Font.BOLD, 15);
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, 15);
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		
@@ -307,14 +311,52 @@ public class MenuPanel extends JPanel {
 		int gemTextWidth = g2d.getFontMetrics(font).stringWidth(gemText);
 		int gemTextHeight = g2d.getFontMetrics(font).getHeight();
 		g2d.drawString(gemText, 97+diff-(gemTextWidth/2), 35);
+	}
+	
+	private void drawScrollButtons(Graphics2D g2d, Point mousePosition) {
+		int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-10, w = 50;
+		
+		if (scroll > 0) { //left button
+			g2d.setColor(Color.gray);
+			g2d.fillRoundRect(x1-w/2, y-w/2, w, w, 5, 5);
+			g2d.setColor(Color.WHITE);
+			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
+			g2d.drawString("<", x1-w/2+13, y+10);
+			if (mousePosition != null) {
+				int mouseX = mousePosition.x;
+				int mouseY= mousePosition.y;
+				if (Math.abs(mouseX - x1) < w/2 && Math.abs(mouseY - y) < w/2) {
+					g2d.setColor(new Color(255,255,255,100));
+					g2d.fillRoundRect(x1-w/2, y-w/2, w, w, 5, 5);
+				}
+			}
+			g2d.setColor(Color.white);
+			g2d.drawRoundRect(x1-w/2, y-w/2, w, w, 5, 5);
+		}
+		
+		if (scroll < LevelWorld.levelWorlds.size()-1) {
+			g2d.setColor(Color.gray);
+			g2d.fillRoundRect(x2-w/2, y-w/2, w, w, 5, 5);
+			g2d.setColor(Color.WHITE);
+			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
+			g2d.drawString(">", x2-w/2+13, y+10);
+			if (mousePosition != null) {
+				int mouseX = mousePosition.x;
+				int mouseY= mousePosition.y;
+				if (Math.abs(mouseX - x2) < w/2 && Math.abs(mouseY - y) < w/2) {
+					g2d.setColor(new Color(255,255,255,100));
+					g2d.fillRoundRect(x2-w/2, y-w/2, w, w, 5, 5);
+				}
+			}
+			g2d.setColor(Color.white);
+			g2d.drawRoundRect(x2-w/2, y-w/2, w, w, 5, 5);
+		}
 		
 	}
 	
 	public class MenuMouse extends MouseAdapter {
-		
-		
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mouseClicked(MouseEvent e) { //level select
 			int mouseX = e.getX();
 			int mouseY = e.getY();
 			for (int i=0; i<9; i++) {
@@ -322,7 +364,6 @@ public class MenuPanel extends JPanel {
 				
 				Level level = levelWorld.levels.get(i);
 				if (!DataManager.saveData.completedLevels.keySet().containsAll(Arrays.asList(level.reqs))) continue;
-				
 				if (Math.abs(mouseX - levelSlotsX[i]) < imgR && Math.abs(mouseY - levelSlotsY[i]) < imgR) {
 					if (levelWorld.levels.size()-1 < i) break;
 					
@@ -330,18 +371,36 @@ public class MenuPanel extends JPanel {
 					Main.jframe.startGame(levelWorld.levels.get(i));
 					
 					break;
-				}
-			}
-			
+			}}
+			//main menu button
 			if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
 				timer.stop();
 				Main.jframe.openMainMenu();
 			}
-			
+			//weapon menu button
 			if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
 				timer.stop();
 				Main.jframe.openWeaponsMenu();
 			}
+			
+			//scroll buttons
+			int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-10, w = 50;
+			if (scroll > 0) { //left button
+				if (Math.abs(mouseX - x1) < w/2 && Math.abs(mouseY - y) < w/2) {
+					scroll--;
+					levelWorld = LevelWorld.levelWorlds.get(scroll);
+					loadLevelImages();
+				}
+			}
+			
+			if (scroll < LevelWorld.levelWorlds.size()-1) {
+				if (Math.abs(mouseX - x2) < w/2 && Math.abs(mouseY - y) < w/2) {
+					scroll++;
+					levelWorld = LevelWorld.levelWorlds.get(scroll);
+					loadLevelImages();
+				}
+			}
+			
 			
 		}
 	}

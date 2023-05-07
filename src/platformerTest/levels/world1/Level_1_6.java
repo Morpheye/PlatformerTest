@@ -48,7 +48,6 @@ public class Level_1_6 extends Level {
 	
 	@Override
 	public void onStart() {
-		GamePanel.player.effects.add(new EffectPoison(450, 9, null));
 		GamePanel.camera_x = GamePanel.player.x;
 		GamePanel.camera_y = GamePanel.player.y;
 		GamePanel.displayText("Don't get knocked off!", 240);

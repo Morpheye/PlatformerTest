@@ -387,24 +387,40 @@ public class WeaponsPanel extends JPanel {
 			}
 			
 			//Purchase
+			boolean enable = true;
 			g2d.setColor(Color.WHITE);
-			g2d.drawRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
 			Font font = new Font(Font.MONOSPACED, Font.BOLD, 30);
 			g2d.setFont(font);
 			String buttonText;
 			if (inShop) {
-				if (DataManager.saveData.ownedWeapons.contains(slotNames[guiSelected])) buttonText = "Purchased";
+				if (DataManager.saveData.ownedWeapons.contains(slotNames[guiSelected])) {
+					buttonText = "Purchased";
+					enable = false;
+				}
 				else buttonText = "Purchase";
+				int coinCost = weaponList[guiSelected].coinCost;
+				int gemCost = weaponList[guiSelected].gemCost;
+				if (DataManager.saveData.coins < coinCost || DataManager.saveData.gems < gemCost) enable = false;
 			}
-			else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)) buttonText = "Equipped";
+			else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)) {
+				buttonText = "Equipped";
+				enable = false;
+			}
 			else buttonText = "Equip";
 			int strWidth = g2d.getFontMetrics(font).stringWidth(buttonText);
 			g2d.drawString(buttonText, Main.SIZE/2-strWidth/2, Main.SIZE/2+h/2-40);
 			
+			if (!enable) {
+				g2d.setColor(new Color(0, 0, 0, 100));
+				g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
+			}
+			
+			g2d.setColor(Color.WHITE); //border
+			g2d.drawRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
+			
 		}
 	}
 	
-
 	private void drawCurrency(Graphics2D g2d) {
 		DecimalFormat df = new DecimalFormat("#");
 		df.setMaximumFractionDigits(2);
