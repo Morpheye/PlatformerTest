@@ -20,7 +20,7 @@ public class HeavyMace extends Weapon {
 			this.name = "Heavy Mace";
 			this.tier = 2;
 			
-			this.stats = new String[]{"Attack Damage +200%", "Attack Knockback +50%", "Attack Speed -42.9%"}; //1.28x dmg
+			this.stats = new String[]{"Attack Damage +200%", "Attack Knockback +50%", "Attack Speed -38.5%"}; //1.28x dmg
 			this.statMap = new int[] {1, 1, -1};
 			
 			this.lore = "Deals a crushing blow on every hit, but the excessive weight makes recharging attacks very difficult.";

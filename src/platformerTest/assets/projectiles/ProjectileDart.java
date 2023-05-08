@@ -10,6 +10,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import platformerTest.Main;
+import platformerTest.appdata.DataManager;
 import platformerTest.assets.Projectile;
 import platformerTest.game.GameObject;
 import platformerTest.game.LivingObject;
@@ -28,10 +29,8 @@ public class ProjectileDart extends Projectile {
 		this.rotating = true;
 		
 		try {
-			AudioInputStream audioStreamHit = AudioSystem.getAudioInputStream(inputHit);
-			
 			this.hitSound = AudioSystem.getClip();
-			this.hitSound.open(audioStreamHit);
+			DataManager.loadSound(this, this.hitSound, "/sounds/attack/default/thud.wav");
 		
 		} catch (Exception e) {e.printStackTrace();}
 	}

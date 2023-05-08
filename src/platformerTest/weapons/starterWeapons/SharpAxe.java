@@ -8,7 +8,7 @@ import platformerTest.game.LivingObject;
 import platformerTest.weapons.Weapon;
 
 public class SharpAxe extends Weapon {
-	public int attackDamage = 5;
+	public int attackDamage = 6;
 	public int attackCooldown = 25;
 	public int attackRange = 12;
 	
@@ -22,7 +22,7 @@ public class SharpAxe extends Weapon {
 			this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/axe/attack.wav"));
 			this.tier = 1;
 			
-			this.stats = new String[]{"Attack Damage +120%", "Attack Range +60%", "Attack Speed -38.5%"}; //1.23x dmg
+			this.stats = new String[]{"Attack Damage +120%", "Attack Range +60%", "Attack Speed -38.5%"};
 			this.statMap = new int[] {1, 1, -1};
 			
 			this.lore = "Longer ranged melee weapon, reliable for heavier damage at a greater distance.";

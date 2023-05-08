@@ -1,7 +1,13 @@
 package platformerTest.appdata;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +57,17 @@ public class DataManager {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public static void loadSound(Object obj, Clip clip, String resource) {
+		new Thread(() -> {
+			try {
+				InputStream stream = new BufferedInputStream(obj.getClass().getResourceAsStream(resource));
+				AudioInputStream audioStream = AudioSystem.getAudioInputStream(stream);
+				clip.open(audioStream);
+				
+			} catch (Exception e) {e.printStackTrace();}
+		}).start();
 	}
 	
 }

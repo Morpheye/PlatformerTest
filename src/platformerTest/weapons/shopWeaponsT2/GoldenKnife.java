@@ -25,7 +25,7 @@ public class GoldenKnife extends Weapon {
 			this.tier = 2;
 			
 			this.stats = new String[]{"Attack Speed +33.3%", "Attack Range -10%", "Attack Knockback -30%",
-					"On kill: +1-3 coins"};
+					"On kill: extra 1-3 coins"};
 			this.statMap = new int[] {1, -1, -1, 2};
 			
 			this.lore = "Gold is normally an incredibly weak material, but even after looting many enemies, this blade seems"

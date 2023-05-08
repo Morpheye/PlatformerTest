@@ -6,17 +6,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import platformerTest.game.LivingObject;
-import platformerTest.weapons.shopWeaponsT2.AerialStaff;
-import platformerTest.weapons.shopWeaponsT2.AquaforgedTrident;
-import platformerTest.weapons.shopWeaponsT2.DuelingFoil;
-import platformerTest.weapons.shopWeaponsT2.GoldenKnife;
-import platformerTest.weapons.shopWeaponsT2.HeavyMace;
-import platformerTest.weapons.shopWeaponsT3.PoisonEdgeKatana;
-import platformerTest.weapons.starterWeapons.PointedSpear;
-import platformerTest.weapons.starterWeapons.SharpAxe;
-import platformerTest.weapons.starterWeapons.SharpSword;
-import platformerTest.weapons.starterWeapons.SwiftDagger;
-import platformerTest.weapons.starterWeapons.WoodenClub;
+import platformerTest.weapons.shopWeaponsT2.*;
+import platformerTest.weapons.shopWeaponsT3.*;
+import platformerTest.weapons.shopWeaponsT4.*;
+import platformerTest.weapons.starterWeapons.*;
 
 public class Weapon {
 
@@ -67,8 +60,10 @@ public class Weapon {
 		addWeapon(new GoldenKnife());
 		//high-class weapons (tier 3: Gold)
 		addWeapon(new PoisonEdgeKatana());
+		addWeapon(new ExecutionerAxe());
+		addWeapon(new BejeweledMoonstaff());
 		//exotic weapons (tier 4: diamond)
-		
+		addWeapon(new GildedChimeraBlade());
 		//ultra-exotic weapons (tier 5: crimsonade)
 	}
 	
