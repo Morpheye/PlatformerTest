@@ -11,6 +11,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import platformerTest.Main;
+import platformerTest.appdata.DataManager;
 import platformerTest.assets.creature.CreatureAi;
 import platformerTest.assets.effects.Effect;
 import platformerTest.game.GameObject;
@@ -73,29 +74,27 @@ public class Creature extends LivingObject {
 		this.aiList = new ArrayList<CreatureAi>();
 		this.friendlyFire = true;
 		
-		InputStream inputAttack;
-		InputStream inputHit;
+		String inputAttack;
+		String inputHit;
 		
 		if (this.weapon != null) { //sounds
 			this.weapon.init(this);
 			if (this.weapon.attackSound != null) inputAttack = this.weapon.attackSound;
-			else inputAttack = this.getClass().getResourceAsStream("/sounds/attack/default/attack.wav");
+			else inputAttack = "/sounds/attack/default/attack.wav";
 			
 			if (this.weapon.hitSound != null) inputHit = this.weapon.hitSound;
-			else inputHit = this.getClass().getResourceAsStream("/sounds/attack/default/hit.wav");
+			else inputHit = "/sounds/attack/default/hit.wav";
 			
 		} else {
-			inputAttack = this.getClass().getResourceAsStream("/sounds/attack/default/attack.wav");
-			inputHit = this.getClass().getResourceAsStream("/sounds/attack/default/hit.wav");
+			inputAttack = "/sounds/attack/default/attack.wav";
+			inputHit = "/sounds/attack/default/hit.wav";
 		}
 			try {
-			AudioInputStream audioStreamAttack = AudioSystem.getAudioInputStream(inputAttack);
-			AudioInputStream audioStreamHit = AudioSystem.getAudioInputStream(inputHit);
 			
 			this.attackSound = AudioSystem.getClip();
 			this.hitSound = AudioSystem.getClip();
-			this.attackSound.open(audioStreamAttack);
-			this.hitSound.open(audioStreamHit);
+			DataManager.loadSound(this, this.attackSound, inputAttack);
+			DataManager.loadSound(this, this.hitSound, inputHit);
 			
 			} catch (Exception e) {}
 		

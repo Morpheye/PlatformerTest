@@ -247,6 +247,7 @@ public class GamePanel extends JPanel {
 					DataManager.saveData.completedLevels.get(level.getClass().getSimpleName())+1);
 				}
 
+				destroyAll();
 				timer.stop();
 				Main.jframe.exitGame(level);
 				

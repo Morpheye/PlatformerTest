@@ -19,7 +19,7 @@ public class ExecutionerAxe extends Weapon {
 			
 			this.size = 35;
 			this.name = "Executioner Axe";
-			this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/axe/attack.wav"));
+			this.attackSound = "/sounds/attack/axe/attack.wav";
 			this.tier = 3;
 			
 			this.stats = new String[]{"Attack Damage +100%", "Attack Range +50%", "Attack Speed -38.5%",
@@ -48,7 +48,7 @@ public class ExecutionerAxe extends Weapon {
 	
 	@Override
 	public void init(LivingObject l) {
-		this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/axe/attack.wav"));
+		this.attackSound = "/sounds/attack/axe/attack.wav";
 		l.attackDamage += this.attackDamage;
 		l.maxAttackCooldown += this.attackCooldown;
 		l.attackRange += this.attackRange;

@@ -18,8 +18,6 @@ import platformerTest.game.Player;
 import platformerTest.menu.GamePanel;
 
 public class ProjectileDart extends Projectile {
-
-	public InputStream inputHit = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/thud.wav"));
 	
 	public ProjectileDart(double x, double y, double vx, double vy, LivingObject firer, int damage) {
 		super(x, y, 10, 10, vx, vy, firer, damage);

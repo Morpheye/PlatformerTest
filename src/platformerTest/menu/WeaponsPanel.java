@@ -52,14 +52,12 @@ public class WeaponsPanel extends JPanel {
 		this.inShop = false;
 		
 		try {
-			InputStream sound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/inventory/equip.wav"));
-			InputStream sound2 = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/inventory/purchase.wav"));
-			AudioInputStream audioStream = AudioSystem.getAudioInputStream(sound);
-			AudioInputStream audioStream2 = AudioSystem.getAudioInputStream(sound2);
+			String sound = "/sounds/inventory/equip.wav";
+			String sound2 = "/sounds/inventory/purchase.wav";
 			this.equipSound = AudioSystem.getClip();
-			this.equipSound.open(audioStream);
 			this.purchaseSound = AudioSystem.getClip();
-			this.purchaseSound.open(audioStream2);
+			DataManager.loadSound(this, this.equipSound, sound);
+			DataManager.loadSound(this, this.purchaseSound, sound2);
 			
 		} catch (Exception e) {}
 		

@@ -63,35 +63,31 @@ public class Player extends LivingObject {
 		this.attack = new PlayerAttack(this.size_x, this.size_y);
 		this.weapon = Weapon.getWeapon(DataManager.saveData.selectedWeapon);
 		
-		InputStream inputAttack;
-		InputStream inputHit;
+		String inputAttack;
+		String inputHit;
 		
 		if (this.weapon != null) { //sounds
 			this.weapon.init(this);
 			if (this.weapon.attackSound != null) inputAttack = this.weapon.attackSound;
-			else inputAttack = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/attack.wav"));
+			else inputAttack = "/sounds/attack/default/attack.wav";
 			
 			if (this.weapon.hitSound != null) inputHit = this.weapon.hitSound;
-			else inputHit = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/hit.wav"));
+			else inputHit = "/sounds/attack/default/hit.wav";
 			
 		} else {
-			inputAttack = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/attack.wav"));
-			inputHit = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/default/hit.wav"));
+			inputAttack = "/sounds/attack/default/attack.wav";
+			inputHit = "/sounds/attack/default/hit.wav";
 		}
 		
-		InputStream finish = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/finish.wav"));
+		String finish = "/sounds/finish.wav";
 		
 		try {
-			AudioInputStream audioStreamAttack = AudioSystem.getAudioInputStream(inputAttack);
-			AudioInputStream audioStreamHit = AudioSystem.getAudioInputStream(inputHit);
-			AudioInputStream finishStream = AudioSystem.getAudioInputStream(finish);
-				
 			this.attackSound = AudioSystem.getClip();
 			this.hitSound = AudioSystem.getClip();
 			this.finishSound = AudioSystem.getClip();
-			this.attackSound.open(audioStreamAttack);
-			this.hitSound.open(audioStreamHit);
-			this.finishSound.open(finishStream);
+			DataManager.loadSound(this, this.attackSound, inputAttack);
+			DataManager.loadSound(this, this.hitSound, inputHit);
+			DataManager.loadSound(this, this.finishSound, finish);
 			
 		} catch (Exception e) {e.printStackTrace();}
 		

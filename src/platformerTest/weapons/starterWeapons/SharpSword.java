@@ -20,7 +20,7 @@ public class SharpSword extends Weapon {
 			
 			this.size = 30;
 			this.name = "Sharp Sword";
-			this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/sword/attack.wav"));
+			this.attackSound = "/sounds/attack/sword/attack.wav";
 			this.tier = 1;
 			
 			this.stats = new String[]{"Attack Damage +60%", "Attack Range +20%", "Attack Speed -25%"}; //1.28x dmg
@@ -35,7 +35,7 @@ public class SharpSword extends Weapon {
 	
 	@Override
 	public void init(LivingObject l) {
-		this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/sword/attack.wav"));
+		this.attackSound = "/sounds/attack/sword/attack.wav";
 		l.attackDamage += this.attackDamage;
 		l.maxAttackCooldown += this.attackCooldown;
 		l.attackRange += this.attackRange;

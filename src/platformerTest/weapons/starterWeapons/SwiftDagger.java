@@ -20,7 +20,7 @@ public class SwiftDagger extends Weapon {
 			
 			this.size = 25;
 			this.name = "Swift Dagger";
-			this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/knife/attack.wav"));
+			this.attackSound = "/sounds/attack/knife/attack.wav";
 			this.tier = 1;
 			
 			this.stats = new String[]{"Attack speed +100%", "Attack Range -20%", "Attack Knockback -40%"}; //x2 dmg
@@ -36,7 +36,7 @@ public class SwiftDagger extends Weapon {
 	
 	@Override
 	public void init(LivingObject l) {
-		this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/knife/attack.wav"));
+		this.attackSound = "/sounds/attack/knife/attack.wav";
 		l.maxAttackCooldown += this.attackCooldown;
 		l.attackRange += this.attackRange;
 		l.attackKnockback += this.attackKnockback;

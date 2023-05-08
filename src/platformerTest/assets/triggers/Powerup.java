@@ -12,6 +12,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import platformerTest.Main;
+import platformerTest.appdata.DataManager;
 import platformerTest.assets.Trigger;
 import platformerTest.game.ObjType;
 import platformerTest.game.Player;
@@ -28,10 +29,9 @@ public class Powerup extends Trigger {
 		this.visible = true;
 		
 		try {
-			InputStream sound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/powerup.wav"));
-			AudioInputStream audioStream = AudioSystem.getAudioInputStream(sound);
+			String sound = "/sounds/powerup.wav";
 			this.sound = AudioSystem.getClip();
-			this.sound.open(audioStream);
+			DataManager.loadSound(this, this.sound, sound);
 			
 		} catch (Exception e) {}
 	}

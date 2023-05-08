@@ -22,7 +22,7 @@ public class BejeweledMoonstaff extends Weapon {
 			
 			this.size = 40;
 			this.name = "Bejeweled Moonstaff";
-			this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/axe/attack.wav"));
+			this.attackSound = "/sounds/attack/axe/attack.wav";
 			this.tier = 3;
 			
 			this.stats = new String[]{"Attack Damage +60%", "Attack Range +75%", "Attack Speed -20%",
@@ -46,7 +46,7 @@ public class BejeweledMoonstaff extends Weapon {
 	
 	@Override
 	public void init(LivingObject l) {
-		this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/axe/attack.wav"));
+		this.attackSound = "/sounds/attack/axe/attack.wav";
 		l.attackDamage += this.attackDamage;
 		l.maxAttackCooldown += this.attackCooldown;
 		l.attackRange += this.attackRange;

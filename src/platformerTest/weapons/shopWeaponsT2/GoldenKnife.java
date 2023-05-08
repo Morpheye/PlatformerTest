@@ -21,7 +21,7 @@ public class GoldenKnife extends Weapon {
 			
 			this.size = 25;
 			this.name = "Golden Knife";
-			this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/knife/attack.wav"));
+			this.attackSound = "/sounds/attack/knife/attack.wav";
 			this.tier = 2;
 			
 			this.stats = new String[]{"Attack Speed +33.3%", "Attack Range -10%", "Attack Knockback -30%",
@@ -43,7 +43,7 @@ public class GoldenKnife extends Weapon {
 	}
 	@Override
 	public void init(LivingObject l) {
-		this.attackSound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/attack/knife/attack.wav"));
+		this.attackSound = "/sounds/attack/knife/attack.wav";
 		l.maxAttackCooldown += this.attackCooldown;
 		l.attackKnockback += this.attackKnockback;
 		l.attackRange += this.attackRange;

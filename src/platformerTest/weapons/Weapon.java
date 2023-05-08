@@ -24,8 +24,8 @@ public class Weapon {
 	public int gemCost = 0;
 	public boolean isRanged = false;
 	public boolean inShop = false;
-	public InputStream attackSound;
-	public InputStream hitSound;
+	public String attackSound;
+	public String hitSound;
 	
 	public Weapon() {
 		
