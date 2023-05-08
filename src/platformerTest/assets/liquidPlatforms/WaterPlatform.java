@@ -1,8 +1,10 @@
 package platformerTest.assets.liquidPlatforms;
 
-import java.awt.Color;
-
 import platformerTest.assets.LiquidPlatform;
+import platformerTest.assets.effects.Effect;
+import platformerTest.game.GameObject;
+import platformerTest.game.LivingObject;
+import platformerTest.game.ObjType;
 
 public class WaterPlatform extends LiquidPlatform {
 
@@ -11,7 +13,15 @@ public class WaterPlatform extends LiquidPlatform {
 		
 		this.slipperiness = 0.95;
 		this.density = 1;
+		this.liquidType = LiquidType.Water;
 		
+	}
+	
+	@Override
+	public void onTick(GameObject obj) {
+		if (obj.type.equals(ObjType.Player) || obj.type.equals(ObjType.Creature)) {
+			((LivingObject) obj).removeEffect("Fire");
+		}
 	}
 
 }

@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
+import com.fasterxml.jackson.databind.ser.std.EnumSerializer;
+
 import platformerTest.game.GameObject;
 import platformerTest.game.LivingObject;
 
@@ -38,8 +40,9 @@ public class Effect {
 	}
 	
 	public static void getEffectColor(Graphics g, String effect, int dmgTime) {
-		if (effect.equals("Poison")) g.setColor(new Color(50,255,0,dmgTime));
+		if (effect.equals("Poison")) g.setColor(new Color(50, 255, 0, dmgTime));
+		else if (effect.equals("Fire")) g.setColor(new Color(255, 100, 0, dmgTime));
 		else g.setColor(new Color(255, 0, 0, dmgTime));
 	}
-	
+
 }

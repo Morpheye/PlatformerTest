@@ -8,3 +8,5 @@
 /sounds/attacks/axe/attack.wav: "https://pixabay.com/ Sword sound 2 Merrick079"
 
 /sounds/attacks/knife/attack.wav: "https://pixabay.com/ Small Knife Whoosh meggiepie"
+
+/sounds/attacks/sceptre/hit.wav: "https://pixabay.com/ laser kafokafo"

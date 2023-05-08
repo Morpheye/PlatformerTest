@@ -11,6 +11,7 @@ import platformerTest.game.Player;
 public class LiquidPlatform extends GameObject {
 	
 	public double slipperiness = 0.6;
+	public LiquidType liquidType;
 
 	public LiquidPlatform(double x, double y, double size_x, double size_y, Color color) {
 		super(x, y, size_x, size_y, color);
@@ -30,6 +31,15 @@ public class LiquidPlatform extends GameObject {
 	public void move() {
 		this.y += this.vy;
 		this.x += this.vx;
+	}
+
+	public void onTick(GameObject obj) {
+		
+	}
+	
+	public static enum LiquidType {
+		Water,
+		Lava
 	}
 	
 }

@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.util.List;
 
 import platformerTest.Main;
-import platformerTest.assets.effects.EffectPoison;
+import platformerTest.assets.effects.EffectFire;
 import platformerTest.assets.solidPlatforms.SandPlatform;
 import platformerTest.game.GameObject;
 import platformerTest.levels.Level;

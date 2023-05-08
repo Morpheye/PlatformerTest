@@ -18,7 +18,7 @@ public class BejeweledMoonstaff extends Weapon {
 	public BejeweledMoonstaff() {
 		try {
 			this.coinCost = 6000;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 40;
 			this.name = "Bejeweled Moonstaff";

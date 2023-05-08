@@ -17,7 +17,7 @@ public class GoldenKnife extends Weapon {
 	public GoldenKnife() {
 		try {
 			this.coinCost = 3500;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 25;
 			this.name = "Golden Knife";

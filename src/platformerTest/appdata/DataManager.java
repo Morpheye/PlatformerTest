@@ -60,14 +60,16 @@ public class DataManager {
 	}
 
 	public static void loadSound(Object obj, Clip clip, String resource) {
-		new Thread(() -> {
+		Thread thread = new Thread(() -> {
 			try {
 				InputStream stream = new BufferedInputStream(obj.getClass().getResourceAsStream(resource));
 				AudioInputStream audioStream = AudioSystem.getAudioInputStream(stream);
 				clip.open(audioStream);
 				
 			} catch (Exception e) {e.printStackTrace();}
-		}).start();
+		});
+		thread.setPriority(1);
+		thread.start();
 	}
 	
 }

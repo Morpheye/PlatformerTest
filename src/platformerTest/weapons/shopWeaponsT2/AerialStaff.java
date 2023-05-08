@@ -14,7 +14,7 @@ public class AerialStaff extends Weapon {
 	public AerialStaff() {
 		try {
 			this.coinCost = 3000;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 35;
 			this.name = "Aerial Staff";

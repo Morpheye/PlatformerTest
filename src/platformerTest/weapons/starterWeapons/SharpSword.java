@@ -16,7 +16,7 @@ public class SharpSword extends Weapon {
 	public SharpSword() {
 		try {
 			this.coinCost = 1000;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 30;
 			this.name = "Sharp Sword";

@@ -17,6 +17,7 @@ public class MovableObject extends GameObject {
 	public boolean inLiquid = false;
 	public double liquidSlip = 1;
 	public double liquidDensity = 1;
+	public ArrayList<Class<? extends LiquidPlatform>> liquids;
 	
 	public double diff = 0;
 	public double dragMultiplier = 1;
@@ -31,6 +32,7 @@ public class MovableObject extends GameObject {
 		this.movable = true;
 		this.solid = true;
 		this.slipperiness = 1;
+		this.liquids = new ArrayList<Class<? extends LiquidPlatform>>();
 	}
 	
 	@Override
@@ -41,6 +43,7 @@ public class MovableObject extends GameObject {
 
 		this.inLiquid = false;
 		this.liquidSlip = 1;
+		this.liquids.clear();
 		
 		//CHECK FOR LIQUIDS
 		for (GameObject obj : GamePanel.objects) {
@@ -51,6 +54,8 @@ public class MovableObject extends GameObject {
 				inLiquid = true;
 				this.inAir = true;
 				liquidDensity = ((LiquidPlatform) obj).density;
+				this.liquids.add(((LiquidPlatform) obj).getClass());
+				((LiquidPlatform) obj).onTick(this);
 		}}
 		
 		this.diff = this.density - liquidDensity; //0 = same

@@ -19,7 +19,7 @@ public class GildedChimeraBlade extends Weapon {
 		try {
 			this.coinCost = 2000;
 			this.gemCost = 1;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 30;
 			this.name = "Gilded Chimera Blade";

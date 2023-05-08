@@ -14,7 +14,7 @@ public class HeavyMace extends Weapon {
 	public HeavyMace() {
 		try {
 			this.coinCost = 2500;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 30;
 			this.name = "Heavy Mace";

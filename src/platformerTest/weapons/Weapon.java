@@ -23,7 +23,7 @@ public class Weapon {
 	public int coinCost = 0;
 	public int gemCost = 0;
 	public boolean isRanged = false;
-	public boolean inShop = false;
+	public int inShop = 0;
 	public String attackSound;
 	public String hitSound;
 	
@@ -62,8 +62,11 @@ public class Weapon {
 		addWeapon(new PoisonEdgeKatana());
 		addWeapon(new ExecutionerAxe());
 		addWeapon(new BejeweledMoonstaff());
+		addWeapon(new DrainingSceptre());
+		addWeapon(new BladeOfImmolation());
 		//exotic weapons (tier 4: diamond)
 		addWeapon(new GildedChimeraBlade());
+		
 		//ultra-exotic weapons (tier 5: crimsonade)
 	}
 	

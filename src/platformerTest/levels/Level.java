@@ -50,9 +50,12 @@ public class Level {
 	public void onStart() {}
 	
 	public void moveCamera() { //DEFAULT CAMERA MOVEMENT (fully locked)
-
 		GamePanel.camera_x = GamePanel.player.x;
 		GamePanel.camera_y = GamePanel.player.y;
+		
+	}
+	
+	public void destroy() {
 		
 	}
 	

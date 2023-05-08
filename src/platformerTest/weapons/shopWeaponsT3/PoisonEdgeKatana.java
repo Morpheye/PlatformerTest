@@ -8,21 +8,22 @@ import platformerTest.weapons.Weapon;
 
 public class PoisonEdgeKatana extends Weapon {
 	
-	public int attackDamage = -1;
+	public int attackDamage = 1;
 	public int attackRange = 3;
+	public double attackKnockback = -0.5;
 	
 	public PoisonEdgeKatana() {
 		try {
 			this.coinCost = 5000;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 30;
 			this.name = "Poison-Edge Katana";
 			this.tier = 3;
 			
-			this.stats = new String[]{"Attack Range +15%", "Attack Damage -20%",
+			this.stats = new String[]{"Attack Damage +20%", "Attack Range +15%", "Attack Knockback -25%",
 					"On hit: Apply poison", "(6 dmgticks, 1 dmg per)"};
-			this.statMap = new int[] {1, -1, 2, 2};
+			this.statMap = new int[] {1, 1, -1, 2, 2};
 			
 			this.lore = "The blade contains micropores filled with corrosive poison, released on contact with an enemy. "
 					+ "The relatively dull blade is overshadowed by the damage inflicted over time.";
@@ -39,6 +40,7 @@ public class PoisonEdgeKatana extends Weapon {
 	
 	@Override
 	public void init(LivingObject l) {
+		l.attackKnockback += this.attackKnockback;
 		l.attackDamage += this.attackDamage;
 		l.attackRange += this.attackRange;
 	}

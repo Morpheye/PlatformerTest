@@ -612,7 +612,7 @@ public class WeaponsPanel extends JPanel {
 				weapons = Weapon.weaponNames;
 			}
 			
-			int finalIndex = (scroll*16+15 > weapons.size()-1) ? (weapons.size()) : scroll*16+15;
+			int finalIndex = (scroll*16+15 > weapons.size()) ? (weapons.size()) : scroll*16+16;
 			List<String> filteredWeapons = weapons.subList(scroll*16, finalIndex);
 			
 			//load individual slot images;

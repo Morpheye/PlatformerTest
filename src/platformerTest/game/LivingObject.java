@@ -139,9 +139,32 @@ public class LivingObject extends MovableObject {
 				return;
 			}
 		}
-		
 		//no effect found
 		this.effects.add(newEffect);
+	}
+	public Effect hasEffect(String effect) {
+		for (Effect e: this.effects) {
+			if (e.name.equals(effect)) { //already has effect
+				return e;
+			}
+		}
+		return null;
+	}
+	public Effect hasEffect(Effect effect) {
+		return this.hasEffect(effect.name);
+	}
+	public void removeEffect(String effect) {
+		ArrayList<Effect> removed = new ArrayList<Effect>();
+		for (Effect e: this.effects) {
+			if (e.name.equals(effect)) { //already has effect
+				removed.add(e);
+			}
+		}
+		
+		this.effects.removeAll(removed);
+	}
+	public void removeEffect(Effect effect) {
+		this.removeEffect(effect.name);
 	}
 	
 	public int dmgTime;
@@ -186,6 +209,7 @@ public class LivingObject extends MovableObject {
 	
 	public void playHitSound(LivingObject attacker) {
 		if (attacker.hitSound != null) {
+			attacker.hitSound.stop();
 			attacker.hitSound.setMicrosecondPosition(0);
 			attacker.hitSound.start();
 		}
@@ -193,6 +217,7 @@ public class LivingObject extends MovableObject {
 	
 	public void playAttackSound() {
 		if (this.attackSound != null) {
+			this.hitSound.stop();
 			this.attackSound.setMicrosecondPosition(0);
 			this.attackSound.start();
 		}

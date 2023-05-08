@@ -16,7 +16,7 @@ public class SwiftDagger extends Weapon {
 	public SwiftDagger() {
 		try {
 			this.coinCost = 1000;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 25;
 			this.name = "Swift Dagger";

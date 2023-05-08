@@ -14,7 +14,7 @@ public class PointedSpear extends Weapon {
 	public PointedSpear() {
 		try {
 			this.coinCost = 1000;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 40;
 			this.name = "Pointed Spear";

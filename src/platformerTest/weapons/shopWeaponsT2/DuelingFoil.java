@@ -14,7 +14,7 @@ public class DuelingFoil extends Weapon {
 	public DuelingFoil() {
 		try {
 			this.coinCost = 2500;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 30;
 			this.name = "Dueling Foil";

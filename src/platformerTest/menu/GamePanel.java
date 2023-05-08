@@ -27,7 +27,7 @@ import javax.swing.Timer;
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
 import platformerTest.assets.effects.Effect;
-import platformerTest.assets.effects.EffectPoison;
+import platformerTest.assets.effects.EffectFire;
 import platformerTest.assets.triggers.Powerup;
 import platformerTest.game.GameObject;
 import platformerTest.game.LivingObject;
@@ -253,6 +253,10 @@ public class GamePanel extends JPanel {
 				
 			}
 			
+		}
+		
+		if (!this.isFocusOwner()) {
+			if (levelWon == 0 && player.isAlive && !isPaused) isPaused = true;
 		}
 	}
 	
@@ -609,7 +613,7 @@ public class GamePanel extends JPanel {
 			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0 && timeSinceRestart > 90) GamePanel.restartLevel(level);
 			
 			//testing only
-			if (e.getKeyCode() == KeyEvent.VK_X && levelWon == 0) player.applyEffect(new EffectPoison(900, 1, null));
+			if (e.getKeyCode() == KeyEvent.VK_X && levelWon == 0) player.applyEffect(new EffectFire(900, 1, null));
 		}
 
 		@Override
@@ -681,6 +685,9 @@ public class GamePanel extends JPanel {
 				obj.destroy();
 			}
 		}
+		
+		//destroy the level
+		if (level != null) level.destroy();
 		
 		//now wipe the arrays
 		objects = new ArrayList<GameObject>();

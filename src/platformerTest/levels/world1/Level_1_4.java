@@ -17,6 +17,8 @@ import platformerTest.assets.decoration.objects.Gravestone;
 import platformerTest.assets.decoration.particles.CoinParticle;
 import platformerTest.assets.decoration.particles.GemParticle;
 import platformerTest.assets.decoration.walls.SolidBackgroundObject;
+import platformerTest.assets.effects.Effect;
+import platformerTest.assets.effects.EffectFire;
 import platformerTest.assets.interactables.FinishFlag;
 import platformerTest.assets.liquidPlatforms.WaterPlatform;
 import platformerTest.assets.powerups.HealPowerup;
@@ -27,6 +29,8 @@ import platformerTest.assets.solidPlatforms.GrassPlatform;
 import platformerTest.assets.solidPlatforms.WoodPlatform;
 import platformerTest.assets.triggers.TextDisplayTrigger;
 import platformerTest.game.GameObject;
+import platformerTest.game.LivingObject;
+import platformerTest.game.ObjType;
 import platformerTest.levels.Level;
 import platformerTest.menu.GamePanel;
 
@@ -244,6 +248,13 @@ public class Level_1_4 extends Level {
 			finalGate.vy = 0.5;
 		} else finalGate.vy = 0;
 		
+		for (GameObject obj : GamePanel.objects) { //douse fire twice as quickly
+			if (obj.type.equals(ObjType.Creature) || obj.type.equals(ObjType.Player) && obj.exists) {
+				Effect fire = ((LivingObject) obj).hasEffect("Fire");
+				if (fire != null) fire.lifetime--;
+			}
+		}
+		
 	}
 	
 	@Override
@@ -291,6 +302,11 @@ public class Level_1_4 extends Level {
 		if (weatherAlpha > 75) WAV = -Math.abs(WAV);
 		else if (weatherAlpha < 25) WAV = Math.abs(WAV);
 	
+	}
+	
+	@Override
+	public void destroy() {
+		this.raindrops.clear();
 	}
 	
 	//raindrop particle

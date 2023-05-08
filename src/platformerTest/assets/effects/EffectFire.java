@@ -8,21 +8,23 @@ import javax.imageio.ImageIO;
 import platformerTest.game.GameObject;
 import platformerTest.game.LivingObject;
 
-public class EffectPoison extends Effect {
+public class EffectFire extends Effect {
 	
-	public EffectPoison(int lifetime, int damage, LivingObject applier) {
+	public EffectFire(int lifetime, int damage, LivingObject applier) {
 		super(lifetime, 45);
 		this.strength = damage;
 		this.applier = applier;
-		this.color = Color.RED;
-		this.name = "Poison";
-		try {this.image = ImageIO.read(this.getClass().getResource("/effects/poison.png"));
+		this.color = Color.red;
+		this.name = "Fire";
+		try {this.image = ImageIO.read(this.getClass().getResource("/effects/fire.png"));
 		} catch (IOException e) {}
 	}
 	
 	@Override
 	public void trigger(LivingObject host) {
-		host.damage(this.strength, this.applier, this.name);
+		if (!host.fireResistant) { 
+			host.damage(this.strength, this.applier, this.name);
+		}
 	}
 
 }

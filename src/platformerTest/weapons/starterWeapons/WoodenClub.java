@@ -17,7 +17,7 @@ public class WoodenClub extends Weapon {
 	public WoodenClub() {
 		try {
 			this.coinCost = 1000;
-			this.inShop = true;
+			this.inShop = 1;
 			
 			this.size = 30;
 			this.name = "Wooden Club";
