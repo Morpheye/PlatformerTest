@@ -5,6 +5,7 @@ import javax.imageio.ImageIO;
 import platformerTest.assets.decoration.particles.CoinParticle;
 import platformerTest.assets.effects.EffectPoison;
 import platformerTest.game.LivingObject;
+import platformerTest.game.ObjType;
 import platformerTest.weapons.Weapon;
 
 public class GildedChimeraBlade extends Weapon {
@@ -43,7 +44,7 @@ public class GildedChimeraBlade extends Weapon {
 	public void onAttackStart(LivingObject wielder, LivingObject victim) {
 		hitnum++;
 		if (hitnum >= 2) {
-			CoinParticle.spawnCoins(victim.x, victim.y, 1, 1);
+			if (wielder.type.equals(ObjType.Player)) CoinParticle.spawnCoins(victim.x, victim.y, 1, 1);
 			hitnum = 0;
 		}
 	}

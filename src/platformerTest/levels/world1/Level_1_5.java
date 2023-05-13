@@ -101,8 +101,8 @@ public class Level_1_5 extends Level {
 		objects.add(new CreatureGoblin(2000, 400, 30, 20, 300, 0, 300));
 		
 		//sand
-		objects.add(new SandPlatform(2650, 350, 400, 100));
-		objects.add(new SandPlatform(2800, 400, 200, 200));
+		objects.add(new SandPlatform(2650, -600, 400, 2000));
+		objects.add(new SandPlatform(2800, -500, 200, 2000));
 		objects.add(new CreatureDartGoblin(2800, 550, 30, 300));
 		
 		objects.add(new GrassPlatform(3200, 450, 200, 200));
@@ -122,8 +122,8 @@ public class Level_1_5 extends Level {
 		
 		//sand
 		objects.add(new TextDisplayTrigger(5000, 700, 100, 100, "Beware of ambushes.", 300));
-		objects.add(new SandPlatform(5200, 600, 400, 100));
-		objects.add(new SandPlatform(5800, 650, 400, 100));
+		objects.add(new SandPlatform(5200, -350, 400, 2000));
+		objects.add(new SandPlatform(5800, -300, 400, 2000));
 		
 		//ambush
 		objects.add(new SandPlatform(5600, 1500, 300, 100));
@@ -139,7 +139,7 @@ public class Level_1_5 extends Level {
 		movingPlatform = new WoodPlatform(6850, 750, 400, 50);
 		objects.add(movingPlatform);
 		
-		objects.add(new GrassPlatform(7400, 550, 400, 200));
+		objects.add(new GrassPlatform(7400, -350, 400, 2000));
 		objects.add(new CreatureDartGoblin(7350, 700, 30, 500));
 		objects.add(new PunchPowerup(7400, 685, 50, 5));
 		objects.add(new TextDisplayTrigger(7400, 685, 50, 50, "Extra knockback is useful against swarms.", 300));
@@ -160,7 +160,7 @@ public class Level_1_5 extends Level {
 		objects.add(new GrassPlatform(10200, 650, 200, 50));
 		
 		objects.add(new GrassPlatform(11500, 650, 200, 200));
-		objects.add(new GrassPlatform(12100, 700, 600, 200));
+		objects.add(new GrassPlatform(12100, -200, 600, 2000));
 		finalGoblin = new CreatureDartGoblin(12400, 850, 30, 100, 500, 50, 150, 300);
 		finalGoblin.required = true;
 		objects.add(finalGoblin);
@@ -216,6 +216,7 @@ public class Level_1_5 extends Level {
 		if (diffY > higherLimitY) GamePanel.camera_y = GamePanel.player.y - higherLimitY;
 		if (diffY < lowerLimitY) GamePanel.camera_y = GamePanel.player.y - lowerLimitY;
 		
+		if (GamePanel.camera_y < 200) GamePanel.camera_y = 200;
 	}
 	
 }

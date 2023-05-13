@@ -4,21 +4,21 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.io.InputStream;
 import java.util.ArrayList;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
 import platformerTest.assets.creature.CreatureAi;
+import platformerTest.assets.creature.ai.AttackAi;
 import platformerTest.assets.effects.Effect;
 import platformerTest.game.GameObject;
 import platformerTest.game.LivingObject;
 import platformerTest.game.ObjType;
 import platformerTest.game.Player;
 import platformerTest.menu.GamePanel;
+import platformerTest.weapons.weaponsT5.SpiritScythe;
 
 public class Creature extends LivingObject {
 
@@ -184,17 +184,28 @@ public class Creature extends LivingObject {
 			
 		}
 		
+		if (this.overheal > this.maxHealth) {
+			int gigaHeal = this.overheal-this.maxHealth;
+			if (gigaHeal > this.maxHealth) gigaHeal = this.maxHealth;
+			
+			g.setColor(GameObject.COLOR_DIAMOND);
+			g.fillRect(drawX, drawY, (int) (this.size_y * ((double) gigaHeal/this.maxHealth) * Main.SIZE/size), (int)(5*(Main.SIZE/size)));
+			
+		}
+		
 	}
 	
 	@Override
 	public void damage(int damage, LivingObject source, String effect) {
 		super.damage(damage, source, effect);
+		for (CreatureAi ai: this.aiList) ai.onDamage(this, source); 
 
 	}
 	
 	@Override
 	public void damage(int damage, LivingObject source) {
 		super.damage(damage, source);
+		for (CreatureAi ai: this.aiList) ai.onDamage(this, source); 
 
 	}
 	
@@ -235,7 +246,9 @@ public class Creature extends LivingObject {
 		//Apply collisions
 		for (GameObject obj : GamePanel.objects) { //check for enemies in range
 			if (obj.equals(this)) continue;
-			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature) && this.friendlyFire) {
+			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature)) {
+				if (!this.friendlyFire && !((GamePanel.player.weapon != null && GamePanel.player.weapon instanceof SpiritScythe
+						&& ((SpiritScythe) GamePanel.player.weapon).spirits.contains(obj)))) continue;
 				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
 				((Creature) obj).damage(this.attackDamage, this);
 				

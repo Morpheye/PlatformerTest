@@ -111,8 +111,8 @@ public class Level_1_3 extends Level {
 		
 		//fading mountain
 		objects.add(new TextDisplayTrigger(2350, 500, 100, 100, "This wall is fake.", 300));
-		objects.add(new GrassPlatform(2600, 350, 700, 200));
-		objects.add(new GrassPlatform(3000, 750, 200, 1000));
+		objects.add(new GrassPlatform(2600, -150, 700, 1200));
+		objects.add(new GrassPlatform(3000, 250, 200, 2000));
 		objects.add(new GrassPlatform(2500, 950, 200, 600));
 		objects.add(new PushableStone(2600, 500, 100, 100));
 		
@@ -168,6 +168,12 @@ public class Level_1_3 extends Level {
 	
 	@Override
 	public void onTick() {
+	}
+	
+	@Override
+	public void moveCamera() {
+		super.moveCamera();
+		if (GamePanel.camera_y < 0) GamePanel.camera_y = 0;
 	}
 	
 }

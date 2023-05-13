@@ -13,6 +13,7 @@ import platformerTest.game.MovableObject;
 import platformerTest.game.ObjType;
 import platformerTest.game.Player;
 import platformerTest.menu.GamePanel;
+import platformerTest.weapons.weaponsT5.SpiritScythe;
 
 public class Projectile extends MovableObject {
 
@@ -73,7 +74,9 @@ public class Projectile extends MovableObject {
 					this.hitTarget = true;
 					this.lifetime = 0;
 					if (firer.type.equals(ObjType.Creature)) {
-						if (((Creature) firer).friendlyFire) ((Creature) obj).damage(this.damage, this.firer);
+						if (((Creature) firer).friendlyFire || obj instanceof SpiritScythe.ScytheSpirit) {
+							((Creature) obj).damage(this.damage, this.firer);
+						}
 					} else ((Creature) obj).damage(this.damage, this.firer);
 					
 					ArrayList<GameObject> list = new ArrayList<GameObject>();
@@ -105,7 +108,7 @@ public class Projectile extends MovableObject {
 		if (this.hitSound != null) {
 			this.hitSound.setMicrosecondPosition(0);
 			this.hitSound.start();
-		} else System.out.println(hitSound);
+		}
 	}
 	
 	public void playAttackSound() {

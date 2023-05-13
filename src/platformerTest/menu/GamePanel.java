@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Predicate;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -47,6 +48,7 @@ public class GamePanel extends JPanel {
 	public static List<GameObject> projectiles;
 	public static List<GameObject> particles;
 	public static List<GameObject> deletedObjects;
+	public static List<GameObject> addedObjects;
 	
 	public static double camera_x;
 	public static double camera_y;
@@ -164,8 +166,11 @@ public class GamePanel extends JPanel {
 			obj.destroy();
 		}
 		
-		for (GameObject obj : projectiles) objects.add(obj);
-		for (GameObject obj : particles) objects.add(obj);
+		objects.addAll(projectiles);
+		objects.addAll(particles);
+		objects.addAll(addedObjects);
+		
+		addedObjects.clear();
 		projectiles.clear();
 		particles.clear();
 		
@@ -370,27 +375,27 @@ public class GamePanel extends JPanel {
 		g2d.setPaint(gp1);
 		g2d.fillRect(-50, 0, Main.SIZE+50, 80);
 		//render healthbar
-		if (player.health > 100) player.health = 100;
+		if (player.health > player.maxHealth) player.health = player.maxHealth;
 		if (player.health < 0) player.health = 0;
 		
 		g2d.drawImage(healthImage, Main.SIZE*3/4+25, 10, 30, 30, null);
 		g2d.setColor(Color.black);
 		g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, 100, 30, 5, 5);
 		g2d.setColor(Color.red);
-		g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, player.health, 30, 5, 5);
+		g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, player.health * (player.maxHealth/100), 30, 5, 5);
 	
 		if (player.overheal != 0) {
 			int overHeal = player.overheal;
-			if (player.overheal > 100) overHeal = 100;
+			if (player.overheal > player.maxHealth) overHeal = player.maxHealth;
 			g2d.setColor(GameObject.COLOR_GOLD);
-			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, overHeal, 30, 5, 5);
+			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, overHeal * (player.maxHealth/100), 30, 5, 5);
 		}
 		
 		if (player.overheal > 100) {
 			int gigaHeal = player.overheal-100;
-			if (gigaHeal > 100) gigaHeal = 100;
+			if (gigaHeal > player.maxHealth) gigaHeal = player.maxHealth;
 			g2d.setColor(GameObject.COLOR_DIAMOND);
-			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, gigaHeal, 30, 5, 5);
+			g2d.fillRoundRect(Main.SIZE*3/4 + 70, 10, gigaHeal * (player.maxHealth/100), 30, 5, 5);
 		}
 			
 		g2d.setColor(Color.black);
@@ -511,12 +516,12 @@ public class GamePanel extends JPanel {
 			g2d.drawString("x"+df.format(player.attackKnockback/2), powerupX[i]+23, powerupY[i]+15);
 			i++;}
 		//marksman
-		if (player.rangedAttackDamage != 5) {
-			g2d.setColor(Powerup.COLOR_POWERUP_MARKSMAN);
+		if (player.attackRange != 20) {
+			g2d.setColor(Powerup.COLOR_POWERUP_RANGE);
 			g2d.fillOval(powerupX[i], powerupY[i], 22, 22);
-			g2d.drawImage(strengthImage, powerupX[i], powerupY[i], 22, 22, null);
-			g2d.setColor((player.rangedAttackDamage>5) ? Color.green : Color.red);
-			g2d.drawString("x"+df.format(player.rangedAttackDamage/5.0), powerupX[i]+23, powerupY[i]+15);
+			g2d.drawImage(rangeImage, powerupX[i], powerupY[i], 22, 22, null);
+			g2d.setColor((player.attackRange>5) ? Color.green : Color.red);
+			g2d.drawString("x"+df.format(player.attackRange/20.0), powerupX[i]+23, powerupY[i]+15);
 			i++;}
 		//effects
 		for (int j=0; j<player.effects.size(); j++) {
@@ -558,10 +563,10 @@ public class GamePanel extends JPanel {
 					}
 					
 					//DRAW WEAPON
-					if (c.weapon != null) {
-						int size = (int) (c.weapon.size*(Main.SIZE/camera_size));
+					if (c.weapon != null && c.isAlive) {
+						int size = (int) (c.weapon.size*(Main.SIZE/camera_size)*(c.size_x/40));
 						Graphics2D g2 = (Graphics2D) g2d.create();
-						BufferedImage image = player.weapon.image;
+						BufferedImage image = c.weapon.image;
 						int angle = (c.maxAttackCooldown - c.attackCooldown < c.maxAttackCooldown/8) ? 
 								90 * (c.maxAttackCooldown - c.attackCooldown)/(c.maxAttackCooldown/8) :
 									(c.maxAttackCooldown - c.attackCooldown)<(c.maxAttackCooldown/2) ?
@@ -656,7 +661,7 @@ public class GamePanel extends JPanel {
 	
 	public static BufferedImage healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
 	densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
-	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage;
+	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, rangeImage;
 	public void loadImages() {
 		try {
 			healthImage = ImageIO.read(this.getClass().getResource("/gui/health.png"));
@@ -674,6 +679,7 @@ public class GamePanel extends JPanel {
 			cameraSizeImage = ImageIO.read(this.getClass().getResource("/powerups/camerasize.png"));
 			swiftnessImage = ImageIO.read(this.getClass().getResource("/powerups/swiftness.png"));
 			punchImage = ImageIO.read(this.getClass().getResource("/powerups/punch.png"));
+			rangeImage = ImageIO.read(this.getClass().getResource("/powerups/range.png"));
 
 		} catch (Exception e) {e.printStackTrace();}
 	}
@@ -688,6 +694,12 @@ public class GamePanel extends JPanel {
 		
 		//destroy the level
 		if (level != null) level.destroy();
+		level = null;
+		player = null;
+		
+		targetCoins = 0;
+		displayText = null;
+		textDuration = 0;
 		
 		//now wipe the arrays
 		objects = new ArrayList<GameObject>();
@@ -695,6 +707,7 @@ public class GamePanel extends JPanel {
 		flashes = new HashMap<Color,Integer>();
 		projectiles = new ArrayList<GameObject>();
 		particles = new ArrayList<GameObject>();
+		addedObjects = new ArrayList<GameObject>();
 	}
 	
 }

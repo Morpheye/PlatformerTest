@@ -87,6 +87,7 @@ public class Level_1_4 extends Level {
 		
 		objects.add(new Gravestone(4300, 450, 100, 150));
 		objects.add(new Gravestone(5100, 500, 200, 100));
+		objects.add(new Gravestone(6000, 400, 200, 100));
 		
 		objects.add(new SolidBackgroundObject(7400, 375, 700, 100, GameObject.COLOR_DIRT));
 		objects.add(new SolidBackgroundObject(7500, 450, 190, 300, GameObject.COLOR_DIRT));
@@ -128,7 +129,7 @@ public class Level_1_4 extends Level {
 		
 		//locked gate
 		objects.add(new TextDisplayTrigger(1650,300,100,100,"Enemies requiring killing will glow.",300));
-		objects.add(new GrassPlatform(1900, 150, 600, 100));
+		objects.add(new GrassPlatform(1900, -400, 600, 1200));
 		objects.add(new GrassPlatform(1650, 225, 100, 150));
 		gate = new WoodPlatform(2100, 300, 50, 200);
 		objects.add(gate);
@@ -145,24 +146,24 @@ public class Level_1_4 extends Level {
 		objects.add(new TextDisplayTrigger(2900,400,200,200,"Caution: creatures can spawn with overheal.",300));
 		objects.add(new GrassPlatform(2900, 200, 200, 200));
 		
-		objects.add(new GrassPlatform(3500, 300, 600, 100));
+		objects.add(new GrassPlatform(3500, -650, 600, 2000));
 		objects.add(new CreatureUndead(3500, 400, 40, 30, 30, 400));
 		CreatureUndead overhealedZombie = new CreatureUndead(3600, 400, 40, 30, 30, 400);
 		overhealedZombie.overheal = 10;
 		objects.add(overhealedZombie);
 		
-		objects.add(new GrassPlatform(4300, 350, 600, 100));
+		objects.add(new GrassPlatform(4300, -600, 600, 2000));
 		objects.add(new CreatureUndead(4250, 450, 40, 30, 30, 400));
 		objects.add(new CreatureUndead(4300, 450, 40, 30, 30, 400));
 		objects.add(new CreatureUndead(4350, 450, 40, 30, 30, 400));
 		
-		objects.add(new GrassPlatform(5100, 400, 600, 100));
+		objects.add(new GrassPlatform(5100, -550, 600, 2000));
 		objects.add(new CreatureUndead(5100, 500, 40, 30, 30, 400));
 		CreatureUndead overhealedZombie2 = new CreatureUndead(5150, 500, 40, 30, 30, 400);
 		overhealedZombie2.overheal = 10;
 		objects.add(overhealedZombie2);
 		
-		objects.add(new GrassPlatform(6000, 300, 600, 100));
+		objects.add(new GrassPlatform(6000, -650, 600, 2000));
 		gatekeeper2 = new CreatureUndead(6000, 400, 40, 30, 30, 400);
 		gatekeeper2.overheal = 30;
 		gatekeeper2.required = true;
@@ -173,8 +174,8 @@ public class Level_1_4 extends Level {
 		objects.add(new HealPowerup(6600, 450, 50));
 		
 		//gate 2
-		objects.add(new GrassPlatform(7400, 300, 800, 100));
-		objects.add(new GrassPlatform(7000, 350, 200, 200));
+		objects.add(new GrassPlatform(7400, -650, 800, 2000));
+		objects.add(new GrassPlatform(7000, -550, 200, 2000));
 		gate2 = new WoodPlatform(7500, 450, 50, 200);
 		objects.add(gate2);
 		objects.add(new GrassPlatform(7500, 650, 200, 200));
@@ -190,27 +191,28 @@ public class Level_1_4 extends Level {
 		gatekeeper3.movementSpeed = 0.06;
 		gatekeeper3.attackKnockback = 3;
 		objects.add(gatekeeper3);
-		objects.add(new GrassPlatform(7800, 350, 200, 200));
+		objects.add(new GrassPlatform(7800, -550, 200, 2000));
 		objects.add(new StrengthPowerup(7800, 500, 50, 5));
 		objects.add(new TextDisplayTrigger(7800, 500, 50, 50, "Strength power-ups increase melee damage.", 300));
 		
+		//waterplatform
 		objects.add(new CreatureUndead(8800, 600, 40, 30, 30, 400));
 		objects.add(new CreatureUndead(8900, 600, 40, 30, 30, 400));
 		objects.add(new WaterPlatform(8600, 450, 800, 195));
-		objects.add(new GrassPlatform(8200, 450, 100, 200));
-		objects.add(new GrassPlatform(8600, 400, 800, 100));
-		objects.add(new GrassPlatform(8900, 450, 400, 200));
+		objects.add(new GrassPlatform(8200, -450, 100, 2000));
+		objects.add(new GrassPlatform(8600, -550, 800, 2000));
+		objects.add(new GrassPlatform(8900, -450, 400, 2000));
 		
 		objects.add(new GrassPlatform(9400, 550, 200, 200));
 		objects.add(new OverhealPowerup(9400,700,50,100));
 		
 		//final boss
 		objects.add(new TextDisplayTrigger(9900,700,200,200,"Make use of the box.",300));
-		objects.add(new GrassPlatform(9900, 500, 200, 200));
-		objects.add(new GrassPlatform(10400, 400, 1200, 200));
+		objects.add(new GrassPlatform(9900, -400, 200, 2000));
+		objects.add(new GrassPlatform(10400, -500, 1200, 2000));
 		finalGate = new WoodPlatform(10900, 750, 50, 200);
 		objects.add(finalGate);
-		objects.add(new GrassPlatform(10900, 500, 200, 300));
+		objects.add(new GrassPlatform(10900, -350, 200, 2000));
 		objects.add(new GrassPlatform(10900, 950, 200, 200));
 		miniboss = new CreatureUndead(10600, 600, 100, 150, 40, 400) {
 			@Override
@@ -271,6 +273,9 @@ public class Level_1_4 extends Level {
 		if (diffX < lowerLimitX) GamePanel.camera_x = GamePanel.player.x - lowerLimitX;
 		if (diffY > higherLimitY) GamePanel.camera_y = GamePanel.player.y - higherLimitY;
 		if (diffY < lowerLimitY) GamePanel.camera_y = GamePanel.player.y - lowerLimitY;
+		
+		super.moveCamera();
+		if (GamePanel.camera_y < 300) GamePanel.camera_y = 300;
 	}
 	
 	//AMBIENT EFFECT: LIGHT RAIN
@@ -307,6 +312,10 @@ public class Level_1_4 extends Level {
 	@Override
 	public void destroy() {
 		this.raindrops.clear();
+		for (int i=0; i<40; i++) { //recycles the same raindrops for lag prevention
+			raindrops.add(new Raindrop((int)((Math.random()*1.5*Main.SIZE)-(Main.SIZE*0.5)), (int) (Math.random()*Main.SIZE),
+			(byte)3, (byte)-15));
+		}
 	}
 	
 	//raindrop particle

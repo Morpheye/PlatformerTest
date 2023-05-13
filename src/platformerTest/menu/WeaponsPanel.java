@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -608,8 +609,24 @@ public class WeaponsPanel extends JPanel {
 			
 			if (!inShop) {
 				weapons = DataManager.saveData.ownedWeapons;
+				weapons.sort(new Comparator<String>() {
+					@Override //tier -> in shop -> gem cost -> coin cost
+					public int compare(String o1, String o2) {
+						Weapon w1 = Weapon.getWeapon(o1);
+						Weapon w2 = Weapon.getWeapon(o2);
+
+						if (w1.tier != w2.tier) return w1.tier - w2.tier;
+						else if (w1.inShop == 0 && w2.inShop != 0) return 1;
+						else if (w1.gemCost != w2.gemCost) return w1.gemCost - w2.gemCost;
+						else if (w1.coinCost != w2.coinCost) return w1.coinCost - w2.coinCost;
+						else return 0;
+						
+					}});
+				
 			} else {
 				weapons = Weapon.weaponNames;
+				weapons.removeIf(c -> Weapon.getWeapon(c).inShop != 1);
+				
 			}
 			
 			int finalIndex = (scroll*16+15 > weapons.size()) ? (weapons.size()) : scroll*16+16;

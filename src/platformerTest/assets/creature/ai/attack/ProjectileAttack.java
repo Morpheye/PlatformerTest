@@ -52,7 +52,10 @@ public class ProjectileAttack extends AttackAi {
 	
 	@Override
 	public void run(Creature c) {
-		for (GameObject i : targets) {
+		for (LivingObject i : targets) {
+			if (!i.isAlive) {
+				continue;
+			}
 			c.isRangedAttacking = false;
 			
 			if (c.x>i.x && c.x-i.x>xBoundLeft) return;

@@ -13,7 +13,7 @@ public class BejeweledMoonstaff extends Weapon {
 	
 	public int attackDamage = 3;
 	public int attackRange = 15;
-	public int attackCooldown = 10;
+	public int attackCooldown = 15;
 	
 	public BejeweledMoonstaff() {
 		try {
@@ -25,7 +25,7 @@ public class BejeweledMoonstaff extends Weapon {
 			this.attackSound = "/sounds/attack/axe/attack.wav";
 			this.tier = 3;
 			
-			this.stats = new String[]{"Attack Damage +60%", "Attack Range +75%", "Attack Speed -20%",
+			this.stats = new String[]{"Attack Damage +60%", "Attack Range +75%", "Attack Speed -27.3%",
 					"Gem drop chances tripled"}; //0.89x dmg
 			this.statMap = new int[] {1, 1, -1, 2};
 			

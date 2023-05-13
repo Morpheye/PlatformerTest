@@ -10,6 +10,7 @@ import platformerTest.weapons.shopWeaponsT2.*;
 import platformerTest.weapons.shopWeaponsT3.*;
 import platformerTest.weapons.shopWeaponsT4.*;
 import platformerTest.weapons.starterWeapons.*;
+import platformerTest.weapons.weaponsT5.*;
 
 public class Weapon {
 
@@ -66,9 +67,12 @@ public class Weapon {
 		addWeapon(new BladeOfImmolation());
 		//exotic weapons (tier 4: diamond)
 		addWeapon(new GildedChimeraBlade());
-		
+		addWeapon(new VampiricSabre());
 		//ultra-exotic weapons (tier 5: crimsonade)
+		addWeapon(new SpiritScythe());
 	}
+	
+	public void onTick() {}
 	
 	/**
 	 * Triggers when wielder hits something. Use this for modifying damage

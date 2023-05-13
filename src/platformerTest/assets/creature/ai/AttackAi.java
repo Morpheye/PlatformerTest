@@ -6,6 +6,8 @@ import platformerTest.assets.creature.CreatureAi;
 import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.game.GameObject;
 import platformerTest.game.LivingObject;
+import platformerTest.menu.GamePanel;
+import platformerTest.weapons.weaponsT5.SpiritScythe;
 
 /**
  * General attack AI
@@ -29,7 +31,10 @@ public class AttackAi extends CreatureAi {
 	@Override
 	public void run(Creature c) {
 		c.isAttacking = false;
-		for (GameObject i : targets) {
+		for (LivingObject i : targets) {
+			if (!i.isAlive) {
+				continue;
+			}
 			double xDist = Math.abs(c.x - i.x) - (0.5 * Math.abs(c.size_x + i.size_x));
 			double yDist = Math.abs(c.y - i.y) - (0.5 * Math.abs(c.size_y + i.size_y));
 			
@@ -40,6 +45,13 @@ public class AttackAi extends CreatureAi {
 			if (distance <= this.meleeRange) {
 				c.isAttacking = true;
 			}
+		}
+	}
+	
+	@Override
+	public void onDamage(Creature creature, LivingObject source) {
+		if (source instanceof SpiritScythe.ScytheSpirit || source.equals(GamePanel.player)) {
+			if (!this.targets.contains(source)) this.targets.add(source);
 		}
 	}
 	

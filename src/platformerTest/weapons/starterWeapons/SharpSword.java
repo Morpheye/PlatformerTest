@@ -23,7 +23,7 @@ public class SharpSword extends Weapon {
 			this.attackSound = "/sounds/attack/sword/attack.wav";
 			this.tier = 1;
 			
-			this.stats = new String[]{"Attack Damage +60%", "Attack Range +20%", "Attack Speed -25%"}; //1.28x dmg
+			this.stats = new String[]{"Attack Damage +60%", "Attack Range +20%", "Attack Speed -20%"}; //1.28x dmg
 			this.statMap = new int[] {1, 1, -1};
 			
 			this.lore = "Reliable melee weapon for any adventure, but a bit slow to swing for the untrained user.";

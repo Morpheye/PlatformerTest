@@ -22,10 +22,12 @@ import platformerTest.assets.effects.Effect;
 import platformerTest.assets.triggers.Powerup;
 import platformerTest.menu.GamePanel;
 import platformerTest.weapons.Weapon;
+import platformerTest.weapons.weaponsT5.SpiritScythe;
 
 public class Player extends LivingObject {
 	
 	Clip finishSound;
+	public int naturalRegenCooldown;
 	
 	public Player(double initX, double initY, double size) {
 		super(initX, initY, size, size, Color.WHITE, 1.0);	
@@ -47,7 +49,8 @@ public class Player extends LivingObject {
 		this.dmgTime = 0;
 		
 		this.maxHealth = 100;
-		this.health = 100;
+		this.health = this.maxHealth;
+		this.naturalRegenCooldown = 180;
 		this.overheal = 0;
 		this.timeSinceDamaged = 0;
 		this.timeSinceDeath = 0;
@@ -121,8 +124,8 @@ public class Player extends LivingObject {
 		
 		//Health
 		if (timeSinceDamaged >= 450) {
-			this.timeSinceDamaged -= 180;
-			if (this.health < 100) this.health++;
+			this.timeSinceDamaged -= naturalRegenCooldown;
+			if (this.health < this.maxHealth) this.health++;
 		}
 		this.timeSinceDamaged++;
 		
@@ -218,6 +221,8 @@ public class Player extends LivingObject {
 		for (GameObject obj : GamePanel.objects) { //check for enemies in range
 			if (obj.equals(this)) continue;
 			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature)) {
+				if (this.weapon != null && this.weapon instanceof SpiritScythe
+						&& ((SpiritScythe) this.weapon).spirits.contains(obj)) return;
 				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
 				((Creature) obj).damage(this.attackDamage, this);
 				

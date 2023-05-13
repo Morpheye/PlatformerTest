@@ -63,7 +63,7 @@ public class Powerup extends Trigger {
 		
 	}
 
-	public static final Color COLOR_POWERUP_MARKSMAN = new Color(255,50,255,100); //pink
+	public static final Color COLOR_POWERUP_RANGE = new Color(255,50,255,100); //pink
 	public static final Color COLOR_POWERUP_PUNCH = new Color(170,0,170,100); //purple
 	public static final Color COLOR_POWERUP_SWIFTNESS = new Color(0,255,255,100); //cyan
 	public static final Color COLOR_POWERUP_CAMERASIZE = new Color(0,255,0,100); //light green

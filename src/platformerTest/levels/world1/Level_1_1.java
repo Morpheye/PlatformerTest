@@ -70,6 +70,8 @@ public class Level_1_1 extends Level {
 		if (diffX < lowerLimitX) GamePanel.camera_x = GamePanel.player.x - lowerLimitX;
 		if (diffY > higherLimitY) GamePanel.camera_y = GamePanel.player.y - higherLimitY;
 		if (diffY < lowerLimitY) GamePanel.camera_y = GamePanel.player.y - lowerLimitY;
+		
+		if (GamePanel.camera_y < 400) GamePanel.camera_y = 400;
 	}
 	
 	@Override
@@ -137,9 +139,9 @@ public class Level_1_1 extends Level {
 		objects.add(new WaterPlatform(5800, 250, 1025, 390));
 		objects.add(new GrassPlatform(5650, 325, 300, 250));
 		objects.add(new GrassPlatform(5550, 340, 100, 280));
-		objects.add(new GrassPlatform(5300, 250, 100, 400));
-		objects.add(new GrassPlatform(6250, 340, 200, 580));
-		objects.add(new GrassPlatform(5775, 100, 925, 100));
+		objects.add(new GrassPlatform(5300, 150, 100, 600));
+		objects.add(new GrassPlatform(6250, 230, 200, 800));
+		objects.add(new GrassPlatform(5775, -50, 925, 400));
 
 		
 		//islands

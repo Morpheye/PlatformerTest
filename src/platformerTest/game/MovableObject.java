@@ -119,6 +119,8 @@ public class MovableObject extends GameObject {
 		}}
 		
 		this.x += vx; //move the object
+		
+		if (!this.solid) return;
 
 		for (GameObject obj : GamePanel.objects) { //check for all collisions after moving
 			if (!this.exists) continue;
@@ -188,6 +190,8 @@ public class MovableObject extends GameObject {
 		boolean collidedy = false;
 		
 		this.y += vy; //move the object
+		
+		if (!this.solid) return;
 
 		for (GameObject obj : GamePanel.objects) { //check for all collisions after moving
 			if (!this.exists) continue;

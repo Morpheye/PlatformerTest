@@ -135,9 +135,9 @@ public class Level_1_2 extends Level {
 		objects.add(new PushableBox(6350,650,60,60));
 		
 		objects.add(new WaterPlatform(5800,400,800,395));
-		objects.add(new StonePlatform(5400,400,150,400));
-		objects.add(new StonePlatform(5800,275,800,150));
-		objects.add(new StonePlatform(6350,400,400,400));
+		objects.add(new StonePlatform(5400,0,150,1200));
+		objects.add(new StonePlatform(5800,-50,800,800));
+		objects.add(new StonePlatform(6350,0,400,1200));
 		
 		mountainCrusher = new StonePlatform(5800,550,100,200);
 		objects.add(mountainCrusher);
@@ -175,6 +175,12 @@ public class Level_1_2 extends Level {
 		
 		if (mountainPlatform.y >= 1130) mountainPlatform.vy = -1.5;
 		else if (mountainPlatform.y <= 830) mountainPlatform.vy = 1.5;
+	}
+	
+	@Override
+	public void moveCamera() {
+		super.moveCamera();
+		if (GamePanel.camera_y < 300) GamePanel.camera_y = 300;
 	}
 	
 }

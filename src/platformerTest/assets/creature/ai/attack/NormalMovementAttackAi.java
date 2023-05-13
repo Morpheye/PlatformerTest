@@ -23,7 +23,10 @@ public class NormalMovementAttackAi extends AttackAi {
 	@Override
 	public void run(Creature c) {
 		c.isAttacking = false;
-		for (GameObject i : targets) {
+		for (LivingObject i : targets) {
+			if (!i.isAlive) {
+				continue;
+			}
 			double xDist = Math.abs(c.x - i.x) - (0.5 * Math.abs(c.size_x + i.size_x));
 			double yDist = Math.abs(c.y - i.y) - (0.5 * Math.abs(c.size_y + i.size_y));
 			

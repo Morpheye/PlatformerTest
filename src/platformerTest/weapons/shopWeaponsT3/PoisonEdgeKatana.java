@@ -22,7 +22,7 @@ public class PoisonEdgeKatana extends Weapon {
 			this.tier = 3;
 			
 			this.stats = new String[]{"Attack Damage +20%", "Attack Range +15%", "Attack Knockback -25%",
-					"On hit: Apply poison", "(6 dmgticks, 1 dmg per)"};
+					"On hit: Apply poison", "(12 dmgticks, 1 dmg per)"};
 			this.statMap = new int[] {1, 1, -1, 2, 2};
 			
 			this.lore = "The blade contains micropores filled with corrosive poison, released on contact with an enemy. "
@@ -35,7 +35,7 @@ public class PoisonEdgeKatana extends Weapon {
 	
 	@Override
 	public void onAttackStart(LivingObject wielder, LivingObject victim) {
-		victim.applyEffect(new EffectPoison(6*45, 1, wielder));
+		victim.applyEffect(new EffectPoison(12*45, 1, wielder));
 	}
 	
 	@Override

@@ -10,6 +10,7 @@ import platformerTest.assets.creature.creatures.Creature;
 import platformerTest.assets.effects.Effect;
 import platformerTest.menu.GamePanel;
 import platformerTest.weapons.Weapon;
+import platformerTest.weapons.weaponsT5.SpiritScythe;
 
 public class LivingObject extends MovableObject {
 
@@ -71,6 +72,8 @@ public class LivingObject extends MovableObject {
 	public void move() {
 		this.movingInLiquid = false;
 		this.liquidDensity = 1;
+		
+		if (this.weapon != null) this.weapon.onTick();
 		
 		for (GameObject obj : GamePanel.objects) { //check for water
 			if (obj.equals(this)) continue;
@@ -190,8 +193,9 @@ public class LivingObject extends MovableObject {
 			this.health = 0;
 			this.die();
 			if (source != null) {
-				if (source.equals(GamePanel.player) && this.type.equals(ObjType.Creature)) {
-					if (GamePanel.player.weapon != null) GamePanel.player.weapon.onKill(GamePanel.player, this); //WEAPON TRIGGER
+				if ((source.equals(GamePanel.player) || source instanceof SpiritScythe.ScytheSpirit)
+						&& this.type.equals(ObjType.Creature)) {
+					if (GamePanel.player.weapon != null) GamePanel.player.weapon.onKill(source, this); //WEAPON TRIGGER
 					((Creature) this).dropLoot();
 			}}
 		}
