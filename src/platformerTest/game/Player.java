@@ -132,7 +132,9 @@ public class Player extends LivingObject {
 		//CHECK BOUNDS
 		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
 		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
-		if (this.timeSinceDeath > 120 && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
+		if (this.timeSinceDeath > 120 && GamePanel.levelWon==0) {
+			GamePanel.restartLevel(GamePanel.level);
+		}
 		
 		
 	}

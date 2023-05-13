@@ -26,8 +26,8 @@ public class Level_1_6 extends Level {
 	public Level_1_6() {
 		this.backgroundColor = COLOR_DAYSKY;
 		
-		this.spawnX = 1000; //0
-		this.spawnY = 850; //200
+		this.spawnX = 1600; //0
+		this.spawnY = 1100; //200
 
 		this.reqs = new String[] {"Level_1_5"};
 		this.reward = 70;
@@ -105,7 +105,7 @@ public class Level_1_6 extends Level {
 		objects.add(new PushableStone(750,520,80,80));
 		
 		objects.add(new CreatureDartGoblin(600, 816, 30, 400));
-		objects.add(new PushableStone(1300, 850, 60, 60));
+		objects.add(new GrassPlatform(1600, 800, 200, 200));
 		objects.add(new GrassPlatform(1950, 800, 700, 400));
 		objects.add(new HealPowerup(1700, 1050, 50));
 		

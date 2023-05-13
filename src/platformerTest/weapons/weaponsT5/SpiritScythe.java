@@ -168,7 +168,8 @@ public class SpiritScythe extends Weapon {
 			removeEffects.clear();
 			
 			//change targets
-			if (this.target != null && (!this.target.exists || !this.target.isAlive || !GamePanel.objects.contains(target))) {
+			if (this.target != null && (!this.target.exists || !this.target.isAlive
+					|| !GamePanel.objects.contains(target) || !this.target.hasCollided(GamePanel.MainFrameObj))) {
 				this.targets.remove(this.target);
 				this.target = null;
 			}

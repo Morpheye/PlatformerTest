@@ -106,8 +106,10 @@ public class MenuPanel extends JPanel {
 						g2d.setColor(GameObject.COLOR_SILVER);
 					} else if (completions < 20) {
 						g2d.setColor(GameObject.COLOR_GOLD);
-					} else {
+					} else if (completions < 50) {
 						g2d.setColor(GameObject.COLOR_DIAMOND);
+					} else {
+						g2d.setColor(GameObject.COLOR_CRIMSONADE);
 					}
 				} else {
 					g2d.setColor(Color.WHITE);
@@ -207,8 +209,10 @@ public class MenuPanel extends JPanel {
 							g2d.setColor(GameObject.COLOR_SILVER);
 						} else if (completions < 20) {
 							g2d.setColor(GameObject.COLOR_GOLD);
-						} else {
+						} else if (completions < 50) {
 							g2d.setColor(GameObject.COLOR_DIAMOND);
+						} else {
+							g2d.setColor(GameObject.COLOR_CRIMSONADE);
 						}
 					} else {
 						g2d.setColor(Color.WHITE);
