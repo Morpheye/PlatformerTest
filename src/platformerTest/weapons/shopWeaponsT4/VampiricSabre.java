@@ -28,7 +28,7 @@ public class VampiricSabre extends Weapon {
 			
 			this.stats = new String[]{"Attack Damage +60%", "Attack Range +20%", "Natural Regeneration -50%",
 					"On kill: Heal 15 HP", "Overheals up to 300%"};
-			this.statMap = new int[] {1, -1, 2, 2, 2};
+			this.statMap = new int[] {1, 1, -1, 2, 2};
 			
 			this.lore = "Millenia ago, the spirit of a great vampire was salvaged from destruction. It now lays "
 					+ "within this raging blade, more than enthusiastic to drink again.";

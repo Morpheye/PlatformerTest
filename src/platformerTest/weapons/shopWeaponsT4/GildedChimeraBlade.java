@@ -24,6 +24,7 @@ public class GildedChimeraBlade extends Weapon {
 			
 			this.size = 30;
 			this.name = "Gilded Chimera Blade";
+			this.attackSound = "/sounds/attack/sword/attack.wav";
 			this.tier = 4;
 			
 			this.stats = new String[]{"Attack Speed +11.1%", "Attack Range +10%", "Attack Knockback +10%", "Attack Damage -20%",
@@ -51,6 +52,7 @@ public class GildedChimeraBlade extends Weapon {
 	
 	@Override
 	public void init(LivingObject l) {
+		this.attackSound = "/sounds/attack/sword/attack.wav";
 		l.attackDamage += this.attackDamage;
 		l.attackRange += this.attackRange;
 		l.attackKnockback += this.attackKnockback;
