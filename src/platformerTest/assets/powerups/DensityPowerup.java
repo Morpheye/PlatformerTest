@@ -14,7 +14,7 @@ import platformerTest.menu.GamePanel;
 
 public class DensityPowerup extends Powerup {
 
-	public DensityPowerup(double x, double y, double size, int amount) {
+	public DensityPowerup(double x, double y, double size, double amount) {
 		this(x,y,size,null);
 		Code code = new Code() {
 			@Override

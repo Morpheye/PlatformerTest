@@ -13,6 +13,7 @@ public enum ObjType {
 	DecorationObject,
 	
 	FinishFlag,
+	NullZone,
 	
 	Trigger,
 	Powerup

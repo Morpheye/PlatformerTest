@@ -616,9 +616,6 @@ public class GamePanel extends JPanel {
 				player.lastDirection = 1;
 			}
 			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0 && timeSinceRestart > 90) GamePanel.restartLevel(level);
-			
-			//testing only
-			if (e.getKeyCode() == KeyEvent.VK_X && levelWon == 0) player.applyEffect(new EffectFire(900, 1, null));
 		}
 
 		@Override

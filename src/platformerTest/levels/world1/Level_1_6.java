@@ -11,7 +11,10 @@ import platformerTest.assets.creature.creatures.goblin.CreatureGoblin;
 import platformerTest.assets.creature.creatures.goblin.CreatureGoblinGuard;
 import platformerTest.assets.decoration.walls.FadingWallObject;
 import platformerTest.assets.decoration.walls.SolidBackgroundObject;
+import platformerTest.assets.interactables.NullZone;
+import platformerTest.assets.powerups.DensityPowerup;
 import platformerTest.assets.powerups.HealPowerup;
+import platformerTest.assets.pushableObjects.PushableBox;
 import platformerTest.assets.pushableObjects.PushableStone;
 import platformerTest.assets.solidPlatforms.GrassPlatform;
 import platformerTest.assets.solidPlatforms.SandPlatform;
@@ -26,8 +29,8 @@ public class Level_1_6 extends Level {
 	public Level_1_6() {
 		this.backgroundColor = COLOR_DAYSKY;
 		
-		this.spawnX = 1600; //0
-		this.spawnY = 1100; //200
+		this.spawnX = 3900; //0
+		this.spawnY = 1400; //200
 
 		this.reqs = new String[] {"Level_1_5"};
 		this.reward = 70;
@@ -67,6 +70,7 @@ public class Level_1_6 extends Level {
 		List<GameObject> objects = GamePanel.objects;
 
 		objects.add(new SolidBackgroundObject(1400, 300, 1790, 990, GameObject.COLOR_DIRT));
+		objects.add(new NullZone(3900, 1400, 190, 250));
 	}
 	
 	@Override
@@ -107,7 +111,40 @@ public class Level_1_6 extends Level {
 		objects.add(new CreatureDartGoblin(600, 816, 30, 400));
 		objects.add(new GrassPlatform(1600, 800, 200, 200));
 		objects.add(new GrassPlatform(1950, 800, 700, 400));
-		objects.add(new HealPowerup(1700, 1050, 50));
+		
+		//density powerup area
+		objects.add(new GrassPlatform(1900, 1125, 300, 50));
+		objects.add(new GrassPlatform(2075, 1250, 200, 300));
+		objects.add(new GrassPlatform(1775, 1100, 50, 50));
+		objects.add(new TextDisplayTrigger(1600, 1100, 100, 100, "Higher density lets you push harder.", 300));
+		objects.add(new DensityPowerup(1850, 1200, 50, 1));
+		
+		objects.add(new PushableBox(1900, 1050, 100, 100));
+		objects.add(new CreatureGoblin(2100, 1050, 40, 20, 400, 0, 100));
+		objects.add(new CreatureGoblin(2150, 1050, 30, 20, 400, 0, 100));
+		objects.add(new CreatureGoblin(2200, 1050, 30, 20, 400, 0, 100));
+		
+		//parkour
+		objects.add(new GrassPlatform(2600, 1000, 200, 200));
+		objects.add(new HealPowerup(2600, 1150, 50));
+		objects.add(new TextDisplayTrigger(2600, 1150, 50, 50, "The goblins are getting stronger.", 300));
+		
+		objects.add(new GrassPlatform(3000, 1100, 200, 200));
+		objects.add(new CreatureGoblinGuard(3000, 1220, 40, 100, 100, 200, new WoodenClub()));
+		
+		objects.add(new GrassPlatform(3400, 1200, 200, 200));
+		objects.add(new CreatureGoblinGuard(3400, 1320, 40, 100, 100, 200, new WoodenClub()));
+		objects.add(new CreatureGoblinGuard(3400, 1360, 30, 100, 100, 200, new WoodenClub()));
+		
+		//null zone
+		objects.add(new GrassPlatform(3900, 1200, 200, 200));
+		objects.add(new TextDisplayTrigger(3900, 1400, 200, 200, "Null zones clear power-ups.", 300));
+		objects.add(new GrassPlatform(3900, 1600, 200, 200));
+		
+		//water
+		objects.add(new SandPlatform(4800, 300, 500, 2000));
+		objects.add(new GrassPlatform(4500, 300, 400, 2000));
+		
 		
 	}
 	

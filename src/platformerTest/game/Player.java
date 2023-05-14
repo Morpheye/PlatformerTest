@@ -107,6 +107,27 @@ public class Player extends LivingObject {
 				finishSound.start();
 				CoinParticle.spawnCoins(this.x, this.y, 5+(int)(Math.random() * 6), GamePanel.level.reward);
 			}
+			//null zone
+			if (obj.hasCollided(this) && obj.type.equals(ObjType.NullZone) && GamePanel.levelWon==0 && obj.exists) {
+				this.maxHealth = 100;
+				this.movementSpeed = 0.25;
+				this.jumpStrength = 16;
+				
+				this.fireResistant = false;
+				this.naturalRegenCooldown = 180;
+				this.overheal = 0;
+				
+				this.maxAttackCooldown = 40;
+				this.attackCooldown = 0;
+				this.attackRange = 20;
+				this.attackDamage = 5;
+				this.rangedAttackDamage = 5;
+				this.attackKnockback = 2;
+				
+				this.density = 1;
+				
+				if (this.weapon != null) this.weapon.init(this);
+			}
 			//powerup
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.Powerup) && GamePanel.levelWon==0 && obj.exists) {
 				((Powerup) obj).run();
