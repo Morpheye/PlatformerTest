@@ -87,6 +87,7 @@ public class GamePanel extends JPanel {
 		timer = new Timer(1000/90, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				onTick();
 				repaint();
 		}});
 		
@@ -134,12 +135,7 @@ public class GamePanel extends JPanel {
 
 	}
 	
-	/**Order: Level tick -> Player move -> Camera move -> Background -> Level Paint -> draw attacks -> Draw ambience
-	-> Create flash effects -> Fade out if falling into void -> draw HUD -> display text -> win fading
-	**/
-	public void paint(Graphics g) {
-		super.paint(g);
-		
+	public void onTick() {
 		if (timeSinceRestart < 1000) timeSinceRestart++;
 		
 		if (!isPaused) {
@@ -148,17 +144,10 @@ public class GamePanel extends JPanel {
 			moveCamera();
 		}
 		
-		level.fill((Graphics2D) g);
-		
 		for (GameObject obj : objects) {
 			if (!obj.equals(player) && !isPaused) {
 				obj.move();
 			}
-			
-			if (obj.hasCollided(MainFrameObj) || obj.type.equals(ObjType.Creature) || obj.type.equals(ObjType.Player)) {
-				obj.draw(g, player, camera_x, camera_y, camera_size);
-			}
-			
 		}
 		
 		for (GameObject obj : deletedObjects) {
@@ -173,41 +162,57 @@ public class GamePanel extends JPanel {
 		addedObjects.clear();
 		projectiles.clear();
 		particles.clear();
-		
 		deletedObjects.clear();
 		
-		//draw attacks
-		if (!isPaused) drawAttacks(g);
+		//check if level won
+		if (!(levelWon == 0)) levelWon++;
+		if (levelWon>360) {
+			if (!DataManager.saveData.completedLevels.containsKey(level.getClass().getSimpleName())) {
+				DataManager.saveData.completedLevels.put(level.getClass().getSimpleName(), 1);
+			} else {
+				DataManager.saveData.completedLevels.replace(level.getClass().getSimpleName(),
+				DataManager.saveData.completedLevels.get(level.getClass().getSimpleName())+1);
+			}
+			destroyAll();
+			timer.stop();
+			Main.jframe.exitGame(level);
+			
+		}
 		
-		if (!isPaused) level.drawAmbience(g);
-		
-		//flash effects
+		//update flashes
 		ArrayList<Color> removedFlashes = new ArrayList<Color>();
 		flashes.forEach((Color c, Integer i) -> {
-			int alpha = (i > 255) ? 255 : i;
-			Color newColor = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
-			g.setColor(newColor);
-			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 			if (i<2) removedFlashes.add(c);
 			else flashes.replace(c, i, i-1);
-			
 		});
 		for (Color c : removedFlashes) flashes.remove(c);
 		
-		//fade out upon reaching bottom of level
-		if (player.y < (level.bottomLimit + 1000) && levelWon == 0) {
-			int alpha = (int)(player.y - level.bottomLimit)* 255/1000;
-			if (alpha < 0) alpha = 0;
-			g.setColor(new Color(0,0,0,255-alpha));
-			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
-		} else if (player.y > (level.topLimit - 1000) && levelWon == 0) {
-			int alpha = -(int)(player.y - level.topLimit)* 255/1000;
-			if (alpha < 0) alpha = 0;
-			g.setColor(new Color(0,0,0,255-alpha));
-			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
+		if (!this.isFocusOwner()) {
+			if (levelWon == 0 && player.isAlive && !isPaused) isPaused = true;
+		}
+	}
+	
+	/**Order: Level tick -> Player move -> Camera move -> Background -> Level Paint -> draw attacks -> Draw ambience
+	-> Create flash effects -> Fade out if falling into void -> draw HUD -> display text -> win fading
+	**/
+	public void paint(Graphics g) {
+		super.paint(g);
+
+		level.fill((Graphics2D) g);
+		
+		for (GameObject obj : objects) {
+			if (obj.hasCollided(MainFrameObj) || obj.type.equals(ObjType.Creature) || obj.type.equals(ObjType.Player)) {
+				obj.draw(g, player, camera_x, camera_y, camera_size);
+			}
+			
 		}
 		
-		//draw hud
+		//draw attacks
+		if (!isPaused) drawAttacks(g);
+		if (!isPaused) level.drawAmbience(g);
+		
+		//draw flashes
+		drawFlashes(g);
 		drawHUD(g);
 		
 		//display text
@@ -233,35 +238,18 @@ public class GamePanel extends JPanel {
 			drawPauseMenu(g);
 		}
 		
-		//check if won
-		if (!(levelWon == 0)) {
-			levelWon++;
-			if (levelWon < 240) {
-				g.setColor(new Color(255,255,255,255*(240-levelWon)/240));
-				g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
-				}
-			if (levelWon > 240) {
-				g.setColor(new Color(0,0,0,255*(levelWon-241)/120));
-				g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
+		//draw win flash
+		if (levelWon < 240 && levelWon > 0) {
+			g.setColor(new Color(255,255,255,255*(240-levelWon)/240));
+			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 			}
-			if (levelWon>360) {
-				if (!DataManager.saveData.completedLevels.containsKey(level.getClass().getSimpleName())) {
-					DataManager.saveData.completedLevels.put(level.getClass().getSimpleName(), 1);
-				} else {
-					DataManager.saveData.completedLevels.replace(level.getClass().getSimpleName(),
-					DataManager.saveData.completedLevels.get(level.getClass().getSimpleName())+1);
-				}
-
-				destroyAll();
-				timer.stop();
-				Main.jframe.exitGame(level);
-				
-			}
-			
+		if (levelWon > 240) {
+			g.setColor(new Color(0,0,0,255*(levelWon-241)/120));
+			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 		}
-		
-		if (!this.isFocusOwner()) {
-			if (levelWon == 0 && player.isAlive && !isPaused) isPaused = true;
+		if (levelWon>360) {
+			g.setColor(new Color(0,0,0));
+			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 		}
 	}
 	
@@ -538,6 +526,30 @@ public class GamePanel extends JPanel {
 	public static void createFlash(Color color, int duration) {
 		if (flashes.containsKey(color) && flashes.get(color) < duration) flashes.replace(color, duration);
 		else flashes.put(color, duration);
+	}
+	
+	public void drawFlashes(Graphics g) {
+		//flash effects
+		flashes.forEach((Color c, Integer i) -> {
+			int alpha = (i > 255) ? 255 : i;
+			Color newColor = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
+			g.setColor(newColor);
+			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
+				
+		});
+				
+		//fade out upon reaching bottom of level
+		if (player.y < (level.bottomLimit + 1000) && levelWon == 0) {
+			int alpha = (int)(player.y - level.bottomLimit)* 255/1000;
+			if (alpha < 0) alpha = 0;
+			g.setColor(new Color(0,0,0,255-alpha));
+			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
+		} else if (player.y > (level.topLimit - 1000) && levelWon == 0) {
+			int alpha = -(int)(player.y - level.topLimit)* 255/1000;
+			if (alpha < 0) alpha = 0;
+			g.setColor(new Color(0,0,0,255-alpha));
+			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
+		}
 	}
 	
 	public void drawAttacks(Graphics g) {  //ONLY DRAWS MELEE ATTACKS and Render Weapons

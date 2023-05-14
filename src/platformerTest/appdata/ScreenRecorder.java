@@ -18,10 +18,14 @@ public class ScreenRecorder {
 	}
 	
 	public void record(Graphics g) {
-		BufferedImage img = new BufferedImage(component.getWidth(), component.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		component.printAll(img.getGraphics());
+		if (images.size() < frameCount) {
+			BufferedImage img = new BufferedImage(component.getWidth(), component.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			component.paint(img.getGraphics());
+			images.add(img);
+			
+		}
 		
-		g.drawImage(img, 0, 0, 100, 100, null);
+		g.drawImage(images.get(images.size()-1), 0, 0, 100, 100, null);
 	}
 	
 }
