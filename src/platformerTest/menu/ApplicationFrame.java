@@ -10,8 +10,11 @@ import javax.swing.JFrame;
 
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
+import platformerTest.appdata.discord.DiscordRPC;
 import platformerTest.levels.Level;
+import platformerTest.levels.LevelWorld;
 import platformerTest.levels.world1.World1;
+import platformerTest.weapons.Weapon;
 
 @SuppressWarnings("serial")
 public class ApplicationFrame extends JFrame {
@@ -51,9 +54,13 @@ public class ApplicationFrame extends JFrame {
 		current = new GamePanel(level);
 		panel.add(current);
 		current.requestFocus();	
+		
+		String wielding = (Weapon.getWeapon(DataManager.saveData.selectedWeapon) != null) ?
+				"Wielding " + DataManager.saveData.selectedWeapon : "Empty-handed";
+		DiscordRPC.updateStatus(level.getClass().getSimpleName() + ": " + level.name, wielding);
 	}
 	
-	public void exitGame(Level level) {
+	public void openLevelSelect(Level level) {
 		Container panel = this.getContentPane();
 		panel.removeAll();
 		DataManager.save();
@@ -61,9 +68,16 @@ public class ApplicationFrame extends JFrame {
 		System.gc();
 		
 		if (current != null) current.setEnabled(false);
-		current = new MenuPanel(new World1());
+		
+		LevelWorld menuWorld = new World1();
+		for (LevelWorld world : LevelWorld.levelWorlds) {
+			if (world.levels.contains(level)) menuWorld = world;
+			break;
+		}
+		current = new MenuPanel(menuWorld);
 		panel.add(current);
 		current.requestFocus();
+		DiscordRPC.updateStatus("In Level Select", "");
 	}
 	
 	public void openWeaponsMenu() {
@@ -77,6 +91,10 @@ public class ApplicationFrame extends JFrame {
 		current = new WeaponsPanel();
 		panel.add(current);
 		current.requestFocus();
+		
+		String wielding = (Weapon.getWeapon(DataManager.saveData.selectedWeapon) != null) ?
+				"Wielding " + DataManager.saveData.selectedWeapon : "Empty-handed";
+		DiscordRPC.updateStatus("In Weapons Menu", wielding);
 	}
 	
 	public void openMainMenu() {
@@ -90,6 +108,7 @@ public class ApplicationFrame extends JFrame {
 		current = new MainPanel();
 		panel.add(current);
 		current.requestFocus();
+		DiscordRPC.updateStatus("In Main Menu", "");
 	}
 	
 }

@@ -32,15 +32,15 @@ import platformerTest.weapons.Weapon;
 
 @SuppressWarnings("serial")
 public class MenuPanel extends JPanel {
-	public static LevelWorld levelWorld;
-	public static Timer timer;
-	public int scroll = 0;
+	public LevelWorld levelWorld;
+	public Timer timer;
+	int scroll = 0;
 	
 	public MenuPanel(LevelWorld levelworld) {
 		
 		this.setName("Menu");
 		this.scroll = 0;
-		levelWorld = LevelWorld.levelWorlds.get(this.scroll);
+		this.levelWorld = LevelWorld.levelWorlds.get(this.scroll);
 		this.setBackground(levelWorld.menuBGColor);
 		this.setSize(Main.SIZE, Main.SIZE);
 		this.setVisible(true);
@@ -250,7 +250,7 @@ public class MenuPanel extends JPanel {
 		
 	}
 	
-	private void drawCurrency(Graphics2D g2d) {
+	void drawCurrency(Graphics2D g2d) {
 		DecimalFormat df = new DecimalFormat("#");
 		df.setMaximumFractionDigits(2);
 		
@@ -317,7 +317,7 @@ public class MenuPanel extends JPanel {
 		g2d.drawString(gemText, 97+diff-(gemTextWidth/2), 35);
 	}
 	
-	private void drawScrollButtons(Graphics2D g2d, Point mousePosition) {
+	void drawScrollButtons(Graphics2D g2d, Point mousePosition) {
 		int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-10, w = 50;
 		
 		if (scroll > 0) { //left button
@@ -358,7 +358,7 @@ public class MenuPanel extends JPanel {
 		
 	}
 	
-	public class MenuMouse extends MouseAdapter {
+	class MenuMouse extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent e) { //level select
 			int mouseX = e.getX();
@@ -372,6 +372,7 @@ public class MenuPanel extends JPanel {
 					if (levelWorld.levels.size()-1 < i) break;
 					
 					timer.stop();
+					destroy();
 					Main.jframe.startGame(levelWorld.levels.get(i));
 					
 					break;
@@ -379,11 +380,13 @@ public class MenuPanel extends JPanel {
 			//main menu button
 			if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
 				timer.stop();
+				destroy();
 				Main.jframe.openMainMenu();
 			}
 			//weapon menu button
 			if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
 				timer.stop();
+				destroy();
 				Main.jframe.openWeaponsMenu();
 			}
 			
@@ -409,9 +412,9 @@ public class MenuPanel extends JPanel {
 		}
 	}
 	
-	public Image lockImage, coinImage, gemImage;
+	Image lockImage, coinImage, gemImage;
 	
-	public void loadLevelImages() {
+	void loadLevelImages() {
 		try {
 			for (int i=0; i<9; i++) {
 				if (levelWorld.levels.size()-1 < i) break;
@@ -422,6 +425,10 @@ public class MenuPanel extends JPanel {
 				
 			}
 		} catch (Exception e) {}
+	}
+	
+	void destroy() {
+		
 	}
 	
 }

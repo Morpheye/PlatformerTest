@@ -36,7 +36,7 @@ import platformerTest.weapons.Weapon;
 @SuppressWarnings("serial")
 public class WeaponsPanel extends JPanel {
 
-	public static Timer timer;
+	public Timer timer;
 	public Clip equipSound;
 	public Clip purchaseSound;
 	
@@ -62,7 +62,7 @@ public class WeaponsPanel extends JPanel {
 			
 		} catch (Exception e) {}
 		
-		timer = new Timer(1000/30, new ActionListener() {
+		this.timer = new Timer(1000/30, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
@@ -250,7 +250,7 @@ public class WeaponsPanel extends JPanel {
 		
 	}
 	
-	private void drawScrollButtons(Graphics2D g2d, Point mousePosition) {
+	void drawScrollButtons(Graphics2D g2d, Point mousePosition) {
 		int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-of, w = 50;
 		if (scroll > 0) {
 			g2d.setColor(Color.gray);
@@ -291,7 +291,7 @@ public class WeaponsPanel extends JPanel {
 		
 	}
 	
-	private void drawGui(Graphics2D g2d, Point mousePosition) {
+	void drawGui(Graphics2D g2d, Point mousePosition) {
 		if (guiOpen) {
 			g2d.setColor(new Color(0,0,0,200));
 			g2d.fillRect(0, 0, Main.SIZE, Main.SIZE);
@@ -420,7 +420,7 @@ public class WeaponsPanel extends JPanel {
 		}
 	}
 	
-	private void drawCurrency(Graphics2D g2d) {
+	void drawCurrency(Graphics2D g2d) {
 		DecimalFormat df = new DecimalFormat("#");
 		df.setMaximumFractionDigits(2);
 		
@@ -487,7 +487,7 @@ public class WeaponsPanel extends JPanel {
 		g2d.drawString(gemText, 97+diff-(gemTextWidth/2), 35);
 	}
 	
-	public class ShopMouse extends MouseAdapter {
+	class ShopMouse extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			int mouseX = e.getX();
@@ -512,7 +512,7 @@ public class WeaponsPanel extends JPanel {
 					} else {
 						stop();
 						timer.stop();
-						Main.jframe.exitGame(new Level_1_1());
+						Main.jframe.openLevelSelect(new Level_1_1());
 					}
 				}
 				//shop
@@ -596,7 +596,7 @@ public class WeaponsPanel extends JPanel {
 	}}
 
 	BufferedImage coinImage, gemImage, lockImage;
-	public void reloadImages() {
+	void reloadImages() {
 		slotNames = new String[slotX.length];
 		slotImg = new BufferedImage[slotX.length];
 		
@@ -649,7 +649,7 @@ public class WeaponsPanel extends JPanel {
 		} catch (Exception e) {e.printStackTrace();}
 	}
 	
-	public static void drawString(Graphics2D g, int size, String str, int maxWidth, int drawX, int drawY) {
+	void drawString(Graphics2D g, int size, String str, int maxWidth, int drawX, int drawY) {
 		Font font = new Font(Font.MONOSPACED, Font.BOLD, size);
 		g.setFont(font);
 		g.setColor(Color.WHITE);
@@ -681,7 +681,7 @@ public class WeaponsPanel extends JPanel {
 		
 	}
 		
-	public void stop() {
+	void stop() {
 		if (this.equipSound != null) if (this.equipSound.isOpen()) this.equipSound.close();
 		if (this.purchaseSound != null) if (this.purchaseSound.isOpen()) this.purchaseSound.close();
 	}

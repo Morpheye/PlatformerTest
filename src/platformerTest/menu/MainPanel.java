@@ -27,7 +27,7 @@ import platformerTest.levels.world1.Level_1_1;
 @SuppressWarnings("serial")
 public class MainPanel extends JPanel {
 
-	public static Timer timer;
+	public Timer timer;
 	
 	public MainPanel() {
 		this.setName("Menu");
@@ -37,7 +37,7 @@ public class MainPanel extends JPanel {
 		this.setFocusable(true);
 		this.addMouseListener(new MainMouse());
 		
-		timer = new Timer(1000/30, new ActionListener() {
+		this.timer = new Timer(1000/30, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
@@ -117,7 +117,7 @@ public class MainPanel extends JPanel {
 		
 	}
 	
-	public class MainMouse extends MouseAdapter {
+	class MainMouse extends MouseAdapter {
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -125,16 +125,22 @@ public class MainPanel extends JPanel {
 			int mouseY = e.getY();
 			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE/3) < buttonSizeY/2) {
 				timer.stop();
-				Main.jframe.exitGame(new Level_1_1());
+				destroy();
+				Main.jframe.openLevelSelect(new Level_1_1());
 			}
 			
 			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*2/3) < buttonSizeY/2) {
 				timer.stop();
+				destroy();
 				DataManager.save();
 				System.exit(0);
 			}
 			
 		}
+	}
+	
+	void destroy() {
+		System.gc();
 	}
 	
 }

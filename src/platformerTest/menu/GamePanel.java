@@ -19,7 +19,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Predicate;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -28,7 +27,6 @@ import javax.swing.Timer;
 import platformerTest.Main;
 import platformerTest.appdata.DataManager;
 import platformerTest.assets.effects.Effect;
-import platformerTest.assets.effects.EffectFire;
 import platformerTest.assets.triggers.Powerup;
 import platformerTest.game.GameObject;
 import platformerTest.game.LivingObject;
@@ -58,13 +56,9 @@ public class GamePanel extends JPanel {
 	public static boolean isPaused;
 	public static int levelWon;
 	
-	public static double checkpointX;
-	public static double checkpointY;
-	
 	public static Timer timer;
 	public static long coins;
 	public static long targetCoins;
-	
 	public static int timeSinceRestart = 0;
 	
 	public GamePanel(Level level) {
@@ -75,13 +69,9 @@ public class GamePanel extends JPanel {
 		this.addKeyListener(new Keyboard());
 		this.addMouseListener(new PauseMenuMouse());
 		
-		checkpointX = level.spawnX;
-		checkpointY = level.spawnY;
-		
 		coins = 0;
 		restartLevel(level);
 		timeSinceRestart = 180;
-		
 		loadImages();
 		
 		timer = new Timer(1000/90, new ActionListener() {
@@ -90,7 +80,6 @@ public class GamePanel extends JPanel {
 				onTick();
 				repaint();
 		}});
-		
 		timer.start();
 		
 		levelWon = 0;
@@ -102,7 +91,7 @@ public class GamePanel extends JPanel {
 		timeSinceRestart = 0;
 		
 		//wipe old data if old data exists
-		destroyAll();
+		destroyLevel();
 		
 		targetCoins = 0;
 		
@@ -113,7 +102,7 @@ public class GamePanel extends JPanel {
 		
 		level.drawBackground();
 		
-		player = new Player(checkpointX, checkpointY, 40);
+		player = new Player(level.spawnX, level.spawnY, 40);
 		objects.add(player);
 		
 		camera_x = (int) player.x;
@@ -173,9 +162,10 @@ public class GamePanel extends JPanel {
 				DataManager.saveData.completedLevels.replace(level.getClass().getSimpleName(),
 				DataManager.saveData.completedLevels.get(level.getClass().getSimpleName())+1);
 			}
-			destroyAll();
+			destroyLevel();
 			timer.stop();
-			Main.jframe.exitGame(level);
+			destroy();
+			Main.jframe.openLevelSelect(level);
 			
 		}
 		
@@ -197,14 +187,12 @@ public class GamePanel extends JPanel {
 	**/
 	public void paint(Graphics g) {
 		super.paint(g);
-
 		level.fill((Graphics2D) g);
 		
 		for (GameObject obj : objects) {
 			if (obj.hasCollided(MainFrameObj) || obj.type.equals(ObjType.Creature) || obj.type.equals(ObjType.Player)) {
 				obj.draw(g, player, camera_x, camera_y, camera_size);
 			}
-			
 		}
 		
 		//draw attacks
@@ -230,7 +218,6 @@ public class GamePanel extends JPanel {
 			g.drawString(displayText, Main.SIZE/2 - lvlSelectStringWidth/2, Main.SIZE-50);
 			
 			textDuration--;
-			
 		}
 		
 		//pause menu
@@ -251,6 +238,7 @@ public class GamePanel extends JPanel {
 			g.setColor(new Color(0,0,0));
 			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 		}
+		
 	}
 	
 	static int buttonSizeX=400;
@@ -659,8 +647,9 @@ public class GamePanel extends JPanel {
 			
 			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*3/4) < buttonSizeY/2) {
 				timer.stop();
-				destroyAll();
-				Main.jframe.exitGame(level);
+				destroyLevel();
+				destroy();
+				Main.jframe.openLevelSelect(level);
 			}
 			
 		}
@@ -693,7 +682,7 @@ public class GamePanel extends JPanel {
 		} catch (Exception e) {e.printStackTrace();}
 	}
 	
-	public static void destroyAll() {
+	public static void destroyLevel() {
 		//wipe all shit in all objects
 		if (objects != null) {
 			for (GameObject obj : objects) {
@@ -719,4 +708,7 @@ public class GamePanel extends JPanel {
 		addedObjects = new ArrayList<GameObject>();
 	}
 	
+	public void destroy() {
+		
+	}
 }

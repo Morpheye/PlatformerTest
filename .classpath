@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="C:/Users/hughw/eclipse-workspace/PlatformerTest/libs/jackson-core-2.15.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/hughw/eclipse-workspace/PlatformerTest/libs/jackson-databind-2.15.0.jar"/>
 	<classpathentry kind="lib" path="C:/Users/hughw/eclipse-workspace/PlatformerTest/libs/jackson-annotations-2.15.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/hughw/eclipse-workspace/PlatformerTest/libs/discord-game-sdk4j-0.5.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
