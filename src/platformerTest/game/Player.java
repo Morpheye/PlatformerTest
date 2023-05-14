@@ -118,7 +118,6 @@ public class Player extends LivingObject {
 				this.overheal = 0;
 				
 				this.maxAttackCooldown = 40;
-				this.attackCooldown = 0;
 				this.attackRange = 20;
 				this.attackDamage = 5;
 				this.rangedAttackDamage = 5;
