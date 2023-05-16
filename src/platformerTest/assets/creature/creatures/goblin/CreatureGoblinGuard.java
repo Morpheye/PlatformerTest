@@ -39,6 +39,8 @@ public class CreatureGoblinGuard extends CreatureGoblin {
 			double minRangeY, double maxRangeY, Weapon weapon) {
 		super(initX, initY, size, 0, 0);
 		
+		this.maxHealth = (int) size;
+		this.health = this.maxHealth;
 		this.gemChance = 0.005;
 		this.attackDamage = 5;
 		this.maxAttackCooldown = 40;

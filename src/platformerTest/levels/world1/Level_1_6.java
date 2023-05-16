@@ -12,6 +12,7 @@ import platformerTest.assets.creature.creatures.goblin.CreatureGoblinGuard;
 import platformerTest.assets.decoration.walls.FadingWallObject;
 import platformerTest.assets.decoration.walls.SolidBackgroundObject;
 import platformerTest.assets.interactables.NullZone;
+import platformerTest.assets.liquidPlatforms.WaterPlatform;
 import platformerTest.assets.powerups.DensityPowerup;
 import platformerTest.assets.powerups.HealPowerup;
 import platformerTest.assets.pushableObjects.PushableBox;
@@ -127,7 +128,7 @@ public class Level_1_6 extends Level {
 		//parkour
 		objects.add(new GrassPlatform(2600, 1000, 200, 200));
 		objects.add(new HealPowerup(2600, 1150, 50));
-		objects.add(new TextDisplayTrigger(2600, 1150, 50, 50, "The goblins are getting stronger.", 300));
+		objects.add(new TextDisplayTrigger(2600, 1150, 50, 50, "The goblins are getting stronger, just get past.", 300));
 		
 		objects.add(new GrassPlatform(3000, 1100, 200, 200));
 		objects.add(new CreatureGoblinGuard(3000, 1220, 40, 100, 100, 200, new WoodenClub()));
@@ -142,8 +143,12 @@ public class Level_1_6 extends Level {
 		objects.add(new GrassPlatform(3900, 1600, 200, 200));
 		
 		//water
+		objects.add(new WaterPlatform(6000, 300, 2000, 1995));
 		objects.add(new SandPlatform(4800, 300, 500, 2000));
 		objects.add(new GrassPlatform(4500, 300, 400, 2000));
+		objects.add(new SandPlatform(6000, -500, 2000, 2000));
+		objects.add(new SandPlatform(7200, 300, 500, 2000));
+		objects.add(new GrassPlatform(7500, 300, 400, 2000));
 		
 		
 	}

@@ -41,7 +41,7 @@ public class MenuPanel extends JPanel {
 		this.setName("Menu");
 		this.scroll = 0;
 		this.levelWorld = LevelWorld.levelWorlds.get(this.scroll);
-		this.setBackground(levelWorld.menuBGColor);
+		this.setBackground(Color.black);
 		this.setSize(Main.SIZE, Main.SIZE);
 		this.setVisible(true);
 		this.setFocusable(true);
@@ -81,7 +81,12 @@ public class MenuPanel extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		
-		//paint bg
+		//first paint background
+		if (levelWorld.bg != null) {
+			g.drawImage(levelWorld.bg, 0, 0, Main.SIZE, Main.SIZE, null);
+			g.setColor(levelWorld.menuTint);
+			g.fillRect(0, 0, Main.SIZE, Main.SIZE);
+		}
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
@@ -89,7 +94,12 @@ public class MenuPanel extends JPanel {
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		int lvlSelectStringWidth = g2d.getFontMetrics(font).stringWidth("Level Select");
-		g2d.drawString("Level Select", Main.SIZE/2 - lvlSelectStringWidth/2, 60);
+		g2d.drawString("Level Select", Main.SIZE/2 - lvlSelectStringWidth/2, 45);
+		
+		font = new Font(Font.MONOSPACED, Font.BOLD, 25);
+		g2d.setFont(font);
+		lvlSelectStringWidth = g2d.getFontMetrics(font).stringWidth(levelWorld.name);
+		g2d.drawString(levelWorld.name, Main.SIZE/2 - lvlSelectStringWidth/2, 75);
 		
 		for (int i=0; i<9; i++) {
 			try {
@@ -161,6 +171,8 @@ public class MenuPanel extends JPanel {
 		}
 		
 		//return to main menu
+		g2d.setStroke(new BasicStroke(5));
+		
 		g2d.setColor(Color.gray);
 		g2d.fillRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		font = new Font(Font.MONOSPACED, Font.BOLD, 40);
