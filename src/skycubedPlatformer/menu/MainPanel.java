@@ -19,10 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
-import skycubedPlatformer.appdata.FileLoader;
 import skycubedPlatformer.levels.Level;
 import skycubedPlatformer.levels.world1.Level_1_1;
+import skycubedPlatformer.util.appdata.DataManager;
+import skycubedPlatformer.util.appdata.FileLoader;
 
 @SuppressWarnings("serial")
 public class MainPanel extends JPanel {

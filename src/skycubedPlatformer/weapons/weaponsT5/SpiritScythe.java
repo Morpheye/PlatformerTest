@@ -50,6 +50,7 @@ public class SpiritScythe extends Weapon {
 	public void init(LivingObject l) {
 		for (ScytheSpirit c : this.spirits) {
 			c.health = 0;
+			c.overheal = 0;
 		}
 		this.spirits.clear();
 		this.rotation = 0;
@@ -96,8 +97,10 @@ public class SpiritScythe extends Weapon {
 	}
 	
 	@Override
-	public void onUserHit(LivingObject wielder, LivingObject victim) {
-		for (ScytheSpirit c : spirits) c.targets.add(victim);
+	public void onUserHit(LivingObject wielder, GameObject victim) {
+		if (victim != null && (victim.type.equals(ObjType.Creature) || victim.type.equals(ObjType.Player))) {
+			for (ScytheSpirit c : spirits) c.targets.add((LivingObject) victim);
+		}
 	}
 	
 	@Override
@@ -125,7 +128,7 @@ public class SpiritScythe extends Weapon {
 		
 		@Override
 		public void move() {
-			if (this.health <= 0) this.die();
+			if (this.health <= 0 || !spirits.contains(this)) this.die();
 			if (this.health > this.maxHealth) this.health = this.maxHealth; 
 			
 			//then attack

@@ -5,6 +5,7 @@ import java.io.BufferedInputStream;
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.weapons.Weapon;
 
 public class SharpAxe extends Weapon {
@@ -30,6 +31,11 @@ public class SharpAxe extends Weapon {
 			this.image = ImageIO.read(this.getClass().getResource("/weapons/starterWeapons/SharpAxe.png"));
 
 		} catch (Exception e) {}
+	}
+	
+	@Override
+	public void onAttackStart(LivingObject wielder, LivingObject target) {
+		GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
 	}
 	
 	@Override

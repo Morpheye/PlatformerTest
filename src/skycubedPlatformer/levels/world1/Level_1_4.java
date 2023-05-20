@@ -46,6 +46,8 @@ public class Level_1_4 extends Level {
 		this.reward = 60;
 		this.name = "The Graveyard";
 		
+		this.isRaining = true;
+		
 		this.raindrops = new ArrayList<Raindrop>();
 		for (int i=0; i<40; i++) { //recycles the same raindrops for lag prevention
 			raindrops.add(new Raindrop((int)((Math.random()*1.5*Main.SIZE)-(Main.SIZE*0.5)), (int) (Math.random()*Main.SIZE),
@@ -179,14 +181,9 @@ public class Level_1_4 extends Level {
 		gate2 = new WoodPlatform(7500, 450, 50, 200);
 		objects.add(gate2);
 		objects.add(new GrassPlatform(7500, 650, 200, 200));
-		gatekeeper3 = new CreatureUndead(7200, 450, 50, 50, 30, 400) { //big beefy zombie
-			@Override
-			public void dropLoot() { //3 drops totalling 3-6 coins
-				CoinParticle.spawnCoins(this.x, this.y, 3, 3+(int)(Math.random()*4));
-				if (Math.random() > (1 - this.gemChance)) GemParticle.spawnGem(this.x, this.y, 1); //0.5% chance of a gem
-			}
-		};
+		gatekeeper3 = new CreatureUndead(7200, 450, 50, 50, 30, 400); //big beefy zombie
 		gatekeeper3.gemChance = 0.005;
+		gatekeeper3.minCoins = 3; gatekeeper3.maxCoins = 6; gatekeeper.coinWeight = 2;
 		gatekeeper3.required = true;
 		gatekeeper3.movementSpeed = 0.06;
 		gatekeeper3.attackKnockback = 3;
@@ -214,14 +211,9 @@ public class Level_1_4 extends Level {
 		objects.add(finalGate);
 		objects.add(new GrassPlatform(10900, -350, 200, 2000));
 		objects.add(new GrassPlatform(10900, 950, 200, 200));
-		miniboss = new CreatureUndead(10600, 600, 100, 150, 40, 400) {
-			@Override
-			public void dropLoot() { //5 drops totalling 10-20 coins
-				CoinParticle.spawnCoins(this.x, this.y, 5, 10+(int)(Math.random()*11));
-				if (Math.random() > (1 - this.gemChance)) GemParticle.spawnGem(this.x, this.y, 1); //1% chance of a gem
-			}
-		};
+		miniboss = new CreatureUndead(10600, 600, 100, 150, 40, 400);
 		miniboss.gemChance = 0.01;
+		miniboss.minCoins = 10; miniboss.maxCoins = 20; miniboss.coinWeight = 4;
 		miniboss.movementSpeed = 0.05;
 		miniboss.attackKnockback = 2;
 		miniboss.attackDamage = 10;
@@ -249,13 +241,6 @@ public class Level_1_4 extends Level {
 		if (!GamePanel.objects.contains(miniboss) && finalGate.y < 930) {
 			finalGate.vy = 0.5;
 		} else finalGate.vy = 0;
-		
-		for (GameObject obj : GamePanel.objects) { //douse fire twice as quickly
-			if (obj.type.equals(ObjType.Creature) || obj.type.equals(ObjType.Player) && obj.exists) {
-				Effect fire = ((LivingObject) obj).hasEffect("Fire");
-				if (fire != null) fire.lifetime--;
-			}
-		}
 		
 	}
 	

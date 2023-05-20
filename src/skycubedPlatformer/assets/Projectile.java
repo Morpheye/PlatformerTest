@@ -13,6 +13,7 @@ import skycubedPlatformer.game.MovableObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
+import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
 public class Projectile extends MovableObject {
@@ -55,48 +56,47 @@ public class Projectile extends MovableObject {
 		
 		boolean hasCollided = false;
 		for (GameObject obj : GamePanel.objects) {
-			if (!this.exists || this.hitTarget) continue;
-			if (obj.equals(this) || obj.equals(this.firer)) continue;
-			if (this.hasCollided(obj) && obj.exists) {
-				
-				if (obj.solid) hasCollided = true;
-				
-				if (obj.type.equals(ObjType.Player))  {
-					this.hitTarget = true;
-					this.lifetime = 0;
-					((Player) obj).damage(this.damage, this.firer);
+				if (!this.exists || this.hitTarget) continue;
+				if (obj.equals(this) || obj.equals(this.firer)) continue;
+				if (this.hasCollided(obj) && obj.exists) {
 					
-					ArrayList<GameObject> list = new ArrayList<GameObject>();
-					list.add(this);
-					obj.pushx(direction * this.pushStrength, this, list, false, true);
+					if (obj.solid) hasCollided = true;
 					
-				} else if (obj.type.equals(ObjType.Creature))  {
-					this.hitTarget = true;
-					this.lifetime = 0;
-					if (firer.type.equals(ObjType.Creature)) {
-						if (((Creature) firer).friendlyFire || obj instanceof SpiritScythe.ScytheSpirit) {
-							((Creature) obj).damage(this.damage, this.firer);
-						}
-					} else ((Creature) obj).damage(this.damage, this.firer);
-					
-					ArrayList<GameObject> list = new ArrayList<GameObject>();
-					list.add(this);
-					obj.pushx(direction * this.pushStrength, this, list, false, true);
-					
-				} else if (obj.type.equals(ObjType.SolidPlatform) || obj.type.equals(ObjType.MovableObject))  {
-					this.hitTarget = true;
-					this.lifetime = 0;
-					
-					ArrayList<GameObject> list = new ArrayList<GameObject>();
-					list.add(this);
-					if (obj.type.equals(ObjType.MovableObject)) obj.pushx(direction * this.pushStrength, this, list, false, true);
-				}
-					
+					if (obj.type.equals(ObjType.Player))  {
+						this.hitTarget = true;
+						this.lifetime = 0;
+						((Player) obj).damage(this.damage, this.firer);
+						
+						ArrayList<GameObject> list = new ArrayList<GameObject>();
+						list.add(this);
+						obj.pushx(direction * this.pushStrength, this, list, false, true);
+						
+					} else if (obj.type.equals(ObjType.Creature))  {
+						this.hitTarget = true;
+						this.lifetime = 0;
+						if (firer.type.equals(ObjType.Creature)) {
+							if (((Creature) firer).friendlyFire || obj instanceof SpiritScythe.ScytheSpirit) {
+								((Creature) obj).damage(this.damage, this.firer);
+							}
+						} else ((Creature) obj).damage(this.damage, this.firer);
+						
+						ArrayList<GameObject> list = new ArrayList<GameObject>();
+						list.add(this);
+						obj.pushx(direction * this.pushStrength, this, list, false, true);
+						
+					} else if (obj.type.equals(ObjType.SolidPlatform) || obj.type.equals(ObjType.MovableObject))  {
+						this.hitTarget = true;
+						this.lifetime = 0;
+						
+						ArrayList<GameObject> list = new ArrayList<GameObject>();
+						list.add(this);
+						if (obj.type.equals(ObjType.MovableObject)) obj.pushx(direction * this.pushStrength, this, list, false, true);
+					}
+						
+			}
 		}
-			
-		if (hasCollided) this.playHitSound();
-			
-		}
+		
+		if (hasCollided && this.hasCollided(GamePanel.MainFrameObj)) this.playHitSound();
 		
 		this.lifetime--;
 		if (this.lifetime <= 0) {
@@ -105,17 +105,11 @@ public class Projectile extends MovableObject {
 	}
 	
 	public void playHitSound() {
-		if (this.hitSound != null) {
-			this.hitSound.setMicrosecondPosition(0);
-			this.hitSound.start();
-		}
+		SoundHelper.playSound(this.hitSound);
 	}
 	
 	public void playAttackSound() {
-		if (this.attackSound != null) {
-			this.attackSound.setMicrosecondPosition(0);
-			this.attackSound.start();
-		}
+		SoundHelper.playSound(this.attackSound);
 	}
 	
 	@Override

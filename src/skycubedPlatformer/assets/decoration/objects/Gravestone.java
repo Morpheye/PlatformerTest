@@ -15,6 +15,7 @@ public class Gravestone extends DecorationObject {
 	
 	public Gravestone(double x, double y, double size_x, double size_y) {
 		super(x, y, size_x, size_y, Color.DARK_GRAY);
+		this.drawLayer = -7;
 		
 		if (size_x > size_y) { 
 			this.stone = new DecorationObject(x, y, size_x, size_y, Color.DARK_GRAY);

@@ -27,6 +27,9 @@ public class Level {
 	public int reward = 50;
 	public String[] reqs;
 	
+	public boolean isRaining = false;
+	public boolean isStorming = false;
+	
 	public Level() {
 		
 	}
@@ -66,8 +69,8 @@ public class Level {
 	public static void drawRoundScenery(Graphics g, Color color, int[] x, int[] y, int[] size, int scale) {
 		g.setColor(color);
 		for (int i=0; i<x.length; i++) {
-			int drawX = x[i] - size[i]/2 - (int) (GamePanel.camera_x/scale);
-			int drawY = Main.SIZE - (int)(y[i] - GamePanel.camera_y/scale);
+			int drawX = x[i] - size[i]/2 - (int) ((GamePanel.camera_x + GamePanel.shake_x)/scale);
+			int drawY = Main.SIZE - (int)(y[i] - (GamePanel.camera_y + GamePanel.shake_y)/scale);
 			g.fillRoundRect(drawX, drawY, size[i], Main.SIZE*10, 150, 150);
 		}
 	}
@@ -75,7 +78,7 @@ public class Level {
 	
 	public static void drawFloorScenery(Graphics g, Color color, int y, int scale) {
 		g.setColor(color);
-		g.fillRect(0, Main.SIZE-(y - (int)(GamePanel.camera_y / scale)), Main.SIZE, Main.SIZE*10);
+		g.fillRect(0, Main.SIZE-(y - (int)((GamePanel.camera_y + GamePanel.shake_y) / scale)), Main.SIZE, Main.SIZE*10);
 	}
 
 }

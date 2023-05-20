@@ -1,4 +1,4 @@
-package skycubedPlatformer.appdata;
+package skycubedPlatformer.util.appdata;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -57,20 +57,6 @@ public class DataManager {
 			e.printStackTrace();
 		}
 		
-	}
-
-	public static void loadSound(Object obj, Clip clip, String resource) {
-		Thread thread = new Thread(() -> {
-			try {
-				if (resource == null) return;
-				InputStream stream = new BufferedInputStream(obj.getClass().getResourceAsStream(resource));
-				AudioInputStream audioStream = AudioSystem.getAudioInputStream(stream);
-				clip.open(audioStream);
-				
-			} catch (Exception e) {e.printStackTrace();}
-		});
-		thread.setPriority(1);
-		thread.start();
 	}
 	
 }

@@ -9,11 +9,11 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
-import skycubedPlatformer.appdata.discord.DiscordRPC;
 import skycubedPlatformer.levels.Level;
 import skycubedPlatformer.levels.LevelWorld;
 import skycubedPlatformer.levels.world1.World1;
+import skycubedPlatformer.util.appdata.DataManager;
+import skycubedPlatformer.util.discord.DiscordRPC;
 import skycubedPlatformer.weapons.Weapon;
 
 @SuppressWarnings("serial")
@@ -69,7 +69,7 @@ public class ApplicationFrame extends JFrame {
 		
 		if (current != null) current.setEnabled(false);
 		
-		current = new MenuPanel();
+		current = new LevelSelectPanel();
 		panel.add(current);
 		current.requestFocus();
 		DiscordRPC.updateStatus("In Level Select", "");

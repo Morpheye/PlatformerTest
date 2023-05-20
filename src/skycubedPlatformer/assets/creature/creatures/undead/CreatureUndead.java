@@ -27,6 +27,9 @@ public class CreatureUndead extends Creature {
 		super(initX, initY, size, COLOR_ZOMBIE, Color.GRAY, 1, maxHealth, 0.04, 0, 5, 10, 45, 1);
 		this.friendlyFire = true;
 		this.gemChance = 0.001;
+		this.minCoins = 1;
+		this.maxCoins = 6;
+		this.coinWeight = 2;
 		
 		this.aiList.add(new HorizontalFollowAi(minRange, maxRange, GamePanel.player));
 		this.aiList.add(new NoVerticalMovementAttackAi(this.attackRange/2, GamePanel.player));
@@ -39,6 +42,9 @@ public class CreatureUndead extends Creature {
 		super(initX, initY, size, COLOR_ZOMBIE, Color.GRAY, 1, maxHealth, 0.04, 0, 5, 10, 45, 1);
 		this.friendlyFire = true;
 		this.gemChance = 0.001;
+		this.minCoins = 1;
+		this.maxCoins = 6;
+		this.coinWeight = 2;
 		
 		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player));
 		this.aiList.add(new NoVerticalMovementAttackAi(this.attackRange/2, GamePanel.player));
@@ -46,10 +52,7 @@ public class CreatureUndead extends Creature {
 	
 	@Override
 	public void dropLoot() { //1-3 drops totalling 1-6 coins
-		int amount = 1 + (int) (Math.random()*3);
-		CoinParticle.spawnCoins(this.x, this.y, amount, amount+(int)(Math.random()*(amount+1)));
-		
-		if (Math.random() > (1 - this.gemChance)) GemParticle.spawnGem(this.x, this.y, 1); //0.1% chance of a gem
+		Creature.loot(this);
 	}
 
 }

@@ -1,4 +1,4 @@
-package skycubedPlatformer.appdata;
+package skycubedPlatformer.util.appdata;
 
 public class JsonObfuscator {
 	static String obfuscate(String input, int key) {

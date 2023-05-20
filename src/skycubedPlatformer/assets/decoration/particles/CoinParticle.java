@@ -10,11 +10,11 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
 import skycubedPlatformer.assets.decoration.Particle;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
+import skycubedPlatformer.util.appdata.DataManager;
 
 public class CoinParticle extends Particle {
 

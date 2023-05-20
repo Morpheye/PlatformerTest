@@ -26,7 +26,7 @@ public class PushableMetal extends PushableObject {
 		int drawX = (int) ( (this.x + brushSize/2 - (this.size_x)/2 - (cam_x - size/2)) * (Main.SIZE/size));
 		int drawY = (int) ( (size - (this.y - brushSize/2 + (this.size_y)/2) + (cam_y - size/2)) * (Main.SIZE/size));
 		
-		g.setColor(this.color.darker());
+		g.setColor(this.color.darker().darker());
 		((Graphics2D) g).setStroke(new BasicStroke(brushSize));
 		g.drawRoundRect(drawX-1, drawY-1, (int) ((this.size_x-brushSize+2) * Main.SIZE/size), (int) ((this.size_y-brushSize+2) * Main.SIZE/size), 
 		(int)(4*(Main.SIZE/size)), (int)(4*(Main.SIZE/size)));

@@ -24,7 +24,7 @@ public class Particle extends DecorationObject{
 		this.gravity = true;
 		this.lifetime = 0;
 		
-		
+		this.drawLayer = 10;
 		
 	}
 	

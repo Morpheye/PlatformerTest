@@ -130,7 +130,7 @@ public class Level_1_6 extends Level {
 		objects.add(new TextDisplayTrigger(1600, 1100, 100, 100, "Higher density lets you push harder.", 300));
 		objects.add(new DensityPowerup(1850, 1200, 50, 1));
 		
-		objects.add(new PushableBox(1900, 1050, 100, 100));
+		objects.add(new PushableBox(1900, 1050, 95, 95));
 		objects.add(new CreatureGoblin(2100, 1050, 40, 20, 400, 0, 100));
 		objects.add(new CreatureGoblin(2150, 1050, 30, 20, 400, 0, 100));
 		objects.add(new CreatureGoblin(2200, 1050, 30, 20, 400, 0, 100));
@@ -169,6 +169,8 @@ public class Level_1_6 extends Level {
 		objects.add(new CreatureGoblinGuard(6200, 520, 40, 300, 0, 300, new WoodenClub()));
 		gatekeeper = new CreatureGoblinGuard(6000, 1125, 50, 400, 0, 400, new PointedSpear());
 		gatekeeper.required = true;
+		gatekeeper.gemChance = 0.005; //0.5%
+		gatekeeper.minCoins = 3; gatekeeper.maxCoins = 5; gatekeeper.coinWeight = 2;
 		objects.add(gatekeeper);
 		
 		//platform continued

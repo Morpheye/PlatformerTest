@@ -1,7 +1,6 @@
 package skycubedPlatformer.assets.creature.creatures.goblin;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -9,17 +8,16 @@ import java.util.ArrayList;
 import javax.sound.sampled.AudioSystem;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
 import skycubedPlatformer.assets.creature.CreatureAi;
 import skycubedPlatformer.assets.creature.ai.allDirectional.GuardAi;
 import skycubedPlatformer.assets.creature.ai.attack.NormalMovementAttackAi;
+import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.assets.decoration.particles.CoinParticle;
-import skycubedPlatformer.assets.decoration.particles.GemParticle;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
+import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.weapons.Weapon;
-import skycubedPlatformer.weapons.starterWeapons.WoodenClub;
 
 public class CreatureGoblinGuard extends CreatureGoblin {
 
@@ -41,7 +39,11 @@ public class CreatureGoblinGuard extends CreatureGoblin {
 		
 		this.maxHealth = (int) size;
 		this.health = this.maxHealth;
-		this.gemChance = 0.005;
+		this.gemChance = 0.0025;
+		this.minCoins = 1;
+		this.maxCoins = 2;
+		this.coinWeight = 1;
+		
 		this.attackDamage = 5;
 		this.maxAttackCooldown = 40;
 		this.attackKnockback = 2;
@@ -52,10 +54,10 @@ public class CreatureGoblinGuard extends CreatureGoblin {
 			try {
 				this.hitSound.close();
 				this.hitSound = AudioSystem.getClip();
-				DataManager.loadSound(this, this.hitSound, this.weapon.hitSound);
+				SoundHelper.loadSound(this, this.hitSound, this.weapon.hitSound);
 				this.attackSound.close();
 				this.attackSound = AudioSystem.getClip();
-				DataManager.loadSound(this, this.attackSound, this.weapon.attackSound);
+				SoundHelper.loadSound(this, this.attackSound, this.weapon.attackSound);
 			} catch (Exception e) {e.printStackTrace();}
 		}
 		
@@ -101,11 +103,7 @@ public class CreatureGoblinGuard extends CreatureGoblin {
 	@Override
 	public void dropLoot() { //2-3 drops totalling 6-7 coins, guaranteed 1 silver coin drop
 		GamePanel.particles.add(new CoinParticle(this.x, this.y, 5));
-		
-		int amount = 1 + (int) (Math.random()*2);
-		CoinParticle.spawnCoins(this.x, this.y, amount, amount);
-		
-		if (Math.random() > (1 - this.gemChance)) GemParticle.spawnGem(this.x, this.y, 1); //0.25% chance of a gem
+		Creature.loot(this);
 	}
 	
 

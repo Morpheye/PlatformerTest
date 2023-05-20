@@ -25,6 +25,7 @@ public class FinishFlag extends DecorationObject {
 		this.pole = new DecorationObject((x - this.flag.size_x/2), y, 5, size_y, GameObject.COLOR_WOOD);
 		
 		this.type = ObjType.FinishFlag;
+		this.drawLayer = -6;
 		
 	}
 	

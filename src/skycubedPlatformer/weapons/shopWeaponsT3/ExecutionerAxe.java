@@ -5,6 +5,7 @@ import java.io.BufferedInputStream;
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.weapons.Weapon;
 
 public class ExecutionerAxe extends Weapon {
@@ -39,6 +40,7 @@ public class ExecutionerAxe extends Weapon {
 	public void onAttackStart(LivingObject wielder, LivingObject victim) {
 		attackBoost = (int) (15 * (1 - (double) victim.health / victim.maxHealth));
 		wielder.attackDamage += attackBoost;
+		GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
 	}
 	
 	@Override

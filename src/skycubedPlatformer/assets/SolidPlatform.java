@@ -24,12 +24,8 @@ public class SolidPlatform extends GameObject {
 	
 	@Override
 	public void move() {
-		
-		//YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
-		
 		ArrayList<GameObject> collisions = new ArrayList<GameObject>();
 		boolean collided = false;
-		
 		this.y += this.vy;
 		
 		for (GameObject obj : GamePanel.objects) {	
@@ -59,11 +55,8 @@ public class SolidPlatform extends GameObject {
 			
 		}
 		
-		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-		
 		collisions = new ArrayList<GameObject>();
 		collided = false;
-		
 		this.x += this.vx;
 
 		for (GameObject obj : GamePanel.objects) {
@@ -78,7 +71,7 @@ public class SolidPlatform extends GameObject {
 		resistors = new ArrayList<GameObject>();
 		
 		for (GameObject obj : collisions) {
-			ArrayList<GameObject> pushing = obj.pushx(this.vx, this, list, false, true);
+			ArrayList<GameObject> pushing = obj.pushx(this.vx, this, list, false, false);
 			resistors.addAll(pushing);
 		}
 		

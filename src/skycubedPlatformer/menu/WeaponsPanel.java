@@ -11,8 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -21,16 +19,16 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.world1.Level_1_1;
+import skycubedPlatformer.util.SoundHelper;
+import skycubedPlatformer.util.appdata.DataManager;
 import skycubedPlatformer.weapons.Weapon;
 
 @SuppressWarnings("serial")
@@ -57,8 +55,8 @@ public class WeaponsPanel extends JPanel {
 			String sound2 = "/sounds/inventory/purchase.wav";
 			this.equipSound = AudioSystem.getClip();
 			this.purchaseSound = AudioSystem.getClip();
-			DataManager.loadSound(this, this.equipSound, sound);
-			DataManager.loadSound(this, this.purchaseSound, sound2);
+			SoundHelper.loadSound(this, this.equipSound, sound);
+			SoundHelper.loadSound(this, this.purchaseSound, sound2);
 			
 		} catch (Exception e) {}
 		

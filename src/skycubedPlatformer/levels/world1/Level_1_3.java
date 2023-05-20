@@ -106,8 +106,8 @@ public class Level_1_3 extends Level {
 		objects.add(new StonePlatform(1300, 250, 200, 200));
 		objects.add(new WoodPlatform(1600, 325, 400, 50));
 		objects.add(new StonePlatform(1900, 250, 200, 200));
-		objects.add(new CreatureUndead(1500, 350, 40, 30, 20, 400));
-		objects.add(new CreatureUndead(1700, 350, 40, 30, 20, 400));
+		objects.add(new CreatureUndead(1500, 400, 40, 30, 20, 400));
+		objects.add(new CreatureUndead(1700, 400, 40, 30, 20, 400));
 		
 		//fading mountain
 		objects.add(new TextDisplayTrigger(2350, 500, 100, 100, "This wall is fake.", 300));
@@ -149,8 +149,8 @@ public class Level_1_3 extends Level {
 		objects.add(new StonePlatform(300, 1950, 200, 50));
 		objects.add(new StonePlatform(700, 2000, 200, 200));
 		objects.add(new StonePlatform(1300, 2100, 600, 200));
-		objects.add(new CreatureGoblin(1500, 2150, 30, 20, 400, 0, 200));
-		objects.add(new CreatureGoblin(1560, 2150, 30, 20, 400, 0, 200));
+		objects.add(new CreatureGoblin(1500, 2400, 30, 20, 400, 0, 200));
+		objects.add(new CreatureGoblin(1560, 2400, 30, 20, 400, 0, 200));
 		
 		objects.add(new StonePlatform(1900, 2200, 200, 200));
 		

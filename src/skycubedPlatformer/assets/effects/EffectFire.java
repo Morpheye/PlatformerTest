@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.menu.GamePanel;
 
 public class EffectFire extends Effect {
 	
@@ -18,6 +19,11 @@ public class EffectFire extends Effect {
 		this.name = "Fire";
 		try {this.image = ImageIO.read(this.getClass().getResource("/effects/fire.png"));
 		} catch (IOException e) {}
+	}
+	
+	@Override
+	public void update(LivingObject host) { 
+		if (GamePanel.level.isRaining) this.lifetime--;
 	}
 	
 	@Override

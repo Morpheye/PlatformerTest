@@ -1,12 +1,11 @@
 package skycubedPlatformer.weapons.shopWeaponsT3;
 
-import java.io.BufferedInputStream;
-
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
+import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.weapons.Weapon;
 
 public class BejeweledMoonstaff extends Weapon {
@@ -35,6 +34,11 @@ public class BejeweledMoonstaff extends Weapon {
 			this.image = ImageIO.read(this.getClass().getResource("/weapons/shopWeaponsT3/BejeweledMoonstaff.png"));
 
 		} catch (Exception e) {}
+	}
+	
+	@Override
+	public void onAttackStart(LivingObject wielder, LivingObject victim) {
+		GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
 	}
 	
 	@Override

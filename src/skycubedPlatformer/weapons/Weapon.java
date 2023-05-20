@@ -1,16 +1,29 @@
 package skycubedPlatformer.weapons;
 
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
-import skycubedPlatformer.weapons.shopWeaponsT2.*;
-import skycubedPlatformer.weapons.shopWeaponsT3.*;
-import skycubedPlatformer.weapons.shopWeaponsT4.*;
-import skycubedPlatformer.weapons.starterWeapons.*;
-import skycubedPlatformer.weapons.weaponsT5.*;
+import skycubedPlatformer.weapons.shopWeaponsT2.AerialStaff;
+import skycubedPlatformer.weapons.shopWeaponsT2.AquaforgedTrident;
+import skycubedPlatformer.weapons.shopWeaponsT2.DuelingFoil;
+import skycubedPlatformer.weapons.shopWeaponsT2.GoldenKnife;
+import skycubedPlatformer.weapons.shopWeaponsT2.HeavyMace;
+import skycubedPlatformer.weapons.shopWeaponsT3.BejeweledMoonstaff;
+import skycubedPlatformer.weapons.shopWeaponsT3.BladeOfImmolation;
+import skycubedPlatformer.weapons.shopWeaponsT3.DrainingSceptre;
+import skycubedPlatformer.weapons.shopWeaponsT3.ExecutionerAxe;
+import skycubedPlatformer.weapons.shopWeaponsT3.PoisonEdgeKatana;
+import skycubedPlatformer.weapons.shopWeaponsT4.GildedChimeraBlade;
+import skycubedPlatformer.weapons.shopWeaponsT4.VampiricSabre;
+import skycubedPlatformer.weapons.starterWeapons.PointedSpear;
+import skycubedPlatformer.weapons.starterWeapons.SharpAxe;
+import skycubedPlatformer.weapons.starterWeapons.SharpSword;
+import skycubedPlatformer.weapons.starterWeapons.SwiftDagger;
+import skycubedPlatformer.weapons.starterWeapons.WoodenClub;
+import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
 public class Weapon {
 
@@ -92,7 +105,7 @@ public class Weapon {
 	/**
 	 * 
 	 */
-	public void onUserHit(LivingObject wielder, LivingObject attacker) {}
+	public void onUserHit(LivingObject wielder, GameObject attacker) {}
 	
 	/**
 	 * What the weapon does when used if it is ranged

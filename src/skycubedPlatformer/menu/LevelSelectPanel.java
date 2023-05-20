@@ -23,21 +23,21 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.Level;
 import skycubedPlatformer.levels.LevelWorld;
 import skycubedPlatformer.levels.world1.World1;
+import skycubedPlatformer.util.appdata.DataManager;
 import skycubedPlatformer.weapons.Weapon;
 
 @SuppressWarnings("serial")
-public class MenuPanel extends JPanel {
+public class LevelSelectPanel extends JPanel {
 	public LevelWorld levelWorld;
 	public Timer timer;
 	
 	public static int scroll = 0;
 	
-	public MenuPanel() {
+	public LevelSelectPanel() {
 		
 		this.setName("Menu");
 		this.levelWorld = LevelWorld.levelWorlds.get(scroll);
@@ -332,7 +332,7 @@ public class MenuPanel extends JPanel {
 	void drawScrollButtons(Graphics2D g2d, Point mousePosition) {
 		int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-10, w = 50;
 		
-		if (scroll > 0) { //left button
+		if (scroll > 0 || (scroll > -1 && false)) { //left button
 			g2d.setColor(Color.gray);
 			g2d.fillRoundRect(x1-w/2, y-w/2, w, w, 5, 5);
 			g2d.setColor(Color.WHITE);
@@ -404,10 +404,14 @@ public class MenuPanel extends JPanel {
 			
 			//scroll buttons
 			int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-10, w = 50;
-			if (scroll > 0) { //left button
+			if (scroll > -1 || (scroll > -1 && false)) { //left button
 				if (Math.abs(mouseX - x1) < w/2 && Math.abs(mouseY - y) < w/2) {
 					scroll--;
-					levelWorld = LevelWorld.levelWorlds.get(scroll);
+					if (scroll == -1) {
+						
+					} else {
+						levelWorld = LevelWorld.levelWorlds.get(scroll);
+					}
 					loadLevelImages();
 				}
 			}

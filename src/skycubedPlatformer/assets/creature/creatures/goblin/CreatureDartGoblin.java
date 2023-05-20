@@ -13,6 +13,7 @@ import skycubedPlatformer.assets.creature.ai.attack.NormalMovementAttackAi;
 import skycubedPlatformer.assets.creature.ai.attack.ProjectileAttack;
 import skycubedPlatformer.assets.creature.ai.horizontal.HorizontalFollowAi;
 import skycubedPlatformer.assets.creature.ai.vertical.VerticalFollowAi;
+import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.assets.decoration.particles.CoinParticle;
 import skycubedPlatformer.assets.decoration.particles.GemParticle;
 import skycubedPlatformer.assets.projectiles.ProjectileDart;
@@ -42,7 +43,11 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		this.health = 30;
 		this.maxHealth = 30;
 		this.rangedAttackDamage = 2;
-		this.gemChance = 0.005;
+		
+		this.gemChance = 0.003;
+		this.minCoins = 1;
+		this.maxCoins = 6;
+		this.coinWeight = 3;
 		
 		this.aiList = new ArrayList<CreatureAi>();
 		this.aiList.add(new VerticalFollowAi(minRange, maxRange, 50, 150, 50, 150, GamePanel.player)); //jumps to shoot at player
@@ -62,7 +67,11 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		this.health = 30;
 		this.maxHealth = 30;
 		this.rangedAttackDamage = 2;
+		
 		this.gemChance = 0.005;
+		this.minCoins = 1;
+		this.maxCoins = 6;
+		this.coinWeight = 3;
 		
 		this.aiList = new ArrayList<CreatureAi>();
 		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, minRangeY, maxRangeY, GamePanel.player)); //jumps to shoot at player
@@ -120,10 +129,7 @@ public class CreatureDartGoblin extends CreatureGoblin {
 	public void dropLoot() { //2-3 drops totalling 6-11 coins, guaranteed 1 silver coin drop
 		GamePanel.particles.add(new CoinParticle(this.x, this.y, 5));
 		
-		int amount = 1 + (int) (Math.random()*2);
-		CoinParticle.spawnCoins(this.x, this.y, amount, amount+(int)(Math.random()*(2*amount+1)));
-		
-		if (Math.random() > (1 - this.gemChance)) GemParticle.spawnGem(this.x, this.y, 1); //0.25% chance of a gem
+		Creature.loot(this);
 	}
 	
 

@@ -4,23 +4,20 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
-import skycubedPlatformer.assets.LiquidPlatform;
 import skycubedPlatformer.assets.Trigger;
 import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.assets.decoration.particles.CoinParticle;
 import skycubedPlatformer.assets.effects.Effect;
 import skycubedPlatformer.assets.triggers.Powerup;
 import skycubedPlatformer.menu.GamePanel;
+import skycubedPlatformer.util.SoundHelper;
+import skycubedPlatformer.util.appdata.DataManager;
 import skycubedPlatformer.weapons.Weapon;
 import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
@@ -88,9 +85,9 @@ public class Player extends LivingObject {
 			this.attackSound = AudioSystem.getClip();
 			this.hitSound = AudioSystem.getClip();
 			this.finishSound = AudioSystem.getClip();
-			DataManager.loadSound(this, this.attackSound, inputAttack);
-			DataManager.loadSound(this, this.hitSound, inputHit);
-			DataManager.loadSound(this, this.finishSound, finish);
+			SoundHelper.loadSound(this, this.attackSound, inputAttack);
+			SoundHelper.loadSound(this, this.hitSound, inputHit);
+			SoundHelper.loadSound(this, this.finishSound, finish);
 			
 		} catch (Exception e) {e.printStackTrace();}
 		
@@ -104,26 +101,16 @@ public class Player extends LivingObject {
 			//finish flag
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0 && obj.exists) {
 				GamePanel.levelWon=1;
-				finishSound.start();
+				SoundHelper.playSound(finishSound);
 				CoinParticle.spawnCoins(this.x, this.y, 5+(int)(Math.random() * 6), GamePanel.level.reward);
 			}
 			//null zone
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.NullZone) && GamePanel.levelWon==0 && obj.exists) {
-				this.maxHealth = 100;
-				this.movementSpeed = 0.25;
-				this.jumpStrength = 16;
-				
-				this.fireResistant = false;
-				this.naturalRegenCooldown = 180;
-				this.overheal = 0;
-				
-				this.maxAttackCooldown = 40;
-				this.attackRange = 20;
-				this.attackDamage = 5;
-				this.rangedAttackDamage = 5;
-				this.attackKnockback = 2;
-				
-				this.density = 1;
+				this.maxHealth = 100; this.movementSpeed = 0.25; this.jumpStrength = 16;
+				this.fireResistant = false; this.naturalRegenCooldown = 180; this.overheal = 0;
+				this.maxAttackCooldown = 40; this.attackRange = 20;
+				this.attackDamage = 5; this.rangedAttackDamage = 5; this.attackKnockback = 2;
+				this.density = 1; GamePanel.target_camera_size = Main.SIZE;
 				
 				if (this.weapon != null) this.weapon.init(this);
 			}
@@ -155,8 +142,7 @@ public class Player extends LivingObject {
 		if (this.timeSinceDeath > 120 && GamePanel.levelWon==0) {
 			GamePanel.restartLevel(GamePanel.level);
 		}
-		
-		
+
 	}
 	
 	@Override
@@ -202,8 +188,9 @@ public class Player extends LivingObject {
 	}
 	
 	@Override
-	public void damage(int damage, LivingObject source) {
+	public void damage(int damage, GameObject source) {
 		super.damage(damage, source);
+		GamePanel.createShake(3, 40 * (double) damage / this.maxHealth, 2);
 	}
 	
 	@Override
@@ -315,6 +302,7 @@ public class Player extends LivingObject {
 	public void die() {
 		if (GamePanel.levelWon == 0 && this.isAlive) {
 			GamePanel.createFlash(Color.BLACK, 150);
+			GamePanel.createShake(30, 15);
 			this.removeEffects.addAll(this.effects);
 			this.isAlive = false;
 			this.exists = false;

@@ -16,7 +16,7 @@ public class NullZone extends DecorationObject {
 	public NullZone(double x, double y, double size_x, double size_y) {
 		super(x, y, size_x, size_y, color1);
 		this.type = ObjType.NullZone;
-		// TODO Auto-generated constructor stub
+		this.drawLayer = -10;
 	}
 	
 	public void draw(Graphics g, Player player, double cam_x, double cam_y, double size) { //move object center to top left edge

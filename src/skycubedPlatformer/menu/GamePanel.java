@@ -1,5 +1,6 @@
 package skycubedPlatformer.menu;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -17,6 +18,7 @@ import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,7 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
 import skycubedPlatformer.assets.effects.Effect;
 import skycubedPlatformer.assets.triggers.Powerup;
 import skycubedPlatformer.game.GameObject;
@@ -33,6 +34,8 @@ import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.levels.Level;
+import skycubedPlatformer.util.Screenshot;
+import skycubedPlatformer.util.appdata.DataManager;
 
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel {
@@ -73,6 +76,7 @@ public class GamePanel extends JPanel {
 		restartLevel(level);
 		timeSinceRestart = 180;
 		loadImages();
+		screenshotTime = 0;
 		
 		timer = new Timer(1000/90, new ActionListener() {
 			@Override
@@ -116,7 +120,16 @@ public class GamePanel extends JPanel {
 		level.drawPlatforms();
 		level.drawForeground();
 		
+		//background(-10) -> decoration(-7) -> flag(-6) -> movableObj(-5) -> livingObj(-4) -> platforms(0)
+		objects.sort(new Comparator<GameObject>() {
+			public int compare(GameObject o1, GameObject o2) {
+				return (o1.drawLayer > o2.drawLayer) ? 1 : (o1.drawLayer < o2.drawLayer) ? -1 : 0 ;
+			}
+		});
+		
 		level.onStart();
+		
+		shake_x = 0; shake_y = 0; shake_duration = 0; shake_max_duration = 0; shake_magnitude = 0;
 		
 		createFlash(Color.white,100);
 		
@@ -147,6 +160,14 @@ public class GamePanel extends JPanel {
 		objects.addAll(projectiles);
 		objects.addAll(particles);
 		objects.addAll(addedObjects);
+		
+		if (addedObjects.size() != 0 || projectiles.size() != 0) {
+			objects.sort(new Comparator<GameObject>() {
+				public int compare(GameObject o1, GameObject o2) {
+					return (o1.drawLayer > o2.drawLayer) ? 1 : (o1.drawLayer < o2.drawLayer) ? -1 : 0 ;
+				}
+			});
+		}
 		
 		addedObjects.clear();
 		projectiles.clear();
@@ -180,6 +201,11 @@ public class GamePanel extends JPanel {
 		if (!this.isFocusOwner()) {
 			if (levelWon == 0 && player.isAlive && !isPaused) isPaused = true;
 		}
+		
+		//shake
+		if (shake_duration > 0) shake_duration--;
+		if (screenshotTime > 0) screenshotTime--;
+		
 	}
 	
 	/**Order: Level tick -> Player move -> Camera move -> Background -> Level Paint -> draw attacks -> Draw ambience
@@ -189,9 +215,17 @@ public class GamePanel extends JPanel {
 		super.paint(g);
 		level.fill((Graphics2D) g);
 		
+		shake_x = 0; shake_y = 0;
+		for (Shake s : shakes) {
+			shake_x += s.magnitude * (Math.random() - 0.5) * Math.pow(((double) s.duration / s.max_duration), s.gradient);
+			shake_y += s.magnitude * (Math.random() - 0.5) * Math.pow(((double) s.duration / s.max_duration), s.gradient);
+			s.duration--;
+		}
+		shakes.removeIf(s -> s.duration < 1);
+		
 		for (GameObject obj : objects) {
 			if (obj.hasCollided(MainFrameObj) || obj.type.equals(ObjType.Creature) || obj.type.equals(ObjType.Player)) {
-				obj.draw(g, player, camera_x, camera_y, camera_size);
+				obj.draw(g, player, camera_x + shake_x, camera_y + shake_y, camera_size);
 			}
 		}
 		
@@ -212,6 +246,9 @@ public class GamePanel extends JPanel {
 			g2d.setPaint(gp2);
 			g2d.fillRect(-50, Main.SIZE-125, Main.SIZE+50, Main.SIZE);
 			Font font = new Font(Font.MONOSPACED, Font.BOLD, 25);
+			if (g.getFontMetrics(font).stringWidth(displayText) > Main.SIZE - 50) {
+				font = new Font(Font.MONOSPACED, Font.BOLD, 20);
+			}
 			g.setFont(font);
 			g.setColor(new Color(100,100,100,alpha));
 			int lvlSelectStringWidth = g.getFontMetrics(font).stringWidth(displayText);
@@ -238,6 +275,8 @@ public class GamePanel extends JPanel {
 			g.setColor(new Color(0,0,0));
 			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 		}
+		
+		drawScreenshotEffect(g);
 		
 	}
 	
@@ -509,7 +548,31 @@ public class GamePanel extends JPanel {
 
 	}
 	
+	public static int shake_duration = 0;
+	public static int shake_max_duration = 0;
+	public static double shake_magnitude = 0;
+	public static double shake_x = 0;
+	public static double shake_y = 0;
 	public static HashMap<Color,Integer> flashes = new HashMap<Color,Integer>();
+	public static ArrayList<Shake> shakes = new ArrayList<Shake>();
+	
+	public static class Shake {
+		public int duration;
+		public int max_duration;
+		public double magnitude;
+		public double gradient;
+		public Shake(int duration, double magnitude, double gradient) {
+			this.duration = duration;
+			this.max_duration = duration;
+			this.magnitude = magnitude;
+			this.gradient = gradient;
+		}
+	}
+	
+	public static void createShake(int duration, double magnitude) {createShake(duration, magnitude, 1);}
+	public static void createShake(int duration, double magnitude, double gradient) {
+		shakes.add(new Shake(duration, magnitude, gradient));
+	}
 	
 	public static void createFlash(Color color, int duration) {
 		if (flashes.containsKey(color) && flashes.get(color) < duration) flashes.replace(color, duration);
@@ -599,25 +662,38 @@ public class GamePanel extends JPanel {
 		
 	}
 	
+	int screenshotTime = 0;
+	public void drawScreenshotEffect(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float) (screenshotTime/25.0));
+		g2d.setComposite(ac);
+		g2d.drawImage(screenshotImage, Main.SIZE/4, Main.SIZE/4, Main.SIZE/2, Main.SIZE/2, null);
+	}
+	
 	public class Keyboard extends KeyAdapter {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE && levelWon == 0 && player.isAlive) isPaused = isPaused? false : true;
 			if (isPaused) return;
-			if (e.getKeyCode() == KeyEvent.VK_SPACE) player.isAttacking = true; //SPACE
-			if (e.getKeyCode() == KeyEvent.VK_W) player.movingUp = true; //W
-			if (e.getKeyCode() == KeyEvent.VK_A) {
-				player.movingLeft = true; //A
-				player.lastDirection = -1;
-			}
-			if (e.getKeyCode() == KeyEvent.VK_S) player.movingDown = true; //S
-			if (e.getKeyCode() == KeyEvent.VK_D) {
-				player.movingRight = true; //D
-				player.lastDirection = 1;
+			if (player.isAlive) { 
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) player.isAttacking = true; //SPACE
+				
+				if (e.getKeyCode() == KeyEvent.VK_W) player.movingUp = true; //W
+				if (e.getKeyCode() == KeyEvent.VK_A) {
+					player.movingLeft = true; //A
+					player.lastDirection = -1;
+				}
+				if (e.getKeyCode() == KeyEvent.VK_S) player.movingDown = true; //S
+				if (e.getKeyCode() == KeyEvent.VK_D) {
+					player.movingRight = true; //D
+					player.lastDirection = 1;
+				}
 			}
 			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0 && timeSinceRestart > 90) GamePanel.restartLevel(level);
-			
-			if (e.getKeyCode() == KeyEvent.VK_X && levelWon == 0) System.out.println(player.x + ", " + player.y);
+			if (e.getKeyCode() == KeyEvent.VK_F2) {
+				new Screenshot();
+				screenshotTime = 20;
+			}
 		}
 
 		@Override
@@ -660,7 +736,7 @@ public class GamePanel extends JPanel {
 	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
 	
 	public static BufferedImage healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
-	densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
+	screenshotImage, densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
 	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, rangeImage;
 	public void loadImages() {
 		try {
@@ -669,6 +745,7 @@ public class GamePanel extends JPanel {
 			silverCoinImage = ImageIO.read(this.getClass().getResource("/gui/silvercoin.png"));
 			goldCoinImage = ImageIO.read(this.getClass().getResource("/gui/goldcoin.png"));
 			gemImage = ImageIO.read(this.getClass().getResource("/gui/gem.png"));
+			screenshotImage = ImageIO.read(this.getClass().getResource("/gui/screenshot.png"));
 			
 			densityImage = ImageIO.read(this.getClass().getResource("/powerups/density.png"));
 			attackSpeedImage = ImageIO.read(this.getClass().getResource("/powerups/attackspeed.png"));
@@ -705,6 +782,7 @@ public class GamePanel extends JPanel {
 		objects = new ArrayList<GameObject>();
 		deletedObjects = new ArrayList<GameObject>();
 		flashes = new HashMap<Color,Integer>();
+		shakes = new ArrayList<Shake>();
 		projectiles = new ArrayList<GameObject>();
 		particles = new ArrayList<GameObject>();
 		addedObjects = new ArrayList<GameObject>();

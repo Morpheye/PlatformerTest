@@ -9,20 +9,25 @@ import java.util.ArrayList;
 import javax.sound.sampled.AudioSystem;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
 import skycubedPlatformer.assets.creature.CreatureAi;
-import skycubedPlatformer.assets.creature.ai.AttackAi;
+import skycubedPlatformer.assets.decoration.particles.CoinParticle;
+import skycubedPlatformer.assets.decoration.particles.GemParticle;
 import skycubedPlatformer.assets.effects.Effect;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
+import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
 public class Creature extends LivingObject {
 
-	public double gemChance = 0;
+	public int minCoins = 0; //minimum coin drop
+	public int maxCoins = 0; //max extra coin drop
+	public double coinWeight = 2; //maximum amount a coin can hold
+	
+	public double gemChance = 0; //chance of one gem
 	public boolean required;
 	
 	public Color eyeColor;
@@ -93,8 +98,8 @@ public class Creature extends LivingObject {
 			
 			this.attackSound = AudioSystem.getClip();
 			this.hitSound = AudioSystem.getClip();
-			DataManager.loadSound(this, this.attackSound, inputAttack);
-			DataManager.loadSound(this, this.hitSound, inputHit);
+			SoundHelper.loadSound(this, this.attackSound, inputAttack);
+			SoundHelper.loadSound(this, this.hitSound, inputHit);
 			
 			} catch (Exception e) {}
 		
@@ -203,9 +208,9 @@ public class Creature extends LivingObject {
 	}
 	
 	@Override
-	public void damage(int damage, LivingObject source) {
+	public void damage(int damage, GameObject source) {
 		super.damage(damage, source);
-		for (CreatureAi ai: this.aiList) ai.onDamage(this, source); 
+		if(source.type.equals(ObjType.Player)) for (CreatureAi ai: this.aiList) ai.onDamage(this, (Player) source); 
 
 	}
 	
@@ -309,7 +314,14 @@ public class Creature extends LivingObject {
 	}
 	
 	public void dropLoot() {
+		Creature.loot(this);
+	}
+	
+	public static void loot(Creature c) {
+		if (Math.random() > (1 - c.gemChance)) GemParticle.spawnGem(c.x, c.y, 1); //drop gem
 		
+		int coinAmount = c.minCoins + (int) (Math.random() * (c.maxCoins - c.minCoins + 1));
+		CoinParticle.spawnCoins(c.x, c.y, (int) Math.ceil(coinAmount / c.coinWeight), coinAmount);
 	}
 	
 

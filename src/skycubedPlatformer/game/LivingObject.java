@@ -9,6 +9,7 @@ import skycubedPlatformer.assets.LiquidPlatform;
 import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.assets.effects.Effect;
 import skycubedPlatformer.menu.GamePanel;
+import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.weapons.Weapon;
 import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
@@ -63,13 +64,18 @@ public class LivingObject extends MovableObject {
 	public LivingObject(double x, double y, double size_x, double size_y, Color color, double density) {
 		super(x, y, size_x, size_y, color, density);
 		this.effects = new ArrayList<Effect>();
-		// TODO Auto-generated constructor stub
+		this.drawLayer = -4;
 	}
 	
 	protected ArrayList<Effect> removeEffects = new ArrayList<Effect>();
 	
 	@Override
 	public void move() {
+		if (!this.isAlive) {
+			this.movingUp = false; this.movingDown = false; this.movingLeft = false; this.movingRight = false;
+			this.isAttacking = false;
+		}
+		
 		this.movingInLiquid = false;
 		this.liquidDensity = 1;
 		
@@ -172,7 +178,7 @@ public class LivingObject extends MovableObject {
 	
 	public int dmgTime;
 	public String lastDamageEffect;
-	public void damage(int damage, LivingObject source) {
+	public void damage(int damage, GameObject source) {
 		this.timeSinceDamaged = 0;
 		
 		if (this.overheal != 0) {
@@ -195,12 +201,14 @@ public class LivingObject extends MovableObject {
 			if (source != null) {
 				if ((source.equals(GamePanel.player) || source instanceof SpiritScythe.ScytheSpirit)
 						&& this.type.equals(ObjType.Creature)) {
-					if (GamePanel.player.weapon != null) GamePanel.player.weapon.onKill(source, this); //WEAPON TRIGGER
+					if (GamePanel.player.weapon != null) {
+						GamePanel.player.weapon.onKill((LivingObject) source, this); //WEAPON TRIGGER
+					}
 					((Creature) this).dropLoot();
 			}}
 		}
 		
-		if (this.weapon != null) this.weapon.onUserHit(this, (LivingObject) source); //WEAPON TRIGGER
+		if (this.weapon != null) this.weapon.onUserHit(this, source); //WEAPON TRIGGER
 	}
 	
 	public void damage(int amount, LivingObject source, String effect) {
@@ -212,19 +220,11 @@ public class LivingObject extends MovableObject {
 	public void rangedAttack() {}
 	
 	public void playHitSound(LivingObject attacker) {
-		if (attacker.hitSound != null) {
-			attacker.hitSound.stop();
-			attacker.hitSound.setMicrosecondPosition(0);
-			attacker.hitSound.start();
-		}
+		SoundHelper.playSound(attacker.hitSound);
 	}
 	
 	public void playAttackSound() {
-		if (this.attackSound != null) {
-			this.hitSound.stop();
-			this.attackSound.setMicrosecondPosition(0);
-			this.attackSound.start();
-		}
+		SoundHelper.playSound(this.attackSound);
 	}
 
 }

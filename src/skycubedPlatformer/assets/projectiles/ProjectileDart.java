@@ -3,19 +3,16 @@ package skycubedPlatformer.assets.projectiles;
 import java.awt.BasicStroke;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.io.BufferedInputStream;
-import java.io.InputStream;
 
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
 import skycubedPlatformer.assets.Projectile;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
+import skycubedPlatformer.util.SoundHelper;
 
 public class ProjectileDart extends Projectile {
 	
@@ -28,7 +25,7 @@ public class ProjectileDart extends Projectile {
 		
 		try {
 			this.hitSound = AudioSystem.getClip();
-			DataManager.loadSound(this, this.hitSound, "/sounds/attack/default/thud.wav");
+			SoundHelper.loadSound(this, this.hitSound, "/sounds/attack/default/thud.wav");
 		
 		} catch (Exception e) {e.printStackTrace();}
 	}

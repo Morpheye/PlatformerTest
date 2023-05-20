@@ -12,10 +12,11 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.appdata.DataManager;
 import skycubedPlatformer.assets.Trigger;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.util.SoundHelper;
+import skycubedPlatformer.util.appdata.DataManager;
 
 public class Powerup extends Trigger {
 
@@ -31,7 +32,7 @@ public class Powerup extends Trigger {
 		try {
 			String sound = "/sounds/powerup.wav";
 			this.sound = AudioSystem.getClip();
-			DataManager.loadSound(this, this.sound, sound);
+			SoundHelper.loadSound(this, this.sound, sound);
 			
 		} catch (Exception e) {}
 	}
@@ -42,8 +43,7 @@ public class Powerup extends Trigger {
 	}
 	
 	public void playSound() {
-		this.sound.setMicrosecondPosition(0);
-		this.sound.start();
+		SoundHelper.playSound(this.sound);
 	}
 	
 	@Override

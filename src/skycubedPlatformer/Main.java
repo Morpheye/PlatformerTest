@@ -3,10 +3,10 @@ package skycubedPlatformer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import skycubedPlatformer.appdata.DataManager;
-import skycubedPlatformer.appdata.FileLoader;
-import skycubedPlatformer.appdata.discord.DiscordRPC;
 import skycubedPlatformer.menu.ApplicationFrame;
+import skycubedPlatformer.util.appdata.DataManager;
+import skycubedPlatformer.util.appdata.FileLoader;
+import skycubedPlatformer.util.discord.DiscordRPC;
 
 public class Main {
 	
@@ -15,16 +15,13 @@ public class Main {
 	public static boolean testMode = false;
 	
 	public static void main(String[] args) {
-		DiscordRPC.init();
+		try {DiscordRPC.init();
+		}catch (Exception e) {}
 		FileLoader.run();
 		DataManager.onStart();
 		
 		//start the app up
 		jframe = new ApplicationFrame();
 	}
-	
-
-
-	
 	
 }

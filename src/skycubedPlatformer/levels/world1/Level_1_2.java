@@ -3,7 +3,6 @@ package skycubedPlatformer.levels.world1;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
-import java.util.Arrays;
 import java.util.List;
 
 import skycubedPlatformer.Main;
@@ -136,6 +135,7 @@ public class Level_1_2 extends Level {
 		objects.add(new PushableBox(6350,650,60,60));
 		
 		objects.add(new WaterPlatform(5800,400,800,395));
+		objects.add(new TextDisplayTrigger(5400, 700, 200, 200, "Tip: Use Escape to pause and R to restart.", 300));
 		objects.add(new StonePlatform(5400,0,150,1200));
 		objects.add(new StonePlatform(5800,-50,800,800));
 		objects.add(new StonePlatform(6350,0,400,1200));

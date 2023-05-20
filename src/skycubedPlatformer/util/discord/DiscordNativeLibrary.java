@@ -1,4 +1,4 @@
-package skycubedPlatformer.appdata.discord;
+package skycubedPlatformer.util.discord;
 
 import java.io.File;
 import java.io.IOException;

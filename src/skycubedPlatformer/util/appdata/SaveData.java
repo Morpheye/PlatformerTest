@@ -1,4 +1,4 @@
-package skycubedPlatformer.appdata;
+package skycubedPlatformer.util.appdata;
 
 import java.util.ArrayList;
 import java.util.HashMap;

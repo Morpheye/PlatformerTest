@@ -1,8 +1,11 @@
 package skycubedPlatformer.weapons.shopWeaponsT2;
 
+import java.awt.Color;
+
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.weapons.Weapon;
 
 public class AerialStaff extends Weapon {
@@ -34,9 +37,10 @@ public class AerialStaff extends Weapon {
 	
 	@Override
 	public void onAttackStart(LivingObject wielder, LivingObject target) {
-		if (this.airtime == 20 && !wielder.inLiquid) wielder.attackDamage += 13; 
-		
-		System.out.println(airtime);
+		if (this.airtime == 20 && !wielder.inLiquid) {
+			wielder.attackDamage += 13; 
+			GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
+		}
 	}
 	
 	@Override
