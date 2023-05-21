@@ -71,7 +71,7 @@ public class LevelSelectPanel extends JPanel {
 		
 	}
 	
-	final int imgR = 75;
+	final int imgR = (int) (75*(Main.SIZE/800.0));
 	final int[] levelSlotsX = new int[] {Main.SIZE/4, Main.SIZE/2, Main.SIZE*3/4,
 									Main.SIZE/4, Main.SIZE/2, Main.SIZE*3/4,
 									Main.SIZE/4, Main.SIZE/2, Main.SIZE*3/4};
@@ -81,8 +81,8 @@ public class LevelSelectPanel extends JPanel {
 	
 	BufferedImage[] lvlImages = new BufferedImage[9];
 	
-	int buttonSizeX=200;
-	int buttonSizeY=50;
+	int buttonSizeX=(int) (200*(Main.SIZE/800.0));
+	int buttonSizeY=(int) (50*(Main.SIZE/800.0));
 	
 	@Override
 	public void paint(Graphics g) {
@@ -97,16 +97,16 @@ public class LevelSelectPanel extends JPanel {
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
-		Font font = new Font(Font.MONOSPACED, Font.BOLD, 50);
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, (int) (50*(Main.SIZE/800.0)));
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		int lvlSelectStringWidth = g2d.getFontMetrics(font).stringWidth("Level Select");
-		g2d.drawString("Level Select", Main.SIZE/2 - lvlSelectStringWidth/2, 45);
+		g2d.drawString("Level Select", Main.SIZE/2 - lvlSelectStringWidth/2, (int) (45*(Main.SIZE/800.0)));
 		
-		font = new Font(Font.MONOSPACED, Font.BOLD, 25);
+		font = new Font(Font.MONOSPACED, Font.BOLD, (int) (25*(Main.SIZE/800.0)));
 		g2d.setFont(font);
 		lvlSelectStringWidth = g2d.getFontMetrics(font).stringWidth(levelWorld.name);
-		g2d.drawString(levelWorld.name, Main.SIZE/2 - lvlSelectStringWidth/2, 75);
+		g2d.drawString(levelWorld.name, Main.SIZE/2 - lvlSelectStringWidth/2, (int) (75*(Main.SIZE/800.0)));
 		
 		for (int i=0; i<9; i++) {
 			try {
@@ -142,11 +142,12 @@ public class LevelSelectPanel extends JPanel {
 					g2d.setStroke(new BasicStroke(5));
 					g2d.drawRoundRect(levelSlotsX[i]-imgR, levelSlotsY[i]-imgR, 2*imgR, 2*imgR, 5, 5);
 					
-					g2d.drawImage(lockImage, levelSlotsX[i]-50, levelSlotsY[i]-50, 100, 100, null);
+					g2d.drawImage(lockImage, levelSlotsX[i]-(int)(50*(Main.SIZE/800.0)), levelSlotsY[i]-(int)(50*(Main.SIZE/800.0)), 
+							(int) (100*(Main.SIZE/800.0)), (int) (100*(Main.SIZE/800.0)), null);
 					continue;
 				}
 				
-				font = new Font(Font.MONOSPACED, Font.BOLD, 50);
+				font = new Font(Font.MONOSPACED, Font.BOLD, (int) (50*(Main.SIZE/800.0)));
 				g2d.setFont(font);
 				g2d.setColor(Color.WHITE);
 				int lvlTitleWidth = g2d.getFontMetrics(font).stringWidth(lvlName);
@@ -154,7 +155,7 @@ public class LevelSelectPanel extends JPanel {
 				g2d.drawString(lvlName, levelSlotsX[i]-(lvlTitleWidth/2), levelSlotsY[i]);
 				
 				List<String> lvlTextA = Arrays.asList(level.name.split(" "));
-				font = new Font(Font.MONOSPACED, Font.BOLD, 10);
+				font = new Font(Font.MONOSPACED, Font.BOLD, (int) (10*(Main.SIZE/800.0)));
 				g2d.setFont(font);
 				lvlTitleWidth = g2d.getFontMetrics(font).stringWidth(String.join(" ", lvlTextA));
 				lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
@@ -164,12 +165,15 @@ public class LevelSelectPanel extends JPanel {
 					List<String> text2 = lvlTextA.subList(lvlTextA.size()/2, lvlTextA.size());
 					
 					lvlTitleWidth = g2d.getFontMetrics(font).stringWidth(String.join(" ", text1));
-					g2d.drawString(String.join(" ", text1), levelSlotsX[i]-(lvlTitleWidth/2), levelSlotsY[i]+50);
+					g2d.drawString(String.join(" ", text1), levelSlotsX[i]-(lvlTitleWidth/2),
+							(int) (levelSlotsY[i]+50*(Main.SIZE/800.0)));
 					lvlTitleWidth = g2d.getFontMetrics(font).stringWidth(String.join(" ", text2));
-					g2d.drawString(String.join(" ", text2), levelSlotsX[i]-(lvlTitleWidth/2), levelSlotsY[i]+50+lvlTitleHeight);
+					g2d.drawString(String.join(" ", text2), levelSlotsX[i]-(lvlTitleWidth/2),
+							levelSlotsY[i]+(int)(50*(Main.SIZE/800.0))+lvlTitleHeight);
 					
 				} else {
-					g2d.drawString(String.join(" ", lvlTextA), levelSlotsX[i]-(lvlTitleWidth/2), levelSlotsY[i]+50);
+					g2d.drawString(String.join(" ", lvlTextA), levelSlotsX[i]-(lvlTitleWidth/2),
+							levelSlotsY[i]+(int) (50*(Main.SIZE/800.0)));
 					
 				}
 				
@@ -182,7 +186,7 @@ public class LevelSelectPanel extends JPanel {
 		
 		g2d.setColor(Color.gray);
 		g2d.fillRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
-		font = new Font(Font.MONOSPACED, Font.BOLD, 40);
+		font = new Font(Font.MONOSPACED, Font.BOLD, (int) (40*(Main.SIZE/800.0)));
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		int lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Back");
@@ -194,7 +198,7 @@ public class LevelSelectPanel extends JPanel {
 		//weapons
 		g2d.setColor(Color.gray);
 		g2d.fillRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
-		font = new Font(Font.MONOSPACED, Font.BOLD, 30);
+		font = new Font(Font.MONOSPACED, Font.BOLD, (int) (30*(Main.SIZE/800.0)));
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Inventory");
@@ -276,46 +280,49 @@ public class LevelSelectPanel extends JPanel {
 		String coinText = ImageHelper.formatCurrency(DataManager.saveData.coins);
 		String gemText = ImageHelper.formatCurrency(DataManager.saveData.gems);
 		
+		int imgWidth = (int) (15*(Main.SIZE/800.0));
+		int barHeight = (int) (34*(Main.SIZE/800.0));
+		
 		g2d.setColor(GameObject.COLOR_GOLD);
-		g2d.fillRoundRect(13, 13, 20, 34, 5, 5);
-		g2d.fillRect(19, 13, 28, 34);
+		g2d.fillRoundRect((int) (13*(Main.SIZE/800.0)), (int) (13*(Main.SIZE/800.0)), (int) (20*(Main.SIZE/800.0)), barHeight,5,5);
+		g2d.fillRect((int) (19*(Main.SIZE/800.0)), (int) (13*(Main.SIZE/800.0)), (int) (28*(Main.SIZE/800.0)), barHeight);
 		g2d.setColor(new Color(30,30,30));
-		g2d.fillRect(47,13,70,34);
-		g2d.fillRoundRect(65,13,80,34,5,5);
-		g2d.drawImage(coinImage, 15, 15, 30, 30, null);
+		g2d.fillRect((int) (47*(Main.SIZE/800.0)),(int) (13*(Main.SIZE/800.0)), (int) (70*(Main.SIZE/800.0)),barHeight);
+		g2d.fillRoundRect((int) (65*(Main.SIZE/800.0)),(int) (13*(Main.SIZE/800.0)),(int) (80*(Main.SIZE/800.0)), barHeight,5,5);
+		g2d.drawImage(coinImage, imgWidth, imgWidth, 2*imgWidth, 2*imgWidth, null);
 		
 		int diff = Main.SIZE*11/14;
 		g2d.setColor(GameObject.COLOR_DIAMOND);
-		g2d.fillRoundRect(13+diff, 13, 20, 34, 5, 5);
-		g2d.fillRect(19+diff, 13, 28, 34);
+		g2d.fillRoundRect((int)(13*(Main.SIZE/800.0))+diff, (int) (13*(Main.SIZE/800.0)), (int) (20*(Main.SIZE/800.0)), barHeight,5,5);
+		g2d.fillRect((int)(19*(Main.SIZE/800.0))+diff, (int) (13*(Main.SIZE/800.0)), (int) (28*(Main.SIZE/800.0)), barHeight);
 		g2d.setColor(new Color(30,30,30));
-		g2d.fillRect(47+diff,13,70,34);
-		g2d.fillRoundRect(65+diff,13,80,34,5,5);
-		g2d.drawImage(gemImage, 15+diff, 15, 30, 30, null);
+		g2d.fillRect((int)(47*(Main.SIZE/800.0))+diff,(int) (13*(Main.SIZE/800.0)),(int) (70*(Main.SIZE/800.0)),barHeight);
+		g2d.fillRoundRect((int)(65*(Main.SIZE/800.0))+diff,(int) (13*(Main.SIZE/800.0)),(int) (80*(Main.SIZE/800.0)),barHeight,5,5);
+		g2d.drawImage(gemImage, imgWidth+diff, imgWidth, 2*imgWidth, 2*imgWidth, null);
 		
 		g2d.setColor(Color.WHITE);
-		Font font = new Font(Font.MONOSPACED, Font.BOLD, 15);
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, (int) (15*(Main.SIZE/800.0)));
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		
 		int coinTextWidth = g2d.getFontMetrics(font).stringWidth(coinText);
 		int coinTextHeight = g2d.getFontMetrics(font).getHeight();
-		g2d.drawString(coinText, 97-(coinTextWidth/2), 35);
+		g2d.drawString(coinText, (int)(97*(Main.SIZE/800.0))-(coinTextWidth/2), (int) (35*(Main.SIZE/800.0)));
 		
 		int gemTextWidth = g2d.getFontMetrics(font).stringWidth(gemText);
 		int gemTextHeight = g2d.getFontMetrics(font).getHeight();
-		g2d.drawString(gemText, 97+diff-(gemTextWidth/2), 35);
+		g2d.drawString(gemText, (int)(97*(Main.SIZE/800.0))+diff-(gemTextWidth/2), (int) (35*(Main.SIZE/800.0)));
 	}
 	
 	void drawScrollButtons(Graphics2D g2d, Point mousePosition) {
-		int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-10, w = 50;
+		int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-(int)(10*(Main.SIZE/800.0)), w = (int) (50*(Main.SIZE/800.0));
 		
 		if (scroll > 0 || (scroll > -1 && false)) { //left button
 			g2d.setColor(Color.gray);
 			g2d.fillRoundRect(x1-w/2, y-w/2, w, w, 5, 5);
 			g2d.setColor(Color.WHITE);
-			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
-			g2d.drawString("<", x1-w/2+13, y+10);
+			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int) (40*(Main.SIZE/800.0))));
+			g2d.drawString("<", x1-w/2+(int)(13*(Main.SIZE/800.0)), y+(int)(10*(Main.SIZE/800.0)));
 			if (mousePosition != null) {
 				int mouseX = mousePosition.x;
 				int mouseY= mousePosition.y;
@@ -332,8 +339,8 @@ public class LevelSelectPanel extends JPanel {
 			g2d.setColor(Color.gray);
 			g2d.fillRoundRect(x2-w/2, y-w/2, w, w, 5, 5);
 			g2d.setColor(Color.WHITE);
-			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
-			g2d.drawString(">", x2-w/2+13, y+10);
+			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int) (40*(Main.SIZE/800.0))));
+			g2d.drawString(">", x2-w/2+(int)(13*(Main.SIZE/800.0)), y+(int)(10*(Main.SIZE/800.0)));
 			if (mousePosition != null) {
 				int mouseX = mousePosition.x;
 				int mouseY= mousePosition.y;
@@ -399,7 +406,7 @@ public class LevelSelectPanel extends JPanel {
 			}
 			
 			//scroll buttons
-			int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-10, w = 50;
+			int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-(int)(10*(Main.SIZE/800.0)), w = (int) (50*(Main.SIZE/800.0));
 			if (scroll > -1 || (scroll > -1 && false)) { //left button
 				if (Math.abs(mouseX - x1) < w/2 && Math.abs(mouseY - y) < w/2) {
 					scroll--;

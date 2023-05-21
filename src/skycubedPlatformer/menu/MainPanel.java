@@ -72,7 +72,7 @@ public class MainPanel extends JPanel {
 		g2d.setColor(new Color(0,0,0,200));
 		g2d.fillRect(-50, -50, Main.SIZE+100, Main.SIZE+100);
 		
-		Font font = new Font(Font.MONOSPACED, Font.BOLD, 60);
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, 60*Main.SIZE/800);
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		int lvlSelectStringWidth = g2d.getFontMetrics(font).stringWidth("SkyCubed Platformer");
@@ -85,12 +85,12 @@ public class MainPanel extends JPanel {
 		
 	}
 	
-	int buttonSizeX=400;
-	int buttonSizeY=100;
+	int buttonSizeX=(int) (400*(Main.SIZE/800.0));
+	int buttonSizeY=(int) (100*(Main.SIZE/800.0));
 	private void drawButtons(Graphics g) {
 		//Buttons
 		Graphics2D g2d = (Graphics2D) g;
-		Font font = new Font(Font.MONOSPACED, Font.BOLD, 40);
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, (int) (40*(Main.SIZE/800.0)));
 		g.setFont(font);
 		
 		g2d.setColor(Color.GRAY);
@@ -132,7 +132,7 @@ public class MainPanel extends JPanel {
 		
 		if (FileLoader.rootDirectory == null) {
 			g2d.setColor(Color.RED);
-			font = new Font(Font.SANS_SERIF, Font.BOLD, 20);
+			font = new Font(Font.SANS_SERIF, Font.BOLD, (int) (20*(Main.SIZE/800.0)));
 			g.setFont(font);
 			String text = "WARNING: OS NOT SUPPORTED, YOUR DATA WILL NOT SAVE";
 			StringWidth = g.getFontMetrics(font).stringWidth(text);

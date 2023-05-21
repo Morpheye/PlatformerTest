@@ -417,7 +417,8 @@ public class InventoryPanel extends JPanel {
 							g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
 						}
 					} else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)){ //already selected
-					} else if (Item.getItem(slotNames[guiSelected]).isConsumable){
+					} else if (Item.getItem(slotNames[guiSelected]).isConsumable
+							|| !Weapon.weaponNames.contains(slotNames[guiSelected])){
 						g2d.setColor(new Color(255,255,255,100));
 						g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
 					}
@@ -445,7 +446,7 @@ public class InventoryPanel extends JPanel {
 				enable = false;
 			} else if (DataManager.saveData.activeItems.contains(slotNames[guiSelected])) {
 				buttonText = "Stop Use";
-			} else if (!Item.getItem(slotNames[guiSelected]).isConsumable) {
+			} else if (!Item.getItem(slotNames[guiSelected]).isConsumable && !Weapon.weaponNames.contains(slotNames[guiSelected])) {
 				buttonText = "Use";
 				enable = false;
 			} else buttonText = (Weapon.weaponNames.contains(slotNames[guiSelected])) ? "Equip" : "Start Use";

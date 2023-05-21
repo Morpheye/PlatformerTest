@@ -45,7 +45,8 @@ public class PushableExplosive extends PushableObject {
 		double lowerBoundX = getLowerBoundX(), lowerBoundY = getLowerBoundY(),
 				higherBoundX = getHigherBoundX(), higherBoundY = getHigherBoundY();
 		
-		GamePanel.particles.add(new Explosion(this.x, this.y, 2*this.blastStrength, this.blastStrength, this.blastStrength, this.lastDamager) {
+		GamePanel.particles.add(
+		new Explosion(this.x, this.y, 2*this.blastStrength, this.blastStrength, this.blastStrength, this.lastDamager) {
 			@Override
 			public double getLowerBoundX() {
 				return lowerBoundX;

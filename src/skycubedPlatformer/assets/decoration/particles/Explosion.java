@@ -64,8 +64,8 @@ public class Explosion extends Particle {
 				//push
 				double trueDist = Math.hypot((obj.x - this.x), (obj.y - this.y));
 				
-				obj.vy += Math.pow(knockback, 2.5) * multiplier * (obj.y-this.y)/trueDist / obj.getWeight();
-				obj.vx += Math.pow(knockback, 2.5) * multiplier * (obj.x-this.x)/trueDist / obj.getWeight();
+				obj.vy += 5*Math.pow(knockback, 2) * multiplier * (obj.y-this.y)/trueDist / obj.getWeight();
+				obj.vx += 5*Math.pow(knockback, 2) * multiplier * (obj.x-this.x)/trueDist / obj.getWeight();
 				
 				
 			} else if (obj.type.equals(ObjType.MovableObject) && ((PushableObject) obj).attackable) {
@@ -74,8 +74,8 @@ public class Explosion extends Particle {
 				
 				//push
 				double trueDist = Math.hypot((obj.x - this.x), (obj.y - this.y));
-				obj.vy += Math.pow(knockback, 2.5) * multiplier * (obj.y-this.y)/trueDist / obj.getWeight();
-				obj.vx += Math.pow(knockback, 2.5) * multiplier * (obj.x-this.x)/trueDist / obj.getWeight();
+				obj.vy += 5*Math.pow(knockback, 2) * multiplier * (obj.y-this.y)/trueDist / obj.getWeight();
+				obj.vx += 5*Math.pow(knockback, 2) * multiplier * (obj.x-this.x)/trueDist / obj.getWeight();
 				
 			}
 		}
