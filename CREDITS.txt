@@ -1,6 +1,8 @@
 /sounds/finish.wav: "https://pixabay.com/ spooky gong.wav Veiler"
 /sounds/inventory/equip.wav: "https://pixabay.com/ Item Equip mrickey13"
 
+/sounds/effects/explosion.wav: "https://pixabay.com/ hit sound effect 12445"
+
 /sounds/attacks/default/attack.wav: "https://mixkit.co/ Fast sword whoosh"
 /sounds/attacks/default/hit.wav: "https://mixkit.co/ Cartoon Hit"
 

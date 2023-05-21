@@ -26,7 +26,6 @@ public class MovableObject extends GameObject {
 	public MovableObject(double x, double y, double size_x, double size_y, Color color, double density) {
 		super(x, y, size_x, size_y, color);
 		
-		this.type = ObjType.MovableObject;
 		this.drawLayer = -5;
 		
 		this.density = density;
@@ -397,7 +396,9 @@ public class MovableObject extends GameObject {
 				if (!this.solid || !obj.solid) continue; 
 			}
 				
-		} else if (weightedV > 0 && !pusher.type.equals(ObjType.Player) && !pusher.type.equals(ObjType.Creature)) {
+		}
+		
+		if (weightedV > 0 && !pusher.type.equals(ObjType.Player) && !pusher.type.equals(ObjType.Creature)) {
 			this.inAir = false;
 		}
 		

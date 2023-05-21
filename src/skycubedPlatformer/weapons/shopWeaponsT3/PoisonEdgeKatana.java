@@ -3,7 +3,9 @@ package skycubedPlatformer.weapons.shopWeaponsT3;
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.assets.effects.EffectPoison;
+import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.weapons.Weapon;
 
 public class PoisonEdgeKatana extends Weapon {
@@ -34,8 +36,9 @@ public class PoisonEdgeKatana extends Weapon {
 	}
 	
 	@Override
-	public void onAttackStart(LivingObject wielder, LivingObject victim) {
-		victim.applyEffect(new EffectPoison(12*45, 1, wielder));
+	public void onAttackStart(LivingObject wielder, GameObject victim) {
+		if (!(victim.type.equals(ObjType.Player) || victim.type.equals(ObjType.Creature))) return;
+		((LivingObject) victim).applyEffect(new EffectPoison(12*45, 1, wielder));
 	}
 	
 	@Override

@@ -18,19 +18,39 @@ public class SoundHelper {
 				
 			} catch (Exception e) {e.printStackTrace();}
 		});
-		thread.setPriority(1);
+		thread.setPriority(Thread.MIN_PRIORITY);
 		thread.start();
 	}
 	
 	public static void playSound(Clip clip) {
-		new Thread(() -> {
+		Thread thread = new Thread(() -> {
 			try {
 				if (clip != null) {
-					clip.stop();
+					if (clip.isActive()) clip.stop();
 					clip.setMicrosecondPosition(0);
 					clip.start();
 				}
 			} catch (Exception e) {e.printStackTrace();}
-		}).start();
+		});
+		thread.setPriority(Thread.MIN_PRIORITY);
+		thread.start();
+	}
+	
+	public static void playFinalSound(Clip clip) {
+		Thread thread = new Thread(() -> {
+			try {
+				if (clip != null) {
+					clip.setMicrosecondPosition(0);
+					clip.start();
+					
+					Thread.sleep(10);
+					
+					while (clip.isActive()) {}
+					clip.close();
+				}
+			} catch (Exception e) {e.printStackTrace();}
+		});
+		thread.setPriority(Thread.MIN_PRIORITY);
+		thread.start();
 	}
 }

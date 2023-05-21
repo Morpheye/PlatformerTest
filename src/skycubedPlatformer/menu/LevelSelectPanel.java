@@ -1,5 +1,6 @@
 package skycubedPlatformer.menu;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -9,6 +10,8 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -27,6 +30,8 @@ import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.Level;
 import skycubedPlatformer.levels.LevelWorld;
 import skycubedPlatformer.levels.world1.World1;
+import skycubedPlatformer.util.ImageHelper;
+import skycubedPlatformer.util.Screenshot;
 import skycubedPlatformer.util.appdata.DataManager;
 import skycubedPlatformer.weapons.Weapon;
 
@@ -46,6 +51,8 @@ public class LevelSelectPanel extends JPanel {
 		this.setVisible(true);
 		this.setFocusable(true);
 		this.addMouseListener(new MenuMouse());
+		this.addKeyListener(new MenuKeyboard());
+		
 		try {
 			this.lockImage = ImageIO.read(this.getClass().getResource("/gui/lock.png"));
 			this.coinImage = ImageIO.read(this.getClass().getResource("/gui/goldcoin.png"));
@@ -53,6 +60,7 @@ public class LevelSelectPanel extends JPanel {
 		} catch (Exception e) {}
 		
 		loadLevelImages();
+		screenshotTime = 0;
 		
 		timer = new Timer(1000/30, new ActionListener() {
 			@Override
@@ -260,6 +268,9 @@ public class LevelSelectPanel extends JPanel {
 		
 		drawScrollButtons(g2d, mousePosition);
 		
+		drawScreenshotEffect(g);
+		if (screenshotTime > 0) screenshotTime--;
+		
 	}
 	
 	void drawCurrency(Graphics2D g2d) {
@@ -368,6 +379,24 @@ public class LevelSelectPanel extends JPanel {
 			g2d.drawRoundRect(x2-w/2, y-w/2, w, w, 5, 5);
 		}
 		
+	}
+	
+	int screenshotTime = 0;
+	public void drawScreenshotEffect(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float) (screenshotTime/25.0));
+		g2d.setComposite(ac);
+		g2d.drawImage(ImageHelper.screenshotImage, Main.SIZE/4, Main.SIZE/4, Main.SIZE/2, Main.SIZE/2, null);
+	}
+	
+	class MenuKeyboard extends KeyAdapter { 
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_F2) {
+				new Screenshot();
+				screenshotTime = 20;
+			}
+		}
 	}
 	
 	class MenuMouse extends MouseAdapter {

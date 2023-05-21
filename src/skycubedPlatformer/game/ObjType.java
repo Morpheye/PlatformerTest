@@ -11,6 +11,7 @@ public enum ObjType {
 	LiquidPlatform,
 	MovableObject,
 	DecorationObject,
+	PARTICLE,
 	
 	FinishFlag,
 	NullZone,

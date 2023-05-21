@@ -1,9 +1,8 @@
 package skycubedPlatformer.weapons.shopWeaponsT3;
 
-import java.io.BufferedInputStream;
-
 import javax.imageio.ImageIO;
 
+import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.weapons.Weapon;
 
@@ -36,7 +35,7 @@ public class DrainingSceptre extends Weapon {
 	int attackBoost = 0;
 	
 	@Override
-	public void onAttackStart(LivingObject wielder, LivingObject victim) {
+	public void onAttackStart(LivingObject wielder, GameObject victim) {
 		if (wielder.health < wielder.maxHealth) wielder.health += 1;
 	}
 	

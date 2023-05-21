@@ -3,7 +3,7 @@ package skycubedPlatformer.weapons.shopWeaponsT4;
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.assets.decoration.particles.CoinParticle;
-import skycubedPlatformer.assets.effects.EffectPoison;
+import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.weapons.Weapon;
@@ -42,7 +42,8 @@ public class GildedChimeraBlade extends Weapon {
 	int hitnum = 0;
 	
 	@Override
-	public void onAttackStart(LivingObject wielder, LivingObject victim) {
+	public void onAttackStart(LivingObject wielder, GameObject victim) {
+		if (!(victim.type.equals(ObjType.Player) || victim.type.equals(ObjType.Creature))) return;
 		hitnum++;
 		if (hitnum >= 2) {
 			if (wielder.type.equals(ObjType.Player)) CoinParticle.spawnCoins(victim.x, victim.y, 1, 1);

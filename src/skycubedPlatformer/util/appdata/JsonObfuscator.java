@@ -1,5 +1,6 @@
 package skycubedPlatformer.util.appdata;
 
+//Obfuscates save file so it is more annoying to directly edit
 public class JsonObfuscator {
 	static String obfuscate(String input, int key) {
 		char[] output = new char[input.length()];

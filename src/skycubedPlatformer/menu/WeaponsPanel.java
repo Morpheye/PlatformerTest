@@ -1,5 +1,6 @@
 package skycubedPlatformer.menu;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -8,6 +9,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -27,6 +30,8 @@ import javax.swing.Timer;
 import skycubedPlatformer.Main;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.world1.Level_1_1;
+import skycubedPlatformer.util.ImageHelper;
+import skycubedPlatformer.util.Screenshot;
 import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.util.appdata.DataManager;
 import skycubedPlatformer.weapons.Weapon;
@@ -45,10 +50,13 @@ public class WeaponsPanel extends JPanel {
 		this.setVisible(true);
 		this.setFocusable(true);
 		this.addMouseListener(new ShopMouse());
+		this.addKeyListener(new ShopKeyboard());
 		this.scroll = 0;
 		this.reloadImages();
 		this.guiOpen = false;
 		this.inShop = false;
+		
+		screenshotTime = 0;
 		
 		try {
 			String sound = "/sounds/inventory/equip.wav";
@@ -245,6 +253,9 @@ public class WeaponsPanel extends JPanel {
 		
 		//COINS N GEMS
 		drawCurrency(g2d);
+		
+		drawScreenshotEffect(g);
+		if (screenshotTime > 0) screenshotTime--;
 		
 	}
 	
@@ -483,6 +494,24 @@ public class WeaponsPanel extends JPanel {
 		int gemTextWidth = g2d.getFontMetrics(font).stringWidth(gemText);
 		int gemTextHeight = g2d.getFontMetrics(font).getHeight();
 		g2d.drawString(gemText, 97+diff-(gemTextWidth/2), 35);
+	}
+	
+	int screenshotTime = 0;
+	public void drawScreenshotEffect(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float) (screenshotTime/25.0));
+		g2d.setComposite(ac);
+		g2d.drawImage(ImageHelper.screenshotImage, Main.SIZE/4, Main.SIZE/4, Main.SIZE/2, Main.SIZE/2, null);
+	}
+	
+	class ShopKeyboard extends KeyAdapter { 
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_F2) {
+				new Screenshot();
+				screenshotTime = 20;
+			}
+		}
 	}
 	
 	class ShopMouse extends MouseAdapter {

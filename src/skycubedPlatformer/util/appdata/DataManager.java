@@ -1,18 +1,13 @@
 package skycubedPlatformer.util.appdata;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.InputStream;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import skycubedPlatformer.levels.LevelWorld;
+import skycubedPlatformer.util.ImageHelper;
 import skycubedPlatformer.weapons.Weapon;
 
 public class DataManager {
@@ -35,6 +30,7 @@ public class DataManager {
 		
 		Weapon.weaponListInit();
 		LevelWorld.init();
+		(new ImageHelper()).init();
 		
 	}
 	

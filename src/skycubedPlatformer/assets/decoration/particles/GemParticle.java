@@ -14,6 +14,7 @@ import skycubedPlatformer.assets.decoration.Particle;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
+import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.util.appdata.DataManager;
 
 public class GemParticle extends Particle {
@@ -30,14 +31,8 @@ public class GemParticle extends Particle {
 		DataManager.saveData.gems++;
 		
 		try {
-			InputStream sound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/coin/gem.wav"));
-			AudioInputStream audioStreamAttack = AudioSystem.getAudioInputStream(sound);
-		
 			this.spawnSound = AudioSystem.getClip();
-			this.spawnSound.open(audioStreamAttack);
-			
-			this.spawnSound.start();
-			
+			SoundHelper.loadSound(this, this.spawnSound, "/sounds/coin/gem.wav");
 		} catch (Exception e) {}
 		
 	}

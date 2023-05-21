@@ -4,8 +4,9 @@ import javax.imageio.ImageIO;
 
 import skycubedPlatformer.assets.effects.Effect;
 import skycubedPlatformer.assets.effects.EffectFire;
-import skycubedPlatformer.assets.effects.EffectPoison;
+import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.weapons.Weapon;
 
 public class BladeOfImmolation extends Weapon {
@@ -39,13 +40,14 @@ public class BladeOfImmolation extends Weapon {
 	}
 	
 	@Override
-	public void onAttackStart(LivingObject wielder, LivingObject victim) {
-		Effect fire = victim.hasEffect("Fire");
+	public void onAttackStart(LivingObject wielder, GameObject victim) {
+		if (!(victim.type.equals(ObjType.Player) || victim.type.equals(ObjType.Creature))) return;
+		Effect fire = ((LivingObject) victim).hasEffect("Fire");
 		if (fire != null) {
 			int strength = (fire.strength >= 5) ? 5 : fire.strength + 1;
-			victim.applyEffect(new EffectFire(4*45, strength, wielder));
+			((LivingObject) victim).applyEffect(new EffectFire(4*45, strength, wielder));
 			
-		} else victim.applyEffect(new EffectFire(4*45, 1, wielder));
+		} else ((LivingObject) victim).applyEffect(new EffectFire(4*45, 1, wielder));
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package skycubedPlatformer.weapons.shopWeaponsT3;
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.assets.creature.creatures.Creature;
+import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.menu.GamePanel;
@@ -37,7 +38,7 @@ public class BejeweledMoonstaff extends Weapon {
 	}
 	
 	@Override
-	public void onAttackStart(LivingObject wielder, LivingObject victim) {
+	public void onAttackStart(LivingObject wielder, GameObject victim) {
 		GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
 	}
 	

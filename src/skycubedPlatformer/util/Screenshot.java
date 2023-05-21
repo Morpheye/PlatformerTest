@@ -18,7 +18,7 @@ public class Screenshot {
 		BufferedImage img = new BufferedImage(Main.SIZE, Main.SIZE, BufferedImage.TYPE_INT_ARGB);
 		
 		try {
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");  
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss");  
 			LocalDateTime now = LocalDateTime.now();  
 			File screenshot = new File(FileLoader.screenshotFileDirectory + dtf.format(now) + ".png");
 			screenshot.createNewFile();

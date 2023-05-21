@@ -73,8 +73,6 @@ public class Creature extends LivingObject {
 		this.attackRange = AttackRange;
 		this.attackDamage = AttackDamage;
 		this.attackKnockback = AttackKnockback;
-		
-		this.attack = new CreatureAttack(this.size_x, this.size_y);
 
 		this.aiList = new ArrayList<CreatureAi>();
 		this.friendlyFire = true;
@@ -201,7 +199,7 @@ public class Creature extends LivingObject {
 	}
 	
 	@Override
-	public void damage(int damage, LivingObject source, String effect) {
+	public void damage(int damage, GameObject source, String effect) {
 		super.damage(damage, source, effect);
 		for (CreatureAi ai: this.aiList) ai.onDamage(this, source); 
 
@@ -210,91 +208,7 @@ public class Creature extends LivingObject {
 	@Override
 	public void damage(int damage, GameObject source) {
 		super.damage(damage, source);
-		if(source.type.equals(ObjType.Player)) for (CreatureAi ai: this.aiList) ai.onDamage(this, (Player) source); 
-
-	}
-	
-	@Override
-	public void attack() {
-		if (!this.isAlive) return;
-		
-		//move attackbox
-		this.attack.x = this.x + 0;
-		this.attack.y = this.y + 0;
-		
-		//check direction
-		int calcX = 0, calcY = 0, angle = 0;
-		if (this.movingUp) calcY++;
-		if (this.movingDown) calcY--;
-		if (this.movingRight) calcX++;
-		if (this.movingLeft) calcX--; 
-		if (calcX == 0 && calcY == 0) calcX += this.lastDirection; //no input
-		if (calcX == 0) angle = 90 * calcY;
-		
-		if (calcX == 0) angle = 90 * calcY;
-		else if (calcY == 0) angle = 90 - (90*calcX);
-		else if (calcY == 1) angle = 90 - (45*calcX);
-		else if (calcY == -1) angle = -90 + (45*calcX);
-		
-		//now move
-		this.attack.x += this.attackRange * Math.cos(angle * Math.PI/180);
-		this.attack.y += this.attackRange * Math.sin(angle * Math.PI/180);
-		
-		this.lastAttackAngle = angle;
-		this.lastAttackRange = this.attackRange;
-		this.attackCooldown = this.maxAttackCooldown;
-		this.meleeCooldown = this.maxAttackCooldown;
-		
-		//play sound
-		this.playAttackSound();
-		
-		//Apply collisions
-		for (GameObject obj : GamePanel.objects) { //check for enemies in range
-			if (obj.equals(this)) continue;
-			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature)) {
-				if (!this.friendlyFire && !((GamePanel.player.weapon != null && GamePanel.player.weapon instanceof SpiritScythe
-						&& ((SpiritScythe) GamePanel.player.weapon).spirits.contains(obj)))) continue;
-				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
-				((Creature) obj).damage(this.attackDamage, this);
-				
-				//SOUND
-				((LivingObject) obj).playHitSound(this);
-				
-				double pushStrength = this.attackKnockback;
-				ArrayList<GameObject> list = new ArrayList<GameObject>();
-				list.add(this.attack);
-				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
-				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
-				if (this.weapon != null) this.weapon.onAttackEnd(this, (LivingObject) obj); //WEAPON TRIGGER
-				
-			} else if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Player)) {
-				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
-				((Player) obj).damage(this.attackDamage, this);
-				
-				//SOUND
-				((LivingObject) obj).playHitSound(this);
-				
-				double pushStrength = this.attackKnockback;
-				ArrayList<GameObject> list = new ArrayList<GameObject>();
-				list.add(this.attack);
-				((Player) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
-				((Player) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
-				if (this.weapon != null) this.weapon.onAttackEnd(this, (LivingObject) obj); //WEAPON TRIGGER
-			}
-		}
-		
-	}
-	
-	public void rangedAttack() {
-		if (!this.isAlive) return;
-	}
-	
-	public class CreatureAttack extends GameObject {
-		public CreatureAttack(double size_x, double size_y) {
-			super(0, 0, size_x, size_y, new Color(0,0,0,50));
-			this.type = ObjType.Null;
-			this.density = 1;
-		}
+		for (CreatureAi ai: this.aiList) ai.onDamage(this, source); 
 
 	}
 	

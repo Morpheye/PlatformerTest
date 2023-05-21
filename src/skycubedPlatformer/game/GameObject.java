@@ -66,7 +66,31 @@ public class GameObject implements Cloneable {
 	}
 	
 	public double distanceTo(GameObject obj) {
-		return Math.hypot(this.x-obj.x, this.y-obj.y);
+		double xDiff = Math.min(
+		Math.min(Math.abs(obj.getLowerBoundX() - this.getLowerBoundX()), Math.abs(obj.getLowerBoundX() - this.getHigherBoundX())), 
+		Math.min(Math.abs(obj.getHigherBoundX() - this.getLowerBoundX()), Math.abs(obj.getHigherBoundX() - this.getHigherBoundX())));
+		
+		double yDiff = Math.min(
+		Math.min(Math.abs(obj.getLowerBoundY() - this.getLowerBoundY()), Math.abs(obj.getLowerBoundY() - this.getHigherBoundY())), 
+		Math.min(Math.abs(obj.getHigherBoundY() - this.getLowerBoundY()), Math.abs(obj.getHigherBoundY() - this.getHigherBoundY())));
+		
+		return Math.hypot(xDiff, yDiff);
+	}
+	
+	public double xDistanceTo(GameObject obj) {
+		double xDiff = Math.min(
+		Math.min(Math.abs(obj.getLowerBoundX() - this.getLowerBoundX()), Math.abs(obj.getLowerBoundX() - this.getHigherBoundX())), 
+		Math.min(Math.abs(obj.getHigherBoundX() - this.getLowerBoundX()), Math.abs(obj.getHigherBoundX() - this.getHigherBoundX())));
+	
+		return xDiff;
+	}
+	
+	public double yDistanceTo(GameObject obj) {
+		double yDiff = Math.min(
+		Math.min(Math.abs(obj.getLowerBoundY() - this.getLowerBoundY()), Math.abs(obj.getLowerBoundY() - this.getHigherBoundY())), 
+		Math.min(Math.abs(obj.getHigherBoundY() - this.getLowerBoundY()), Math.abs(obj.getHigherBoundY() - this.getHigherBoundY())));
+	
+		return yDiff;
 	}
 	
 	public double getLowerBoundX() {
@@ -119,9 +143,9 @@ public class GameObject implements Cloneable {
 			if (projectile.hitSound != null) if (projectile.hitSound.isOpen()) projectile.hitSound.close();
 		}
 		
-		if (this instanceof Particle) {
+		if (this instanceof Particle) { //WARNING: CLOSING WHILE DESPAWNING CAUSES ISSUES
 			Particle particle = (Particle) this;
-			if (particle.spawnSound != null) if (particle.spawnSound.isOpen()) particle.spawnSound.close();
+			//if (particle.spawnSound != null) if (particle.spawnSound.isOpen()) particle.spawnSound.close();
 			if (particle.despawnSound != null) if (particle.despawnSound.isOpen()) particle.despawnSound.close();
 		}
 		

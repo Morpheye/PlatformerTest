@@ -97,16 +97,17 @@ public class SpiritScythe extends Weapon {
 	}
 	
 	@Override
-	public void onUserHit(LivingObject wielder, GameObject victim) {
-		if (victim != null && (victim.type.equals(ObjType.Creature) || victim.type.equals(ObjType.Player))) {
-			for (ScytheSpirit c : spirits) c.targets.add((LivingObject) victim);
+	public void onUserHit(LivingObject wielder, GameObject attacker) {
+		if (attacker != null && (attacker.type.equals(ObjType.Creature) || attacker.type.equals(ObjType.Player))) {
+			for (ScytheSpirit c : spirits) c.targets.add((LivingObject) attacker);
 		}
 	}
 	
 	@Override
-	public void onAttackStart(LivingObject wielder, LivingObject victim) {
+	public void onAttackStart(LivingObject wielder, GameObject victim) {
 		if (victim instanceof ScytheSpirit) return;
-		for (ScytheSpirit c : spirits) c.targets.add(victim);
+		if (!(victim.type.equals(ObjType.Player) || victim.type.equals(ObjType.Creature))) return;
+		for (ScytheSpirit c : spirits) c.targets.add((LivingObject) victim);
 	}
 	
 	public class ScytheSpirit extends Creature {
@@ -120,6 +121,7 @@ public class SpiritScythe extends Weapon {
 			this.solid = false;
 			this.wielder = wielder;
 			this.targets = new ArrayList<LivingObject>();
+			this.drawLayer = 1;
 			
 			GamePanel.addedObjects.add(this);
 			

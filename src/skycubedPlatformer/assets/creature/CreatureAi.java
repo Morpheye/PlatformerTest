@@ -1,6 +1,6 @@
 package skycubedPlatformer.assets.creature;
 import skycubedPlatformer.assets.creature.creatures.Creature;
-import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.game.GameObject;
 
 public class CreatureAi {
 
@@ -12,7 +12,7 @@ public class CreatureAi {
 		
 	}
 	
-	public void onDamage(Creature creature, LivingObject source) {
+	public void onDamage(Creature creature, GameObject source) {
 		
 	}
 	

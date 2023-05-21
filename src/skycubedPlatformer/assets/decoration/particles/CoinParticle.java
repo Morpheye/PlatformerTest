@@ -14,6 +14,7 @@ import skycubedPlatformer.assets.decoration.Particle;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
+import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.util.appdata.DataManager;
 
 public class CoinParticle extends Particle {
@@ -32,12 +33,8 @@ public class CoinParticle extends Particle {
 		this.coinAmount = coinAmount;
 		
 		try {
-			InputStream sound = new BufferedInputStream(this.getClass().getResourceAsStream("/sounds/coin/coin.wav"));
-			AudioInputStream audioStreamAttack = AudioSystem.getAudioInputStream(sound);
-		
 			this.despawnSound = AudioSystem.getClip();
-			this.despawnSound.open(audioStreamAttack);
-			
+			SoundHelper.loadSound(this, this.despawnSound, "/sounds/coin/coin.wav");
 		} catch (Exception e) {}
 		
 	}
@@ -75,7 +72,7 @@ public class CoinParticle extends Particle {
 			((Graphics2D) g).drawImage(image, drawX, drawY, 
 					(int) (this.size_x * Main.SIZE/size), (int) (this.size_x * Main.SIZE/size), null);
 		} else {
-			if (this.lifetime == 30) this.despawnSound.start();
+			if (this.lifetime == 30) SoundHelper.playFinalSound(this.despawnSound);
 			Graphics2D g2d = (Graphics2D) g;
 			
 			this.x = GamePanel.camera_x;

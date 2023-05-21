@@ -1,10 +1,10 @@
 package skycubedPlatformer.weapons.shopWeaponsT3;
 
-import java.io.BufferedInputStream;
-
 import javax.imageio.ImageIO;
 
+import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.weapons.Weapon;
 
@@ -37,14 +37,15 @@ public class ExecutionerAxe extends Weapon {
 	int attackBoost = 0;
 	
 	@Override
-	public void onAttackStart(LivingObject wielder, LivingObject victim) {
-		attackBoost = (int) (15 * (1 - (double) victim.health / victim.maxHealth));
+	public void onAttackStart(LivingObject wielder, GameObject victim) {
+		if (!(victim.type.equals(ObjType.Player) || victim.type.equals(ObjType.Creature))) return;
+		attackBoost = (int) (15 * (1 - (double) ((LivingObject) victim).health / ((LivingObject) victim).maxHealth));
 		wielder.attackDamage += attackBoost;
 		GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
 	}
 	
 	@Override
-	public void onAttackEnd(LivingObject wielder, LivingObject victim) {
+	public void onAttackEnd(LivingObject wielder, GameObject victim) {
 		wielder.attackDamage -= attackBoost;
 	}
 	

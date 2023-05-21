@@ -1,3 +1,4 @@
 
 *.log
 *.class
+src/skycubedPlatformer/util/appdata/JsonObfuscator.java

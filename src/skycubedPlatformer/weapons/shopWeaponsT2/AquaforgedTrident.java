@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.assets.liquidPlatforms.WaterPlatform;
+import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.weapons.Weapon;
@@ -35,7 +36,7 @@ public class AquaforgedTrident extends Weapon {
 	}
 	
 	@Override
-	public void onAttackStart(LivingObject wielder, LivingObject target) {
+	public void onAttackStart(LivingObject wielder, GameObject target) {
 		if (wielder.liquids.contains(WaterPlatform.class)) {
 			wielder.attackDamage += 15; 
 			GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
@@ -44,7 +45,7 @@ public class AquaforgedTrident extends Weapon {
 	}
 	
 	@Override
-	public void onAttackEnd(LivingObject wielder, LivingObject target) {
+	public void onAttackEnd(LivingObject wielder, GameObject target) {
 		if (wielder.liquids.contains(WaterPlatform.class)) wielder.attackDamage -= 15; 
 	}
 	

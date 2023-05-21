@@ -49,7 +49,7 @@ public class VerticalFollowAi extends VerticalMovementAi {
 	}
 	
 	@Override
-	public void onDamage(Creature creature, LivingObject source) {
+	public void onDamage(Creature creature, GameObject source) {
 		if (source instanceof SpiritScythe.ScytheSpirit || source.equals(GamePanel.player)) {
 			if (!this.targets.contains(source)) this.targets.add(source);
 			this.target = source;

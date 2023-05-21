@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.sound.sampled.Clip;
 
 import skycubedPlatformer.assets.LiquidPlatform;
+import skycubedPlatformer.assets.PushableObject;
 import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.assets.effects.Effect;
 import skycubedPlatformer.menu.GamePanel;
@@ -63,8 +64,10 @@ public class LivingObject extends MovableObject {
 	
 	public LivingObject(double x, double y, double size_x, double size_y, Color color, double density) {
 		super(x, y, size_x, size_y, color, density);
+		
 		this.effects = new ArrayList<Effect>();
 		this.drawLayer = -4;
+		this.attack = new AttackObj(this.size_x, this.size_y);
 	}
 	
 	protected ArrayList<Effect> removeEffects = new ArrayList<Effect>();
@@ -211,13 +214,115 @@ public class LivingObject extends MovableObject {
 		if (this.weapon != null) this.weapon.onUserHit(this, source); //WEAPON TRIGGER
 	}
 	
-	public void damage(int amount, LivingObject source, String effect) {
+	public void damage(int amount, GameObject source, String effect) {
 		this.damage(amount, source);
 		this.lastDamageEffect = effect;
 	}
 	
-	public void attack() {}
-	public void rangedAttack() {}
+	public void attack() {
+		if (!this.isAlive) return;
+		
+		//move attackbox
+		this.attack.x = this.x + 0;
+		this.attack.y = this.y + 0;
+		
+		//check direction
+		int calcX = 0, calcY = 0, angle = 0;
+		if (this.movingUp) calcY++;
+		if (this.movingDown) calcY--;
+		if (this.movingRight) calcX++;
+		if (this.movingLeft) calcX--; 
+		if (calcX == 0 && calcY == 0) calcX += this.lastDirection; //no input
+		if (calcX == 0) angle = 90 * calcY;
+		
+		if (calcX == 0) angle = 90 * calcY;
+		else if (calcY == 0) angle = 90 - (90*calcX);
+		else if (calcY == 1) angle = 90 - (45*calcX);
+		else if (calcY == -1) angle = -90 + (45*calcX);
+		
+		//now move
+		this.attack.x += this.attackRange * Math.cos(angle * Math.PI/180);
+		this.attack.y += this.attackRange * Math.sin(angle * Math.PI/180);
+		
+		this.lastAttackAngle = angle;
+		this.lastAttackRange = this.attackRange;
+		this.attackCooldown = this.maxAttackCooldown;
+		this.meleeCooldown = this.maxAttackCooldown;
+		
+		//play sound
+		this.playAttackSound();
+		
+		//Apply collisions
+		for (GameObject obj : GamePanel.objects) { //check for enemies in range
+			if (obj.equals(this)) continue;
+			if (obj.hasCollided(this.attack)) { //collided
+				
+				if (obj.type.equals(ObjType.Creature)) { // CREATURE
+					if (this.type.equals(ObjType.Creature) && !((Creature) this).friendlyFire && 
+							!((GamePanel.player.weapon != null && GamePanel.player.weapon instanceof SpiritScythe
+							&& ((SpiritScythe) GamePanel.player.weapon).spirits.contains(obj)))) continue; //check friendlyfire
+					
+					if (this.weapon != null && this.weapon instanceof SpiritScythe
+							&& ((SpiritScythe) this.weapon).spirits.contains(obj)) continue; //check for spirit
+					
+					if (this.weapon != null) this.weapon.onAttackStart(this, obj); //WEAPON TRIGGER
+					((Creature) obj).damage(this.attackDamage, this);
+					
+					//SOUND
+					((LivingObject) obj).playHitSound(this);
+					
+					double pushStrength = this.attackKnockback;
+					ArrayList<GameObject> list = new ArrayList<GameObject>();
+					list.add(this.attack);
+					((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
+					((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
+					if (this.weapon != null) this.weapon.onAttackEnd(this, obj); //WEAPON TRIGGER
+					
+				} else if (obj.type.equals(ObjType.Player)) { //PLAYER
+					if (this.weapon != null) this.weapon.onAttackStart(this, obj); //WEAPON TRIGGER
+					((Player) obj).damage(this.attackDamage, this);
+					
+					//SOUND
+					((LivingObject) obj).playHitSound(this);
+					
+					double pushStrength = this.attackKnockback;
+					ArrayList<GameObject> list = new ArrayList<GameObject>();
+					list.add(this.attack);
+					((Player) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
+					((Player) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
+					if (this.weapon != null) this.weapon.onAttackEnd(this, obj); //WEAPON TRIGGER
+
+				} else if (obj.type.equals(ObjType.MovableObject) && ((PushableObject) obj).attackable) { //PUNCHABLE
+					if (this.weapon != null) this.weapon.onAttackStart(this, obj); //WEAPON TRIGGER
+					((PushableObject) obj).damage(this.attackDamage, this);
+					
+					//SOUND
+					((PushableObject) obj).playHitSound(this);
+					
+					double pushStrength = this.attackKnockback;
+					ArrayList<GameObject> list = new ArrayList<GameObject>();
+					list.add(this.attack);
+					((PushableObject) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
+					((PushableObject) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
+					if (this.weapon != null) this.weapon.onAttackEnd(this, obj); //WEAPON TRIGGER
+				}
+			}
+		}
+		
+	}
+	
+	public void rangedAttack() {
+		if (!this.isAlive) return;
+	}
+	
+	public class AttackObj extends GameObject {
+		public AttackObj(double size_x, double size_y) {
+			super(0, 0, size_x, size_y, new Color(0,0,0,50));
+			this.type = ObjType.Null;
+			this.density = 1;
+		}
+
+	}
 	
 	public void playHitSound(LivingObject attacker) {
 		SoundHelper.playSound(attacker.hitSound);

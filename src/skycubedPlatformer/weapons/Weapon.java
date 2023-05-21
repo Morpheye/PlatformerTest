@@ -38,8 +38,9 @@ public class Weapon {
 	public int gemCost = 0;
 	public boolean isRanged = false;
 	public int inShop = 0;
-	public String attackSound;
-	public String hitSound;
+	
+	public String attackSound = "/sounds/attack/default/attack.wav";
+	public String hitSound = "/sounds/attack/default/hit.wav";
 	
 	public Weapon() {
 		
@@ -90,12 +91,12 @@ public class Weapon {
 	/**
 	 * Triggers when wielder hits something. Use this for modifying damage
 	 */
-	public void onAttackStart(LivingObject wielder, LivingObject victim) {}
+	public void onAttackStart(LivingObject wielder, GameObject victim) {}
 	
 	/**
 	 * Triggers after damage dealt. Use this to undo effects of onAttackStart()
 	 */
-	public void onAttackEnd(LivingObject wielder, LivingObject victim) {}
+	public void onAttackEnd(LivingObject wielder, GameObject victim) {}
 	
 	/**
 	 * Triggers when victim takes damage, if it dies.

@@ -6,13 +6,14 @@ import java.awt.Graphics;
 import javax.sound.sampled.Clip;
 
 import skycubedPlatformer.assets.DecorationObject;
+import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
 
-public class Particle extends DecorationObject{
+public class Particle extends DecorationObject {
 
-	public Clip spawnSound;
-	public Clip despawnSound;
+	volatile public Clip spawnSound;
+	volatile public Clip despawnSound;
 	
 	public boolean gravity;
 	public int lifetime;
@@ -25,6 +26,7 @@ public class Particle extends DecorationObject{
 		this.lifetime = 0;
 		
 		this.drawLayer = 10;
+		this.type = ObjType.PARTICLE;
 		
 	}
 	

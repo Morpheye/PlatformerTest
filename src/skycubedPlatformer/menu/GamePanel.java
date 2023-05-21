@@ -34,6 +34,7 @@ import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.levels.Level;
+import skycubedPlatformer.util.ImageHelper;
 import skycubedPlatformer.util.Screenshot;
 import skycubedPlatformer.util.appdata.DataManager;
 
@@ -120,7 +121,8 @@ public class GamePanel extends JPanel {
 		level.drawPlatforms();
 		level.drawForeground();
 		
-		//background(-10) -> decoration(-7) -> flag(-6) -> movableObj(-5) -> livingObj(-4) -> platforms(0)
+		//background(-10) -> decoration(-7) -> flag(-6) -> movableObj(-5) -> livingObj(-4) -> platforms(0) ->
+		//spirits(1)
 		objects.sort(new Comparator<GameObject>() {
 			public int compare(GameObject o1, GameObject o2) {
 				return (o1.drawLayer > o2.drawLayer) ? 1 : (o1.drawLayer < o2.drawLayer) ? -1 : 0 ;
@@ -139,7 +141,7 @@ public class GamePanel extends JPanel {
 	
 	public void onTick() {
 		if (timeSinceRestart < 1000) timeSinceRestart++;
-		
+
 		if (!isPaused) {
 			level.onTick();
 			player.move();
@@ -224,7 +226,8 @@ public class GamePanel extends JPanel {
 		shakes.removeIf(s -> s.duration < 1);
 		
 		for (GameObject obj : objects) {
-			if (obj.hasCollided(MainFrameObj) || obj.type.equals(ObjType.Creature) || obj.type.equals(ObjType.Player)) {
+			if (obj.hasCollided(MainFrameObj) || obj.type.equals(ObjType.Creature)
+				|| obj.type.equals(ObjType.Player) | obj.type.equals(ObjType.PARTICLE)) {
 				obj.draw(g, player, camera_x + shake_x, camera_y + shake_y, camera_size);
 			}
 		}
@@ -667,7 +670,7 @@ public class GamePanel extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;
 		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float) (screenshotTime/25.0));
 		g2d.setComposite(ac);
-		g2d.drawImage(screenshotImage, Main.SIZE/4, Main.SIZE/4, Main.SIZE/2, Main.SIZE/2, null);
+		g2d.drawImage(ImageHelper.screenshotImage, Main.SIZE/4, Main.SIZE/4, Main.SIZE/2, Main.SIZE/2, null);
 	}
 	
 	public class Keyboard extends KeyAdapter {
@@ -736,8 +739,9 @@ public class GamePanel extends JPanel {
 	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
 	
 	public static BufferedImage healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
-	screenshotImage, densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
-	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, rangeImage;
+	densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
+	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, rangeImage,
+	explosionImage;
 	public void loadImages() {
 		try {
 			healthImage = ImageIO.read(this.getClass().getResource("/gui/health.png"));
@@ -745,7 +749,6 @@ public class GamePanel extends JPanel {
 			silverCoinImage = ImageIO.read(this.getClass().getResource("/gui/silvercoin.png"));
 			goldCoinImage = ImageIO.read(this.getClass().getResource("/gui/goldcoin.png"));
 			gemImage = ImageIO.read(this.getClass().getResource("/gui/gem.png"));
-			screenshotImage = ImageIO.read(this.getClass().getResource("/gui/screenshot.png"));
 			
 			densityImage = ImageIO.read(this.getClass().getResource("/powerups/density.png"));
 			attackSpeedImage = ImageIO.read(this.getClass().getResource("/powerups/attackspeed.png"));
@@ -757,6 +760,8 @@ public class GamePanel extends JPanel {
 			swiftnessImage = ImageIO.read(this.getClass().getResource("/powerups/swiftness.png"));
 			punchImage = ImageIO.read(this.getClass().getResource("/powerups/punch.png"));
 			rangeImage = ImageIO.read(this.getClass().getResource("/powerups/range.png"));
+			
+			explosionImage = ImageIO.read(this.getClass().getResource("/particles/explosion.png"));
 
 		} catch (Exception e) {e.printStackTrace();}
 	}

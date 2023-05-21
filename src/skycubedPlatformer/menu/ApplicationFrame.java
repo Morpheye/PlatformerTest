@@ -30,6 +30,7 @@ public class ApplicationFrame extends JFrame {
 		try {
 		this.setIconImage(ImageIO.read(this.getClass().getResource("/icon.png")));
 		} catch (Exception e) {}
+		
 		this.addWindowListener(new WindowAdapter() {
 	        @Override
 	        public void windowClosed(WindowEvent e) { //finish up
@@ -38,8 +39,8 @@ public class ApplicationFrame extends JFrame {
 	        }
 	    });
 		
-		Container panel = this.getContentPane();
-		panel.add(new MainPanel());
+		this.openMainMenu();
+	
 		
 		this.setVisible(true);
 	}

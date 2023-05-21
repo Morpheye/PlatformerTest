@@ -9,11 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import skycubedPlatformer.Main;
-import skycubedPlatformer.assets.interactables.NullZone;
+import skycubedPlatformer.assets.creature.creatures.goblin.CreatureGoblinGuard;
+import skycubedPlatformer.assets.pushableObjects.PushableStone;
+import skycubedPlatformer.assets.pushableObjects.special.PushableExplosive;
 import skycubedPlatformer.assets.solidPlatforms.SandPlatform;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.Level;
 import skycubedPlatformer.menu.GamePanel;
+import skycubedPlatformer.weapons.starterWeapons.PointedSpear;
 
 public class Level_1_8 extends Level {
 
@@ -31,9 +34,9 @@ public class Level_1_8 extends Level {
 		this.isRaining = true;
 		
 		this.raindrops = new ArrayList<Raindrop>();
-		for (int i=0; i<40; i++) { //recycles the same raindrops for lag prevention
+		for (int i=0; i<80; i++) { //recycles the same raindrops for lag prevention
 			raindrops.add(new Raindrop((int)((Math.random()*1.5*Main.SIZE)-(Main.SIZE*0.5)), (int) (Math.random()*Main.SIZE),
-			(byte)3, (byte)-15));
+			(byte)3, (byte)-25));
 		}
 		
 	}
@@ -62,14 +65,12 @@ public class Level_1_8 extends Level {
 	public void onStart() {
 		GamePanel.camera_x = GamePanel.player.x;
 		GamePanel.camera_y = GamePanel.player.y;
-		GamePanel.displayText("You're getting close to the Titan.", 240);
+		GamePanel.displayText("Be very careful of explosives.", 240);
 	}
 	
 	@Override
 	public void drawBackground() {
 		List<GameObject> objects = GamePanel.objects;
-		
-		objects.add(new NullZone(2750, 350, 190, 300));
 	}
 	
 	@Override
@@ -83,12 +84,13 @@ public class Level_1_8 extends Level {
 		
 		//spawn platform
 		objects.add(new SandPlatform(0, -900, 400, 2000));
-
-	}
-	
-	@Override
-	public void onTick() {
 		
+		//first explosive
+		objects.add(new SandPlatform(700, -850, 600, 2000));
+		objects.add(new PushableStone(675, 175, 50, 50));
+		objects.add(new PushableExplosive(725, 175, 50, 50, 30));
+		objects.add(new CreatureGoblinGuard(700, 225, 40, 250, 50, 100, new PointedSpear()));
+
 	}
 	
 	@Override
@@ -112,7 +114,7 @@ public class Level_1_8 extends Level {
 	
 	ArrayList<Raindrop> raindrops;
 	ArrayList<Raindrop> removeRaindrops;
-	int weatherAlpha = 75;
+	int weatherAlpha = 100;
 	float WAV = 1;
 	
 	@Override
@@ -133,9 +135,9 @@ public class Level_1_8 extends Level {
 		g2d.setColor(new Color(50,50,150,weatherAlpha));
 		g2d.fillRect(-50, -50, Main.SIZE+50, Main.SIZE+50);
 		weatherAlpha += WAV;
-		if (Math.random() > 0.95) WAV *= -1;
-		if (weatherAlpha > 75) WAV = -Math.abs(WAV);
-		else if (weatherAlpha < 25) WAV = Math.abs(WAV);
+		if (Math.random() > 0.975) WAV *= -1;
+		if (weatherAlpha > 125) WAV = -Math.abs(WAV);
+		else if (weatherAlpha < 75) WAV = Math.abs(WAV);
 	
 	}
 	

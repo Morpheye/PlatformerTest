@@ -1,5 +1,6 @@
 package skycubedPlatformer.menu;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -8,10 +9,10 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
@@ -21,6 +22,8 @@ import javax.swing.Timer;
 import skycubedPlatformer.Main;
 import skycubedPlatformer.levels.Level;
 import skycubedPlatformer.levels.world1.Level_1_1;
+import skycubedPlatformer.util.ImageHelper;
+import skycubedPlatformer.util.Screenshot;
 import skycubedPlatformer.util.appdata.DataManager;
 import skycubedPlatformer.util.appdata.FileLoader;
 
@@ -28,6 +31,7 @@ import skycubedPlatformer.util.appdata.FileLoader;
 public class MainPanel extends JPanel {
 
 	public Timer timer;
+	public BufferedImage bgImage;
 	
 	public MainPanel() {
 		this.setName("Menu");
@@ -36,19 +40,27 @@ public class MainPanel extends JPanel {
 		this.setVisible(true);
 		this.setFocusable(true);
 		this.addMouseListener(new MainMouse());
+		this.addKeyListener(new MainKeyboard());
 		
-		this.timer = new Timer(1000/30, new ActionListener() {
+		screenshotTime = 0;
+		
+		try {
+			this.bgImage = ImageIO.read(this.getClass().getResource("/title.png"));
+		} catch (Exception e) {}
+		
+		this.timer = new Timer(1000/90, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
+				scroll++;
+				if (scroll == 7200) scroll -= 7200;
 		}});
 		
 		timer.start();
 		
 	}
 	
-	int buttonSizeX=400;
-	int buttonSizeY=100;
+	int scroll = (int) (Math.random() * 4000);
 	
 	@Override
 	public void paint(Graphics g) {
@@ -56,6 +68,9 @@ public class MainPanel extends JPanel {
 		
 		//paint bg
 		Graphics2D g2d = (Graphics2D) g;
+		g2d.drawImage(this.bgImage, -scroll, 0, bgImage.getWidth(), bgImage.getHeight(), null);
+		g2d.setColor(new Color(0,0,0,200));
+		g2d.fillRect(-50, -50, Main.SIZE+100, Main.SIZE+100);
 		
 		Font font = new Font(Font.MONOSPACED, Font.BOLD, 60);
 		g2d.setFont(font);
@@ -63,8 +78,19 @@ public class MainPanel extends JPanel {
 		int lvlSelectStringWidth = g2d.getFontMetrics(font).stringWidth("SkyCubed Platformer");
 		g2d.drawString("SkyCubed Plaformer", Main.SIZE/2 - lvlSelectStringWidth/2, Main.SIZE/6);
 
+		drawButtons(g);
+		
+		drawScreenshotEffect(g);
+		if (screenshotTime > 0) screenshotTime--;
+		
+	}
+	
+	int buttonSizeX=400;
+	int buttonSizeY=100;
+	private void drawButtons(Graphics g) {
 		//Buttons
-		font = new Font(Font.MONOSPACED, Font.BOLD, 40);
+		Graphics2D g2d = (Graphics2D) g;
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, 40);
 		g.setFont(font);
 		
 		g2d.setColor(Color.GRAY);
@@ -75,7 +101,6 @@ public class MainPanel extends JPanel {
 		
 		//Mouse
 		Point mousePosition = this.getMousePosition();
-		
 		if (mousePosition != null) {
 			int mouseX = mousePosition.x;
 			int mouseY = mousePosition.y;
@@ -114,7 +139,24 @@ public class MainPanel extends JPanel {
 			StringHeight = g.getFontMetrics(font).getHeight();
 			g2d.drawString(text, Main.SIZE/2-StringWidth/2, Main.SIZE*9/10);
 		}
-		
+	}
+	
+	int screenshotTime = 0;
+	public void drawScreenshotEffect(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
+		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float) (screenshotTime/25.0));
+		g2d.setComposite(ac);
+		g2d.drawImage(ImageHelper.screenshotImage, Main.SIZE/4, Main.SIZE/4, Main.SIZE/2, Main.SIZE/2, null);
+	}
+	
+	class MainKeyboard extends KeyAdapter { 
+		@Override
+		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_F2) {
+				new Screenshot();
+				screenshotTime = 20;
+			}
+		}
 	}
 	
 	class MainMouse extends MouseAdapter {

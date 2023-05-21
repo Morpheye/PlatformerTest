@@ -60,7 +60,6 @@ public class Player extends LivingObject {
 		this.rangedAttackDamage = 5;
 		this.attackKnockback = 2;
 		
-		this.attack = new PlayerAttack(this.size_x, this.size_y);
 		this.weapon = Weapon.getWeapon(DataManager.saveData.selectedWeapon);
 		
 		String inputAttack;
@@ -101,7 +100,7 @@ public class Player extends LivingObject {
 			//finish flag
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0 && obj.exists) {
 				GamePanel.levelWon=1;
-				SoundHelper.playSound(finishSound);
+				SoundHelper.playFinalSound(finishSound);
 				CoinParticle.spawnCoins(this.x, this.y, 5+(int)(Math.random() * 6), GamePanel.level.reward);
 			}
 			//null zone
@@ -194,63 +193,6 @@ public class Player extends LivingObject {
 	}
 	
 	@Override
-	public void attack() {
-		if (!this.isAlive) return;
-
-		//move attackbox
-		this.attack.x = this.x + 0;
-		this.attack.y = this.y + 0;
-		
-		//check direction
-		int calcX = 0, calcY = 0, angle = 0;
-		if (this.movingUp) calcY++;
-		if (this.movingDown) calcY--;
-		if (this.movingRight || this.movingLeft) calcX += this.lastDirection;
-		if (calcX == 0 && calcY == 0) calcX += this.lastDirection; //no input
-		if (calcX == 0) angle = 90 * calcY;
-		
-		if (calcX == 0) angle = 90 * calcY;
-		else if (calcY == 0) angle = 90 - (90*calcX);
-		else if (calcY == 1) angle = 90 - (45*calcX);
-		else if (calcY == -1) angle = -90 + (45*calcX);
-		
-		//now move
-		this.attack.x += this.attackRange * Math.cos(angle * Math.PI/180);
-		this.attack.y += this.attackRange * Math.sin(angle * Math.PI/180);
-		
-		this.lastAttackAngle = angle;
-		this.lastAttackRange = this.attackRange;
-		this.attackCooldown = this.maxAttackCooldown;
-		this.meleeCooldown = this.maxAttackCooldown;
-		
-		//play sound
-		this.playAttackSound();
-		
-		//Apply collisions
-		for (GameObject obj : GamePanel.objects) { //check for enemies in range
-			if (obj.equals(this)) continue;
-			if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature)) {
-				if (this.weapon != null && this.weapon instanceof SpiritScythe
-						&& ((SpiritScythe) this.weapon).spirits.contains(obj)) return;
-				if (this.weapon != null) this.weapon.onAttackStart(this, (LivingObject) obj); //WEAPON TRIGGER
-				((Creature) obj).damage(this.attackDamage, this);
-				
-				//SOUND
-				((LivingObject) obj).playHitSound(this);
-				
-				double pushStrength = this.attackKnockback;
-				ArrayList<GameObject> list = new ArrayList<GameObject>();
-				list.add(this.attack);
-				
-				((Creature) obj).pushx(pushStrength * Math.cos(angle*Math.PI/180), this.attack, list, false, true);
-				((Creature) obj).pushy(pushStrength * Math.sin(angle*Math.PI/180), this.attack, list, false, true);
-				
-				if (this.weapon != null) this.weapon.onAttackEnd(this, (LivingObject) obj); //WEAPON TRIGGER
-				
-		}}
-		
-	}
-	
 	public void rangedAttack() {
 		if (!this.isAlive) return;
 		
@@ -268,26 +210,6 @@ public class Player extends LivingObject {
 		
 		if (this.weapon != null) this.weapon.rangedAttack(this, angle);
 		this.attackCooldown = this.maxAttackCooldown;
-	}
-	
-	public class PlayerAttack extends GameObject {
-		public PlayerAttack(double size_x, double size_y) {
-			super(0, 0, size_x, size_y, new Color(0,0,0,50));
-			this.type = ObjType.Null;
-			this.density = 1;
-		}
-		
-		@Override
-		public void draw(Graphics g, Player player, double cam_x, double cam_y, double size) {
-			int drawX = (int) ( (this.x - (this.size_x)/2 - (cam_x - size/2)) * (Main.SIZE/size));
-			int drawY = (int) ( (size - (this.y + (this.size_y)/2) + (cam_y - size/2)) * (Main.SIZE/size));
-			
-			g.setColor(this.color);
-			g.fillRoundRect(drawX, drawY, (int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), 
-			5*(int)(Main.SIZE/size), 5*(int)(Main.SIZE/size));
-			
-		}
-
 	}
 	
 	@Override

@@ -1,9 +1,8 @@
 package skycubedPlatformer.weapons.starterWeapons;
 
-import java.io.BufferedInputStream;
-
 import javax.imageio.ImageIO;
 
+import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.weapons.Weapon;
@@ -34,7 +33,7 @@ public class SharpAxe extends Weapon {
 	}
 	
 	@Override
-	public void onAttackStart(LivingObject wielder, LivingObject target) {
+	public void onAttackStart(LivingObject wielder, GameObject target) {
 		GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
 	}
 	
