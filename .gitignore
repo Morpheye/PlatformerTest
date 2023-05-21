@@ -3,3 +3,4 @@
 *.class
 src/skycubedPlatformer/util/appdata/JsonObfuscator.java
 src/resources/jsonKey
+bin/jsonKey

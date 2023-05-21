@@ -1,12 +1,10 @@
-package skycubedPlatformer.weapons.shopWeaponsT2;
-
-import java.io.BufferedInputStream;
+package skycubedPlatformer.items.weapons.shopWeaponsT2;
 
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.assets.decoration.particles.CoinParticle;
 import skycubedPlatformer.game.LivingObject;
-import skycubedPlatformer.weapons.Weapon;
+import skycubedPlatformer.items.weapons.Weapon;
 
 public class GoldenKnife extends Weapon {
 	

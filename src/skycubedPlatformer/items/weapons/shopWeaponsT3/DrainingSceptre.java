@@ -1,10 +1,10 @@
-package skycubedPlatformer.weapons.shopWeaponsT3;
+package skycubedPlatformer.items.weapons.shopWeaponsT3;
 
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
-import skycubedPlatformer.weapons.Weapon;
+import skycubedPlatformer.items.weapons.Weapon;
 
 public class DrainingSceptre extends Weapon {
 	public int attackCooldown = 5;

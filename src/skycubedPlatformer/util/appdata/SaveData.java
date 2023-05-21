@@ -3,8 +3,6 @@ package skycubedPlatformer.util.appdata;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import skycubedPlatformer.weapons.Weapon;
-
 public class SaveData {
 	public HashMap<String,Integer> completedLevels = new HashMap<String,Integer>();
 	public long coins = 0;

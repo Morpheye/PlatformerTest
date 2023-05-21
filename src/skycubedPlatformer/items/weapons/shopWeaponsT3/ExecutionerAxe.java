@@ -1,12 +1,12 @@
-package skycubedPlatformer.weapons.shopWeaponsT3;
+package skycubedPlatformer.items.weapons.shopWeaponsT3;
 
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
+import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.menu.GamePanel;
-import skycubedPlatformer.weapons.Weapon;
 
 public class ExecutionerAxe extends Weapon {
 	public int attackDamage = 5;

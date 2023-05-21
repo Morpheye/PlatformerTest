@@ -1,13 +1,11 @@
-package skycubedPlatformer.weapons.shopWeaponsT4;
+package skycubedPlatformer.items.weapons.shopWeaponsT4;
 
 import javax.imageio.ImageIO;
 
-import skycubedPlatformer.assets.decoration.particles.CoinParticle;
-import skycubedPlatformer.assets.effects.EffectPoison;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
-import skycubedPlatformer.weapons.Weapon;
+import skycubedPlatformer.items.weapons.Weapon;
 
 public class VampiricSabre extends Weapon {
 	

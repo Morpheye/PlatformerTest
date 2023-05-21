@@ -1,11 +1,9 @@
-package skycubedPlatformer.weapons.starterWeapons;
-
-import java.io.BufferedInputStream;
+package skycubedPlatformer.items.weapons.starterWeapons;
 
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.game.LivingObject;
-import skycubedPlatformer.weapons.Weapon;
+import skycubedPlatformer.items.weapons.Weapon;
 
 public class SharpSword extends Weapon {
 	

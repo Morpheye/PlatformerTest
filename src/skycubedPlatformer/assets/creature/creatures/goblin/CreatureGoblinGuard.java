@@ -15,9 +15,9 @@ import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.assets.decoration.particles.CoinParticle;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
-import skycubedPlatformer.weapons.Weapon;
 
 public class CreatureGoblinGuard extends CreatureGoblin {
 

@@ -1,4 +1,4 @@
-package skycubedPlatformer.weapons.shopWeaponsT4;
+package skycubedPlatformer.items.weapons.shopWeaponsT4;
 
 import javax.imageio.ImageIO;
 
@@ -6,7 +6,7 @@ import skycubedPlatformer.assets.decoration.particles.CoinParticle;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
-import skycubedPlatformer.weapons.Weapon;
+import skycubedPlatformer.items.weapons.Weapon;
 
 public class GildedChimeraBlade extends Weapon {
 	

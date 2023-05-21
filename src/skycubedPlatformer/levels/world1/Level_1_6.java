@@ -28,10 +28,10 @@ import skycubedPlatformer.assets.solidPlatforms.SandPlatform;
 import skycubedPlatformer.assets.solidPlatforms.WoodPlatform;
 import skycubedPlatformer.assets.triggers.TextDisplayTrigger;
 import skycubedPlatformer.game.GameObject;
+import skycubedPlatformer.items.weapons.starterWeapons.PointedSpear;
+import skycubedPlatformer.items.weapons.starterWeapons.WoodenClub;
 import skycubedPlatformer.levels.Level;
 import skycubedPlatformer.menu.GamePanel;
-import skycubedPlatformer.weapons.starterWeapons.PointedSpear;
-import skycubedPlatformer.weapons.starterWeapons.WoodenClub;
 
 public class Level_1_6 extends Level {
 

@@ -17,7 +17,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,11 +28,9 @@ import skycubedPlatformer.Main;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.Level;
 import skycubedPlatformer.levels.LevelWorld;
-import skycubedPlatformer.levels.world1.World1;
 import skycubedPlatformer.util.ImageHelper;
 import skycubedPlatformer.util.Screenshot;
 import skycubedPlatformer.util.appdata.DataManager;
-import skycubedPlatformer.weapons.Weapon;
 
 @SuppressWarnings("serial")
 public class LevelSelectPanel extends JPanel {

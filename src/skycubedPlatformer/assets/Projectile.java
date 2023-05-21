@@ -12,9 +12,9 @@ import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.MovableObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.items.weapons.weaponsT5.SpiritScythe;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
-import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
 public class Projectile extends MovableObject {
 

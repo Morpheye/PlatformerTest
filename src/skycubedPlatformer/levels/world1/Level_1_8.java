@@ -14,9 +14,9 @@ import skycubedPlatformer.assets.pushableObjects.PushableStone;
 import skycubedPlatformer.assets.pushableObjects.special.PushableExplosive;
 import skycubedPlatformer.assets.solidPlatforms.SandPlatform;
 import skycubedPlatformer.game.GameObject;
+import skycubedPlatformer.items.weapons.starterWeapons.PointedSpear;
 import skycubedPlatformer.levels.Level;
 import skycubedPlatformer.menu.GamePanel;
-import skycubedPlatformer.weapons.starterWeapons.PointedSpear;
 
 public class Level_1_8 extends Level {
 

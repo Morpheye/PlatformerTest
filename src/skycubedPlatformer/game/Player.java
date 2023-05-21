@@ -4,22 +4,19 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 import skycubedPlatformer.Main;
 import skycubedPlatformer.assets.Trigger;
-import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.assets.decoration.particles.CoinParticle;
 import skycubedPlatformer.assets.effects.Effect;
 import skycubedPlatformer.assets.triggers.Powerup;
+import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.util.appdata.DataManager;
-import skycubedPlatformer.weapons.Weapon;
-import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
 public class Player extends LivingObject {
 	

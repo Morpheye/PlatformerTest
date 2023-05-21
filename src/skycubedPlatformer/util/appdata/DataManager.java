@@ -6,9 +6,9 @@ import java.io.FileWriter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.levels.LevelWorld;
 import skycubedPlatformer.util.ImageHelper;
-import skycubedPlatformer.weapons.Weapon;
 
 public class DataManager {
 	public static ObjectMapper mapper = new ObjectMapper();

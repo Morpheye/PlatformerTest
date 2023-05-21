@@ -1,4 +1,4 @@
-package skycubedPlatformer.weapons.weaponsT5;
+package skycubedPlatformer.items.weapons.weaponsT5;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -16,8 +16,8 @@ import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.menu.GamePanel;
-import skycubedPlatformer.weapons.Weapon;
 
 public class SpiritScythe extends Weapon {
 	

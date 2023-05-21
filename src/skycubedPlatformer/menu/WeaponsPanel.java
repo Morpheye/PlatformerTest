@@ -29,12 +29,12 @@ import javax.swing.Timer;
 
 import skycubedPlatformer.Main;
 import skycubedPlatformer.game.GameObject;
+import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.levels.world1.Level_1_1;
 import skycubedPlatformer.util.ImageHelper;
 import skycubedPlatformer.util.Screenshot;
 import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.util.appdata.DataManager;
-import skycubedPlatformer.weapons.Weapon;
 
 @SuppressWarnings("serial")
 public class WeaponsPanel extends JPanel {

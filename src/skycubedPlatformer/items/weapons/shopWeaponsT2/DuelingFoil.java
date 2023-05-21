@@ -1,9 +1,9 @@
-package skycubedPlatformer.weapons.shopWeaponsT2;
+package skycubedPlatformer.items.weapons.shopWeaponsT2;
 
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.game.LivingObject;
-import skycubedPlatformer.weapons.Weapon;
+import skycubedPlatformer.items.weapons.Weapon;
 
 public class DuelingFoil extends Weapon {
 	

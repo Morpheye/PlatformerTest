@@ -1,11 +1,11 @@
-package skycubedPlatformer.weapons.shopWeaponsT2;
+package skycubedPlatformer.items.weapons.shopWeaponsT2;
 
 import javax.imageio.ImageIO;
 
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.menu.GamePanel;
-import skycubedPlatformer.weapons.Weapon;
 
 public class AerialStaff extends Weapon {
 	

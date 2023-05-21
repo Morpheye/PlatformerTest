@@ -6,8 +6,8 @@ import skycubedPlatformer.assets.creature.CreatureAi;
 import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.items.weapons.weaponsT5.SpiritScythe;
 import skycubedPlatformer.menu.GamePanel;
-import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
 /**
  * General attack AI

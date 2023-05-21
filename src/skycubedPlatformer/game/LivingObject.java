@@ -9,10 +9,10 @@ import skycubedPlatformer.assets.LiquidPlatform;
 import skycubedPlatformer.assets.PushableObject;
 import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.assets.effects.Effect;
+import skycubedPlatformer.items.weapons.Weapon;
+import skycubedPlatformer.items.weapons.weaponsT5.SpiritScythe;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
-import skycubedPlatformer.weapons.Weapon;
-import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
 public class LivingObject extends MovableObject {
 

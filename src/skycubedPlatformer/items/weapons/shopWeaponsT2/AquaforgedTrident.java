@@ -1,4 +1,4 @@
-package skycubedPlatformer.weapons.shopWeaponsT2;
+package skycubedPlatformer.items.weapons.shopWeaponsT2;
 
 import java.awt.Color;
 
@@ -7,8 +7,8 @@ import javax.imageio.ImageIO;
 import skycubedPlatformer.assets.liquidPlatforms.WaterPlatform;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.menu.GamePanel;
-import skycubedPlatformer.weapons.Weapon;
 
 public class AquaforgedTrident extends Weapon {
 	

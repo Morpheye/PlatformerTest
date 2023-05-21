@@ -19,7 +19,6 @@ import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
-import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
 public class Creature extends LivingObject {
 

@@ -6,8 +6,8 @@ import skycubedPlatformer.assets.creature.ai.VerticalMovementAi;
 import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.items.weapons.weaponsT5.SpiritScythe;
 import skycubedPlatformer.menu.GamePanel;
-import skycubedPlatformer.weapons.weaponsT5.SpiritScythe;
 
 /**
  * AI for vertical following of a target. Should not be used to substitute four directional.
