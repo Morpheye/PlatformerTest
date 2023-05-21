@@ -344,7 +344,9 @@ public class MovableObject extends GameObject {
 	
 	@Override
 	public ArrayList<GameObject> pushy(double v, GameObject pusher, ArrayList<GameObject> pushers, boolean wall, boolean keepV) {
-		if (v>0 && !pusher.type.equals(ObjType.Creature)) this.inAir = false;
+		if (v<0 && (pusher.type.equals(ObjType.Creature) || pusher.type.equals(ObjType.Player))) {
+			((LivingObject) pusher).inAir = false;
+		}
 		
 		ArrayList<GameObject> resistors = new ArrayList<GameObject>();
 		ArrayList<GameObject> ignoredObjs = new ArrayList<GameObject>();

@@ -417,7 +417,7 @@ public class InventoryPanel extends JPanel {
 							g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
 						}
 					} else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)){ //already selected
-					} else {
+					} else if (Item.getItem(slotNames[guiSelected]).isConsumable){
 						g2d.setColor(new Color(255,255,255,100));
 						g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
 					}
@@ -445,6 +445,9 @@ public class InventoryPanel extends JPanel {
 				enable = false;
 			} else if (DataManager.saveData.activeItems.contains(slotNames[guiSelected])) {
 				buttonText = "Stop Use";
+			} else if (!Item.getItem(slotNames[guiSelected]).isConsumable) {
+				buttonText = "Use";
+				enable = false;
 			} else buttonText = (Weapon.weaponNames.contains(slotNames[guiSelected])) ? "Equip" : "Start Use";
 			
 			int strWidth = g2d.getFontMetrics(font).stringWidth(buttonText);
@@ -528,6 +531,7 @@ public class InventoryPanel extends JPanel {
 						if (slotNames[i] != null) {
 							guiOpen = true;
 							guiSelected = i;
+							return;
 						}
 					}
 				}
@@ -537,10 +541,12 @@ public class InventoryPanel extends JPanel {
 						inShop = false;
 						scroll = 0;
 						reloadImages();
+						return;
 					} else {
 						stop();
 						timer.stop();
 						Main.jframe.openLevelSelect(new Level_1_1());
+						return;
 					}
 				}
 				//shop
@@ -549,6 +555,7 @@ public class InventoryPanel extends JPanel {
 						inShop = true;
 						scroll = 0;
 						reloadImages();
+						return;
 					}
 				}
 				
@@ -560,7 +567,7 @@ public class InventoryPanel extends JPanel {
 					}
 					
 					DataManager.saveData.selectedWeapon = null;
-					
+					return;
 
 					
 				}
@@ -572,6 +579,7 @@ public class InventoryPanel extends JPanel {
 					if (Math.abs(mouseX - x1) < w/2 && Math.abs(mouseY - y) < w/2 && !guiOpen) {
 						scroll--;
 						reloadImages();
+						return;
 
 				}}
 				
@@ -580,6 +588,7 @@ public class InventoryPanel extends JPanel {
 					if (Math.abs(mouseX - x2) < w/2 && Math.abs(mouseY - y) < w/2 && !guiOpen) {
 						scroll++;
 						reloadImages();
+						return;
 						
 				}}
 			}
@@ -592,6 +601,7 @@ public class InventoryPanel extends JPanel {
 				if (Math.abs(mouseX - (Main.SIZE/2+w/3+w/12)) < w/12 && Math.abs(mouseY - (Main.SIZE/2-h/2-27)) < 35/2) {
 					guiOpen = false;
 					buttonCooldown = 5;
+					return;
 				}
 				
 				//PURCHASE BUTTON
@@ -605,11 +615,8 @@ public class InventoryPanel extends JPanel {
 						} else { //purchase successful
 							if (Weapon.weaponNames.contains(slotNames[guiSelected])) { //WEAPON
 								DataManager.saveData.inventory.put(slotNames[guiSelected],1L);
-							} else if (!DataManager.saveData.inventory.containsKey(slotNames[guiSelected])) { //Item
-								DataManager.saveData.inventory.put(slotNames[guiSelected],1L);
-							} else {
-								Long amt = DataManager.saveData.inventory.get(slotNames[guiSelected]);
-								DataManager.saveData.inventory.put(slotNames[guiSelected],amt + 1);
+							} else { //Item
+								DataManager.addItem(slotNames[guiSelected], 1L);
 							}
 							DataManager.saveData.coins -= coinCost;
 							DataManager.saveData.gems -= gemCost;
@@ -617,6 +624,7 @@ public class InventoryPanel extends JPanel {
 							buttonCooldown = 10;
 							
 							SoundHelper.playSound(purchaseSound);
+							return;
 						}
 					} else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)){
 					} else if (Weapon.weaponNames.contains(slotNames[guiSelected])) { //EQUIP
@@ -625,15 +633,19 @@ public class InventoryPanel extends JPanel {
 						buttonCooldown = 5;
 						
 						SoundHelper.playSound(equipSound);
+						return;
+					} else if (!Item.getItem(slotNames[guiSelected]).isConsumable) {
 					} else if (!DataManager.saveData.activeItems.contains(slotNames[guiSelected])) { //START USE
 						DataManager.saveData.activeItems.add(slotNames[guiSelected]);
 						buttonCooldown = 5;
 						SoundHelper.playSound(consumeSound);
+						return;
 						
 					} else if (DataManager.saveData.activeItems.contains(slotNames[guiSelected])) { //STOP USE
 						DataManager.saveData.activeItems.remove(slotNames[guiSelected]);
 						buttonCooldown = 5;
 						SoundHelper.playSound(consumeSound);
+						return;
 					}
 				}
 				

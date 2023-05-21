@@ -27,7 +27,6 @@ public class SpiritScythe extends Weapon {
 	public SpiritScythe() {
 		super();
 		try {
-			this.spirits.clear();
 			this.coinCost = 120000;
 			this.gemCost = 120;
 			this.inShop = 0;
@@ -61,7 +60,6 @@ public class SpiritScythe extends Weapon {
 	}
 
 	public ArrayList<ScytheSpirit> spirits = new ArrayList<ScytheSpirit>();
-	
 	int rotation = 0;
 	
 	@Override
@@ -93,7 +91,7 @@ public class SpiritScythe extends Weapon {
 		
 		//spawn new spirit
 		LivingObject realWielder = (this.spirits.contains(wielder)) ? ((ScytheSpirit) wielder).wielder : wielder;
-		if (this.spirits.size() < 10) spirits.add(new ScytheSpirit(realWielder, victim));
+		if (this.spirits.size() < 10) spirits.add(new ScytheSpirit(realWielder, victim, 30));
 		
 	}
 	
@@ -116,9 +114,9 @@ public class SpiritScythe extends Weapon {
 		LivingObject target;
 		ArrayList<LivingObject> targets;
 		
-		public ScytheSpirit(LivingObject wielder, LivingObject victim) {
-			super(victim.x, victim.y, 30, new Color(255, 255, 255, 100),
-					Color.black, 1, 30, wielder.movementSpeed, 0, 5, 20, 40, 2);
+		public ScytheSpirit(LivingObject wielder, LivingObject victim, int size) {
+			super(victim.x, victim.y, size, new Color(255, 255, 255, 100),
+					Color.black, 1, size, wielder.movementSpeed, 0, 5, 20, 40, 2);
 			this.solid = false;
 			this.wielder = wielder;
 			this.targets = new ArrayList<LivingObject>();
@@ -177,7 +175,7 @@ public class SpiritScythe extends Weapon {
 			removeEffects.clear();
 			
 			//change targets
-			if (this.target != null && (!this.target.exists || !this.target.isAlive
+			if (this.target != null && (!this.target.exists || !this.target.isAlive || this.target.equals(this.wielder)
 					|| !GamePanel.objects.contains(target) || !this.target.hasCollided(GamePanel.MainFrameObj))) {
 				this.targets.remove(this.target);
 				this.target = null;

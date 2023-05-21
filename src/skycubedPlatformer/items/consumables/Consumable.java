@@ -8,6 +8,10 @@ import skycubedPlatformer.util.appdata.DataManager;
 
 public class Consumable extends Item {
 	
+	public Consumable() {
+		this.isConsumable = true;
+	}
+	
 	public void onLevelStart(Player p) {
 		
 	}

@@ -38,6 +38,7 @@ public class Item {
 
 	public int inShop = 0;
 	public boolean isWeapon = false;
+	public boolean isConsumable = false;
 	
 	public static HashMap<String,Item> items = new HashMap<String,Item>();
 	public static ArrayList<Item> itemList = new ArrayList<Item>();

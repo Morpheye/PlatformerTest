@@ -18,15 +18,13 @@ public class DataManager {
 	public static void onStart() {
 		if (FileLoader.saveFile == null) return;
 		File save = FileLoader.saveFile;
-		
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		
 		try {
 			saveData = mapper.readValue(save, SaveData.class);
-			
 		} catch (Exception e) {
 			saveData = new SaveData();
-			e.printStackTrace();
+			System.out.println("Nonexisting or invalid save data. Creating new...");
 		}
 		
 		Item.itemListInit();
@@ -51,9 +49,15 @@ public class DataManager {
 			writer.close();
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("ERROR: Failed to save progress.");
 		}
 		
+	}
+	
+	public static void addItem(String item, long amount) {
+		Long amt = DataManager.saveData.inventory.get(item);
+		if (amt == null) amt = 0L;
+		DataManager.saveData.inventory.put(item, amt + 1);
 	}
 	
 }

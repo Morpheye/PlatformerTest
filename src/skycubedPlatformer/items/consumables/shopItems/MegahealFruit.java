@@ -8,15 +8,15 @@ import skycubedPlatformer.items.consumables.Consumable;
 public class MegahealFruit extends Consumable {
 	
 	public MegahealFruit() {
+		super();
 		try {
 			this.coinCost = 300;
 			this.inShop = 1;
 			
 			this.name = "Megaheal Fruit";
-			this.tier = 0;
 			
 			this.stats = new String[]{"On level start:", "+150 overheal", "Single Use"};
-			this.statMap = new int[] {1, 1, 0};
+			this.statMap = new int[] {1, 1, -1};
 			
 			this.lore = "The typical golden Overheal Apple petrifies into diamond after years of "
 					+ "selective plant breeding, providing an extreme amount of overheal to its consumer.";

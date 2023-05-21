@@ -190,7 +190,14 @@ public class GamePanel extends JPanel {
 		deletedObjects.clear();
 		
 		//check if level won
-		if (!(levelWon == 0)) levelWon++;
+		if (!(levelWon == 0)) {
+			levelWon++;
+			player.movingUp = false;
+			player.movingDown = false;
+			player.movingRight = false;
+			player.movingLeft = false;
+			player.isAttacking = false;
+		}
 		if (levelWon>360) {
 			if (!DataManager.saveData.completedLevels.containsKey(level.getClass().getSimpleName())) {
 				DataManager.saveData.completedLevels.put(level.getClass().getSimpleName(), 1);
@@ -715,8 +722,13 @@ public class GamePanel extends JPanel {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE && levelWon == 0 && player.isAlive) isPaused = isPaused? false : true;
-			if (isPaused) return;
-			if (player.isAlive) { 
+			if (e.getKeyCode() == KeyEvent.VK_F2) {
+				new Screenshot();
+				screenshotTime = 20;
+			}
+			
+			if (isPaused || levelWon > 0) return;
+			if (player.isAlive) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) player.isAttacking = true; //SPACE
 				
 				if (e.getKeyCode() == KeyEvent.VK_W) player.movingUp = true; //W
@@ -731,10 +743,7 @@ public class GamePanel extends JPanel {
 				}
 			}
 			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0 && timeSinceRestart > 90) GamePanel.restartLevel(level);
-			if (e.getKeyCode() == KeyEvent.VK_F2) {
-				new Screenshot();
-				screenshotTime = 20;
-			}
+
 		}
 
 		@Override

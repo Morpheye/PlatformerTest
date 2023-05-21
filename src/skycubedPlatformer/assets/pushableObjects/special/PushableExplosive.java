@@ -77,6 +77,11 @@ public class PushableExplosive extends PushableObject {
 		if (source.type.equals(ObjType.Creature) || source.type.equals(ObjType.Player)) this.lastDamager = (LivingObject) source;
 	}
 	
+	@Override
+	public void die() {
+		this.explode();
+	}
+	
 	public int dmgTime;
 	@Override
 	public void draw(Graphics g, Player player, double x, double y, double size) {

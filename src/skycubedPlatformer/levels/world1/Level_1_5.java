@@ -180,11 +180,11 @@ public class Level_1_5 extends Level {
 			}
 		}
 		
-		if (GamePanel.camera_x >= 9450 && GamePanel.camera_x <= 9800) movingPlatform.vy = 0.6;
-		else if (GamePanel.camera_x >= 10200 && GamePanel.camera_x <= 10700) movingPlatform.vy = -0.6;
+		if (GamePanel.camera_x >= 9450 && GamePanel.camera_x <= 9800) movingPlatform.vy = 0.9;
+		else if (GamePanel.camera_x >= 10200 && GamePanel.camera_x <= 10700) movingPlatform.vy = -0.9;
 		else movingPlatform.vy = 0;
 		
-		if (GamePanel.camera_x >= 6850 && GamePanel.camera_x <= 11000) movingPlatform.vx = 1;
+		if (GamePanel.camera_x >= 6850 && GamePanel.camera_x <= 11000) movingPlatform.vx = 1.5;
 		else movingPlatform.vx = 0;
 		
 		if (!GamePanel.objects.contains(finalGoblin) && finishPlatform.y > 825) {
@@ -199,7 +199,7 @@ public class Level_1_5 extends Level {
 	
 	@Override
 	public void moveCamera() {
-		if (GamePanel.camera_x <= 12100) GamePanel.camera_x += 1;
+		if (GamePanel.camera_x <= 12100) GamePanel.camera_x += 1.5;
 		else {
 			if (GamePanel.player.x <= 12100) {}
 			else {

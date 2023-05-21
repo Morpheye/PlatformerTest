@@ -15,10 +15,12 @@ import skycubedPlatformer.assets.creature.ai.horizontal.HorizontalFollowAi;
 import skycubedPlatformer.assets.creature.ai.vertical.VerticalFollowAi;
 import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.assets.decoration.particles.CoinParticle;
-import skycubedPlatformer.assets.decoration.particles.GemParticle;
+import skycubedPlatformer.assets.decoration.particles.ItemParticle;
 import skycubedPlatformer.assets.projectiles.ProjectileDart;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.items.consumables.shopItems.MegahealFruit;
+import skycubedPlatformer.items.consumables.shopItems.OverhealFruit;
 import skycubedPlatformer.menu.GamePanel;
 
 public class CreatureDartGoblin extends CreatureGoblin {
@@ -128,7 +130,6 @@ public class CreatureDartGoblin extends CreatureGoblin {
 	@Override
 	public void dropLoot() { //2-3 drops totalling 6-11 coins, guaranteed 1 silver coin drop
 		GamePanel.particles.add(new CoinParticle(this.x, this.y, 5));
-		
 		Creature.loot(this);
 	}
 	
