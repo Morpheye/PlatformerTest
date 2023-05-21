@@ -1,6 +1,7 @@
 package skycubedPlatformer.util.appdata;
 
 import java.io.File;
+import java.util.Scanner;
 
 public class FileLoader {
 
@@ -12,9 +13,14 @@ public class FileLoader {
 	
 	public static File saveFile;
 	
+	public static Long jsonKey;
+	
 	public static void run() {
-		String OS = (System.getProperty("os.name")).toUpperCase();
+		Scanner scanner = new Scanner(FileLoader.class.getResourceAsStream("/jsonKey"), "UTF-8");
+		jsonKey = Long.parseLong(scanner.useDelimiter("\\A").next());
+		scanner.close();
 		
+		String OS = (System.getProperty("os.name")).toUpperCase();
 		if (OS.contains("WIN")) rootDirectory = System.getenv("AppData"); //windows
 		else {
 			rootDirectory = System.getProperty("user.home");
