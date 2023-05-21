@@ -14,6 +14,7 @@ public class ExecutionerAxe extends Weapon {
 	public int attackRange = 10;
 	
 	public ExecutionerAxe() {
+		super();
 		try {
 			this.coinCost = 5000;
 			this.inShop = 1;
@@ -46,6 +47,7 @@ public class ExecutionerAxe extends Weapon {
 	
 	@Override
 	public void onAttackEnd(LivingObject wielder, GameObject victim) {
+		if (!(victim.type.equals(ObjType.Player) || victim.type.equals(ObjType.Creature))) return;
 		wielder.attackDamage -= attackBoost;
 	}
 	

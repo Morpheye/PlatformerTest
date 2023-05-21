@@ -14,6 +14,7 @@ public class VampiricSabre extends Weapon {
 	public int naturalRegenCooldown = 180;
 	
 	public VampiricSabre() {
+		super();
 		try {
 			this.coinCost = 12000;
 			this.gemCost = 3;

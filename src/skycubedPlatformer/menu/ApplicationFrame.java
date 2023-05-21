@@ -82,7 +82,7 @@ public class ApplicationFrame extends JFrame {
 		System.gc();
 		
 		if (current != null) current.setEnabled(false);
-		current = new WeaponsPanel();
+		current = new InventoryPanel();
 		panel.add(current);
 		current.requestFocus();
 		

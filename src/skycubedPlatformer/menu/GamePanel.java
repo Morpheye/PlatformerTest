@@ -16,6 +16,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -23,6 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -33,9 +38,11 @@ import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.items.consumables.Consumable;
 import skycubedPlatformer.levels.Level;
 import skycubedPlatformer.util.ImageHelper;
 import skycubedPlatformer.util.Screenshot;
+import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.util.appdata.DataManager;
 
 @SuppressWarnings("serial")
@@ -65,6 +72,8 @@ public class GamePanel extends JPanel {
 	public static long targetCoins;
 	public static int timeSinceRestart = 0;
 	
+	public static ArrayList<Consumable> consumables;
+	
 	public GamePanel(Level level) {
 		this.setBackground(Color.BLACK);
 		this.setSize(Main.SIZE, Main.SIZE);
@@ -89,7 +98,7 @@ public class GamePanel extends JPanel {
 		
 		levelWon = 0;
 		isPaused = false;
-		
+	
 	}
 	
 	public static void restartLevel(Level newLevel) {
@@ -130,6 +139,10 @@ public class GamePanel extends JPanel {
 		});
 		
 		level.onStart();
+		
+		itemTime = 0;
+		consumables = new ArrayList<Consumable>();
+		Consumable.activateItems(player, consumables);
 		
 		shake_x = 0; shake_y = 0; shake_duration = 0; shake_max_duration = 0; shake_magnitude = 0;
 		
@@ -279,6 +292,7 @@ public class GamePanel extends JPanel {
 			g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 		}
 		
+		drawConsumableEffect(g);
 		drawScreenshotEffect(g);
 		
 	}
@@ -665,6 +679,30 @@ public class GamePanel extends JPanel {
 		
 	}
 	
+	static int itemTime = 0;
+	public void drawConsumableEffect(Graphics g) {
+		if (isPaused) return;
+		if (consumables.size() > 0) { //DRAW ITEM EFFECTS
+			Graphics2D g2d = (Graphics2D) g.create();
+			AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,(float) ((30-itemTime)/30.0));
+			g2d.setComposite(ac);
+			
+			int drawX = (int) ( (player.x - (camera_x - camera_size/2)) * (Main.SIZE/camera_size));
+			int drawY = (int) ( (camera_size - (player.y) + (camera_y - camera_size/2)) * (Main.SIZE/camera_size));
+			int drawSize = (int) ((Main.SIZE/5) * ((15-itemTime)/15.0));
+			int diffX = (int) ((Main.SIZE/2) - ((itemTime)/15.0)*(Main.SIZE/2 - drawX));
+			int diffY = (int) ((Main.SIZE/2) - ((itemTime)/15.0)*(Main.SIZE/2 - drawY));
+			
+			g2d.drawImage(consumables.get(0).image, diffX-drawSize/2, diffY-drawSize/2, drawSize, drawSize, null);
+			
+			itemTime++;
+			if (itemTime == 15) {
+				itemTime = 0;
+				consumables.remove(0);
+			}
+		}
+	}
+	
 	int screenshotTime = 0;
 	public void drawScreenshotEffect(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
@@ -794,6 +832,5 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void destroy() {
-		
 	}
 }

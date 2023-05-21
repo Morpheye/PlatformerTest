@@ -116,7 +116,7 @@ public class Level_1_5 extends Level {
 		
 		objects.add(new GrassPlatform(4350, 500, 200, 50));
 		objects.add(new GrassPlatform(4350, 700, 200, 50));
-		objects.add(new CreatureDartGoblin(4350, 525, 30, 500));
+		objects.add(new CreatureDartGoblin(4350, 550, 30, 500));
 		
 		objects.add(new GrassPlatform(4700, 500, 200, 200));
 		

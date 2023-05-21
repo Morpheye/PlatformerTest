@@ -14,6 +14,7 @@ public class HeavyMace extends Weapon {
 	public int attackKnockback = 1;
 	
 	public HeavyMace() {
+		super();
 		try {
 			this.coinCost = 2500;
 			this.inShop = 1;

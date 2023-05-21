@@ -17,6 +17,7 @@ public class GildedChimeraBlade extends Weapon {
 	public int attackDamage = -1;
 	
 	public GildedChimeraBlade() {
+		super();
 		try {
 			this.coinCost = 2000;
 			this.gemCost = 1;

@@ -16,6 +16,7 @@ public class BejeweledMoonstaff extends Weapon {
 	public int attackCooldown = 15;
 	
 	public BejeweledMoonstaff() {
+		super();
 		try {
 			this.coinCost = 6000;
 			this.inShop = 1;

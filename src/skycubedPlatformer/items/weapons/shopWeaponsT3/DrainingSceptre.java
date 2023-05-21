@@ -11,6 +11,7 @@ public class DrainingSceptre extends Weapon {
 	public int attackRange = 5;
 	
 	public DrainingSceptre() {
+		super();
 		try {
 			this.coinCost = 6000;
 			this.inShop = 1;

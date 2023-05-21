@@ -12,6 +12,7 @@ public class PointedSpear extends Weapon {
 	public double attackKnockback = -0.5;
 	
 	public PointedSpear() {
+		super();
 		try {
 			this.coinCost = 1000;
 			this.inShop = 1;

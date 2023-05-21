@@ -12,6 +12,7 @@ public class SwiftDagger extends Weapon {
 	public double attackKnockback = -0.8;
 	
 	public SwiftDagger() {
+		super();
 		try {
 			this.coinCost = 1000;
 			this.inShop = 1;

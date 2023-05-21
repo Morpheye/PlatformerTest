@@ -16,6 +16,7 @@ public class BladeOfImmolation extends Weapon {
 	public int attackCooldown = 10;
 	
 	public BladeOfImmolation() {
+		super();
 		try {
 			this.coinCost = 7500;
 			this.inShop = 1;

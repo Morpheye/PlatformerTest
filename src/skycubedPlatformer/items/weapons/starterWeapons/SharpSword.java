@@ -12,6 +12,7 @@ public class SharpSword extends Weapon {
 	public int attackRange = 4;
 	
 	public SharpSword() {
+		super();
 		try {
 			this.coinCost = 1000;
 			this.inShop = 1;

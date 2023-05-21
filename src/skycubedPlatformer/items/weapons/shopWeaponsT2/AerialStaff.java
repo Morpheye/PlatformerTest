@@ -14,6 +14,7 @@ public class AerialStaff extends Weapon {
 	public int attackRange = 10;
 	
 	public AerialStaff() {
+		super();
 		try {
 			this.coinCost = 3000;
 			this.inShop = 1;

@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import skycubedPlatformer.items.Item;
 import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.levels.LevelWorld;
 import skycubedPlatformer.util.ImageHelper;
@@ -28,7 +29,7 @@ public class DataManager {
 			e.printStackTrace();
 		}
 		
-		Weapon.weaponListInit();
+		Item.itemListInit();
 		LevelWorld.init();
 		(new ImageHelper()).init();
 		

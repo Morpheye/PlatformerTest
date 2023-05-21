@@ -14,8 +14,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -29,7 +27,9 @@ import javax.swing.Timer;
 
 import skycubedPlatformer.Main;
 import skycubedPlatformer.game.GameObject;
+import skycubedPlatformer.items.Item;
 import skycubedPlatformer.items.weapons.Weapon;
+import skycubedPlatformer.levels.LevelWorld;
 import skycubedPlatformer.levels.world1.Level_1_1;
 import skycubedPlatformer.util.ImageHelper;
 import skycubedPlatformer.util.Screenshot;
@@ -37,13 +37,17 @@ import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.util.appdata.DataManager;
 
 @SuppressWarnings("serial")
-public class WeaponsPanel extends JPanel {
+public class InventoryPanel extends JPanel {
 
 	public Timer timer;
 	public Clip equipSound;
 	public Clip purchaseSound;
+	public Clip consumeSound;
 	
-	public WeaponsPanel() {
+	public InventoryPanel() {
+		if (scroll < 0) scroll = 0;
+		if (scroll > LevelWorld.levelWorlds.size()-1) scroll = LevelWorld.levelWorlds.size()-1;
+		
 		this.setName("Weapons");
 		this.setBackground(Color.BLACK);
 		this.setSize(Main.SIZE, Main.SIZE);
@@ -59,12 +63,12 @@ public class WeaponsPanel extends JPanel {
 		screenshotTime = 0;
 		
 		try {
-			String sound = "/sounds/inventory/equip.wav";
-			String sound2 = "/sounds/inventory/purchase.wav";
 			this.equipSound = AudioSystem.getClip();
 			this.purchaseSound = AudioSystem.getClip();
-			SoundHelper.loadSound(this, this.equipSound, sound);
-			SoundHelper.loadSound(this, this.purchaseSound, sound2);
+			this.consumeSound = AudioSystem.getClip();
+			SoundHelper.loadSound(this, this.equipSound, "/sounds/inventory/equip.wav");
+			SoundHelper.loadSound(this, this.purchaseSound, "/sounds/inventory/purchase.wav");
+			SoundHelper.loadSound(this,  this.consumeSound, "/sounds/inventory/consume.wav");
 			
 		} catch (Exception e) {}
 		
@@ -72,6 +76,7 @@ public class WeaponsPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
+				if (buttonCooldown > 0) buttonCooldown--;
 		}});
 		
 		timer.start();
@@ -89,8 +94,9 @@ public class WeaponsPanel extends JPanel {
 				Main.SIZE*3/5-of, Main.SIZE*3/5-of, Main.SIZE*3/5-of, Main.SIZE*3/5-of,
 				Main.SIZE*4/5-of, Main.SIZE*4/5-of, Main.SIZE*4/5-of, Main.SIZE*4/5-of,};
 	BufferedImage[] slotImg = new BufferedImage[slotX.length];
-	Weapon[] weaponList = new Weapon[slotX.length];
+	Item[] itemList = new Item[slotX.length];
 	String[] slotNames = new String[slotX.length];
+	String[] amountList = new String[slotX.length];
 	
 	final int imgR = 70;
 	int scroll = 0;
@@ -100,16 +106,24 @@ public class WeaponsPanel extends JPanel {
 	int buttonSizeX = 180;
 	int buttonSizeY = 40;
 	
+	int coloring = 100;
+	int vc = 5;
+	
+	int buttonCooldown = 10;
 	@Override
 	public void paint(Graphics g) {
 		super.paint(g);
 		Graphics2D g2d = (Graphics2D) g;
 		
+		if (coloring > 125) vc = -5;
+		if (coloring < 75) vc = 5;
+		coloring += vc;
+		
 		//title
 		Font font = new Font(Font.MONOSPACED, Font.BOLD, 50);
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
-		String text = (inShop) ? "Weapon Shop" : "Weapons";
+		String text = (inShop) ? "Item Shop" : "Inventory";
 		int lvlSelectStringWidth = g2d.getFontMetrics(font).stringWidth(text);
 		g2d.drawString(text, Main.SIZE/2 - lvlSelectStringWidth/2, 50);
 		
@@ -117,24 +131,28 @@ public class WeaponsPanel extends JPanel {
 		
 		//draw the slots
 		for (int i=0; i<slotImg.length; i++) {
+			
+			g2d.setColor(Color.darkGray.darker());
+			
 			if (slotNames[i] != null && !inShop) {
-				if (slotNames[i].equals(DataManager.saveData.selectedWeapon)) {
-					int tier = weaponList[i].tier;
+				if (slotNames[i].equals(DataManager.saveData.selectedWeapon)
+					|| DataManager.saveData.activeItems.contains(slotNames[i])) { //check for selected weapon/active item
+					int tier = itemList[i].tier;
 					Color borderColor = (tier == 1) ? GameObject.COLOR_COPPER :
 						(tier == 2) ? GameObject.COLOR_SILVER : (tier == 3) ? GameObject.COLOR_GOLD : 
 						(tier == 4) ? GameObject.COLOR_DIAMOND : (tier == 5) ? GameObject.COLOR_CRIMSONADE : Color.white;
 					g2d.setColor(borderColor);
-					g2d.fillRoundRect(slotX[i]-imgR-10, slotY[i]-imgR-10, 2*imgR+20, 2*imgR+20, 5, 5);
+					g2d.fillRoundRect(slotX[i]-imgR-5, slotY[i]-imgR-5, 2*imgR+10, 2*imgR+10, 5, 5);
+					g2d.setColor(new Color(coloring, coloring, coloring));
 				}
 			}
 			
-			g2d.setColor(Color.darkGray);
 			g2d.fillRoundRect(slotX[i]-imgR, slotY[i]-imgR, 2*imgR, 2*imgR, 5, 5);
 			int tier = 0;
 			
 			if (slotImg[i] != null) {
 				g2d.drawImage(slotImg[i], slotX[i]-imgR, slotY[i]-imgR, 2*imgR, 2*imgR, null);
-				tier = weaponList[i].tier;
+				tier = itemList[i].tier;
 			}
 			
 			if (mousePosition != null && !guiOpen) { //draw highlight if mouse on position
@@ -156,14 +174,14 @@ public class WeaponsPanel extends JPanel {
 			g2d.drawRoundRect(slotX[i]-imgR, slotY[i]-imgR, 2*imgR, 2*imgR, 5, 5);
 			
 			if (inShop && slotNames[i] != null) {
-				if (DataManager.saveData.ownedWeapons.contains(slotNames[i])) {
+				if (DataManager.saveData.inventory.containsKey(slotNames[i]) && Weapon.weaponNames.contains(slotNames[i])) {
 					g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
 					g2d.setColor(Color.WHITE);
 					g2d.drawString("OWNED", slotX[i]-imgR+5, slotY[i]-imgR+20);
 					
 				} else {
-					int coinCost = Weapon.getWeapon(slotNames[i]).coinCost;
-					int gemCost = Weapon.getWeapon(slotNames[i]).gemCost;
+					int coinCost = Item.getItem(slotNames[i]).coinCost;
+					int gemCost = Item.getItem(slotNames[i]).gemCost;
 				
 					if (coinCost != 0) {
 						g2d.drawImage(coinImage, slotX[i]-imgR+5, slotY[i]-imgR+5, 20, 20, null);
@@ -178,9 +196,20 @@ public class WeaponsPanel extends JPanel {
 						g2d.drawString(gemCost+"", slotX[i]-imgR+30, slotY[i]-imgR+45);
 					}
 				}
+
+			} else if (!inShop && amountList[i] != null && amountList[i].length() > 0) {
+				String amount = "x"+ImageHelper.formatCurrency(Long.parseLong(amountList[i]));
+				if (Weapon.weaponNames.contains(slotNames[i])) amount = "";
+				font = new Font(Font.MONOSPACED, Font.BOLD, 25);
+				g2d.setFont(font);
+				g2d.setColor(Color.WHITE);
+				int amountStringWidth = g2d.getFontMetrics(font).stringWidth(amount);
+				g2d.drawString(amount, slotX[i]+imgR-amountStringWidth-5, slotY[i]+imgR-5);
+				
 			}
 			
 		}
+		
 		
 		//return to level select
 		g2d.setColor(Color.gray);
@@ -280,7 +309,7 @@ public class WeaponsPanel extends JPanel {
 		}
 		
 		if ((inShop && ((scroll+1)*16 < Weapon.weaponNames.size())) ||
-				(!inShop && ((scroll+1)*16 < DataManager.saveData.ownedWeapons.size()))) {
+				(!inShop && ((scroll+1)*16 < DataManager.saveData.inventory.size()))) {
 			g2d.setColor(Color.gray);
 			g2d.fillRoundRect(x2-w/2, y-w/2, w, w, 5, 5);
 			g2d.setColor(Color.WHITE);
@@ -319,9 +348,9 @@ public class WeaponsPanel extends JPanel {
 			g2d.drawRoundRect(Main.SIZE/2+w/6-5, Main.SIZE/2-h/2+10, w/3-5, w/3-5, 5, 5);
 			
 			drawString(g2d, 25, slotNames[guiSelected], w*2/3, Main.SIZE/2-w/2+10, Main.SIZE/2-h/2+10);
-			String[] stats = weaponList[guiSelected].stats;
-			int[] statMap = weaponList[guiSelected].statMap;
-			String lore = weaponList[guiSelected].lore;
+			String[] stats = itemList[guiSelected].stats;
+			int[] statMap = itemList[guiSelected].statMap;
+			String lore = itemList[guiSelected].lore;
 			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
 			for (int i=0; i<stats.length; i++) {
 				int cInt = 0;
@@ -335,8 +364,8 @@ public class WeaponsPanel extends JPanel {
 			drawString(g2d, 15, lore, w-20, Main.SIZE/2-w/2+10, Main.SIZE*2/5);
 			
 			if (inShop) {
-				int coinCost = weaponList[guiSelected].coinCost;
-				int gemCost = weaponList[guiSelected].gemCost;
+				int coinCost = itemList[guiSelected].coinCost;
+				int gemCost = itemList[guiSelected].gemCost;
 			
 				if (coinCost != 0) {
 					g2d.drawImage(coinImage, Main.SIZE/2+w/6, Main.SIZE/2-h/2+w/3+10, 20, 20, null);
@@ -378,15 +407,16 @@ public class WeaponsPanel extends JPanel {
 				int mouseY= mousePosition.y;
 				if (Math.abs(mouseX - (Main.SIZE/2)) < 100 && Math.abs(mouseY - (Main.SIZE/2+h/2-45)) < 35) {
 					if (inShop) {
-						int coinCost = weaponList[guiSelected].coinCost;
-						int gemCost = weaponList[guiSelected].gemCost;
-						if (DataManager.saveData.coins < coinCost || DataManager.saveData.gems < gemCost) {
-						} else if (DataManager.saveData.ownedWeapons.contains(slotNames[guiSelected])) {
+						int coinCost = itemList[guiSelected].coinCost;
+						int gemCost = itemList[guiSelected].gemCost;
+						if (DataManager.saveData.coins < coinCost || DataManager.saveData.gems < gemCost) { //check cost
+						} else if (DataManager.saveData.inventory.containsKey(slotNames[guiSelected])
+								&& Weapon.weaponNames.contains(slotNames[guiSelected])) { //check if weapon
 						} else {
 							g2d.setColor(new Color(255,255,255,100));
 							g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
 						}
-					} else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)){
+					} else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)){ //already selected
 					} else {
 						g2d.setColor(new Color(255,255,255,100));
 						g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
@@ -401,20 +431,22 @@ public class WeaponsPanel extends JPanel {
 			g2d.setFont(font);
 			String buttonText;
 			if (inShop) {
-				if (DataManager.saveData.ownedWeapons.contains(slotNames[guiSelected])) {
+				if (DataManager.saveData.inventory.containsKey(slotNames[guiSelected]) && 
+						Weapon.weaponNames.contains(slotNames[guiSelected])) {
 					buttonText = "Purchased";
 					enable = false;
 				}
 				else buttonText = "Purchase";
-				int coinCost = weaponList[guiSelected].coinCost;
-				int gemCost = weaponList[guiSelected].gemCost;
+				int coinCost = itemList[guiSelected].coinCost;
+				int gemCost = itemList[guiSelected].gemCost;
 				if (DataManager.saveData.coins < coinCost || DataManager.saveData.gems < gemCost) enable = false;
-			}
-			else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)) {
+			} else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)) {
 				buttonText = "Equipped";
 				enable = false;
-			}
-			else buttonText = "Equip";
+			} else if (DataManager.saveData.activeItems.contains(slotNames[guiSelected])) {
+				buttonText = "Stop Use";
+			} else buttonText = (Weapon.weaponNames.contains(slotNames[guiSelected])) ? "Equip" : "Start Use";
+			
 			int strWidth = g2d.getFontMetrics(font).stringWidth(buttonText);
 			g2d.drawString(buttonText, Main.SIZE/2-strWidth/2, Main.SIZE/2+h/2-40);
 			
@@ -430,40 +462,8 @@ public class WeaponsPanel extends JPanel {
 	}
 	
 	void drawCurrency(Graphics2D g2d) {
-		DecimalFormat df = new DecimalFormat("#");
-		df.setMaximumFractionDigits(2);
-		
-		BigDecimal coins = BigDecimal.valueOf(DataManager.saveData.coins);
-		String coinText;
-		if (coins.compareTo(BigDecimal.valueOf(1_000_000_000_000_000_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000_000_000_000L))) + "♚";} //Quintillion
-		else if (coins.compareTo(BigDecimal.valueOf(1_000_000_000_000_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000_000_000L))) + "Q";} //Quadrillion
-		else if (coins.compareTo(BigDecimal.valueOf(1_000_000_000_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000_000L))) + "T";} //Trillion
-		else if (coins.compareTo(BigDecimal.valueOf(1_000_000_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000L))) + "B";} //Billion
-		else if (coins.compareTo(BigDecimal.valueOf(1_000_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000L))) + "M";} //Million
-		else if (coins.compareTo(BigDecimal.valueOf(1_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000L))) + "k";} //Thousand
-		else coinText = df.format(coins);
-		
-		BigDecimal gems = BigDecimal.valueOf(DataManager.saveData.gems);
-		String gemText;
-		if (gems.compareTo(BigDecimal.valueOf(1_000_000_000_000_000_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000_000_000_000L))) + "♚";} //Quintillion
-		else if (gems.compareTo(BigDecimal.valueOf(1_000_000_000_000_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000_000_000L))) + "Q";} //Quadrillion
-		else if (gems.compareTo(BigDecimal.valueOf(1_000_000_000_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000_000L))) + "T";} //Trillion
-		else if (gems.compareTo(BigDecimal.valueOf(1_000_000_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000L))) + "B";} //Billion
-		else if (gems.compareTo(BigDecimal.valueOf(1_000_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000L))) + "M";} //Million
-		else if (gems.compareTo(BigDecimal.valueOf(1_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000L))) + "k";} //Thousand
-		else gemText = df.format(gems);
+		String coinText = ImageHelper.formatCurrency(DataManager.saveData.coins);
+		String gemText = ImageHelper.formatCurrency(DataManager.saveData.gems);
 		
 		g2d.setColor(GameObject.COLOR_GOLD);
 		g2d.fillRoundRect(13, 13, 20, 34, 5, 5);
@@ -517,6 +517,7 @@ public class WeaponsPanel extends JPanel {
 	class ShopMouse extends MouseAdapter {
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			if (buttonCooldown > 0) return;
 			int mouseX = e.getX();
 			int mouseY = e.getY();
 
@@ -575,7 +576,7 @@ public class WeaponsPanel extends JPanel {
 				}}
 				
 				if ((inShop && ((scroll+1)*16 < Weapon.weaponNames.size())) || //Right
-						(!inShop && ((scroll+1)*16 < DataManager.saveData.ownedWeapons.size()))) {
+						(!inShop && ((scroll+1)*16 < DataManager.saveData.inventory.size()))) {
 					if (Math.abs(mouseX - x2) < w/2 && Math.abs(mouseY - y) < w/2 && !guiOpen) {
 						scroll++;
 						reloadImages();
@@ -590,32 +591,50 @@ public class WeaponsPanel extends JPanel {
 				//close button
 				if (Math.abs(mouseX - (Main.SIZE/2+w/3+w/12)) < w/12 && Math.abs(mouseY - (Main.SIZE/2-h/2-27)) < 35/2) {
 					guiOpen = false;
+					buttonCooldown = 5;
 				}
 				
 				//PURCHASE BUTTON
 				if (Math.abs(mouseX - (Main.SIZE/2)) < 100 && Math.abs(mouseY - (Main.SIZE/2+h/2-45)) < 35) {
 					if (inShop) {
-						int coinCost = Weapon.getWeapon(slotNames[guiSelected]).coinCost;
-						int gemCost = Weapon.getWeapon(slotNames[guiSelected]).gemCost;
-						if (DataManager.saveData.coins < coinCost || DataManager.saveData.gems < gemCost) {
-						} else if (DataManager.saveData.ownedWeapons.contains(slotNames[guiSelected])) {
+						int coinCost = Item.getItem(slotNames[guiSelected]).coinCost;
+						int gemCost = Item.getItem(slotNames[guiSelected]).gemCost;
+						if (DataManager.saveData.coins < coinCost || DataManager.saveData.gems < gemCost) { //check cost
+						} else if (DataManager.saveData.inventory.containsKey(slotNames[guiSelected])
+								&& Weapon.weaponNames.contains(slotNames[guiSelected])) { //check if weapon already owned
 						} else { //purchase successful
-							DataManager.saveData.ownedWeapons.add(slotNames[guiSelected]);
+							if (Weapon.weaponNames.contains(slotNames[guiSelected])) { //WEAPON
+								DataManager.saveData.inventory.put(slotNames[guiSelected],1L);
+							} else if (!DataManager.saveData.inventory.containsKey(slotNames[guiSelected])) { //Item
+								DataManager.saveData.inventory.put(slotNames[guiSelected],1L);
+							} else {
+								Long amt = DataManager.saveData.inventory.get(slotNames[guiSelected]);
+								DataManager.saveData.inventory.put(slotNames[guiSelected],amt + 1);
+							}
 							DataManager.saveData.coins -= coinCost;
 							DataManager.saveData.gems -= gemCost;
-							guiOpen = false;
+							if (Weapon.weaponNames.contains(slotNames[guiSelected])) guiOpen = false;
+							buttonCooldown = 10;
 							
-							purchaseSound.setMicrosecondPosition(0);
-							purchaseSound.start();
+							SoundHelper.playSound(purchaseSound);
 						}
 					} else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)){
-					} else {
+					} else if (Weapon.weaponNames.contains(slotNames[guiSelected])) { //EQUIP
 						DataManager.saveData.selectedWeapon = slotNames[guiSelected];
 						guiOpen = false;
+						buttonCooldown = 5;
 						
-						equipSound.setMicrosecondPosition(0);
-						equipSound.start();
-					}	
+						SoundHelper.playSound(equipSound);
+					} else if (!DataManager.saveData.activeItems.contains(slotNames[guiSelected])) { //START USE
+						DataManager.saveData.activeItems.add(slotNames[guiSelected]);
+						buttonCooldown = 5;
+						SoundHelper.playSound(consumeSound);
+						
+					} else if (DataManager.saveData.activeItems.contains(slotNames[guiSelected])) { //STOP USE
+						DataManager.saveData.activeItems.remove(slotNames[guiSelected]);
+						buttonCooldown = 5;
+						SoundHelper.playSound(consumeSound);
+					}
 				}
 				
 			}
@@ -626,45 +645,41 @@ public class WeaponsPanel extends JPanel {
 	void reloadImages() {
 		slotNames = new String[slotX.length];
 		slotImg = new BufferedImage[slotX.length];
+		amountList = new String[slotX.length];
 		
 		try {
 			this.lockImage = ImageIO.read(this.getClass().getResource("/gui/lock.png"));
 			this.coinImage = ImageIO.read(this.getClass().getResource("/gui/goldcoin.png"));
 			this.gemImage = ImageIO.read(this.getClass().getResource("/gui/gem.png"));
 			
-			ArrayList<String> weapons;
+			List<String> items;
+			List<String> amount;
 			
 			if (!inShop) {
-				weapons = DataManager.saveData.ownedWeapons;
-				weapons.sort(new Comparator<String>() {
-					@Override //tier -> in shop -> gem cost -> coin cost
-					public int compare(String o1, String o2) {
-						Weapon w1 = Weapon.getWeapon(o1);
-						Weapon w2 = Weapon.getWeapon(o2);
-
-						if (w1.tier != w2.tier) return w1.tier - w2.tier;
-						else if (w1.inShop == 0 && w2.inShop != 0) return 1;
-						else if (w1.gemCost != w2.gemCost) return w1.gemCost - w2.gemCost;
-						else if (w1.coinCost != w2.coinCost) return w1.coinCost - w2.coinCost;
-						else return 0;
-						
-					}});
+				items = Arrays.asList(DataManager.saveData.inventory.keySet().toArray(new String[] {}));
+				items.sort(inventorySorter);
+				amount = new ArrayList<String>(16);
 				
-			} else {
-				weapons = Weapon.weaponNames;
-				weapons.removeIf(c -> Weapon.getWeapon(c).inShop != 1);
-				
+			} else { //IN SHOP
+				items = Item.itemNames;
+				items.sort(inventorySorter);
+				items.removeIf(c -> Item.getItem(c).inShop != 1);
+				amount = new ArrayList<String>();
 			}
 			
-			int finalIndex = (scroll*16+15 > weapons.size()) ? (weapons.size()) : scroll*16+16;
-			List<String> filteredWeapons = weapons.subList(scroll*16, finalIndex);
+			int finalIndex = (scroll*16+16 > items.size()) ? (items.size()) : scroll*16+16;
+			List<String> filteredItems = items.subList(scroll*16, finalIndex);
 			
 			//load individual slot images;
-			for (int i=0; i<filteredWeapons.size(); i++) {
+			for (int i=0; i<filteredItems.size(); i++) {
 				try {
-					weaponList[i] = Weapon.getWeapon(filteredWeapons.get(i));
-					slotImg[i] = Weapon.getWeapon(filteredWeapons.get(i)).image;
-					slotNames[i] = Weapon.getWeapon(filteredWeapons.get(i)).name;
+					itemList[i] = Item.getItem(filteredItems.get(i));
+					slotImg[i] = Item.getItem(filteredItems.get(i)).image;
+					slotNames[i] = Item.getItem(filteredItems.get(i)).name;
+					
+					if (!inShop) {
+						amountList[i] = ""+DataManager.saveData.inventory.get(filteredItems.get(i));
+					}
 					
 				} catch (Exception e) {
 					slotImg[i] = null;
@@ -711,6 +726,25 @@ public class WeaponsPanel extends JPanel {
 	void stop() {
 		if (this.equipSound != null) if (this.equipSound.isOpen()) this.equipSound.close();
 		if (this.purchaseSound != null) if (this.purchaseSound.isOpen()) this.purchaseSound.close();
+		if (this.consumeSound != null) if (this.consumeSound.isOpen()) this.consumeSound.close();
 	}
+	
+	static Comparator<String> inventorySorter = new Comparator<String>() {
+		@Override //weapon/item -> tier -> in shop -> gem cost -> coin cost
+		public int compare(String o1, String o2) {
+			Item w1 = Item.getItem(o1);
+			Item w2 = Item.getItem(o2);
+
+			if (Weapon.weaponNames.contains(o1) != Weapon.weaponNames.contains(o2)) {
+				if (Weapon.weaponNames.contains(o1)) return -1;
+				else return 1;
+				
+			} else if (w1.tier != w2.tier) return w1.tier - w2.tier;
+			else if (w1.inShop == 0 && w2.inShop != 0) return 1;
+			else if (w1.gemCost != w2.gemCost) return w1.gemCost - w2.gemCost;
+			else if (w1.coinCost != w2.coinCost) return w1.coinCost - w2.coinCost;
+			else return 0;
+			
+	}};
 	
 }

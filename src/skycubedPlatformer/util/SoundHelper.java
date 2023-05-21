@@ -26,9 +26,12 @@ public class SoundHelper {
 		Thread thread = new Thread(() -> {
 			try {
 				if (clip != null) {
-					if (clip.isActive()) clip.stop();
-					clip.setMicrosecondPosition(0);
-					clip.start();
+					if (clip.isActive()) {
+						clip.setMicrosecondPosition(0);
+					} else {
+						clip.setMicrosecondPosition(0);
+						clip.start();
+					}
 				}
 			} catch (Exception e) {e.printStackTrace();}
 		});

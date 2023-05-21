@@ -13,6 +13,7 @@ public class WoodenClub extends Weapon {
 
 	
 	public WoodenClub() {
+		super();
 		try {
 			this.coinCost = 1000;
 			this.inShop = 1;

@@ -25,6 +25,7 @@ public class SpiritScythe extends Weapon {
 	public int naturalRegenCooldown = 180;
 	
 	public SpiritScythe() {
+		super();
 		try {
 			this.spirits.clear();
 			this.coinCost = 120000;

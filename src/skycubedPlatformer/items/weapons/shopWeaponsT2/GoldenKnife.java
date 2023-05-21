@@ -13,6 +13,7 @@ public class GoldenKnife extends Weapon {
 	public double attackKnockback = -0.6;
 	
 	public GoldenKnife() {
+		super();
 		try {
 			this.coinCost = 3500;
 			this.inShop = 1;

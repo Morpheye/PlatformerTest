@@ -40,6 +40,8 @@ public class LevelSelectPanel extends JPanel {
 	public static int scroll = 0;
 	
 	public LevelSelectPanel() {
+		if (scroll < 0) scroll = 0;
+		if (scroll > LevelWorld.levelWorlds.size()-1) scroll = LevelWorld.levelWorlds.size()-1;
 		
 		this.setName("Menu");
 		this.levelWorld = LevelWorld.levelWorlds.get(scroll);
@@ -192,12 +194,12 @@ public class LevelSelectPanel extends JPanel {
 		//weapons
 		g2d.setColor(Color.gray);
 		g2d.fillRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
-		font = new Font(Font.MONOSPACED, Font.BOLD, 40);
+		font = new Font(Font.MONOSPACED, Font.BOLD, 30);
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
-		lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Weapons");
+		lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Inventory");
 		lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
-		g2d.drawString("Weapons", Main.SIZE*5/6-(lvlTitleWidth/2), Main.SIZE*8/9+10);
+		g2d.drawString("Inventory", Main.SIZE*5/6-(lvlTitleWidth/2), Main.SIZE*8/9+8);
 
 		g2d.drawRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
@@ -271,40 +273,8 @@ public class LevelSelectPanel extends JPanel {
 	}
 	
 	void drawCurrency(Graphics2D g2d) {
-		DecimalFormat df = new DecimalFormat("#");
-		df.setMaximumFractionDigits(2);
-		
-		BigDecimal coins = BigDecimal.valueOf(DataManager.saveData.coins);
-		String coinText;
-		if (coins.compareTo(BigDecimal.valueOf(1_000_000_000_000_000_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000_000_000_000L))) + "♚";} //Quintillion
-		else if (coins.compareTo(BigDecimal.valueOf(1_000_000_000_000_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000_000_000L))) + "Q";} //Quadrillion
-		else if (coins.compareTo(BigDecimal.valueOf(1_000_000_000_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000_000L))) + "T";} //Trillion
-		else if (coins.compareTo(BigDecimal.valueOf(1_000_000_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000_000L))) + "B";} //Billion
-		else if (coins.compareTo(BigDecimal.valueOf(1_000_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000_000L))) + "M";} //Million
-		else if (coins.compareTo(BigDecimal.valueOf(1_000L)) == 1) {
-			coinText = df.format(coins.divide(BigDecimal.valueOf(1_000L))) + "k";} //Thousand
-		else coinText = df.format(coins);
-		
-		BigDecimal gems = BigDecimal.valueOf(DataManager.saveData.gems);
-		String gemText;
-		if (gems.compareTo(BigDecimal.valueOf(1_000_000_000_000_000_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000_000_000_000L))) + "♚";} //Quintillion
-		else if (gems.compareTo(BigDecimal.valueOf(1_000_000_000_000_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000_000_000L))) + "Q";} //Quadrillion
-		else if (gems.compareTo(BigDecimal.valueOf(1_000_000_000_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000_000L))) + "T";} //Trillion
-		else if (gems.compareTo(BigDecimal.valueOf(1_000_000_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000_000L))) + "B";} //Billion
-		else if (gems.compareTo(BigDecimal.valueOf(1_000_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000_000L))) + "M";} //Million
-		else if (gems.compareTo(BigDecimal.valueOf(1_000L)) == 1) {
-			gemText = df.format(gems.divide(BigDecimal.valueOf(1_000L))) + "k";} //Thousand
-		else gemText = df.format(gems);
+		String coinText = ImageHelper.formatCurrency(DataManager.saveData.coins);
+		String gemText = ImageHelper.formatCurrency(DataManager.saveData.gems);
 		
 		g2d.setColor(GameObject.COLOR_GOLD);
 		g2d.fillRoundRect(13, 13, 20, 34, 5, 5);

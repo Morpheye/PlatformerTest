@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
+import skycubedPlatformer.items.Item;
 import skycubedPlatformer.items.weapons.shopWeaponsT2.AerialStaff;
 import skycubedPlatformer.items.weapons.shopWeaponsT2.AquaforgedTrident;
 import skycubedPlatformer.items.weapons.shopWeaponsT2.DuelingFoil;
@@ -25,25 +26,15 @@ import skycubedPlatformer.items.weapons.starterWeapons.SwiftDagger;
 import skycubedPlatformer.items.weapons.starterWeapons.WoodenClub;
 import skycubedPlatformer.items.weapons.weaponsT5.SpiritScythe;
 
-public class Weapon {
-
-	public BufferedImage image;
+public class Weapon extends Item {
 	public int size = 0;
-	public int tier = 0;
-	public String name;
-	public String[] stats;
-	public int[] statMap;
-	public String lore;
-	public int coinCost = 0;
-	public int gemCost = 0;
 	public boolean isRanged = false;
-	public int inShop = 0;
 	
 	public String attackSound = "/sounds/attack/default/attack.wav";
 	public String hitSound = "/sounds/attack/default/hit.wav";
 	
 	public Weapon() {
-		
+		this.isWeapon = true;
 	}
 
 	public void init(LivingObject creature) {}
@@ -61,29 +52,9 @@ public class Weapon {
 		weaponNames.add(weapon.name);
 	}
 	public static void weaponListInit() {
-		//beginner weapons (tier 1: Bronze)
-		addWeapon(new SharpSword());
-		addWeapon(new SharpAxe());
-		addWeapon(new PointedSpear());
-		addWeapon(new WoodenClub());
-		addWeapon(new SwiftDagger());
-		//moderate weapons (tier 2: Silver)
-		addWeapon(new DuelingFoil());
-		addWeapon(new HeavyMace());
-		addWeapon(new AquaforgedTrident());
-		addWeapon(new AerialStaff());
-		addWeapon(new GoldenKnife());
-		//high-class weapons (tier 3: Gold)
-		addWeapon(new PoisonEdgeKatana());
-		addWeapon(new ExecutionerAxe());
-		addWeapon(new BejeweledMoonstaff());
-		addWeapon(new DrainingSceptre());
-		addWeapon(new BladeOfImmolation());
-		//exotic weapons (tier 4: diamond)
-		addWeapon(new GildedChimeraBlade());
-		addWeapon(new VampiricSabre());
-		//ultra-exotic weapons (tier 5: crimsonade)
-		addWeapon(new SpiritScythe());
+		itemList.forEach(c -> {
+			if (c.isWeapon) addWeapon((Weapon) c);
+		});
 	}
 	
 	public void onTick(LivingObject wielder) {}

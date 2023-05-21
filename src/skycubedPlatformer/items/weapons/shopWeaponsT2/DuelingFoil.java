@@ -12,6 +12,7 @@ public class DuelingFoil extends Weapon {
 	public int attackRange = 5;
 	
 	public DuelingFoil() {
+		super();
 		try {
 			this.coinCost = 2500;
 			this.inShop = 1;

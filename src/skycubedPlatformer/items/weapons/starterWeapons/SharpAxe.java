@@ -13,6 +13,7 @@ public class SharpAxe extends Weapon {
 	public int attackRange = 12;
 	
 	public SharpAxe() {
+		super();
 		try {
 			this.coinCost = 1000;
 			this.inShop = 1;

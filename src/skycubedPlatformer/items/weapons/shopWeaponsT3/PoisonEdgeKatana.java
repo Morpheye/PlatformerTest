@@ -15,6 +15,7 @@ public class PoisonEdgeKatana extends Weapon {
 	public double attackKnockback = -0.5;
 	
 	public PoisonEdgeKatana() {
+		super();
 		try {
 			this.coinCost = 5000;
 			this.inShop = 1;
