@@ -5,6 +5,7 @@ import javax.imageio.ImageIO;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.items.weapons.Weapon;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class AerialStaff extends Weapon {
@@ -39,7 +40,7 @@ public class AerialStaff extends Weapon {
 	public void onAttackStart(LivingObject wielder, GameObject target) {
 		if (this.airtime == 20 && !wielder.inLiquid) {
 			wielder.attackDamage += 13; 
-			GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
+			((GamePanel) ApplicationFrame.current).createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
 		}
 	}
 	

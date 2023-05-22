@@ -32,6 +32,7 @@ import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.levels.Level;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class Level_1_4 extends Level {
@@ -65,8 +66,8 @@ public class Level_1_4 extends Level {
 	}
 	
 	@Override
-	public void onStart() {
-		GamePanel.displayText("Undead are everywhere, conserve your health.",300);
+	public void onStart(GamePanel panel) {
+		panel.displayText("Undead are everywhere, conserve your health.",300);
 		
 	}
 	

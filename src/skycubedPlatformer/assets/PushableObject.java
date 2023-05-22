@@ -6,6 +6,7 @@ import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.MovableObject;
 import skycubedPlatformer.game.ObjType;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
 
@@ -26,7 +27,7 @@ public class PushableObject extends MovableObject {
 	
 	@Override
 	public void crush() {
-		GamePanel.createShake(10, 10, 2);
+		((GamePanel) ApplicationFrame.current).createShake(10, 10, 2);
 		super.crush();
 	}
 	

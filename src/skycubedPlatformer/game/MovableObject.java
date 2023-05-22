@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import skycubedPlatformer.assets.LiquidPlatform;
 import skycubedPlatformer.assets.SolidPlatform;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class MovableObject extends GameObject {
@@ -184,8 +185,9 @@ public class MovableObject extends GameObject {
 		}
 		
 		if (collidedx && isFinal) {
-			if (Math.abs(this.vx) > 12 && (this.type.equals(ObjType.Player) || this.hasCollided(GamePanel.MainFrameObj))) {
-				GamePanel.createShake(3, this.getWeight()/500*(12-Math.abs(this.vx)));
+			if (Math.abs(this.vx) > 12 && (this.type.equals(ObjType.Player) 
+					|| this.hasCollided(((GamePanel) ApplicationFrame.current).MainFrameObj))) {
+				((GamePanel) ApplicationFrame.current).createShake(3, this.getWeight()/500*(12-Math.abs(this.vx)));
 			}
 			this.vx = 0; //if anything was hit, stop moving.
 		}
@@ -277,8 +279,9 @@ public class MovableObject extends GameObject {
 		}
 		
 		if (collidedy && isFinal) {
-			if (Math.abs(this.vy) > 12 && (this.type.equals(ObjType.Player) || this.hasCollided(GamePanel.MainFrameObj))) {
-				GamePanel.createShake(3, this.getWeight()/500*(12-Math.abs(this.vy)));
+			if (Math.abs(this.vy) > 12 && (this.type.equals(ObjType.Player) 
+					|| this.hasCollided(((GamePanel) ApplicationFrame.current).MainFrameObj))) {
+				((GamePanel) ApplicationFrame.current).createShake(3, this.getWeight()/500*(12-Math.abs(this.vy)));
 			}
 			this.vy = 0;
 		}

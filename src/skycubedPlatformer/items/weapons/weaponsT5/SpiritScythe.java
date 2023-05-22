@@ -17,6 +17,7 @@ import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.items.weapons.Weapon;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class SpiritScythe extends Weapon {
@@ -176,7 +177,8 @@ public class SpiritScythe extends Weapon {
 			
 			//change targets
 			if (this.target != null && (!this.target.exists || !this.target.isAlive || this.target.equals(this.wielder)
-					|| !GamePanel.objects.contains(target) || !this.target.hasCollided(GamePanel.MainFrameObj))) {
+					|| !GamePanel.objects.contains(target) 
+					|| !this.target.hasCollided(((GamePanel) ApplicationFrame.current).MainFrameObj))) {
 				this.targets.remove(this.target);
 				this.target = null;
 			}
@@ -193,7 +195,7 @@ public class SpiritScythe extends Weapon {
 			//calculate target
 			double xDist, yDist;
 			int targetX, targetY;
-			if (this.target != null && this.target.hasCollided(GamePanel.MainFrameObj)) {
+			if (this.target != null && this.target.hasCollided(((GamePanel) ApplicationFrame.current).MainFrameObj)) {
 				xDist = Math.abs(this.x - target.x) - (0.5 * Math.abs(this.size_x + target.size_x));
 				yDist = Math.abs(this.y - target.y) - (0.5 * Math.abs(this.size_y + target.size_y));
 				targetX = (int) target.x;
@@ -212,7 +214,7 @@ public class SpiritScythe extends Weapon {
 			double distance = Math.sqrt(Math.pow(xDist, 2) + Math.pow(yDist, 2));
 			
 			//chase target
-			if (this.target != null && this.target.hasCollided(GamePanel.MainFrameObj)) {
+			if (this.target != null && this.target.hasCollided(((GamePanel) ApplicationFrame.current).MainFrameObj)) {
 				if (targetX > this.x && distance >= 0) {
 					this.movingRight = true;
 					this.movingLeft = false;

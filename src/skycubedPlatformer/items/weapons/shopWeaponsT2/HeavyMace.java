@@ -5,6 +5,7 @@ import javax.imageio.ImageIO;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.items.weapons.Weapon;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class HeavyMace extends Weapon {
@@ -35,7 +36,7 @@ public class HeavyMace extends Weapon {
 	
 	@Override
 	public void onAttackStart(LivingObject wielder, GameObject target) {
-		GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
+		((GamePanel) ApplicationFrame.current).createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
 	}
 	
 	@Override

@@ -26,6 +26,7 @@ import skycubedPlatformer.assets.solidPlatforms.WoodPlatform;
 import skycubedPlatformer.assets.triggers.TextDisplayTrigger;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.Level;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class Level_1_7 extends Level {
@@ -64,10 +65,10 @@ public class Level_1_7 extends Level {
 	}
 	
 	@Override
-	public void onStart() {
+	public void onStart(GamePanel panel) {
 		GamePanel.camera_x = GamePanel.player.x;
 		GamePanel.camera_y = GamePanel.player.y;
-		GamePanel.displayText("Some objects have special attachments.", 240);
+		panel.displayText("Some objects have special attachments.", 240);
 	}
 	
 	@Override

@@ -10,6 +10,7 @@ import skycubedPlatformer.Main;
 import skycubedPlatformer.assets.triggers.Code;
 import skycubedPlatformer.assets.triggers.Powerup;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class HealPowerup extends Powerup {
@@ -38,7 +39,7 @@ public class HealPowerup extends Powerup {
 	@Override
 	public void run() {
 		this.code.run();
-		GamePanel.createFlash(this.color, 50);
+		((GamePanel) ApplicationFrame.current).createFlash(this.color, 50);
 	}
 	
 	@Override

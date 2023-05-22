@@ -98,13 +98,15 @@ public class Player extends LivingObject {
 		for (GameObject obj : GamePanel.objects) { //check for water
 			if (obj.equals(this)) continue;
 			//finish flag
-			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) && GamePanel.levelWon==0 && obj.exists) {
-				GamePanel.levelWon=1;
+			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) 
+					&& ((GamePanel) ApplicationFrame.current).levelWon==0 && obj.exists) {
+				((GamePanel) ApplicationFrame.current).levelWon=1;
 				SoundHelper.playFinalSound(finishSound);
 				CoinParticle.spawnCoins(this.x, this.y, 5+(int)(Math.random() * 6), GamePanel.level.reward);
 			}
 			//null zone
-			if (obj.hasCollided(this) && obj.type.equals(ObjType.NullZone) && GamePanel.levelWon==0 && obj.exists) {
+			if (obj.hasCollided(this) && obj.type.equals(ObjType.NullZone) 
+					&& ((GamePanel) ApplicationFrame.current).levelWon==0 && obj.exists) {
 				this.maxHealth = 100; this.movementSpeed = 0.25; this.jumpStrength = 16;
 				this.fireResistant = false; this.naturalRegenCooldown = 180; this.overheal = 0;
 				this.maxAttackCooldown = 40; this.attackRange = 20;
@@ -115,13 +117,15 @@ public class Player extends LivingObject {
 				if (this.weapon != null) this.weapon.init(this);
 			}
 			//powerup
-			if (obj.hasCollided(this) && obj.type.equals(ObjType.Powerup) && GamePanel.levelWon==0 && obj.exists) {
+			if (obj.hasCollided(this) && obj.type.equals(ObjType.Powerup) 
+					&& ((GamePanel) ApplicationFrame.current).levelWon==0 && obj.exists) {
 				((Powerup) obj).run();
 				((Powerup) obj).playSound();
 				obj.exists = false;
 			}
 			//trigger
-			if (obj.hasCollided(this) && obj.type.equals(ObjType.Trigger) && GamePanel.levelWon==0 && obj.exists) {
+			if (obj.hasCollided(this) && obj.type.equals(ObjType.Trigger) 
+					&& ((GamePanel) ApplicationFrame.current).levelWon==0 && obj.exists) {
 				((Trigger) obj).run();
 				obj.exists = false;
 			}
@@ -137,9 +141,13 @@ public class Player extends LivingObject {
 		this.timeSinceDamaged++;
 		
 		//CHECK BOUNDS
-		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) ((GamePanel) ApplicationFrame.current).restartLevel(GamePanel.level);
-		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) ((GamePanel) ApplicationFrame.current).restartLevel(GamePanel.level);
-		if (this.timeSinceDeath > 120 && GamePanel.levelWon==0) {
+		if (this.y > GamePanel.level.topLimit && ((GamePanel) ApplicationFrame.current).levelWon==0) {
+			((GamePanel) ApplicationFrame.current).restartLevel(GamePanel.level);
+		}
+		if (this.y < GamePanel.level.bottomLimit && ((GamePanel) ApplicationFrame.current).levelWon==0) {
+			((GamePanel) ApplicationFrame.current).restartLevel(GamePanel.level);
+		}
+		if (this.timeSinceDeath > 120 && ((GamePanel) ApplicationFrame.current).levelWon==0) {
 			((GamePanel) ApplicationFrame.current).restartLevel(GamePanel.level);
 		}
 
@@ -190,7 +198,7 @@ public class Player extends LivingObject {
 	@Override
 	public void damage(int damage, GameObject source) {
 		super.damage(damage, source);
-		GamePanel.createShake(3, 40 * (double) damage / this.maxHealth, 2);
+		((GamePanel) ApplicationFrame.current).createShake(3, 40 * (double) damage / this.maxHealth, 2);
 	}
 	
 	@Override
@@ -215,7 +223,7 @@ public class Player extends LivingObject {
 	
 	@Override
 	public void crush() {
-		if (GamePanel.levelWon == 0) {
+		if (((GamePanel) ApplicationFrame.current).levelWon == 0) {
 			this.health = 0;
 			this.die();
 		}
@@ -223,9 +231,9 @@ public class Player extends LivingObject {
 	
 	@Override
 	public void die() {
-		if (GamePanel.levelWon == 0 && this.isAlive) {
-			GamePanel.createFlash(Color.BLACK, 150);
-			GamePanel.createShake(30, 15);
+		if (((GamePanel) ApplicationFrame.current).levelWon == 0 && this.isAlive) {
+			((GamePanel) ApplicationFrame.current).createFlash(Color.BLACK, 150);
+			((GamePanel) ApplicationFrame.current).createShake(30, 15);
 			this.removeEffects.addAll(this.effects);
 			this.isAlive = false;
 			this.exists = false;

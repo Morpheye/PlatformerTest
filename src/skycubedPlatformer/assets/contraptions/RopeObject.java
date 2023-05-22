@@ -10,6 +10,7 @@ import skycubedPlatformer.assets.PushableObject;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class RopeObject extends PushableObject {
@@ -79,7 +80,7 @@ public class RopeObject extends PushableObject {
 	
 	@Override
 	public boolean hasCollided(GameObject obj) {
-		if (obj.equals(GamePanel.MainFrameObj)) return true;
+		if (obj.equals(((GamePanel) ApplicationFrame.current).MainFrameObj)) return true;
 		else return super.hasCollided(obj);
 	}
 

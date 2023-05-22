@@ -8,6 +8,7 @@ import skycubedPlatformer.assets.liquidPlatforms.WaterPlatform;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.items.weapons.Weapon;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class AquaforgedTrident extends Weapon {
@@ -40,8 +41,8 @@ public class AquaforgedTrident extends Weapon {
 	public void onAttackStart(LivingObject wielder, GameObject target) {
 		if (wielder.liquids.contains(WaterPlatform.class)) {
 			wielder.attackDamage += 15; 
-			GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
-			GamePanel.createFlash(new Color(0, 255, 255), 20);
+			((GamePanel) ApplicationFrame.current).createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
+			((GamePanel) ApplicationFrame.current).createFlash(new Color(0, 255, 255), 20);
 		}
 	}
 	

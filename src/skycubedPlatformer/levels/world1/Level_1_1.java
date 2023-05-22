@@ -15,6 +15,7 @@ import skycubedPlatformer.assets.solidPlatforms.GrassPlatform;
 import skycubedPlatformer.assets.triggers.TextDisplayTrigger;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.Level;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class Level_1_1 extends Level {
@@ -75,8 +76,8 @@ public class Level_1_1 extends Level {
 	}
 	
 	@Override
-	public void onStart() {
-		GamePanel.displayText("Use WASD to move around.", 240);
+	public void onStart(GamePanel panel) {
+		panel.displayText("Use WASD to move around.", 240);
 	}
 	
 	SolidPlatform movingPlatform;

@@ -20,6 +20,7 @@ import skycubedPlatformer.assets.triggers.Code;
 import skycubedPlatformer.assets.triggers.TextDisplayTrigger;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.Level;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class Level_1_2 extends Level {
@@ -57,8 +58,8 @@ public class Level_1_2 extends Level {
 	}
 	
 	@Override
-	public void onStart() {
-		GamePanel.displayText("Use boxes wisely, don't softlock yourself.", 300);
+	public void onStart(GamePanel panel) {
+		panel.displayText("Use boxes wisely, don't softlock yourself.", 300);
 		
 	}
 	

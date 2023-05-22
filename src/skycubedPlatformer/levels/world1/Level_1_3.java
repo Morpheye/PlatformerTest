@@ -29,6 +29,7 @@ import skycubedPlatformer.assets.triggers.Code;
 import skycubedPlatformer.assets.triggers.TextDisplayTrigger;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.Level;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class Level_1_3 extends Level {
@@ -66,8 +67,8 @@ public class Level_1_3 extends Level {
 	}
 	
 	@Override
-	public void onStart() {
-		GamePanel.displayText("Use space to melee attack. Watch your health!", 240);
+	public void onStart(GamePanel panel) {
+		panel.displayText("Use space to melee attack. Watch your health!", 240);
 	}
 	
 	@Override

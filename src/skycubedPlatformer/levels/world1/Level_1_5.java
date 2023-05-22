@@ -19,6 +19,7 @@ import skycubedPlatformer.assets.solidPlatforms.WoodPlatform;
 import skycubedPlatformer.assets.triggers.TextDisplayTrigger;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.levels.Level;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class Level_1_5 extends Level {
@@ -56,11 +57,11 @@ public class Level_1_5 extends Level {
 	}
 	
 	@Override
-	public void onStart() {
+	public void onStart(GamePanel panel) {
 		
 		GamePanel.camera_x = GamePanel.player.x;
 		GamePanel.camera_y = GamePanel.player.y;
-		GamePanel.displayText("Don't fall behind!", 240);
+		panel.displayText("Don't fall behind!", 240);
 	}
 	
 	@Override
@@ -173,7 +174,8 @@ public class Level_1_5 extends Level {
 	@Override
 	public void onTick() {
 		//Autoscroll
-		if ((GamePanel.camera_x - GamePanel.player.x > GamePanel.camera_size/2 + 100) && GamePanel.levelWon == 0) {
+		if ((GamePanel.camera_x - GamePanel.player.x > GamePanel.camera_size/2 + 100) 
+				&& ((GamePanel) ApplicationFrame.current).levelWon == 0) {
 			if (GamePanel.player.isAlive) {
 				GamePanel.player.health = 0;
 				GamePanel.player.die();

@@ -71,7 +71,7 @@ public class Level_2_1 extends Level {
 	}
 	
 	@Override
-	public void onStart() {
+	public void onStart(GamePanel panel) {
 	}
 	
 	@Override

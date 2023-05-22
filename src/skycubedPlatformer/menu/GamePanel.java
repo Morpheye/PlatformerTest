@@ -60,14 +60,14 @@ public class GamePanel extends JPanel {
 	public static double camera_size;
 	public static int target_camera_size;
 	
-	public static boolean isPaused;
-	public static int levelWon;
+	public boolean isPaused;
+	public int levelWon;
 	
 	public Timer timer;
 	public long coins;
 	public long targetCoins;
 	
-	public static int timeSinceRestart = 0;
+	public int timeSinceRestart = 0;
 	
 	public static ArrayList<Consumable> consumables;
 	
@@ -135,7 +135,7 @@ public class GamePanel extends JPanel {
 			}
 		});
 		
-		level.onStart();
+		level.onStart(this);
 		
 		itemTime = 0;
 		consumables = new ArrayList<Consumable>();
@@ -302,8 +302,8 @@ public class GamePanel extends JPanel {
 		
 	}
 	
-	static int buttonSizeX=(int) (400*(Main.SIZE_RATIO));
-	static int buttonSizeY=(int) (100*(Main.SIZE_RATIO));
+	int buttonSizeX=(int) (400*(Main.SIZE_RATIO));
+	int buttonSizeY=(int) (100*(Main.SIZE_RATIO));
 	
 	public void drawPauseMenu(Graphics g) {
 		g.setColor(new Color(0,0,0,200));
@@ -394,10 +394,10 @@ public class GamePanel extends JPanel {
 		
 	}
 
-	public static String displayText = null;
-	public static int textDuration = 0;
+	public String displayText = null;
+	public int textDuration = 0;
 	
-	public static void displayText(String newText, int newDuration) {
+	public void displayText(String newText, int newDuration) {
 		displayText = newText;
 		textDuration = newDuration;
 	}
@@ -609,15 +609,15 @@ public class GamePanel extends JPanel {
 
 	}
 	
-	public static int shake_duration = 0;
-	public static int shake_max_duration = 0;
-	public static double shake_magnitude = 0;
-	public static double shake_x = 0;
-	public static double shake_y = 0;
-	public static HashMap<Color,Integer> flashes = new HashMap<Color,Integer>();
-	public static ArrayList<Shake> shakes = new ArrayList<Shake>();
+	public int shake_duration = 0;
+	public int shake_max_duration = 0;
+	public double shake_magnitude = 0;
+	public double shake_x = 0;
+	public double shake_y = 0;
+	public HashMap<Color,Integer> flashes = new HashMap<Color,Integer>();
+	public ArrayList<Shake> shakes = new ArrayList<Shake>();
 	
-	public static class Shake {
+	public class Shake {
 		public int duration;
 		public int max_duration;
 		public double magnitude;
@@ -630,12 +630,12 @@ public class GamePanel extends JPanel {
 		}
 	}
 	
-	public static void createShake(int duration, double magnitude) {createShake(duration, magnitude, 1);}
-	public static void createShake(int duration, double magnitude, double gradient) {
+	public void createShake(int duration, double magnitude) {createShake(duration, magnitude, 1);}
+	public void createShake(int duration, double magnitude, double gradient) {
 		shakes.add(new Shake(duration, magnitude, gradient));
 	}
 	
-	public static void createFlash(Color color, int duration) {
+	public void createFlash(Color color, int duration) {
 		if (flashes.containsKey(color) && flashes.get(color) < duration) flashes.replace(color, duration);
 		else flashes.put(color, duration);
 	}
@@ -820,7 +820,7 @@ public class GamePanel extends JPanel {
 		}
 	}
 	
-	public static final GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
+	public GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
 	
 	public static BufferedImage healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
 	densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
@@ -876,6 +876,8 @@ public class GamePanel extends JPanel {
 		projectiles = new ArrayList<GameObject>();
 		particles = new ArrayList<GameObject>();
 		addedObjects = new ArrayList<GameObject>();
+		
+		consumables = new ArrayList<Consumable>();
 	}
 	
 	public void destroy() {

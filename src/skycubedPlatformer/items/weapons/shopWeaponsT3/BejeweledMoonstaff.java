@@ -7,6 +7,7 @@ import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.items.weapons.Weapon;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class BejeweledMoonstaff extends Weapon {
@@ -40,7 +41,7 @@ public class BejeweledMoonstaff extends Weapon {
 	
 	@Override
 	public void onAttackStart(LivingObject wielder, GameObject victim) {
-		GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
+		((GamePanel) ApplicationFrame.current).createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
 	}
 	
 	@Override

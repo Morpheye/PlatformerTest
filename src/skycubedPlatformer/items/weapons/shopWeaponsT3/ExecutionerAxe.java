@@ -6,6 +6,7 @@ import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.items.weapons.Weapon;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class ExecutionerAxe extends Weapon {
@@ -42,7 +43,7 @@ public class ExecutionerAxe extends Weapon {
 		if (!(victim.type.equals(ObjType.Player) || victim.type.equals(ObjType.Creature))) return;
 		attackBoost = (int) (15 * (1 - (double) ((LivingObject) victim).health / ((LivingObject) victim).maxHealth));
 		wielder.attackDamage += attackBoost;
-		GamePanel.createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
+		((GamePanel) ApplicationFrame.current).createShake(3, 40 * (double) wielder.attackDamage / wielder.maxHealth, 2);
 	}
 	
 	@Override

@@ -6,6 +6,7 @@ import skycubedPlatformer.assets.DecorationObject;
 import skycubedPlatformer.assets.Trigger;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class TextDisplayTrigger extends Trigger {
@@ -23,7 +24,7 @@ public class TextDisplayTrigger extends Trigger {
 	@Override
 	public void run() {
 		super.run();
-		GamePanel.displayText(this.text, this.displayTime);
+		((GamePanel) ApplicationFrame.current).displayText(this.text, this.displayTime);
 	}
 	
 	@Override

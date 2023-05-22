@@ -21,6 +21,7 @@ import skycubedPlatformer.assets.triggers.TextDisplayTrigger;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.items.weapons.starterWeapons.PointedSpear;
 import skycubedPlatformer.levels.Level;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class Level_1_8 extends Level {
@@ -67,10 +68,10 @@ public class Level_1_8 extends Level {
 	}
 	
 	@Override
-	public void onStart() {
+	public void onStart(GamePanel panel) {
 		GamePanel.camera_x = GamePanel.player.x;
 		GamePanel.camera_y = GamePanel.player.y;
-		GamePanel.displayText("Be very careful of explosives.", 240);
+		panel.displayText("Be very careful of explosives.", 240);
 	}
 	
 	@Override

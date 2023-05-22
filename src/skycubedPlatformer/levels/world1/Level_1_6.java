@@ -31,6 +31,7 @@ import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.items.weapons.starterWeapons.PointedSpear;
 import skycubedPlatformer.items.weapons.starterWeapons.WoodenClub;
 import skycubedPlatformer.levels.Level;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class Level_1_6 extends Level {
@@ -68,10 +69,10 @@ public class Level_1_6 extends Level {
 	}
 	
 	@Override
-	public void onStart() {
+	public void onStart(GamePanel panel) {
 		GamePanel.camera_x = GamePanel.player.x;
 		GamePanel.camera_y = GamePanel.player.y;
-		GamePanel.displayText("Don't get knocked off!", 240);
+		panel.displayText("Don't get knocked off!", 240);
 	}
 	
 	@Override

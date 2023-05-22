@@ -13,6 +13,7 @@ import skycubedPlatformer.game.MovableObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.items.weapons.weaponsT5.SpiritScythe;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
 
@@ -96,7 +97,7 @@ public class Projectile extends MovableObject {
 			}
 		}
 		
-		if (hasCollided && this.hasCollided(GamePanel.MainFrameObj)) this.playHitSound();
+		if (hasCollided && this.hasCollided(((GamePanel) ApplicationFrame.current).MainFrameObj)) this.playHitSound();
 		
 		this.lifetime--;
 		if (this.lifetime <= 0) {

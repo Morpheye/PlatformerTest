@@ -17,6 +17,7 @@ import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
 
@@ -51,7 +52,7 @@ public class Explosion extends Particle {
 	}
 	
 	private void init() {
-		GamePanel.createShake(20, this.radius);
+		((GamePanel) ApplicationFrame.current).createShake(20, this.radius);
 		SoundHelper.playFinalSound(this.spawnSound);
 		
 		//damage
