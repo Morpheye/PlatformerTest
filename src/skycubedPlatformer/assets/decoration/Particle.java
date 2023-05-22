@@ -8,6 +8,7 @@ import javax.sound.sampled.Clip;
 import skycubedPlatformer.assets.DecorationObject;
 import skycubedPlatformer.game.ObjType;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class Particle extends DecorationObject {
@@ -32,13 +33,13 @@ public class Particle extends DecorationObject {
 	
 	@Override
 	public void move() {
-		if (this.gravity) this.vy += GamePanel.gravity;
+		if (this.gravity) this.vy += ((GamePanel) ApplicationFrame.current).gravity;
 		
 		this.x += this.vx;
 		this.y += this.vy;
 		
-		this.vx *= GamePanel.airDrag;
-		this.vy *= GamePanel.airDrag;
+		this.vx *= ((GamePanel) ApplicationFrame.current).airDrag;
+		this.vy *= ((GamePanel) ApplicationFrame.current).airDrag;
 		
 		this.lifetime--;
 		if (this.lifetime < 0) {

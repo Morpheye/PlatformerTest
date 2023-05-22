@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import skycubedPlatformer.Main;
 import skycubedPlatformer.assets.SolidPlatform;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
 public class ConveyorBelt extends SolidPlatform {
@@ -25,7 +26,7 @@ public class ConveyorBelt extends SolidPlatform {
 	
 	public void move() {
 		this.vx = real_vx;
-		this.scroll += 1 * (Main.SIZE/GamePanel.camera_size);
+		this.scroll += 1 * (Main.SIZE/((GamePanel) ApplicationFrame.current).camera_size);
 		if (this.scroll > this.size_x) this.scroll -= this.size_x;
 		
 		super.move();

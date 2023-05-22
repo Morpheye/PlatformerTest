@@ -153,8 +153,8 @@ public class SpiritScythe extends Weapon {
 			this.attemptMoveX(this.vx, true);
 			
 
-			this.vy *= GamePanel.airDrag;
-			this.vx *= GamePanel.airDrag;
+			this.vy *= ((GamePanel) ApplicationFrame.current).airDrag;
+			this.vx *= ((GamePanel) ApplicationFrame.current).airDrag;
 
 			//CHECK BOUNDS
 			if (this.y > GamePanel.level.topLimit) GamePanel.deletedObjects.add(this);

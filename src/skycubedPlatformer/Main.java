@@ -1,13 +1,10 @@
 package skycubedPlatformer;
 
 import java.awt.Toolkit;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.util.appdata.DataManager;
 import skycubedPlatformer.util.appdata.FileLoader;
-import skycubedPlatformer.util.discord.DiscordRPC;
 
 public class Main {
 	

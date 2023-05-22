@@ -47,18 +47,18 @@ public class GamePanel extends JPanel {
 	public static Player player;
 	public static Level level;
 	
-	public static double airDrag;
-	public static double gravity;
+	public double airDrag;
+	public double gravity;
 	public static List<GameObject> objects;
 	public static List<GameObject> projectiles;
 	public static List<GameObject> particles;
 	public static List<GameObject> deletedObjects;
 	public static List<GameObject> addedObjects;
 	
-	public static double camera_x;
-	public static double camera_y;
-	public static double camera_size;
-	public static int target_camera_size;
+	public double camera_x;
+	public double camera_y;
+	public double camera_size;
+	public int target_camera_size;
 	
 	public boolean isPaused;
 	public int levelWon;

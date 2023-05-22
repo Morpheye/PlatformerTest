@@ -77,8 +77,8 @@ public class CoinParticle extends Particle {
 			if (this.lifetime == 30) SoundHelper.playFinalSound(this.despawnSound);
 			Graphics2D g2d = (Graphics2D) g;
 			
-			this.x = GamePanel.camera_x;
-			this.y = GamePanel.camera_y;
+			this.x = ((GamePanel) ApplicationFrame.current).camera_x;
+			this.y = ((GamePanel) ApplicationFrame.current).camera_y;
 			
 			int drawX = (int) (lastNormalDrawX + (target_x-lastNormalDrawX)*((30-this.lifetime)/30.0));
 			int drawY = (int) (lastNormalDrawY + (target_y-lastNormalDrawY)*((30-this.lifetime)/30.0));

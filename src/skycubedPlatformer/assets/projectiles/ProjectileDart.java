@@ -11,6 +11,7 @@ import skycubedPlatformer.assets.Projectile;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
 
@@ -32,7 +33,7 @@ public class ProjectileDart extends Projectile {
 	
 	@Override
 	public void move() {
-		this.vy += GamePanel.gravity * 0.05;
+		this.vy += ((GamePanel) ApplicationFrame.current).gravity * 0.05;
 		
 		super.move();
 		

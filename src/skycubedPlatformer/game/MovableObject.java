@@ -65,12 +65,12 @@ public class MovableObject extends GameObject {
 		
 		if (this.inLiquid) {
 			double diff = this.density - liquidDensity;
-			double lift = GamePanel.gravity * Math.atan(2*diff) / (Math.PI / 2) - GamePanel.gravity;
+			double lift = ((GamePanel) ApplicationFrame.current).gravity * Math.atan(2*diff) / (Math.PI / 2) - ((GamePanel) ApplicationFrame.current).gravity;
 			
 			this.vy += lift;
 		}
 		
-		this.vy += GamePanel.gravity;
+		this.vy += ((GamePanel) ApplicationFrame.current).gravity;
 
 		//YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 		
@@ -90,8 +90,8 @@ public class MovableObject extends GameObject {
 		
 		//AIR DRAG
 		if (this.inAir) {
-			this.vy *= GamePanel.airDrag;
-			this.vx *= GamePanel.airDrag;
+			this.vy *= ((GamePanel) ApplicationFrame.current).airDrag;
+			this.vx *= ((GamePanel) ApplicationFrame.current).airDrag;
 		}
 		
 		//GROUND DRAG

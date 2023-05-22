@@ -20,7 +20,7 @@ public class CameraSizePowerup extends Powerup {
 		Code code = new Code() {
 			@Override
 			public void run() {
-				GamePanel.target_camera_size = (int) (800*d);
+				((GamePanel) ApplicationFrame.current).target_camera_size = (int) (800*d);
 		}};
 		
 		this.code = code;

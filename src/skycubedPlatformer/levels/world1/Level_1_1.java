@@ -59,20 +59,20 @@ public class Level_1_1 extends Level {
 	
 	@Override
 	public void moveCamera() { //loosely locked
-		double diffX = GamePanel.player.x - GamePanel.camera_x;
-		double diffY = GamePanel.player.y - GamePanel.camera_y;
+		double diffX = GamePanel.player.x - ((GamePanel) ApplicationFrame.current).camera_x;
+		double diffY = GamePanel.player.y - ((GamePanel) ApplicationFrame.current).camera_y;
 		
 		int higherLimitX = 0;
 		int lowerLimitX = -100;
 		int higherLimitY = 100;
 		int lowerLimitY = -100;
 		
-		if (diffX > higherLimitX) GamePanel.camera_x = GamePanel.player.x - higherLimitX;
-		if (diffX < lowerLimitX) GamePanel.camera_x = GamePanel.player.x - lowerLimitX;
-		if (diffY > higherLimitY) GamePanel.camera_y = GamePanel.player.y - higherLimitY;
-		if (diffY < lowerLimitY) GamePanel.camera_y = GamePanel.player.y - lowerLimitY;
+		if (diffX > higherLimitX) ((GamePanel) ApplicationFrame.current).camera_x = GamePanel.player.x - higherLimitX;
+		if (diffX < lowerLimitX) ((GamePanel) ApplicationFrame.current).camera_x = GamePanel.player.x - lowerLimitX;
+		if (diffY > higherLimitY) ((GamePanel) ApplicationFrame.current).camera_y = GamePanel.player.y - higherLimitY;
+		if (diffY < lowerLimitY) ((GamePanel) ApplicationFrame.current).camera_y = GamePanel.player.y - lowerLimitY;
 		
-		if (GamePanel.camera_y < 400) GamePanel.camera_y = 400;
+		if (((GamePanel) ApplicationFrame.current).camera_y < 400) ((GamePanel) ApplicationFrame.current).camera_y = 400;
 	}
 	
 	@Override

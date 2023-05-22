@@ -54,8 +54,8 @@ public class Level {
 	public void onStart(GamePanel panel) {}
 	
 	public void moveCamera() { //DEFAULT CAMERA MOVEMENT (fully locked)
-		GamePanel.camera_x = GamePanel.player.x;
-		GamePanel.camera_y = GamePanel.player.y;
+		((GamePanel) ApplicationFrame.current).camera_x = GamePanel.player.x;
+		((GamePanel) ApplicationFrame.current).camera_y = GamePanel.player.y;
 		
 	}
 	
@@ -70,8 +70,8 @@ public class Level {
 	public static void drawRoundScenery(Graphics g, Color color, int[] x, int[] y, int[] size, int scale) {
 		g.setColor(color);
 		for (int i=0; i<x.length; i++) {
-			int drawX = x[i] - size[i]/2 - (int) ((GamePanel.camera_x + ((GamePanel) ApplicationFrame.current).shake_x)/scale);
-			int drawY = Main.SIZE - (int)(y[i] - (GamePanel.camera_y + ((GamePanel) ApplicationFrame.current).shake_y)/scale);
+			int drawX = x[i] - size[i]/2 - (int) ((((GamePanel) ApplicationFrame.current).camera_x + ((GamePanel) ApplicationFrame.current).shake_x)/scale);
+			int drawY = Main.SIZE - (int)(y[i] - (((GamePanel) ApplicationFrame.current).camera_y + ((GamePanel) ApplicationFrame.current).shake_y)/scale);
 			g.fillRoundRect(drawX, drawY, size[i], Main.SIZE*10, 150, 150);
 		}
 	}
@@ -79,7 +79,7 @@ public class Level {
 	
 	public static void drawFloorScenery(Graphics g, Color color, int y, int scale) {
 		g.setColor(color);
-		g.fillRect(0, Main.SIZE-(y - (int)((GamePanel.camera_y + ((GamePanel) ApplicationFrame.current).shake_y) / scale)), Main.SIZE, Main.SIZE*10);
+		g.fillRect(0, Main.SIZE-(y - (int)((((GamePanel) ApplicationFrame.current).camera_y + ((GamePanel) ApplicationFrame.current).shake_y) / scale)), Main.SIZE, Main.SIZE*10);
 	}
 
 }
