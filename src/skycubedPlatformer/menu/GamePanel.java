@@ -63,9 +63,10 @@ public class GamePanel extends JPanel {
 	public static boolean isPaused;
 	public static int levelWon;
 	
-	public static Timer timer;
-	public static long coins;
-	public static long targetCoins;
+	public Timer timer;
+	public long coins;
+	public long targetCoins;
+	
 	public static int timeSinceRestart = 0;
 	
 	public static ArrayList<Consumable> consumables;
@@ -79,9 +80,9 @@ public class GamePanel extends JPanel {
 		this.addMouseListener(new PauseMenuMouse());
 		
 		coins = 0;
-		restartLevel(level);
-		timeSinceRestart = 180;
 		loadImages();
+		timeSinceRestart = 180;
+		restartLevel(level);
 		screenshotTime = 0;
 		
 		timer = new Timer(1000/90, new ActionListener() {
@@ -97,7 +98,7 @@ public class GamePanel extends JPanel {
 	
 	}
 	
-	public static void restartLevel(Level newLevel) {
+	public void restartLevel(Level newLevel) {
 		timeSinceRestart = 0;
 		
 		//wipe old data if old data exists
@@ -778,7 +779,7 @@ public class GamePanel extends JPanel {
 					player.lastDirection = 1;
 				}
 			}
-			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0 && timeSinceRestart > 90) GamePanel.restartLevel(level);
+			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0 && timeSinceRestart > 90) restartLevel(level);
 
 		}
 
@@ -806,7 +807,7 @@ public class GamePanel extends JPanel {
 			
 			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE/2) < buttonSizeY/2) {
 				isPaused = false;
-				GamePanel.restartLevel(level);
+				restartLevel(level);
 			}
 			
 			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*3/4) < buttonSizeY/2) {
@@ -850,7 +851,7 @@ public class GamePanel extends JPanel {
 		} catch (Exception e) {e.printStackTrace();}
 	}
 	
-	public static void destroyLevel() {
+	public void destroyLevel() {
 		//wipe all shit in all objects
 		if (objects != null) {
 			for (GameObject obj : objects) {
@@ -878,7 +879,7 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void destroy() {
-		
+		this.timer = null;
 	}
 	
 	@Override

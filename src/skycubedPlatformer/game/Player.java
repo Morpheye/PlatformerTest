@@ -14,6 +14,7 @@ import skycubedPlatformer.assets.decoration.particles.CoinParticle;
 import skycubedPlatformer.assets.effects.Effect;
 import skycubedPlatformer.assets.triggers.Powerup;
 import skycubedPlatformer.items.weapons.Weapon;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.util.appdata.DataManager;
@@ -136,10 +137,10 @@ public class Player extends LivingObject {
 		this.timeSinceDamaged++;
 		
 		//CHECK BOUNDS
-		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
-		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) GamePanel.restartLevel(GamePanel.level);
+		if (this.y > GamePanel.level.topLimit && GamePanel.levelWon==0) ((GamePanel) ApplicationFrame.current).restartLevel(GamePanel.level);
+		if (this.y < GamePanel.level.bottomLimit && GamePanel.levelWon==0) ((GamePanel) ApplicationFrame.current).restartLevel(GamePanel.level);
 		if (this.timeSinceDeath > 120 && GamePanel.levelWon==0) {
-			GamePanel.restartLevel(GamePanel.level);
+			((GamePanel) ApplicationFrame.current).restartLevel(GamePanel.level);
 		}
 
 	}

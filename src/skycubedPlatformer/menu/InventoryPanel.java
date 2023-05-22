@@ -567,7 +567,7 @@ public class InventoryPanel extends JPanel {
 						reloadImages();
 						return;
 					} else {
-						stop();
+						destroy();
 						timer.stop();
 						Main.jframe.openLevelSelect(new Level_1_1());
 						return;
@@ -760,10 +760,14 @@ public class InventoryPanel extends JPanel {
 		
 	}
 		
-	void stop() {
+	void destroy() {
 		if (this.equipSound != null) if (this.equipSound.isOpen()) this.equipSound.close();
 		if (this.purchaseSound != null) if (this.purchaseSound.isOpen()) this.purchaseSound.close();
 		if (this.consumeSound != null) if (this.consumeSound.isOpen()) this.consumeSound.close();
+		
+		this.coinImage.flush(); this.coinImage = null;
+		this.gemImage.flush(); this.gemImage = null;
+		this.lockImage.flush(); this.lockImage = null;
 	}
 	
 	static Comparator<String> inventorySorter = new Comparator<String>() {

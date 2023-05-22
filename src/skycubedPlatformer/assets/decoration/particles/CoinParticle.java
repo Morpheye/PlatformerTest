@@ -13,6 +13,7 @@ import skycubedPlatformer.Main;
 import skycubedPlatformer.assets.decoration.Particle;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.Player;
+import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;
 import skycubedPlatformer.util.appdata.DataManager;
@@ -43,7 +44,7 @@ public class CoinParticle extends Particle {
 	@Override
 	public void move() {
 		if (this.lifetime == 0) {
-			GamePanel.targetCoins += this.coinAmount;
+			((GamePanel) ApplicationFrame.current).targetCoins += this.coinAmount;
 			DataManager.saveData.coins += this.coinAmount;
 			
 		}

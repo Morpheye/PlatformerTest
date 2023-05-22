@@ -466,6 +466,8 @@ public class LevelSelectPanel extends JPanel {
 		this.lockImage = null;
 		this.coinImage = null;
 		this.gemImage = null;
+		
+		this.timer = null;
 	}
 	
 	@Override
