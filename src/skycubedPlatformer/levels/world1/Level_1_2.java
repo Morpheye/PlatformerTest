@@ -112,11 +112,7 @@ public class Level_1_2 extends Level {
 		
 		//widen camera powerup
 		objects.add(new TextDisplayTrigger(2700,665,50,50,"Various power-ups give different buffs.",300));
-		objects.add(new CameraSizePowerup(2700, 665, 50, new Code() {
-			@Override
-			public void run() {
-				GamePanel.target_camera_size = (int) (Main.SIZE*1.6);
-			}}));
+		objects.add(new CameraSizePowerup(2700, 665, 50, 1.6));
 		objects.add(new StonePlatform(2700, 600, 200, 50));
 		objects.add(new StonePlatform(3100,650,200,700));
 		objects.add(new StonePlatform(3100,100,250,50));

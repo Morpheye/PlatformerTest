@@ -3,6 +3,7 @@ package skycubedPlatformer.menu;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -184,5 +185,10 @@ public class MainPanel extends JPanel {
 	void destroy() {
 		System.gc();
 	}
+	
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(Main.SIZE, Main.SIZE);
+    }
 	
 }

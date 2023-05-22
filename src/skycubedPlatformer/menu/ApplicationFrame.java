@@ -52,6 +52,7 @@ public class ApplicationFrame extends JFrame {
 		if (current != null) current.setEnabled(false);
 		current = new GamePanel(level);
 		panel.add(current);
+		this.pack();
 		current.requestFocus();	
 		
 		String wielding = (Weapon.getWeapon(DataManager.saveData.selectedWeapon) != null) ?
@@ -70,6 +71,7 @@ public class ApplicationFrame extends JFrame {
 		
 		current = new LevelSelectPanel();
 		panel.add(current);
+		this.pack();
 		current.requestFocus();
 		DiscordRPC.updateStatus("In Level Select", "");
 	}
@@ -84,6 +86,7 @@ public class ApplicationFrame extends JFrame {
 		if (current != null) current.setEnabled(false);
 		current = new InventoryPanel();
 		panel.add(current);
+		this.pack();
 		current.requestFocus();
 		
 		String wielding = (Weapon.getWeapon(DataManager.saveData.selectedWeapon) != null) ?
@@ -100,7 +103,8 @@ public class ApplicationFrame extends JFrame {
 		
 		if (current != null) current.setEnabled(false);
 		current = new MainPanel();
-		panel.add(current);
+		this.add(current);
+		this.pack();
 		current.requestFocus();
 		DiscordRPC.updateStatus("In Main Menu", "");
 	}

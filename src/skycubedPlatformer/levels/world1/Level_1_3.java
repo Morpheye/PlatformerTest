@@ -123,12 +123,7 @@ public class Level_1_3 extends Level {
 		objects.add(new PushableBox(2650, 1150, 40, 40));
 		objects.add(new GrassPlatform(2900, 1225, 200, 50));
 		objects.add(new HealPowerup(2500, 1300, 50));
-		objects.add(new CameraSizePowerup(3000, 1300, 50, new Code() {
-			@Override
-			public void run() {
-				GamePanel.target_camera_size = (int) (Main.SIZE*1.25);
-			}}));
-
+		objects.add(new CameraSizePowerup(3000, 1300, 50, 1.25));
 		//start pking back
 		objects.add(new StonePlatform(2100, 1200, 200, 200));
 		objects.add(new StonePlatform(1500, 1300, 600, 200));

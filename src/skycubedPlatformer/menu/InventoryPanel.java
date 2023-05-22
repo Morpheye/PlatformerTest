@@ -3,6 +3,7 @@ package skycubedPlatformer.menu;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -82,7 +83,7 @@ public class InventoryPanel extends JPanel {
 		timer.start();
 	}
 	
-	final int of = 10;
+	final int of = (int) (10*(Main.SIZE/800.0));
 	final int[] slotX = {Main.SIZE/5, Main.SIZE*2/5, Main.SIZE*3/5, Main.SIZE*4/5,
 				Main.SIZE/5, Main.SIZE*2/5, Main.SIZE*3/5, Main.SIZE*4/5,
 				Main.SIZE/5, Main.SIZE*2/5, Main.SIZE*3/5, Main.SIZE*4/5,
@@ -98,13 +99,13 @@ public class InventoryPanel extends JPanel {
 	String[] slotNames = new String[slotX.length];
 	String[] amountList = new String[slotX.length];
 	
-	final int imgR = 70;
+	final int imgR = (int) (70*(Main.SIZE/800.0));
 	int scroll = 0;
 	boolean guiOpen = false;
 	int guiSelected = 0;
 	boolean inShop = false;
-	int buttonSizeX = 180;
-	int buttonSizeY = 40;
+	int buttonSizeX = (int) (180*(Main.SIZE/800.0));
+	int buttonSizeY = (int) (40*(Main.SIZE/800.0));
 	
 	int coloring = 100;
 	int vc = 5;
@@ -120,12 +121,12 @@ public class InventoryPanel extends JPanel {
 		coloring += vc;
 		
 		//title
-		Font font = new Font(Font.MONOSPACED, Font.BOLD, 50);
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, (int) (50*(Main.SIZE/800.0)));
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		String text = (inShop) ? "Item Shop" : "Inventory";
 		int lvlSelectStringWidth = g2d.getFontMetrics(font).stringWidth(text);
-		g2d.drawString(text, Main.SIZE/2 - lvlSelectStringWidth/2, 50);
+		g2d.drawString(text, Main.SIZE/2 - lvlSelectStringWidth/2, (int) (50*(Main.SIZE/800.0)));
 		
 		Point mousePosition = this.getMousePosition();
 		
@@ -142,7 +143,8 @@ public class InventoryPanel extends JPanel {
 						(tier == 2) ? GameObject.COLOR_SILVER : (tier == 3) ? GameObject.COLOR_GOLD : 
 						(tier == 4) ? GameObject.COLOR_DIAMOND : (tier == 5) ? GameObject.COLOR_CRIMSONADE : Color.white;
 					g2d.setColor(borderColor);
-					g2d.fillRoundRect(slotX[i]-imgR-5, slotY[i]-imgR-5, 2*imgR+10, 2*imgR+10, 5, 5);
+					g2d.fillRoundRect(slotX[i]-imgR-(int)(5*(Main.SIZE/800.0)), slotY[i]-imgR-(int)(5*(Main.SIZE/800.0)),
+							2*imgR+(int)(10*(Main.SIZE/800.0)), 2*imgR+(int)(10*(Main.SIZE/800.0)), 5, 5);
 					g2d.setColor(new Color(coloring, coloring, coloring));
 				}
 			}
@@ -175,32 +177,35 @@ public class InventoryPanel extends JPanel {
 			
 			if (inShop && slotNames[i] != null) {
 				if (DataManager.saveData.inventory.containsKey(slotNames[i]) && Weapon.weaponNames.contains(slotNames[i])) {
-					g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
+					g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int) (15*(Main.SIZE/800.0))));
 					g2d.setColor(Color.WHITE);
-					g2d.drawString("OWNED", slotX[i]-imgR+5, slotY[i]-imgR+20);
+					g2d.drawString("OWNED", slotX[i]-imgR+(int)(5*(Main.SIZE/800.0)), slotY[i]-imgR+(int)(20*(Main.SIZE/800.0)));
 					
 				} else {
 					int coinCost = Item.getItem(slotNames[i]).coinCost;
 					int gemCost = Item.getItem(slotNames[i]).gemCost;
 				
 					if (coinCost != 0) {
-						g2d.drawImage(coinImage, slotX[i]-imgR+5, slotY[i]-imgR+5, 20, 20, null);
-						g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
+						g2d.drawImage(coinImage, slotX[i]-imgR+(int)(5*(Main.SIZE/800.0)), slotY[i]-imgR+(int)(5*(Main.SIZE/800.0)),
+								(int) (20*(Main.SIZE/800.0)), (int) (20*(Main.SIZE/800.0)), null);
+						g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int) (15*(Main.SIZE/800.0))));
 						g2d.setColor(Color.WHITE);
-						g2d.drawString(coinCost+"", slotX[i]-imgR+30, slotY[i]-imgR+20);
+						g2d.drawString(coinCost+"", slotX[i]-imgR+(int)(30*(Main.SIZE/800.0)),
+								slotY[i]-imgR+(int)(20*(Main.SIZE/800.0)));
 					}
 					if (gemCost != 0) {
-						g2d.drawImage(gemImage, slotX[i]-imgR+5, slotY[i]-imgR+30, 20, 20, null);
-						g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
+						g2d.drawImage(gemImage, slotX[i]-imgR+(int)(5*(Main.SIZE/800.0)), slotY[i]-imgR+(int)(30*(Main.SIZE/800.0)),
+								(int) (20*(Main.SIZE/800.0)), (int) (20*(Main.SIZE/800.0)), null);
+						g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int) (15*(Main.SIZE/800.0))));
 						g2d.setColor(Color.WHITE);
-						g2d.drawString(gemCost+"", slotX[i]-imgR+30, slotY[i]-imgR+45);
+						g2d.drawString(gemCost+"",slotX[i]-imgR+(int)(30*(Main.SIZE/800.0)),slotY[i]-imgR+(int)(45*(Main.SIZE/800.0)));
 					}
 				}
 
 			} else if (!inShop && amountList[i] != null && amountList[i].length() > 0) {
 				String amount = "x"+ImageHelper.formatCurrency(Long.parseLong(amountList[i]));
 				if (Weapon.weaponNames.contains(slotNames[i])) amount = "";
-				font = new Font(Font.MONOSPACED, Font.BOLD, 25);
+				font = new Font(Font.MONOSPACED, Font.BOLD, (int) (25*(Main.SIZE/800.0)));
 				g2d.setFont(font);
 				g2d.setColor(Color.WHITE);
 				int amountStringWidth = g2d.getFontMetrics(font).stringWidth(amount);
@@ -213,65 +218,65 @@ public class InventoryPanel extends JPanel {
 		
 		//return to level select
 		g2d.setColor(Color.gray);
-		g2d.fillRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
-		font = new Font(Font.MONOSPACED, Font.BOLD, 35);
+		g2d.fillRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		font = new Font(Font.MONOSPACED, Font.BOLD, (int) (35*(Main.SIZE/800.0)));
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		int lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Back");
 		int lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
-		g2d.drawString("Back", Main.SIZE*1/6-(lvlTitleWidth/2), Main.SIZE*11/12+10);
+		g2d.drawString("Back", Main.SIZE*1/6-(lvlTitleWidth/2), Main.SIZE*14/15+(int)(10*(Main.SIZE/800.0)));
 		
 		if (mousePosition != null && !guiOpen) {
 			int mouseX = mousePosition.x;
 			int mouseY = mousePosition.y;
-			if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*11/12) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*14/15) < buttonSizeY/2) {
 				g2d.setColor(new Color(255,255,255,100));
-				g2d.fillRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+				g2d.fillRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		}}
 		g2d.setColor(Color.WHITE);
-		g2d.drawRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		g2d.drawRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		//shop
 		if (!inShop) {
 			//open shop
 			g2d.setColor(Color.gray);
-			g2d.fillRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
-			font = new Font(Font.MONOSPACED, Font.BOLD, 35);
+			g2d.fillRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+			font = new Font(Font.MONOSPACED, Font.BOLD, (int) (35*(Main.SIZE/800.0)));
 			g2d.setFont(font);
 			g2d.setColor(Color.WHITE);
 			lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Shop");
 			lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
-			g2d.drawString("Shop", Main.SIZE*5/6-(lvlTitleWidth/2), Main.SIZE*11/12+10);
+			g2d.drawString("Shop", Main.SIZE*5/6-(lvlTitleWidth/2), Main.SIZE*14/15+(int)(10*(Main.SIZE/800.0)));
 			
 			if (mousePosition != null && !guiOpen) {
 				int mouseX = mousePosition.x;
 				int mouseY = mousePosition.y;
-				if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*11/12) < buttonSizeY/2) {
+				if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*14/15) < buttonSizeY/2) {
 					g2d.setColor(new Color(255,255,255,100));
-					g2d.fillRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+					g2d.fillRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 				}}
 			g2d.setColor(Color.WHITE);
-			g2d.drawRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+			g2d.drawRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 			
 			//unequip weapon
 			g2d.setColor(Color.gray);
-			g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
-			font = new Font(Font.MONOSPACED, Font.BOLD, 35);
+			g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+			font = new Font(Font.MONOSPACED, Font.BOLD, (int) (35*(Main.SIZE/800.0)));
 			g2d.setFont(font);
 			g2d.setColor(Color.WHITE);
 			lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Unequip");
 			lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
-			g2d.drawString("Unequip", Main.SIZE/2-(lvlTitleWidth/2), Main.SIZE*11/12+10);
+			g2d.drawString("Unequip", Main.SIZE/2-(lvlTitleWidth/2), Main.SIZE*14/15+(int)(10*(Main.SIZE/800.0)));
 			
 			if (mousePosition != null && !guiOpen) {
 				int mouseX = mousePosition.x;
 				int mouseY = mousePosition.y;
-				if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*11/12) < buttonSizeY/2) {
+				if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*14/15) < buttonSizeY/2) {
 					g2d.setColor(new Color(255,255,255,100));
-					g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+					g2d.fillRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 				}}
 			g2d.setColor(Color.WHITE);
-			g2d.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*11/12-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+			g2d.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		}
 		
 		//SIDE BUTTONS
@@ -289,13 +294,13 @@ public class InventoryPanel extends JPanel {
 	}
 	
 	void drawScrollButtons(Graphics2D g2d, Point mousePosition) {
-		int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-of, w = 50;
+		int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-of, w = (int) (50*(Main.SIZE/800.0));
 		if (scroll > 0) {
 			g2d.setColor(Color.gray);
 			g2d.fillRoundRect(x1-w/2, y-w/2, w, w, 5, 5);
 			g2d.setColor(Color.WHITE);
-			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
-			g2d.drawString("<", x1-w/2+13, y+10);
+			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int)(40*(Main.SIZE/800.0))));
+			g2d.drawString("<", x1-w/2+(int)(13*(Main.SIZE/800.0)), y+(int)(10*(Main.SIZE/800.0)));
 			if (mousePosition != null) {
 				int mouseX = mousePosition.x;
 				int mouseY= mousePosition.y;
@@ -313,8 +318,8 @@ public class InventoryPanel extends JPanel {
 			g2d.setColor(Color.gray);
 			g2d.fillRoundRect(x2-w/2, y-w/2, w, w, 5, 5);
 			g2d.setColor(Color.WHITE);
-			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 40));
-			g2d.drawString(">", x2-w/2+13, y+10);
+			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int)(40*(Main.SIZE/800.0))));
+			g2d.drawString(">", x2-w/2+(int)(13*(Main.SIZE/800.0)), y+(int)(10*(Main.SIZE/800.0)));
 			if (mousePosition != null) {
 				int mouseX = mousePosition.x;
 				int mouseY= mousePosition.y;
@@ -334,78 +339,88 @@ public class InventoryPanel extends JPanel {
 			g2d.setColor(new Color(0,0,0,200));
 			g2d.fillRect(0, 0, Main.SIZE, Main.SIZE);
 			g2d.setColor(Color.GRAY);
-			int w=400;
-			int h=600;
-			g2d.fillRoundRect(Main.SIZE/2-w/2, Main.SIZE/2-h/2, w, h-100, 5, 5);
+			int w=(int) (400*(Main.SIZE/800.0));
+			int h=(int) (600*(Main.SIZE/800.0));
+			g2d.fillRoundRect(Main.SIZE/2-w/2, Main.SIZE/2-h/2, w, h-(int)(100*(Main.SIZE/800.0)), 5, 5);
 			g2d.setStroke(new BasicStroke(5));
 			g2d.setColor(Color.WHITE);
-			g2d.drawRoundRect(Main.SIZE/2-w/2, Main.SIZE/2-h/2, w, h-100, 5, 5);
+			g2d.drawRoundRect(Main.SIZE/2-w/2, Main.SIZE/2-h/2, w, h-(int)(100*(Main.SIZE/800.0)), 5, 5);
+			
+			int offset = (int)(5*(Main.SIZE/800.0));
 			
 			g2d.setColor(Color.darkGray);
-			g2d.fillRoundRect(Main.SIZE/2+w/6-5, Main.SIZE/2-h/2+10, w/3-5, w/3-5, 5, 5);
-			g2d.drawImage(slotImg[guiSelected], Main.SIZE/2+w/6-5, Main.SIZE/2-h/2+10, w/3-5, w/3-5, null);
+			g2d.fillRoundRect(Main.SIZE/2+w/6-offset, Main.SIZE/2-h/2+2*offset, w/3-offset, w/3-offset, 5, 5);
+			g2d.drawImage(slotImg[guiSelected], Main.SIZE/2+w/6-offset, Main.SIZE/2-h/2+2*offset, w/3-offset, w/3-offset, null);
 			g2d.setColor(Color.white);
-			g2d.drawRoundRect(Main.SIZE/2+w/6-5, Main.SIZE/2-h/2+10, w/3-5, w/3-5, 5, 5);
+			g2d.drawRoundRect(Main.SIZE/2+w/6-offset, Main.SIZE/2-h/2+2*offset, w/3-offset, w/3-offset, 5, 5);
 			
-			drawString(g2d, 25, slotNames[guiSelected], w*2/3, Main.SIZE/2-w/2+10, Main.SIZE/2-h/2+10);
+			drawString(g2d, (int)(25*(Main.SIZE/800.0)), slotNames[guiSelected], w*2/3,
+					Main.SIZE/2-w/2+2*offset, Main.SIZE/2-h/2+2*offset);
 			String[] stats = itemList[guiSelected].stats;
 			int[] statMap = itemList[guiSelected].statMap;
 			String lore = itemList[guiSelected].lore;
-			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
+			g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int) (15*(Main.SIZE/800.0))));
 			for (int i=0; i<stats.length; i++) {
 				int cInt = 0;
 				try {
 					cInt = statMap[i];
 				} catch (Exception e) {}
 				g2d.setColor(cInt == 1 ? Color.green : cInt == -1 ? Color.red : cInt == 2 ? Color.cyan : Color.white);
-				g2d.drawString(stats[i], Main.SIZE/2-w/2+10, Main.SIZE/2-h/2+100+(18*i));
+				g2d.drawString(stats[i], Main.SIZE/2-w/2+2*offset,
+						Main.SIZE/2-h/2+(int)(100*(Main.SIZE/800.0))+((int)(18*(Main.SIZE/800.0))*i));
 			}
 			
-			drawString(g2d, 15, lore, w-20, Main.SIZE/2-w/2+10, Main.SIZE*2/5);
+			drawString(g2d, (int)(15*(Main.SIZE/800.0)), lore, w-(int)(20*(Main.SIZE/800.0)),
+					Main.SIZE/2-w/2+2*offset, Main.SIZE*2/5);
 			
 			if (inShop) {
 				int coinCost = itemList[guiSelected].coinCost;
 				int gemCost = itemList[guiSelected].gemCost;
 			
 				if (coinCost != 0) {
-					g2d.drawImage(coinImage, Main.SIZE/2+w/6, Main.SIZE/2-h/2+w/3+10, 20, 20, null);
-					g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
-					g2d.drawString(coinCost+"", Main.SIZE/2+w/6 + 25, Main.SIZE/2-h/2+w/3+25);
+					g2d.drawImage(coinImage, Main.SIZE/2+w/6, Main.SIZE/2-h/2+w/3+10, (int)(20*(Main.SIZE/800.0)), (int)(20*(Main.SIZE/800.0)), null);
+					g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int)(15*(Main.SIZE/800.0))));
+					g2d.drawString(coinCost+"", Main.SIZE/2+w/6 + (int)(25*(Main.SIZE/800.0)), Main.SIZE/2-h/2+w/3+(int)(25*(Main.SIZE/800.0)));
 				}
 				if (gemCost != 0) {
 					g2d.drawImage(gemImage, Main.SIZE/2+w/6, Main.SIZE/2-h/2+w/3+35, 20, 20, null);
 					g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 15));
-					g2d.drawString(gemCost+"", Main.SIZE/2+w/6 + 25, Main.SIZE/2-h/2+w/3+50);
+					g2d.drawString(gemCost+"", Main.SIZE/2+w/6 + (int)(25*(Main.SIZE/800.0)), Main.SIZE/2-h/2+w/3+(int)(50*(Main.SIZE/800.0)));
 				}
 			}
 			
 			//CLOSE BUTTON
 			g2d.setColor(Color.RED.darker());
-			g2d.fillRoundRect(Main.SIZE/2+w/3, Main.SIZE/2-h/2-45, w/6, 35, 5, 5);
+			g2d.fillRoundRect(Main.SIZE/2+w/3, Main.SIZE/2-h/2-(int)(45*(Main.SIZE/800.0)), w/6, (int)(35*(Main.SIZE/800.0)), 5, 5);
 			
 			if (mousePosition != null) {
 				int mouseX = mousePosition.x;
 				int mouseY= mousePosition.y;
-				if (Math.abs(mouseX - (Main.SIZE/2+w/3+w/12)) < w/12 && Math.abs(mouseY - (Main.SIZE/2-h/2-27)) < 35/2) {
+				if (Math.abs(mouseX - (Main.SIZE/2+w/3+w/12)) < w/12 && 
+						Math.abs(mouseY - (Main.SIZE/2-h/2-(int)(27*(Main.SIZE/800.0)))) < 35/2) {
 					g2d.setColor(new Color(255,0,0,150));
-					g2d.fillRoundRect(Main.SIZE/2+w/3, Main.SIZE/2-h/2-45, w/6, 35, 5, 5);
+					g2d.fillRoundRect(Main.SIZE/2+w/3, Main.SIZE/2-h/2-(int)(45*(Main.SIZE/800.0)), w/6, (int)(35*(Main.SIZE/800.0)), 5, 5);
 				}
 			}
 			
 			g2d.setColor(Color.BLACK);
 			g2d.setStroke(new BasicStroke(5));
-			g2d.drawLine(Main.SIZE/2+w/3+w/12 - 10, Main.SIZE/2-h/2-27 - 10, Main.SIZE/2+w/3+w/12 + 10, Main.SIZE/2-h/2-27 + 10);
-			g2d.drawLine(Main.SIZE/2+w/3+w/12 - 10, Main.SIZE/2-h/2-27 + 10, Main.SIZE/2+w/3+w/12 + 10, Main.SIZE/2-h/2-27 - 10);
-			g2d.drawRoundRect(Main.SIZE/2+w/3, Main.SIZE/2-h/2-45, w/6, 35, 5, 5);
+			g2d.drawLine(Main.SIZE/2+w/3+w/12 - 2*offset, Main.SIZE/2-h/2-(int)(27*(Main.SIZE/800.0)) - 2*offset,
+					Main.SIZE/2+w/3+w/12 + 2*offset, Main.SIZE/2-h/2-(int)(27*(Main.SIZE/800.0)) + 2*offset);
+			g2d.drawLine(Main.SIZE/2+w/3+w/12 - 2*offset, Main.SIZE/2-h/2-(int)(27*(Main.SIZE/800.0)) + 2*offset,
+					Main.SIZE/2+w/3+w/12 + 2*offset, Main.SIZE/2-h/2-(int)(27*(Main.SIZE/800.0)) - 2*offset);
+			g2d.drawRoundRect(Main.SIZE/2+w/3, Main.SIZE/2-h/2-(int)(45*(Main.SIZE/800.0)), w/6, (int)(35*(Main.SIZE/800.0)), 5, 5);
 			
 			
 			//SELECT BUTTON
 			g2d.setColor(Color.GRAY);
-			g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
+			g2d.fillRoundRect(Main.SIZE/2-(int)(100*(Main.SIZE/800.0)), Main.SIZE/2+h/2-(int)(80*(Main.SIZE/800.0)),
+					(int)(200*(Main.SIZE/800.0)), (int)(70*(Main.SIZE/800.0)), 5, 5);
 			if (mousePosition != null) {
 				int mouseX = mousePosition.x;
 				int mouseY= mousePosition.y;
-				if (Math.abs(mouseX - (Main.SIZE/2)) < 100 && Math.abs(mouseY - (Main.SIZE/2+h/2-45)) < 35) {
+				if (Math.abs(mouseX - (Main.SIZE/2)) < 100*(Main.SIZE/800.0) &&
+						Math.abs(mouseY - (Main.SIZE/2+h/2-(int)(45*(Main.SIZE/800.0)))) < 35*(Main.SIZE/800.0)) {
 					if (inShop) {
 						int coinCost = itemList[guiSelected].coinCost;
 						int gemCost = itemList[guiSelected].gemCost;
@@ -414,13 +429,15 @@ public class InventoryPanel extends JPanel {
 								&& Weapon.weaponNames.contains(slotNames[guiSelected])) { //check if weapon
 						} else {
 							g2d.setColor(new Color(255,255,255,100));
-							g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
+							g2d.fillRoundRect(Main.SIZE/2-(int)(100*(Main.SIZE/800.0)), Main.SIZE/2+h/2-(int)(80*(Main.SIZE/800.0)),
+									(int)(200*(Main.SIZE/800.0)), (int)(70*(Main.SIZE/800.0)), 5, 5);
 						}
 					} else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)){ //already selected
 					} else if (Item.getItem(slotNames[guiSelected]).isConsumable
 							|| !Weapon.weaponNames.contains(slotNames[guiSelected])){
 						g2d.setColor(new Color(255,255,255,100));
-						g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
+						g2d.fillRoundRect(Main.SIZE/2-(int)(100*(Main.SIZE/800.0)), Main.SIZE/2+h/2-(int)(80*(Main.SIZE/800.0)),
+								(int)(200*(Main.SIZE/800.0)), (int)(70*(Main.SIZE/800.0)), 5, 5);
 					}
 				}
 			}
@@ -428,7 +445,7 @@ public class InventoryPanel extends JPanel {
 			//Purchase
 			boolean enable = true;
 			g2d.setColor(Color.WHITE);
-			Font font = new Font(Font.MONOSPACED, Font.BOLD, 30);
+			Font font = new Font(Font.MONOSPACED, Font.BOLD, (int) (30*(Main.SIZE/800.0)));
 			g2d.setFont(font);
 			String buttonText;
 			if (inShop) {
@@ -452,15 +469,17 @@ public class InventoryPanel extends JPanel {
 			} else buttonText = (Weapon.weaponNames.contains(slotNames[guiSelected])) ? "Equip" : "Start Use";
 			
 			int strWidth = g2d.getFontMetrics(font).stringWidth(buttonText);
-			g2d.drawString(buttonText, Main.SIZE/2-strWidth/2, Main.SIZE/2+h/2-40);
+			g2d.drawString(buttonText, Main.SIZE/2-strWidth/2, Main.SIZE/2+h/2-(int)(40*(Main.SIZE/800.0)));
 			
 			if (!enable) {
 				g2d.setColor(new Color(0, 0, 0, 100));
-				g2d.fillRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
+				g2d.fillRoundRect(Main.SIZE/2-(int)(100*(Main.SIZE/800.0)), Main.SIZE/2+h/2-(int)(80*(Main.SIZE/800.0)),
+						(int)(200*(Main.SIZE/800.0)), (int)(70*(Main.SIZE/800.0)), 5, 5);
 			}
 			
 			g2d.setColor(Color.WHITE); //border
-			g2d.drawRoundRect(Main.SIZE/2-100, Main.SIZE/2+h/2-80, 200, 70, 5, 5);
+			g2d.drawRoundRect(Main.SIZE/2-(int)(100*(Main.SIZE/800.0)), Main.SIZE/2+h/2-(int)(80*(Main.SIZE/800.0)),
+					(int)(200*(Main.SIZE/800.0)), (int)(70*(Main.SIZE/800.0)), 5, 5);
 			
 		}
 	}
@@ -469,35 +488,38 @@ public class InventoryPanel extends JPanel {
 		String coinText = ImageHelper.formatCurrency(DataManager.saveData.coins);
 		String gemText = ImageHelper.formatCurrency(DataManager.saveData.gems);
 		
+		int imgWidth = (int) (15*(Main.SIZE/800.0));
+		int barHeight = (int) (34*(Main.SIZE/800.0));
+		
 		g2d.setColor(GameObject.COLOR_GOLD);
-		g2d.fillRoundRect(13, 13, 20, 34, 5, 5);
-		g2d.fillRect(19, 13, 28, 34);
+		g2d.fillRoundRect((int) (13*(Main.SIZE/800.0)), (int) (13*(Main.SIZE/800.0)), (int) (20*(Main.SIZE/800.0)), barHeight,5,5);
+		g2d.fillRect((int) (19*(Main.SIZE/800.0)), (int) (13*(Main.SIZE/800.0)), (int) (28*(Main.SIZE/800.0)), barHeight);
 		g2d.setColor(new Color(30,30,30));
-		g2d.fillRect(47,13,70,34);
-		g2d.fillRoundRect(65,13,80,34,5,5);
-		g2d.drawImage(coinImage, 15, 15, 30, 30, null);
+		g2d.fillRect((int) (47*(Main.SIZE/800.0)),(int) (13*(Main.SIZE/800.0)), (int) (70*(Main.SIZE/800.0)),barHeight);
+		g2d.fillRoundRect((int) (65*(Main.SIZE/800.0)),(int) (13*(Main.SIZE/800.0)),(int) (80*(Main.SIZE/800.0)), barHeight,5,5);
+		g2d.drawImage(coinImage, imgWidth, imgWidth, 2*imgWidth, 2*imgWidth, null);
 		
 		int diff = Main.SIZE*11/14;
 		g2d.setColor(GameObject.COLOR_DIAMOND);
-		g2d.fillRoundRect(13+diff, 13, 20, 34, 5, 5);
-		g2d.fillRect(19+diff, 13, 28, 34);
+		g2d.fillRoundRect((int)(13*(Main.SIZE/800.0))+diff, (int) (13*(Main.SIZE/800.0)), (int) (20*(Main.SIZE/800.0)), barHeight,5,5);
+		g2d.fillRect((int)(19*(Main.SIZE/800.0))+diff, (int) (13*(Main.SIZE/800.0)), (int) (28*(Main.SIZE/800.0)), barHeight);
 		g2d.setColor(new Color(30,30,30));
-		g2d.fillRect(47+diff,13,70,34);
-		g2d.fillRoundRect(65+diff,13,80,34,5,5);
-		g2d.drawImage(gemImage, 15+diff, 15, 30, 30, null);
+		g2d.fillRect((int)(47*(Main.SIZE/800.0))+diff,(int) (13*(Main.SIZE/800.0)),(int) (70*(Main.SIZE/800.0)),barHeight);
+		g2d.fillRoundRect((int)(65*(Main.SIZE/800.0))+diff,(int) (13*(Main.SIZE/800.0)),(int) (80*(Main.SIZE/800.0)),barHeight,5,5);
+		g2d.drawImage(gemImage, imgWidth+diff, imgWidth, 2*imgWidth, 2*imgWidth, null);
 		
 		g2d.setColor(Color.WHITE);
-		Font font = new Font(Font.MONOSPACED, Font.BOLD, 15);
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, (int) (15*(Main.SIZE/800.0)));
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		
 		int coinTextWidth = g2d.getFontMetrics(font).stringWidth(coinText);
 		int coinTextHeight = g2d.getFontMetrics(font).getHeight();
-		g2d.drawString(coinText, 97-(coinTextWidth/2), 35);
+		g2d.drawString(coinText, (int)(97*(Main.SIZE/800.0))-(coinTextWidth/2), (int) (35*(Main.SIZE/800.0)));
 		
 		int gemTextWidth = g2d.getFontMetrics(font).stringWidth(gemText);
 		int gemTextHeight = g2d.getFontMetrics(font).getHeight();
-		g2d.drawString(gemText, 97+diff-(gemTextWidth/2), 35);
+		g2d.drawString(gemText, (int)(97*(Main.SIZE/800.0))+diff-(gemTextWidth/2), (int) (35*(Main.SIZE/800.0)));
 	}
 	
 	int screenshotTime = 0;
@@ -511,6 +533,7 @@ public class InventoryPanel extends JPanel {
 	class ShopKeyboard extends KeyAdapter { 
 		@Override
 		public void keyPressed(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE && guiOpen) guiOpen = false; 
 			if (e.getKeyCode() == KeyEvent.VK_F2) {
 				new Screenshot();
 				screenshotTime = 20;
@@ -537,7 +560,7 @@ public class InventoryPanel extends JPanel {
 					}
 				}
 				//back
-				if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*11/12) < buttonSizeY/2) {
+				if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*14/15) < buttonSizeY/2) {
 					if (inShop) {
 						inShop = false;
 						scroll = 0;
@@ -551,7 +574,7 @@ public class InventoryPanel extends JPanel {
 					}
 				}
 				//shop
-				if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*11/12) < buttonSizeY/2) {
+				if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*14/15) < buttonSizeY/2) {
 					if (!inShop) {
 						inShop = true;
 						scroll = 0;
@@ -561,7 +584,7 @@ public class InventoryPanel extends JPanel {
 				}
 				
 				//deselect
-				if (!inShop && Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*11/12) < buttonSizeY/2) {
+				if (!inShop && Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*14/15) < buttonSizeY/2) {
 					if (DataManager.saveData.selectedWeapon != null) {
 						equipSound.setMicrosecondPosition(0);
 						equipSound.start();
@@ -574,7 +597,7 @@ public class InventoryPanel extends JPanel {
 				}
 				
 				//SIDE BUTTONS
-				int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-of, w = 50;
+				int x1 = Main.SIZE/15, x2 = Main.SIZE*14/15, y = Main.SIZE/2-of, w = (int) (50*(Main.SIZE/800.0));
 				
 				if (scroll > 0) { //Left
 					if (Math.abs(mouseX - x1) < w/2 && Math.abs(mouseY - y) < w/2 && !guiOpen) {
@@ -596,17 +619,18 @@ public class InventoryPanel extends JPanel {
 			
 			//GUI
 			if (guiOpen) {
-				int w=400;
-				int h=600;
+				int w=(int) (400*(Main.SIZE/800.0));
+				int h=(int) (600*(Main.SIZE/800.0));
 				//close button
-				if (Math.abs(mouseX - (Main.SIZE/2+w/3+w/12)) < w/12 && Math.abs(mouseY - (Main.SIZE/2-h/2-27)) < 35/2) {
+				if (Math.abs(mouseX - (Main.SIZE/2+w/3+w/12)) < w/12 && Math.abs(mouseY - (Main.SIZE/2-h/2-(27*(Main.SIZE/800.0)))) < 35/2) {
 					guiOpen = false;
 					buttonCooldown = 5;
 					return;
 				}
 				
 				//PURCHASE BUTTON
-				if (Math.abs(mouseX - (Main.SIZE/2)) < 100 && Math.abs(mouseY - (Main.SIZE/2+h/2-45)) < 35) {
+				if (Math.abs(mouseX - (Main.SIZE/2)) < 100*(Main.SIZE/800.0) &&
+						Math.abs(mouseY - (Main.SIZE/2+h/2-(int)(45*(Main.SIZE/800.0)))) < 35*(Main.SIZE/800.0)) {
 					if (inShop) {
 						int coinCost = Item.getItem(slotNames[guiSelected]).coinCost;
 						int gemCost = Item.getItem(slotNames[guiSelected]).gemCost;
@@ -759,5 +783,10 @@ public class InventoryPanel extends JPanel {
 			else return 0;
 			
 	}};
+	
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(Main.SIZE, Main.SIZE);
+	}
 	
 }

@@ -1,5 +1,6 @@
 package skycubedPlatformer;
 
+import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -10,7 +11,7 @@ import skycubedPlatformer.util.discord.DiscordRPC;
 
 public class Main {
 	
-	public static final int SIZE = 600; //DOES NOT CHANGE
+	public static final int SIZE = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()-125); //DOES NOT CHANGE
 	public static ApplicationFrame jframe;
 	public static boolean testMode = false;
 	
@@ -22,6 +23,7 @@ public class Main {
 		
 		//start the app up
 		jframe = new ApplicationFrame();
+		System.out.println("Created game window with size " + SIZE + " pixels.");
 	}
 	
 }

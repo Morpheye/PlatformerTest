@@ -230,8 +230,7 @@ public class LivingObject extends MovableObject {
 		int calcX = 0, calcY = 0, angle = 0;
 		if (this.movingUp) calcY++;
 		if (this.movingDown) calcY--;
-		if (this.movingRight) calcX++;
-		if (this.movingLeft) calcX--; 
+		if (this.movingRight || this.movingLeft) calcX += this.lastDirection; 
 		if (calcX == 0 && calcY == 0) calcX += this.lastDirection; //no input
 		if (calcX == 0) angle = 90 * calcY;
 		

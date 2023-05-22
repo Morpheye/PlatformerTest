@@ -3,6 +3,7 @@ package skycubedPlatformer.menu;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -185,27 +186,27 @@ public class LevelSelectPanel extends JPanel {
 		g2d.setStroke(new BasicStroke(5));
 		
 		g2d.setColor(Color.gray);
-		g2d.fillRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		g2d.fillRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		font = new Font(Font.MONOSPACED, Font.BOLD, (int) (40*(Main.SIZE/800.0)));
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		int lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Back");
 		int lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
-		g2d.drawString("Back", Main.SIZE*1/6-(lvlTitleWidth/2), Main.SIZE*8/9+10);
+		g2d.drawString("Back", Main.SIZE*1/6-(lvlTitleWidth/2), Main.SIZE*14/15+(int)(12*(Main.SIZE/800.0)));
 
-		g2d.drawRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		g2d.drawRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		//weapons
 		g2d.setColor(Color.gray);
-		g2d.fillRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		g2d.fillRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		font = new Font(Font.MONOSPACED, Font.BOLD, (int) (30*(Main.SIZE/800.0)));
 		g2d.setFont(font);
 		g2d.setColor(Color.WHITE);
 		lvlTitleWidth = g2d.getFontMetrics(font).stringWidth("Inventory");
 		lvlTitleHeight = g2d.getFontMetrics(font).getHeight();
-		g2d.drawString("Inventory", Main.SIZE*5/6-(lvlTitleWidth/2), Main.SIZE*8/9+8);
+		g2d.drawString("Inventory", Main.SIZE*5/6-(lvlTitleWidth/2), Main.SIZE*14/15+(int)(10*(Main.SIZE/800.0)));
 
-		g2d.drawRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+		g2d.drawRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		
 		//now check mouse
@@ -247,22 +248,22 @@ public class LevelSelectPanel extends JPanel {
 				}
 			}
 			
-			if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*14/15) < buttonSizeY/2) {
 				g2d.setColor(new Color(255, 255, 255, 100));
-				g2d.fillRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY);
+				g2d.fillRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY);
 				
 				g2d.setColor(Color.WHITE);
 				g2d.setStroke(new BasicStroke(5));
-				g2d.drawRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+				g2d.drawRoundRect(Main.SIZE*1/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 			}
 			
-			if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*14/15) < buttonSizeY/2) {
 				g2d.setColor(new Color(255, 255, 255, 100));
-				g2d.fillRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY);
+				g2d.fillRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY);
 				
 				g2d.setColor(Color.WHITE);
 				g2d.setStroke(new BasicStroke(5));
-				g2d.drawRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*8/9-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
+				g2d.drawRoundRect(Main.SIZE*5/6-buttonSizeX/2, Main.SIZE*14/15-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 			}
 			
 		}
@@ -393,13 +394,13 @@ public class LevelSelectPanel extends JPanel {
 					break;
 			}}
 			//main menu button
-			if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE*1/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*14/15) < buttonSizeY/2) {
 				timer.stop();
 				destroy();
 				Main.jframe.openMainMenu();
 			}
 			//weapon menu button
-			if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*8/9) < buttonSizeY/2) {
+			if (Math.abs(mouseX - Main.SIZE*5/6) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*14/15) < buttonSizeY/2) {
 				timer.stop();
 				destroy();
 				Main.jframe.openWeaponsMenu();
@@ -454,4 +455,9 @@ public class LevelSelectPanel extends JPanel {
 		
 	}
 	
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(Main.SIZE, Main.SIZE);
+	}
+	   
 }
