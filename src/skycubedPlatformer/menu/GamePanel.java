@@ -204,6 +204,7 @@ public class GamePanel extends JPanel {
 			}
 			destroy();
 			Main.jframe.openLevelSelect(level);
+			return;
 			
 		}
 		
