@@ -22,7 +22,7 @@ public class HorizontalFollowAi extends HorizontalMovementAi{
 	}
 	
 	public HorizontalFollowAi(double minRangeX, double maxRangeX, double minRangeY, double maxRangeY, LivingObject target) {
-		super(GamePanel.player.x, GamePanel.player.y, minRangeX, maxRangeX, minRangeY, maxRangeY);
+		super(GamePanel.getPanel().player.x, GamePanel.getPanel().player.y, minRangeX, maxRangeX, minRangeY, maxRangeY);
 		this.target = target;
 		this.targets.clear();
 		this.targets.add(this.target);
@@ -50,7 +50,7 @@ public class HorizontalFollowAi extends HorizontalMovementAi{
 	
 	@Override
 	public void onDamage(Creature creature, GameObject source) {
-		if (source instanceof SpiritScythe.ScytheSpirit || source.equals(GamePanel.player)) {
+		if (source instanceof SpiritScythe.ScytheSpirit || source.equals(GamePanel.getPanel().player)) {
 			if (!this.targets.contains(source)) this.targets.add(source);
 			this.target = source;
 		}

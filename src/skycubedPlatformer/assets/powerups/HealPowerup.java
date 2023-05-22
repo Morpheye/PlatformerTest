@@ -20,7 +20,7 @@ public class HealPowerup extends Powerup {
 		Code code = new Code() {
 			@Override
 			public void run() {
-				GamePanel.player.health = GamePanel.player.maxHealth;
+				GamePanel.getPanel().player.health = GamePanel.getPanel().player.maxHealth;
 			}
 		};
 		

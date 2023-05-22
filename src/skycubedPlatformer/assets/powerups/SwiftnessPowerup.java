@@ -20,7 +20,7 @@ public class SwiftnessPowerup extends Powerup {
 		Code code = new Code() {
 			@Override
 			public void run() {
-				GamePanel.player.movementSpeed+=d;
+				GamePanel.getPanel().player.movementSpeed+=d;
 			}
 		};
 		

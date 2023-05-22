@@ -72,7 +72,7 @@ public class ItemParticle extends Particle {
 	
 	public static void spawnItem(double x, double y, Item item, int count) {
 
-		GamePanel.particles.add(new ItemParticle(x, y, item, count));
+		GamePanel.getPanel().particles.add(new ItemParticle(x, y, item, count));
 		return;
 		
 	}

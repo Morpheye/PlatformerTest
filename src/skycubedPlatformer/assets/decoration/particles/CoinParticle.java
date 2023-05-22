@@ -60,9 +60,9 @@ public class CoinParticle extends Particle {
 
 		BufferedImage image;
 		
-		if (this.coinAmount >= 20) image = GamePanel.goldCoinImage;
-		else if (this.coinAmount >= 5) image = GamePanel.silverCoinImage;
-		else image = GamePanel.copperCoinImage;
+		if (this.coinAmount >= 20) image = GamePanel.getPanel().goldCoinImage;
+		else if (this.coinAmount >= 5) image = GamePanel.getPanel().silverCoinImage;
+		else image = GamePanel.getPanel().copperCoinImage;
 		
 		if (this.lifetime > 30) {
 			int drawX = (int) ( (this.x - (this.size_x)/2 - (cam_x - size/2)) * (Main.SIZE/size));
@@ -103,7 +103,7 @@ public class CoinParticle extends Particle {
 			}
 		}
 		
-		for (int i : coins) GamePanel.particles.add(new CoinParticle(x, y, i));
+		for (int i : coins) GamePanel.getPanel().particles.add(new CoinParticle(x, y, i));
 		return;
 		
 	}

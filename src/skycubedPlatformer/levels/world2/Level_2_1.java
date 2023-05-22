@@ -55,18 +55,18 @@ public class Level_2_1 extends Level {
 	
 	@Override
 	public void moveCamera() { //loosely locked
-		double diffX = GamePanel.player.x - GamePanel.getPanel().camera_x;
-		double diffY = GamePanel.player.y - GamePanel.getPanel().camera_y;
+		double diffX = GamePanel.getPanel().player.x - GamePanel.getPanel().camera_x;
+		double diffY = GamePanel.getPanel().player.y - GamePanel.getPanel().camera_y;
 		
 		int higherLimitX = 0;
 		int lowerLimitX = -100;
 		int higherLimitY = 100;
 		int lowerLimitY = -100;
 		
-		if (diffX > higherLimitX) GamePanel.getPanel().camera_x = GamePanel.player.x - higherLimitX;
-		if (diffX < lowerLimitX) GamePanel.getPanel().camera_x = GamePanel.player.x - lowerLimitX;
-		if (diffY > higherLimitY) GamePanel.getPanel().camera_y = GamePanel.player.y - higherLimitY;
-		if (diffY < lowerLimitY) GamePanel.getPanel().camera_y = GamePanel.player.y - lowerLimitY;
+		if (diffX > higherLimitX) GamePanel.getPanel().camera_x = GamePanel.getPanel().player.x - higherLimitX;
+		if (diffX < lowerLimitX) GamePanel.getPanel().camera_x = GamePanel.getPanel().player.x - lowerLimitX;
+		if (diffY > higherLimitY) GamePanel.getPanel().camera_y = GamePanel.getPanel().player.y - higherLimitY;
+		if (diffY < lowerLimitY) GamePanel.getPanel().camera_y = GamePanel.getPanel().player.y - lowerLimitY;
 		
 		if (GamePanel.getPanel().camera_y < 400) GamePanel.getPanel().camera_y = 400;
 	}
@@ -76,13 +76,13 @@ public class Level_2_1 extends Level {
 	}
 	
 	@Override
-	public void drawBackground() {
-		List<GameObject> objects = GamePanel.objects;
+	public void drawBackground(GamePanel panel) {
+		List<GameObject> objects = panel.objects;
 	}
 	
 	@Override
-	public void drawPlatforms() {
-		List<GameObject> objects = GamePanel.objects;
+	public void drawPlatforms(GamePanel panel) {
+		List<GameObject> objects = panel.objects;
 		
 		//spawn
 		objects.add(new StonePlatform(0, 50, 400, 100));

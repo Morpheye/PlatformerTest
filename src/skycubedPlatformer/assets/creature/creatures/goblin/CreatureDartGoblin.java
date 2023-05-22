@@ -52,10 +52,10 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		this.coinWeight = 3;
 		
 		this.aiList = new ArrayList<CreatureAi>();
-		this.aiList.add(new VerticalFollowAi(minRange, maxRange, 50, 150, 50, 150, GamePanel.player)); //jumps to shoot at player
+		this.aiList.add(new VerticalFollowAi(minRange, maxRange, 50, 150, 50, 150, GamePanel.getPanel().player)); //jumps to shoot at player
 		this.aiList.add(new HorizontalMovementAi(this.x, 40, Double.MAX_VALUE)); //tries to return to original spot
-		this.aiList.add(new ProjectileAttack(projectileRange, 10, GamePanel.player));
-		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
+		this.aiList.add(new ProjectileAttack(projectileRange, 10, GamePanel.getPanel().player));
+		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.getPanel().player));
 	}
 	
 	/**
@@ -76,16 +76,16 @@ public class CreatureDartGoblin extends CreatureGoblin {
 		this.coinWeight = 3;
 		
 		this.aiList = new ArrayList<CreatureAi>();
-		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, minRangeY, maxRangeY, GamePanel.player)); //jumps to shoot at player
-		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, 0, maxRangeY, GamePanel.player)); //follow player
-		this.aiList.add(new ProjectileAttack(maxRangeX, 10, GamePanel.player));
-		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
+		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, minRangeY, maxRangeY, GamePanel.getPanel().player)); //jumps to shoot at player
+		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, 0, maxRangeY, GamePanel.getPanel().player)); //follow player
+		this.aiList.add(new ProjectileAttack(maxRangeX, 10, GamePanel.getPanel().player));
+		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.getPanel().player));
 	}
 	
 	@Override
 	public void rangedAttack() {
 		if (!this.isAlive) return;
-		GamePanel.projectiles.add(new ProjectileDart(this.x, this.y, 15*this.lastDirection, 1, this, this.rangedAttackDamage));
+		GamePanel.getPanel().projectiles.add(new ProjectileDart(this.x, this.y, 15*this.lastDirection, 1, this, this.rangedAttackDamage));
 		this.attackCooldown = this.maxAttackCooldown;
 	}
 	
@@ -129,7 +129,7 @@ public class CreatureDartGoblin extends CreatureGoblin {
 	
 	@Override
 	public void dropLoot() { //2-3 drops totalling 6-11 coins, guaranteed 1 silver coin drop
-		GamePanel.particles.add(new CoinParticle(this.x, this.y, 5));
+		GamePanel.getPanel().particles.add(new CoinParticle(this.x, this.y, 5));
 		Creature.loot(this);
 	}
 	

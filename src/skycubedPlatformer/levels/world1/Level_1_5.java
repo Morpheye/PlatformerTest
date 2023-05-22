@@ -59,34 +59,28 @@ public class Level_1_5 extends Level {
 	@Override
 	public void onStart(GamePanel panel) {
 		
-		panel.camera_x = GamePanel.player.x;
-		panel.camera_y = GamePanel.player.y;
+		panel.camera_x = panel.player.x;
+		panel.camera_y = panel.player.y;
 		panel.displayText("Don't fall behind!", 240);
 	}
 	
 	@Override
-	public void drawBackground() {
-		List<GameObject> objects = GamePanel.objects;
+	public void drawBackground(GamePanel panel) {
+		List<GameObject> objects = panel.objects;
 		
 		finishFlag = new FinishFlag(12100, 1400, 50, 100);
 		objects.add(finishFlag);
 
 	}
-	
-	@Override
-	public void drawForeground() {
-		List<GameObject> objects = GamePanel.objects;
 
-	}
-	
 	SolidPlatform movingPlatform;
 	SolidPlatform finishPlatform;
 	FinishFlag finishFlag;
 	Creature finalGoblin;
 	
 	@Override
-	public void drawPlatforms() {
-		List<GameObject> objects = GamePanel.objects;
+	public void drawPlatforms(GamePanel panel) {
+		List<GameObject> objects = panel.objects;
 		
 		//spawn platform
 		objects.add(new GrassPlatform(0, 50, 400, 100));
@@ -174,11 +168,11 @@ public class Level_1_5 extends Level {
 	@Override
 	public void onTick() {
 		//Autoscroll
-		if ((GamePanel.getPanel().camera_x - GamePanel.player.x > GamePanel.getPanel().camera_size/2 + 100) 
+		if ((GamePanel.getPanel().camera_x - GamePanel.getPanel().player.x > GamePanel.getPanel().camera_size/2 + 100) 
 				&& GamePanel.getPanel().levelWon == 0) {
-			if (GamePanel.player.isAlive) {
-				GamePanel.player.health = 0;
-				GamePanel.player.die();
+			if (GamePanel.getPanel().player.isAlive) {
+				GamePanel.getPanel().player.health = 0;
+				GamePanel.getPanel().player.die();
 			}
 		}
 		
@@ -189,7 +183,7 @@ public class Level_1_5 extends Level {
 		if (GamePanel.getPanel().camera_x >= 6850 && GamePanel.getPanel().camera_x <= 11000) movingPlatform.vx = 1.5;
 		else movingPlatform.vx = 0;
 		
-		if (!GamePanel.objects.contains(finalGoblin) && finishPlatform.y > 825) {
+		if (!GamePanel.getPanel().objects.contains(finalGoblin) && finishPlatform.y > 825) {
 			finishPlatform.vy = -1;
 			finishFlag.vy = -1;
 		} else {
@@ -203,22 +197,22 @@ public class Level_1_5 extends Level {
 	public void moveCamera() {
 		if (GamePanel.getPanel().camera_x <= 12100) GamePanel.getPanel().camera_x += 1.5;
 		else {
-			if (GamePanel.player.x <= 12100) {}
+			if (GamePanel.getPanel().player.x <= 12100) {}
 			else {
-				if (GamePanel.player.x - GamePanel.getPanel().camera_x > 10 && GamePanel.player.x < 12800) {
+				if (GamePanel.getPanel().player.x - GamePanel.getPanel().camera_x > 10 && GamePanel.getPanel().player.x < 12800) {
 					GamePanel.getPanel().camera_x += 10;
 				}
-				else GamePanel.getPanel().camera_x = GamePanel.player.x;
+				else GamePanel.getPanel().camera_x = GamePanel.getPanel().player.x;
 			
 		}}
 		
-		double diffY = GamePanel.player.y - GamePanel.getPanel().camera_y;
+		double diffY = GamePanel.getPanel().player.y - GamePanel.getPanel().camera_y;
 		
 		int higherLimitY = 100;
 		int lowerLimitY = -100;
 
-		if (diffY > higherLimitY) GamePanel.getPanel().camera_y = GamePanel.player.y - higherLimitY;
-		if (diffY < lowerLimitY) GamePanel.getPanel().camera_y = GamePanel.player.y - lowerLimitY;
+		if (diffY > higherLimitY) GamePanel.getPanel().camera_y = GamePanel.getPanel().player.y - higherLimitY;
+		if (diffY < lowerLimitY) GamePanel.getPanel().camera_y = GamePanel.getPanel().player.y - lowerLimitY;
 		
 		if (GamePanel.getPanel().camera_y < 200) GamePanel.getPanel().camera_y = 200;
 	}

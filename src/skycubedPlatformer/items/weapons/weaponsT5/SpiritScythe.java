@@ -123,7 +123,7 @@ public class SpiritScythe extends Weapon {
 			this.targets = new ArrayList<LivingObject>();
 			this.drawLayer = 1;
 			
-			GamePanel.addedObjects.add(this);
+			GamePanel.getPanel().addedObjects.add(this);
 			
 			
 		}
@@ -157,8 +157,8 @@ public class SpiritScythe extends Weapon {
 			this.vx *= GamePanel.getPanel().airDrag;
 
 			//CHECK BOUNDS
-			if (this.y > GamePanel.level.topLimit) GamePanel.deletedObjects.add(this);
-			if (this.y < GamePanel.level.bottomLimit) GamePanel.deletedObjects.add(this);
+			if (this.y > GamePanel.getPanel().level.topLimit) GamePanel.getPanel().deletedObjects.add(this);
+			if (this.y < GamePanel.getPanel().level.bottomLimit) GamePanel.getPanel().deletedObjects.add(this);
 			//INERTIA THRESHOLD
 			if (Math.abs(vx) < 0.01) vx = 0;
 			if (Math.abs(vy) < 0.01) vy = 0;
@@ -177,7 +177,7 @@ public class SpiritScythe extends Weapon {
 			
 			//change targets
 			if (this.target != null && (!this.target.exists || !this.target.isAlive || this.target.equals(this.wielder)
-					|| !GamePanel.objects.contains(target) 
+					|| !GamePanel.getPanel().objects.contains(target) 
 					|| !this.target.hasCollided(GamePanel.getPanel().MainFrameObj))) {
 				this.targets.remove(this.target);
 				this.target = null;
@@ -293,7 +293,7 @@ public class SpiritScythe extends Weapon {
 			this.playAttackSound();
 			
 			//Apply collisions
-			for (GameObject obj : GamePanel.objects) { //check for enemies in range
+			for (GameObject obj : GamePanel.getPanel().objects) { //check for enemies in range
 				if (obj.equals(this)) continue;
 				if (obj.hasCollided(this.attack) && obj.type.equals(ObjType.Creature)) {
 					if (spirits.contains(obj)) continue;

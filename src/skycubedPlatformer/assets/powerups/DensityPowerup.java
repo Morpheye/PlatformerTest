@@ -20,7 +20,7 @@ public class DensityPowerup extends Powerup {
 		Code code = new Code() {
 			@Override
 			public void run() {
-				GamePanel.player.density += amount;
+				GamePanel.getPanel().player.density += amount;
 			}
 		};
 		

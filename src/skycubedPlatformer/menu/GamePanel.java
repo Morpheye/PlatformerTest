@@ -44,17 +44,17 @@ import skycubedPlatformer.util.appdata.DataManager;
 @SuppressWarnings("serial")
 public class GamePanel extends JPanel {
 	
-	public static Player player;
-	public static Level level;
+	public Player player;
+	public Level level;
 	
 	public double airDrag;
 	public double gravity;
-	public static List<GameObject> objects;
-	public static List<GameObject> projectiles;
-	public static List<GameObject> particles;
-	public static List<GameObject> deletedObjects;
-	public static List<GameObject> addedObjects;
-	public static ArrayList<Consumable> consumables;
+	public List<GameObject> objects;
+	public List<GameObject> projectiles;
+	public List<GameObject> particles;
+	public List<GameObject> deletedObjects;
+	public List<GameObject> addedObjects;
+	public ArrayList<Consumable> consumables;
 	
 	public double camera_x;
 	public double camera_y;
@@ -71,6 +71,7 @@ public class GamePanel extends JPanel {
 	public int timeSinceRestart = 0;
 	
 	public GamePanel(Level level) {
+		ApplicationFrame.current = this;
 		this.setBackground(Color.BLACK);
 		this.setSize(Main.SIZE, Main.SIZE);
 		this.setVisible(true);
@@ -110,7 +111,7 @@ public class GamePanel extends JPanel {
 		
 		level = newLevel;
 		
-		level.drawBackground();
+		level.drawBackground(this);
 		
 		player = new Player(level.spawnX, level.spawnY, 40);
 		objects.add(player);
@@ -123,8 +124,8 @@ public class GamePanel extends JPanel {
 		airDrag = level.airDrag;
 		gravity = level.gravity;
 		
-		level.drawPlatforms();
-		level.drawForeground();
+		level.drawPlatforms(this);
+		level.drawForeground(this);
 		
 		//background(-10) -> decoration(-7) -> flag(-6) -> movableObj(-5) -> livingObj(-4) -> platforms(0) ->
 		//spirits(1)
@@ -201,8 +202,6 @@ public class GamePanel extends JPanel {
 				DataManager.saveData.completedLevels.replace(level.getClass().getSimpleName(),
 				DataManager.saveData.completedLevels.get(level.getClass().getSimpleName())+1);
 			}
-			destroyLevel();
-			timer.stop();
 			destroy();
 			Main.jframe.openLevelSelect(level);
 			
@@ -793,7 +792,6 @@ public class GamePanel extends JPanel {
 	}
 	
 	public class PauseMenuMouse extends MouseAdapter {
-		
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (!isPaused) return;
@@ -810,8 +808,6 @@ public class GamePanel extends JPanel {
 			}
 			
 			if (Math.abs(mouseX - Main.SIZE/2) < buttonSizeX/2 && Math.abs(mouseY - Main.SIZE*3/4) < buttonSizeY/2) {
-				timer.stop();
-				destroyLevel();
 				destroy();
 				Main.jframe.openLevelSelect(level);
 			}
@@ -821,7 +817,7 @@ public class GamePanel extends JPanel {
 	
 	public GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
 	
-	public static BufferedImage healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
+	public BufferedImage healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
 	densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
 	jumpBoostImage, cameraSizeImage, luckImage, swiftnessImage, punchImage, rangeImage,
 	explosionImage;
@@ -880,7 +876,28 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void destroy() {
+		destroyLevel();
+		this.timer.stop();
 		this.timer = null;
+		
+		objects = null;
+		deletedObjects = null;
+		flashes = null;
+		shakes = null;
+		projectiles = null;
+		particles = null;
+		addedObjects = null;
+		consumables = null;
+		
+		for (BufferedImage img : new BufferedImage[]{healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
+			densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
+			jumpBoostImage, cameraSizeImage, luckImage, swiftnessImage, punchImage, rangeImage,
+			explosionImage}) {
+			img.flush();
+			img = null;
+		}
+		
+		
 	}
 	
 	@Override

@@ -56,7 +56,7 @@ public class Projectile extends MovableObject {
 		int direction = (vx > 0) ? 1 : -1;
 		
 		boolean hasCollided = false;
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 				if (!this.exists || this.hitTarget) continue;
 				if (obj.equals(this) || obj.equals(this.firer)) continue;
 				if (this.hasCollided(obj) && obj.exists) {

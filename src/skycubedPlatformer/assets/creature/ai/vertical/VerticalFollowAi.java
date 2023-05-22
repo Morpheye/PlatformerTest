@@ -22,7 +22,7 @@ public class VerticalFollowAi extends VerticalMovementAi {
 	}
 	
 	public VerticalFollowAi(double minRangeX, double maxRangeX, double minRangeYUp, double maxRangeYUp, double minRangeYDown, double maxRangeYDown, LivingObject target) {
-		super(GamePanel.player.x, GamePanel.player.y, minRangeYUp, maxRangeYUp, minRangeYDown, maxRangeYDown, minRangeX, maxRangeX);
+		super(GamePanel.getPanel().player.x, GamePanel.getPanel().player.y, minRangeYUp, maxRangeYUp, minRangeYDown, maxRangeYDown, minRangeX, maxRangeX);
 		this.target = target;
 		this.targets.clear();
 		this.targets.add(this.target);
@@ -50,7 +50,7 @@ public class VerticalFollowAi extends VerticalMovementAi {
 	
 	@Override
 	public void onDamage(Creature creature, GameObject source) {
-		if (source instanceof SpiritScythe.ScytheSpirit || source.equals(GamePanel.player)) {
+		if (source instanceof SpiritScythe.ScytheSpirit || source.equals(GamePanel.getPanel().player)) {
 			if (!this.targets.contains(source)) this.targets.add(source);
 			this.target = source;
 		}

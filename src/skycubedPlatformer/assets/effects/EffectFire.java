@@ -23,7 +23,7 @@ public class EffectFire extends Effect {
 	
 	@Override
 	public void update(LivingObject host) { 
-		if (GamePanel.level.isRaining) this.lifetime--;
+		if (GamePanel.getPanel().level.isRaining) this.lifetime--;
 	}
 	
 	@Override

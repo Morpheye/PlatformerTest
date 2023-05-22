@@ -47,7 +47,7 @@ public class MovableObject extends GameObject {
 		this.liquids.clear();
 		
 		//CHECK FOR LIQUIDS
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 			if (!this.exists) continue;
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.exists && obj.type.equals(ObjType.LiquidPlatform)) {
@@ -100,8 +100,8 @@ public class MovableObject extends GameObject {
 		}
 
 		//CHECK BOUNDS
-		if (this.y > GamePanel.level.topLimit && !this.equals(GamePanel.player)) GamePanel.deletedObjects.add(this);
-		if (this.y < GamePanel.level.bottomLimit && !this.equals(GamePanel.player)) GamePanel.deletedObjects.add(this);
+		if (this.y > GamePanel.getPanel().level.topLimit && !this.equals(GamePanel.getPanel().player)) GamePanel.getPanel().deletedObjects.add(this);
+		if (this.y < GamePanel.getPanel().level.bottomLimit && !this.equals(GamePanel.getPanel().player)) GamePanel.getPanel().deletedObjects.add(this);
 		
 		//INERTIA THRESHOLD
 		if (Math.abs(vx) < 0.01) vx = 0;
@@ -117,7 +117,7 @@ public class MovableObject extends GameObject {
 		ArrayList<GameObject> ignoreObjs = new ArrayList<GameObject>();
 		boolean collidedx = false;
 		
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 			if (!this.exists || obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) ignoreObjs.add(obj); 
 		}
@@ -126,7 +126,7 @@ public class MovableObject extends GameObject {
 		
 		if (!this.solid) return;
 
-		for (GameObject obj : GamePanel.objects) { //check for all collisions after moving
+		for (GameObject obj : GamePanel.getPanel().objects) { //check for all collisions after moving
 			if (!this.exists) continue;
 			if (obj.equals(this) || ignoreObjs.contains(obj)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
@@ -173,7 +173,7 @@ public class MovableObject extends GameObject {
 			double snapback = this.x - oldX; //will be positive if originally moving left, negative if originally moving right
 			
 			//now check if the snapback caused any collisions (SOMETHING IS GETTING CRUSHED)
-			for (GameObject obj : GamePanel.objects) {
+			for (GameObject obj : GamePanel.getPanel().objects) {
 				if (!this.exists) continue;
 				if (obj.equals(this) || ignoreObjs.contains(obj)) continue;
 				if (this.hasCollided(obj) && obj.solid && obj.exists) {
@@ -198,7 +198,7 @@ public class MovableObject extends GameObject {
 		ArrayList<GameObject> ignoreObjs = new ArrayList<GameObject>();
 		boolean collidedy = false;
 		
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 			if (!this.exists || obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) ignoreObjs.add(obj); 
 		}
@@ -206,7 +206,7 @@ public class MovableObject extends GameObject {
 		
 		if (!this.solid) return;
 
-		for (GameObject obj : GamePanel.objects) { //check for all collisions after moving
+		for (GameObject obj : GamePanel.getPanel().objects) { //check for all collisions after moving
 			if (!this.exists) continue;
 			if (obj.equals(this) || ignoreObjs.contains(obj)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
@@ -217,7 +217,7 @@ public class MovableObject extends GameObject {
 				} else if (obj.type.equals(ObjType.MovableObject)) {
 					last_slip = ((MovableObject) obj).slipperiness;
 				} else if (obj.type.equals(ObjType.Creature)) {
-					last_slip = GamePanel.level.airDrag;
+					last_slip = GamePanel.getPanel().level.airDrag;
 				}
 				
 				collidedy = true;
@@ -263,7 +263,7 @@ public class MovableObject extends GameObject {
 			double snapback = this.y - oldY; //will be positive if originally moving left, negative if originally moving right
 			
 			//now check if the snapback caused any collisions (SOMETHING IS GETTING CRUSHED)
-			for (GameObject obj : GamePanel.objects) {
+			for (GameObject obj : GamePanel.getPanel().objects) {
 				if (!this.exists) continue;
 				if (obj.equals(this) || ignoreObjs.contains(obj)) continue;
 				if (this.hasCollided(obj) && obj.solid && obj.exists) {
@@ -301,7 +301,7 @@ public class MovableObject extends GameObject {
 		else weightedV = v * (pusher.getWeight()/this.getWeight());
 		if (!keepV) weightedV = 0;
 		
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) ignoredObjs.add(obj);
 		}
@@ -309,7 +309,7 @@ public class MovableObject extends GameObject {
 		this.vx += weightedV; //change density
 		this.x += v; //move the object
 
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
 				if (v == 0 || ignoredObjs.contains(obj)) { //ERROR NEEDS FIX
@@ -335,7 +335,7 @@ public class MovableObject extends GameObject {
 		if (resistors.size() != 0) { //I cannot move so I'm not moving.
 			this.x -= v;
 			this.vx -= weightedV;
-			for (GameObject obj : GamePanel.objects) {
+			for (GameObject obj : GamePanel.getPanel().objects) {
 				if (obj.equals(this) || pushers.contains(obj)) continue;
 				if (!this.solid || !obj.solid) continue; 
 			}
@@ -360,7 +360,7 @@ public class MovableObject extends GameObject {
 		else weightedV = v * (pusher.getWeight()/this.getWeight());
 		if (!keepV) weightedV = 0;
 		
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) ignoredObjs.add(obj);
 		}
@@ -368,7 +368,7 @@ public class MovableObject extends GameObject {
 		this.vy += weightedV;
 		this.y += v;
 
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 			if (obj.equals(this) || ignoredObjs.contains(obj)) continue;
 			if (this.hasCollided(obj) && obj.solid && obj.exists) {
 				
@@ -396,7 +396,7 @@ public class MovableObject extends GameObject {
 		if (resistors.size() != 0) {
 			this.y -= v;
 			this.vy -= weightedV;
-			for (GameObject obj : GamePanel.objects) {
+			for (GameObject obj : GamePanel.getPanel().objects) {
 				if (obj.equals(this) || pushers.contains(obj)) continue;
 				if (!this.solid || !obj.solid) continue; 
 			}

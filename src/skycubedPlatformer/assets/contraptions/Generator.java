@@ -53,7 +53,7 @@ public class Generator extends SolidPlatform {
 			newObj.x = this.x;
 			newObj.y = this.y;
 			this.generated.add(newObj);
-			GamePanel.addedObjects.add(newObj);
+			GamePanel.getPanel().addedObjects.add(newObj);
 		} catch (CloneNotSupportedException e) {}
 	}
 	
@@ -91,7 +91,7 @@ public class Generator extends SolidPlatform {
 		boolean collided = false;
 		this.y += this.vy;
 		
-		for (GameObject obj : GamePanel.objects) {	
+		for (GameObject obj : GamePanel.getPanel().objects) {	
 			if (obj.equals(this)) continue;
 			if (this.generated.contains(obj)) continue;
 			if (this.hasCollided(obj) && (obj.type.equals(ObjType.MovableObject) || obj.type.equals(ObjType.Player))) {
@@ -123,7 +123,7 @@ public class Generator extends SolidPlatform {
 		collided = false;
 		this.x += this.vx;
 
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 			if (obj.equals(this)) continue;
 			if (this.generated.contains(obj)) continue;
 			if (this.hasCollided(obj) && (obj.type.equals(ObjType.MovableObject) || obj.type.equals(ObjType.Player))) {

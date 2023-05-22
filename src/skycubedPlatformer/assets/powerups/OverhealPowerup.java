@@ -20,7 +20,7 @@ public class OverhealPowerup extends Powerup {
 		Code code = new Code() {
 			@Override
 			public void run() {
-				GamePanel.player.overheal += amount;
+				GamePanel.getPanel().player.overheal += amount;
 			}
 		};
 		

@@ -30,9 +30,9 @@ public class CreatureGoblin extends Creature {
 		this.friendlyFire = false;
 		this.gemChance = 0.001;
 		
-		this.aiList.add(new HorizontalFollowAi(minRange, maxRange, GamePanel.player));
-		this.aiList.add(new VerticalFollowAi(75, 200, GamePanel.player));
-		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
+		this.aiList.add(new HorizontalFollowAi(minRange, maxRange, GamePanel.getPanel().player));
+		this.aiList.add(new VerticalFollowAi(75, 200, GamePanel.getPanel().player));
+		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.getPanel().player));
 	}
 	
 	/** 
@@ -43,9 +43,9 @@ public class CreatureGoblin extends Creature {
 		this.friendlyFire = false;
 		this.gemChance = 0.001;
 		
-		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player));
-		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, 75, maxRangeY, 0, maxRangeY, GamePanel.player));
-		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
+		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.getPanel().player));
+		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, 75, maxRangeY, 0, maxRangeY, GamePanel.getPanel().player));
+		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.getPanel().player));
 		//add projectilemovement
 	}
 	

@@ -19,7 +19,7 @@ public class FadingWallObject extends DecorationObject {
 	@Override
 	public void draw(Graphics g, Player player, double cam_x, double cam_y, double size) { //move object center to top left edge
 		
-		if (this.hasCollided(GamePanel.player)) {
+		if (this.hasCollided(GamePanel.getPanel().player)) {
 			if (this.alpha > 0) this.alpha -= 5; 
 		} else {
 			if (this.alpha < 255) this.alpha += 5;

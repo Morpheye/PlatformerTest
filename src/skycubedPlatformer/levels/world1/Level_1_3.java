@@ -72,8 +72,8 @@ public class Level_1_3 extends Level {
 	}
 	
 	@Override
-	public void drawBackground() {
-		List<GameObject> objects = GamePanel.objects;
+	public void drawBackground(GamePanel panel) {
+		List<GameObject> objects = panel.objects;
 		
 		objects.add(new SolidBackgroundObject(2750, 750, 690, 990, GameObject.COLOR_DIRT));
 		objects.add(new SolidBackgroundObject(3050, 2450, 190, 550, GameObject.COLOR_DIRT));
@@ -83,15 +83,15 @@ public class Level_1_3 extends Level {
 	}
 	
 	@Override
-	public void drawForeground() {
-		List<GameObject> objects = GamePanel.objects;
+	public void drawForeground(GamePanel panel) {
+		List<GameObject> objects = panel.objects;
 		
 		objects.add(new FadingWallObject(2750, 750, 690, 990, GameObject.COLOR_GRASS));
 	}
 	
 	@Override
-	public void drawPlatforms() {
-		List<GameObject> objects = GamePanel.objects;
+	public void drawPlatforms(GamePanel panel) {
+		List<GameObject> objects = panel.objects;
 		
 		//spawn platform
 		objects.add(new StonePlatform(0, 50, 400, 100));

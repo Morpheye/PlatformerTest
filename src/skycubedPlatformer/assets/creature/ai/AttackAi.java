@@ -50,7 +50,7 @@ public class AttackAi extends CreatureAi {
 	
 	@Override
 	public void onDamage(Creature creature, GameObject source) {
-		if (source instanceof SpiritScythe.ScytheSpirit || source.equals(GamePanel.player)) {
+		if (source instanceof SpiritScythe.ScytheSpirit || source.equals(GamePanel.getPanel().player)) {
 			if (!this.targets.contains(source)) this.targets.add((LivingObject) source);
 		}
 	}

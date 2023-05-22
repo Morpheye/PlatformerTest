@@ -44,7 +44,7 @@ public class Particle extends DecorationObject {
 		this.lifetime--;
 		if (this.lifetime < 0) {
 			this.destroy();
-			GamePanel.deletedObjects.add(this);
+			GamePanel.getPanel().deletedObjects.add(this);
 		}
 		
 	}

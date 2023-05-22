@@ -31,8 +31,8 @@ public class CreatureUndead extends Creature {
 		this.maxCoins = 6;
 		this.coinWeight = 2;
 		
-		this.aiList.add(new HorizontalFollowAi(minRange, maxRange, GamePanel.player));
-		this.aiList.add(new NoVerticalMovementAttackAi(this.attackRange/2, GamePanel.player));
+		this.aiList.add(new HorizontalFollowAi(minRange, maxRange, GamePanel.getPanel().player));
+		this.aiList.add(new NoVerticalMovementAttackAi(this.attackRange/2, GamePanel.getPanel().player));
 	}
 	
 	/**
@@ -46,8 +46,8 @@ public class CreatureUndead extends Creature {
 		this.maxCoins = 6;
 		this.coinWeight = 2;
 		
-		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.player));
-		this.aiList.add(new NoVerticalMovementAttackAi(this.attackRange/2, GamePanel.player));
+		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.getPanel().player));
+		this.aiList.add(new NoVerticalMovementAttackAi(this.attackRange/2, GamePanel.getPanel().player));
 	}
 	
 	@Override

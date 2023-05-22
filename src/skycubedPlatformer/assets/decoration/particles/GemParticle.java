@@ -59,7 +59,7 @@ public class GemParticle extends Particle {
 			lastNormalDrawX = drawX;
 			lastNormalDrawY = drawY;
 			
-			((Graphics2D) g).drawImage(GamePanel.gemImage, drawX, drawY, 
+			((Graphics2D) g).drawImage(GamePanel.getPanel().gemImage, drawX, drawY, 
 					(int) (this.size_x * Main.SIZE/size), (int) (this.size_x * Main.SIZE/size), null);
 		} else {
 			Graphics2D g2d = (Graphics2D) g;
@@ -70,7 +70,7 @@ public class GemParticle extends Particle {
 			int drawX = (int) (lastNormalDrawX + (target_x-lastNormalDrawX)*((30-this.lifetime)/30.0));
 			int drawY = (int) (lastNormalDrawY + (target_y-lastNormalDrawY)*((30-this.lifetime)/30.0));
 			
-			((Graphics2D) g).drawImage(GamePanel.gemImage, drawX, drawY, 
+			((Graphics2D) g).drawImage(GamePanel.getPanel().gemImage, drawX, drawY, 
 					(int) (this.size_x * Main.SIZE/size), (int) (this.size_x * Main.SIZE/size), null);
 			
 		}
@@ -79,7 +79,7 @@ public class GemParticle extends Particle {
 	
 	public static void spawnGem(double x, double y, int count) {
 
-		for (int i=0; i<count; i++) GamePanel.particles.add(new GemParticle(x, y));
+		for (int i=0; i<count; i++) GamePanel.getPanel().particles.add(new GemParticle(x, y));
 		return;
 		
 	}

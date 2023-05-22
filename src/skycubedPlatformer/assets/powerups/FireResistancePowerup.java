@@ -20,7 +20,7 @@ public class FireResistancePowerup extends Powerup {
 		Code code = new Code() {
 			@Override
 			public void run() {
-				GamePanel.player.fireResistant = true;
+				GamePanel.getPanel().player.fireResistant = true;
 			}
 		};
 		

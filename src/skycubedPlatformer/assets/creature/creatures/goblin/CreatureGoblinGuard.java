@@ -64,8 +64,8 @@ public class CreatureGoblinGuard extends CreatureGoblin {
 		}
 		
 		this.aiList = new ArrayList<CreatureAi>();
-		this.aiList.add(new GuardAi(initX, initY, 20, rangeX, minRangeY, maxRangeY, GamePanel.player));
-		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.player));
+		this.aiList.add(new GuardAi(initX, initY, 20, rangeX, minRangeY, maxRangeY, GamePanel.getPanel().player));
+		this.aiList.add(new NormalMovementAttackAi(this.attackRange/2, GamePanel.getPanel().player));
 		
 
 	}
@@ -104,7 +104,7 @@ public class CreatureGoblinGuard extends CreatureGoblin {
 	
 	@Override
 	public void dropLoot() { //2-3 drops totalling 6-7 coins, guaranteed 1 silver coin drop
-		GamePanel.particles.add(new CoinParticle(this.x, this.y, 5));
+		GamePanel.getPanel().particles.add(new CoinParticle(this.x, this.y, 5));
 		Creature.loot(this);
 	}
 	

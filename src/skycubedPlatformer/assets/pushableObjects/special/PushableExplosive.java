@@ -42,12 +42,12 @@ public class PushableExplosive extends PushableObject {
 	
 	public void explode() {
 		this.exists = false;
-		GamePanel.deletedObjects.add(this);
+		GamePanel.getPanel().deletedObjects.add(this);
 		
 		double lowerBoundX = getLowerBoundX(), lowerBoundY = getLowerBoundY(),
 				higherBoundX = getHigherBoundX(), higherBoundY = getHigherBoundY();
 		
-		GamePanel.particles.add(
+		GamePanel.getPanel().particles.add(
 		new Explosion(this.x, this.y, 2*this.blastStrength, this.blastStrength, this.blastStrength, this.lastDamager) {
 			@Override
 			public double getLowerBoundX() {

@@ -107,9 +107,9 @@ public class Creature extends LivingObject {
 		super.move();
 
 		//CHECK BOUNDS
-		if (this.y > GamePanel.level.topLimit) GamePanel.deletedObjects.add(this);
-		if (this.y < GamePanel.level.bottomLimit) GamePanel.deletedObjects.add(this);
-		if (this.timeSinceDeath > 60) GamePanel.deletedObjects.add(this);
+		if (this.y > GamePanel.getPanel().level.topLimit) GamePanel.getPanel().deletedObjects.add(this);
+		if (this.y < GamePanel.getPanel().level.bottomLimit) GamePanel.getPanel().deletedObjects.add(this);
+		if (this.timeSinceDeath > 60) GamePanel.getPanel().deletedObjects.add(this);
 		
 		//AI goes here
 		if (this.isAlive) {
@@ -231,9 +231,9 @@ public class Creature extends LivingObject {
 	}
 	
 	public static void loot(Creature c) {
-		if (Math.random() > (1 - c.gemChance * (1 + GamePanel.player.luck) )) GemParticle.spawnGem(c.x, c.y, 1); //drop gem
+		if (Math.random() > (1 - c.gemChance * (1 + GamePanel.getPanel().player.luck) )) GemParticle.spawnGem(c.x, c.y, 1); //drop gem
 		
-		int coinAmount = (int) ((c.minCoins + (int) (Math.random() * (c.maxCoins - c.minCoins + 1))) * (1 + GamePanel.player.luck));
+		int coinAmount = (int) ((c.minCoins + (int) (Math.random() * (c.maxCoins - c.minCoins + 1))) * (1 + GamePanel.getPanel().player.luck));
 		if (coinAmount < 0) coinAmount = 0;
 		CoinParticle.spawnCoins(c.x, c.y, (int) Math.ceil(coinAmount / c.coinWeight), coinAmount);
 	}

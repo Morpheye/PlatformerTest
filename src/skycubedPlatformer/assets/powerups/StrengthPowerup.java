@@ -20,7 +20,7 @@ public class StrengthPowerup extends Powerup {
 		Code code = new Code() {
 			@Override
 			public void run() {
-				GamePanel.player.attackDamage += amount;
+				GamePanel.getPanel().player.attackDamage += amount;
 			}
 		};
 		

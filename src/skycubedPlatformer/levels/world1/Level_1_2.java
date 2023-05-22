@@ -64,8 +64,8 @@ public class Level_1_2 extends Level {
 	}
 	
 	@Override
-	public void drawBackground() {
-		List<GameObject> objects = GamePanel.objects;
+	public void drawBackground(GamePanel panel) {
+		List<GameObject> objects = panel.objects;
 		
 		objects.add(new SolidBackgroundObject(700,200,275,275,GameObject.COLOR_DIRT));
 		objects.add(new SolidBackgroundObject(600,150,275,150,GameObject.COLOR_DIRT));
@@ -87,8 +87,8 @@ public class Level_1_2 extends Level {
 	SolidPlatform mountainPlatform;
 	
 	@Override
-	public void drawPlatforms() {
-		List<GameObject> objects = GamePanel.objects;
+	public void drawPlatforms(GamePanel panel) {
+		List<GameObject> objects = panel.objects;
 
 		//spawn platform
 		objects.add(new GrassPlatform(0, 50, 400, 100));

@@ -20,7 +20,7 @@ public class JumpBoostPowerup extends Powerup {
 		Code code = new Code() {
 			@Override
 			public void run() {
-				GamePanel.player.jumpStrength+=amount;
+				GamePanel.getPanel().player.jumpStrength+=amount;
 			}
 		};
 		

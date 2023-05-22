@@ -36,7 +36,7 @@ public class Level {
 	}
 	
 	
-	public void drawPlatforms() {}
+	public void drawPlatforms(GamePanel panel) {}
 	
 	public void onTick() {}
 	
@@ -45,17 +45,17 @@ public class Level {
 		g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE+50);
 	}
 	
-	public void drawForeground() {}
+	public void drawForeground(GamePanel panel) {}
 	
-	public void drawBackground() {}
+	public void drawBackground(GamePanel panel) {}
 	
 	public void drawAmbience(Graphics g) {}
 	
 	public void onStart(GamePanel panel) {}
 	
 	public void moveCamera() { //DEFAULT CAMERA MOVEMENT (fully locked)
-		((GamePanel) ApplicationFrame.current).camera_x = GamePanel.player.x;
-		((GamePanel) ApplicationFrame.current).camera_y = GamePanel.player.y;
+		((GamePanel) ApplicationFrame.current).camera_x = GamePanel.getPanel().player.x;
+		((GamePanel) ApplicationFrame.current).camera_y = GamePanel.getPanel().player.y;
 		
 	}
 	

@@ -28,7 +28,7 @@ public class SolidPlatform extends GameObject {
 		boolean collided = false;
 		this.y += this.vy;
 		
-		for (GameObject obj : GamePanel.objects) {	
+		for (GameObject obj : GamePanel.getPanel().objects) {	
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && (obj.type.equals(ObjType.MovableObject) || obj.type.equals(ObjType.Player))) {
 				collisions.add(obj);
@@ -59,7 +59,7 @@ public class SolidPlatform extends GameObject {
 		collided = false;
 		this.x += this.vx;
 
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 			if (obj.equals(this)) continue;
 			if (this.hasCollided(obj) && (obj.type.equals(ObjType.MovableObject) || obj.type.equals(ObjType.Player))) {
 				collisions.add(obj);

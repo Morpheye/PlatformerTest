@@ -20,7 +20,7 @@ public class PunchPowerup extends Powerup {
 		Code code = new Code() {
 			@Override
 			public void run() {
-				GamePanel.player.attackKnockback += amount;
+				GamePanel.getPanel().player.attackKnockback += amount;
 			}
 		};
 		

@@ -95,14 +95,14 @@ public class Player extends LivingObject {
 	@Override
 	public void move() {
 		//Check interactables 
-		for (GameObject obj : GamePanel.objects) { //check for water
+		for (GameObject obj : GamePanel.getPanel().objects) { //check for water
 			if (obj.equals(this)) continue;
 			//finish flag
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) 
 					&& GamePanel.getPanel().levelWon==0 && obj.exists) {
 				GamePanel.getPanel().levelWon=1;
 				SoundHelper.playFinalSound(finishSound);
-				CoinParticle.spawnCoins(this.x, this.y, 5+(int)(Math.random() * 6), GamePanel.level.reward);
+				CoinParticle.spawnCoins(this.x, this.y, 5+(int)(Math.random() * 6), GamePanel.getPanel().level.reward);
 			}
 			//null zone
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.NullZone) 
@@ -141,14 +141,14 @@ public class Player extends LivingObject {
 		this.timeSinceDamaged++;
 		
 		//CHECK BOUNDS
-		if (this.y > GamePanel.level.topLimit && GamePanel.getPanel().levelWon==0) {
-			GamePanel.getPanel().restartLevel(GamePanel.level);
+		if (this.y > GamePanel.getPanel().level.topLimit && GamePanel.getPanel().levelWon==0) {
+			GamePanel.getPanel().restartLevel(GamePanel.getPanel().level);
 		}
-		if (this.y < GamePanel.level.bottomLimit && GamePanel.getPanel().levelWon==0) {
-			GamePanel.getPanel().restartLevel(GamePanel.level);
+		if (this.y < GamePanel.getPanel().level.bottomLimit && GamePanel.getPanel().levelWon==0) {
+			GamePanel.getPanel().restartLevel(GamePanel.getPanel().level);
 		}
 		if (this.timeSinceDeath > 120 && GamePanel.getPanel().levelWon==0) {
-			GamePanel.getPanel().restartLevel(GamePanel.level);
+			GamePanel.getPanel().restartLevel(GamePanel.getPanel().level);
 		}
 
 	}

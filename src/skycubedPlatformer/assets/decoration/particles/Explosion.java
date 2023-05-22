@@ -56,7 +56,7 @@ public class Explosion extends Particle {
 		SoundHelper.playFinalSound(this.spawnSound);
 		
 		//damage
-		for (GameObject obj : GamePanel.objects) {
+		for (GameObject obj : GamePanel.getPanel().objects) {
 			if (!this.exists || obj.equals(this)) continue;
 			if (this.distanceTo(obj) > this.radius) continue;
 			if (obj.type.equals(ObjType.Creature) || obj.type.equals(ObjType.Player)) {
@@ -91,7 +91,7 @@ public class Explosion extends Particle {
 		float alpha = (this.lifetime)/20.0f;
 		AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER,alpha);
 		g2d.setComposite(ac);
-		g2d.drawImage(GamePanel.explosionImage, drawX, drawY, 
+		g2d.drawImage(GamePanel.getPanel().explosionImage, drawX, drawY, 
 				(int) (this.size_x * Main.SIZE/size), (int) (this.size_y * Main.SIZE/size), null);
 		
 		

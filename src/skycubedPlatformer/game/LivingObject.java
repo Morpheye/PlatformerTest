@@ -84,7 +84,7 @@ public class LivingObject extends MovableObject {
 		
 		if (this.weapon != null) this.weapon.onTick(this);
 		
-		for (GameObject obj : GamePanel.objects) { //check for water
+		for (GameObject obj : GamePanel.getPanel().objects) { //check for water
 			if (obj.equals(this)) continue;
 			//liquids
 			if (this.hasCollided(obj) && obj.type.equals(ObjType.LiquidPlatform) && obj.exists) {
@@ -202,10 +202,10 @@ public class LivingObject extends MovableObject {
 			this.health = 0;
 			this.die();
 			if (source != null) {
-				if ((source.equals(GamePanel.player) || source instanceof SpiritScythe.ScytheSpirit)
+				if ((source.equals(GamePanel.getPanel().player) || source instanceof SpiritScythe.ScytheSpirit)
 						&& this.type.equals(ObjType.Creature)) {
-					if (GamePanel.player.weapon != null) {
-						GamePanel.player.weapon.onKill((LivingObject) source, this); //WEAPON TRIGGER
+					if (GamePanel.getPanel().player.weapon != null) {
+						GamePanel.getPanel().player.weapon.onKill((LivingObject) source, this); //WEAPON TRIGGER
 					}
 					((Creature) this).dropLoot();
 			}}
@@ -252,14 +252,14 @@ public class LivingObject extends MovableObject {
 		this.playAttackSound();
 		
 		//Apply collisions
-		for (GameObject obj : GamePanel.objects) { //check for enemies in range
+		for (GameObject obj : GamePanel.getPanel().objects) { //check for enemies in range
 			if (obj.equals(this)) continue;
 			if (obj.hasCollided(this.attack)) { //collided
 				
 				if (obj.type.equals(ObjType.Creature)) { // CREATURE
 					if (this.type.equals(ObjType.Creature) && !((Creature) this).friendlyFire && 
-							!((GamePanel.player.weapon != null && GamePanel.player.weapon instanceof SpiritScythe
-							&& ((SpiritScythe) GamePanel.player.weapon).spirits.contains(obj)))) continue; //check friendlyfire
+							!((GamePanel.getPanel().player.weapon != null && GamePanel.getPanel().player.weapon instanceof SpiritScythe
+							&& ((SpiritScythe) GamePanel.getPanel().player.weapon).spirits.contains(obj)))) continue; //check friendlyfire
 					
 					if (this.weapon != null && this.weapon instanceof SpiritScythe
 							&& ((SpiritScythe) this.weapon).spirits.contains(obj)) continue; //check for spirit
