@@ -20,7 +20,7 @@ public class CameraSizePowerup extends Powerup {
 		Code code = new Code() {
 			@Override
 			public void run() {
-				((GamePanel) ApplicationFrame.current).target_camera_size = (int) (800*d);
+				GamePanel.getPanel().target_camera_size = (int) (800*d);
 		}};
 		
 		this.code = code;
@@ -40,7 +40,7 @@ public class CameraSizePowerup extends Powerup {
 	@Override
 	public void run() {
 		this.code.run();
-		((GamePanel) ApplicationFrame.current).createFlash(this.color, 125);
+		GamePanel.getPanel().createFlash(this.color, 125);
 	}
 	
 	@Override

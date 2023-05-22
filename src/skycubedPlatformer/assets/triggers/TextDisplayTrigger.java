@@ -24,7 +24,7 @@ public class TextDisplayTrigger extends Trigger {
 	@Override
 	public void run() {
 		super.run();
-		((GamePanel) ApplicationFrame.current).displayText(this.text, this.displayTime);
+		GamePanel.getPanel().displayText(this.text, this.displayTime);
 	}
 	
 	@Override

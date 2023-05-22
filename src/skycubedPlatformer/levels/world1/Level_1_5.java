@@ -174,19 +174,19 @@ public class Level_1_5 extends Level {
 	@Override
 	public void onTick() {
 		//Autoscroll
-		if ((((GamePanel) ApplicationFrame.current).camera_x - GamePanel.player.x > ((GamePanel) ApplicationFrame.current).camera_size/2 + 100) 
-				&& ((GamePanel) ApplicationFrame.current).levelWon == 0) {
+		if ((GamePanel.getPanel().camera_x - GamePanel.player.x > GamePanel.getPanel().camera_size/2 + 100) 
+				&& GamePanel.getPanel().levelWon == 0) {
 			if (GamePanel.player.isAlive) {
 				GamePanel.player.health = 0;
 				GamePanel.player.die();
 			}
 		}
 		
-		if (((GamePanel) ApplicationFrame.current).camera_x >= 9450 && ((GamePanel) ApplicationFrame.current).camera_x <= 9800) movingPlatform.vy = 0.9;
-		else if (((GamePanel) ApplicationFrame.current).camera_x >= 10200 && ((GamePanel) ApplicationFrame.current).camera_x <= 10700) movingPlatform.vy = -0.9;
+		if (GamePanel.getPanel().camera_x >= 9450 && GamePanel.getPanel().camera_x <= 9800) movingPlatform.vy = 0.9;
+		else if (GamePanel.getPanel().camera_x >= 10200 && GamePanel.getPanel().camera_x <= 10700) movingPlatform.vy = -0.9;
 		else movingPlatform.vy = 0;
 		
-		if (((GamePanel) ApplicationFrame.current).camera_x >= 6850 && ((GamePanel) ApplicationFrame.current).camera_x <= 11000) movingPlatform.vx = 1.5;
+		if (GamePanel.getPanel().camera_x >= 6850 && GamePanel.getPanel().camera_x <= 11000) movingPlatform.vx = 1.5;
 		else movingPlatform.vx = 0;
 		
 		if (!GamePanel.objects.contains(finalGoblin) && finishPlatform.y > 825) {
@@ -201,26 +201,26 @@ public class Level_1_5 extends Level {
 	
 	@Override
 	public void moveCamera() {
-		if (((GamePanel) ApplicationFrame.current).camera_x <= 12100) ((GamePanel) ApplicationFrame.current).camera_x += 1.5;
+		if (GamePanel.getPanel().camera_x <= 12100) GamePanel.getPanel().camera_x += 1.5;
 		else {
 			if (GamePanel.player.x <= 12100) {}
 			else {
-				if (GamePanel.player.x - ((GamePanel) ApplicationFrame.current).camera_x > 10 && GamePanel.player.x < 12800) {
-					((GamePanel) ApplicationFrame.current).camera_x += 10;
+				if (GamePanel.player.x - GamePanel.getPanel().camera_x > 10 && GamePanel.player.x < 12800) {
+					GamePanel.getPanel().camera_x += 10;
 				}
-				else ((GamePanel) ApplicationFrame.current).camera_x = GamePanel.player.x;
+				else GamePanel.getPanel().camera_x = GamePanel.player.x;
 			
 		}}
 		
-		double diffY = GamePanel.player.y - ((GamePanel) ApplicationFrame.current).camera_y;
+		double diffY = GamePanel.player.y - GamePanel.getPanel().camera_y;
 		
 		int higherLimitY = 100;
 		int lowerLimitY = -100;
 
-		if (diffY > higherLimitY) ((GamePanel) ApplicationFrame.current).camera_y = GamePanel.player.y - higherLimitY;
-		if (diffY < lowerLimitY) ((GamePanel) ApplicationFrame.current).camera_y = GamePanel.player.y - lowerLimitY;
+		if (diffY > higherLimitY) GamePanel.getPanel().camera_y = GamePanel.player.y - higherLimitY;
+		if (diffY < lowerLimitY) GamePanel.getPanel().camera_y = GamePanel.player.y - lowerLimitY;
 		
-		if (((GamePanel) ApplicationFrame.current).camera_y < 200) ((GamePanel) ApplicationFrame.current).camera_y = 200;
+		if (GamePanel.getPanel().camera_y < 200) GamePanel.getPanel().camera_y = 200;
 	}
 	
 }

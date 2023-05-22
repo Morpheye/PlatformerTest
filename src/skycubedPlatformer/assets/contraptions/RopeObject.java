@@ -80,7 +80,7 @@ public class RopeObject extends PushableObject {
 	
 	@Override
 	public boolean hasCollided(GameObject obj) {
-		if (obj.equals(((GamePanel) ApplicationFrame.current).MainFrameObj)) return true;
+		if (obj.equals(GamePanel.getPanel().MainFrameObj)) return true;
 		else return super.hasCollided(obj);
 	}
 

@@ -65,12 +65,12 @@ public class MovableObject extends GameObject {
 		
 		if (this.inLiquid) {
 			double diff = this.density - liquidDensity;
-			double lift = ((GamePanel) ApplicationFrame.current).gravity * Math.atan(2*diff) / (Math.PI / 2) - ((GamePanel) ApplicationFrame.current).gravity;
+			double lift = GamePanel.getPanel().gravity * Math.atan(2*diff) / (Math.PI / 2) - GamePanel.getPanel().gravity;
 			
 			this.vy += lift;
 		}
 		
-		this.vy += ((GamePanel) ApplicationFrame.current).gravity;
+		this.vy += GamePanel.getPanel().gravity;
 
 		//YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 		
@@ -90,8 +90,8 @@ public class MovableObject extends GameObject {
 		
 		//AIR DRAG
 		if (this.inAir) {
-			this.vy *= ((GamePanel) ApplicationFrame.current).airDrag;
-			this.vx *= ((GamePanel) ApplicationFrame.current).airDrag;
+			this.vy *= GamePanel.getPanel().airDrag;
+			this.vx *= GamePanel.getPanel().airDrag;
 		}
 		
 		//GROUND DRAG
@@ -186,8 +186,8 @@ public class MovableObject extends GameObject {
 		
 		if (collidedx && isFinal) {
 			if (Math.abs(this.vx) > 12 && (this.type.equals(ObjType.Player) 
-					|| this.hasCollided(((GamePanel) ApplicationFrame.current).MainFrameObj))) {
-				((GamePanel) ApplicationFrame.current).createShake(3, this.getWeight()/500*(12-Math.abs(this.vx)));
+					|| this.hasCollided(GamePanel.getPanel().MainFrameObj))) {
+				GamePanel.getPanel().createShake(3, this.getWeight()/500*(12-Math.abs(this.vx)));
 			}
 			this.vx = 0; //if anything was hit, stop moving.
 		}
@@ -280,8 +280,8 @@ public class MovableObject extends GameObject {
 		
 		if (collidedy && isFinal) {
 			if (Math.abs(this.vy) > 12 && (this.type.equals(ObjType.Player) 
-					|| this.hasCollided(((GamePanel) ApplicationFrame.current).MainFrameObj))) {
-				((GamePanel) ApplicationFrame.current).createShake(3, this.getWeight()/500*(12-Math.abs(this.vy)));
+					|| this.hasCollided(GamePanel.getPanel().MainFrameObj))) {
+				GamePanel.getPanel().createShake(3, this.getWeight()/500*(12-Math.abs(this.vy)));
 			}
 			this.vy = 0;
 		}

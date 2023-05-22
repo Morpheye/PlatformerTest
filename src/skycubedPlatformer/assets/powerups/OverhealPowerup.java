@@ -39,7 +39,7 @@ public class OverhealPowerup extends Powerup {
 	@Override
 	public void run() {
 		this.code.run();
-		((GamePanel) ApplicationFrame.current).createFlash(this.color, 125);
+		GamePanel.getPanel().createFlash(this.color, 125);
 	}
 	
 	@Override

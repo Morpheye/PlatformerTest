@@ -54,6 +54,7 @@ public class GamePanel extends JPanel {
 	public static List<GameObject> particles;
 	public static List<GameObject> deletedObjects;
 	public static List<GameObject> addedObjects;
+	public static ArrayList<Consumable> consumables;
 	
 	public double camera_x;
 	public double camera_y;
@@ -68,8 +69,6 @@ public class GamePanel extends JPanel {
 	public long targetCoins;
 	
 	public int timeSinceRestart = 0;
-	
-	public static ArrayList<Consumable> consumables;
 	
 	public GamePanel(Level level) {
 		this.setBackground(Color.BLACK);
@@ -888,4 +887,9 @@ public class GamePanel extends JPanel {
 	public Dimension getPreferredSize() {
 		return new Dimension(Main.SIZE, Main.SIZE);
 	}
+
+	public static GamePanel getPanel() {
+		return ((GamePanel) ApplicationFrame.current);
+	}
+	
 }

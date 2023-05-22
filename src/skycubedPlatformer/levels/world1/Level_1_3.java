@@ -169,7 +169,7 @@ public class Level_1_3 extends Level {
 	@Override
 	public void moveCamera() {
 		super.moveCamera();
-		if (((GamePanel) ApplicationFrame.current).camera_y < 0) ((GamePanel) ApplicationFrame.current).camera_y = 0;
+		if (GamePanel.getPanel().camera_y < 0) GamePanel.getPanel().camera_y = 0;
 	}
 	
 }

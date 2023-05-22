@@ -27,7 +27,7 @@ public class PushableObject extends MovableObject {
 	
 	@Override
 	public void crush() {
-		((GamePanel) ApplicationFrame.current).createShake(10, 10, 2);
+		GamePanel.getPanel().createShake(10, 10, 2);
 		super.crush();
 	}
 	

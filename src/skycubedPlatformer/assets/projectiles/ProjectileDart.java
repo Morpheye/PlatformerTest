@@ -33,7 +33,7 @@ public class ProjectileDart extends Projectile {
 	
 	@Override
 	public void move() {
-		this.vy += ((GamePanel) ApplicationFrame.current).gravity * 0.05;
+		this.vy += GamePanel.getPanel().gravity * 0.05;
 		
 		super.move();
 		

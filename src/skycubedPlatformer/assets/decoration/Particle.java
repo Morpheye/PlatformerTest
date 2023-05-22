@@ -33,13 +33,13 @@ public class Particle extends DecorationObject {
 	
 	@Override
 	public void move() {
-		if (this.gravity) this.vy += ((GamePanel) ApplicationFrame.current).gravity;
+		if (this.gravity) this.vy += GamePanel.getPanel().gravity;
 		
 		this.x += this.vx;
 		this.y += this.vy;
 		
-		this.vx *= ((GamePanel) ApplicationFrame.current).airDrag;
-		this.vy *= ((GamePanel) ApplicationFrame.current).airDrag;
+		this.vx *= GamePanel.getPanel().airDrag;
+		this.vy *= GamePanel.getPanel().airDrag;
 		
 		this.lifetime--;
 		if (this.lifetime < 0) {

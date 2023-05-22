@@ -97,7 +97,7 @@ public class Projectile extends MovableObject {
 			}
 		}
 		
-		if (hasCollided && this.hasCollided(((GamePanel) ApplicationFrame.current).MainFrameObj)) this.playHitSound();
+		if (hasCollided && this.hasCollided(GamePanel.getPanel().MainFrameObj)) this.playHitSound();
 		
 		this.lifetime--;
 		if (this.lifetime <= 0) {

@@ -52,7 +52,7 @@ public class Explosion extends Particle {
 	}
 	
 	private void init() {
-		((GamePanel) ApplicationFrame.current).createShake(20, this.radius);
+		GamePanel.getPanel().createShake(20, this.radius);
 		SoundHelper.playFinalSound(this.spawnSound);
 		
 		//damage
