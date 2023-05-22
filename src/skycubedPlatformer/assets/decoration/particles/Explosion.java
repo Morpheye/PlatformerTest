@@ -71,7 +71,6 @@ public class Explosion extends Particle {
 			} else if (obj.type.equals(ObjType.MovableObject) && ((PushableObject) obj).attackable) {
 				double multiplier = 1 - this.distanceTo(obj) / this.radius;
 				((PushableObject) obj).damage((int) Math.ceil(this.damage * multiplier), this.source, "Explosion");
-				
 				//push
 				double trueDist = Math.hypot((obj.x - this.x), (obj.y - this.y));
 				obj.vy += 5*Math.pow(knockback, 2) * multiplier * (obj.y-this.y)/trueDist / obj.getWeight();

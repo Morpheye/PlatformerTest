@@ -27,7 +27,7 @@ public class BejeweledMoonstaff extends Weapon {
 			this.tier = 3;
 			
 			this.stats = new String[]{"Attack Damage +60%", "Attack Range +75%", "Attack Speed -27.3%",
-					"Gem drop chances tripled"}; //0.89x dmg
+					"Gem drop chances tripled"};
 			this.statMap = new int[] {1, 1, -1, 2};
 			
 			this.lore = "The Bejeweled Moonstaff brings a lustrous new look to a powerful ancient weapon. "

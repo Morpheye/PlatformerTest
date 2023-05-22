@@ -12,11 +12,12 @@ import skycubedPlatformer.util.discord.DiscordRPC;
 public class Main {
 	
 	public static final int SIZE = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()-125); //DOES NOT CHANGE
+	public static final double SIZE_RATIO = SIZE/800.0;
 	public static ApplicationFrame jframe;
 	public static boolean testMode = false;
 	
 	public static void main(String[] args) {
-		try {DiscordRPC.init();
+		try {//DiscordRPC.init();
 		}catch (Exception e) {}
 		FileLoader.run();
 		DataManager.onStart();

@@ -22,10 +22,12 @@ public class Player extends LivingObject {
 	
 	Clip finishSound;
 	public int naturalRegenCooldown;
+	public double luck;
 	
 	public Player(double initX, double initY, double size) {
 		super(initX, initY, size, size, Color.WHITE, 1.0);	
 		this.type = ObjType.Player;
+		this.luck = 0;
 		
 		this.movementSpeed = 0.25;
 		this.jumpStrength = 16;
@@ -106,7 +108,8 @@ public class Player extends LivingObject {
 				this.fireResistant = false; this.naturalRegenCooldown = 180; this.overheal = 0;
 				this.maxAttackCooldown = 40; this.attackRange = 20;
 				this.attackDamage = 5; this.rangedAttackDamage = 5; this.attackKnockback = 2;
-				this.density = 1; GamePanel.target_camera_size = Main.SIZE;
+				this.density = 1; GamePanel.target_camera_size = 800;
+				this.luck = 0;
 				
 				if (this.weapon != null) this.weapon.init(this);
 			}

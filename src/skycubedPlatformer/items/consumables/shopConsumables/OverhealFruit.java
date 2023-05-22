@@ -1,4 +1,4 @@
-package skycubedPlatformer.items.consumables.shopItems;
+package skycubedPlatformer.items.consumables.shopConsumables;
 
 import javax.imageio.ImageIO;
 
@@ -21,7 +21,7 @@ public class OverhealFruit extends Consumable {
 			this.lore = "Grown in a well-kept garden free of the use of pesticides and GMOs, "
 					+ "this fruit heavily boosts the consumer's health on consumption.";
 			
-			this.image = ImageIO.read(this.getClass().getResource("/items/shopItems/OverhealFruit.png"));
+			this.image = ImageIO.read(this.getClass().getResource("/items/shopConsumables/OverhealFruit.png"));
 
 		} catch (Exception e) {}
 	}

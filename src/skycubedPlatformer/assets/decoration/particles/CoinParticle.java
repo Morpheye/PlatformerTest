@@ -35,6 +35,7 @@ public class CoinParticle extends Particle {
 		try {
 			this.despawnSound = AudioSystem.getClip();
 			SoundHelper.loadSound(this, this.despawnSound, "/sounds/coin/coin.wav");
+		
 		} catch (Exception e) {}
 		
 	}

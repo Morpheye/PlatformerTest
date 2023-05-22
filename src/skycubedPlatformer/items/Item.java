@@ -4,8 +4,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import skycubedPlatformer.items.consumables.shopItems.MegahealFruit;
-import skycubedPlatformer.items.consumables.shopItems.OverhealFruit;
+import skycubedPlatformer.items.consumables.shopConsumables.LuckyClover;
+import skycubedPlatformer.items.consumables.shopConsumables.MegahealFruit;
+import skycubedPlatformer.items.consumables.shopConsumables.OverhealFruit;
+import skycubedPlatformer.items.consumables.shopConsumables.RubberDuck;
+import skycubedPlatformer.items.items.shopItems.ItemFruit;
 import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.items.weapons.shopWeaponsT2.AerialStaff;
 import skycubedPlatformer.items.weapons.shopWeaponsT2.AquaforgedTrident;
@@ -18,6 +21,7 @@ import skycubedPlatformer.items.weapons.shopWeaponsT3.DrainingSceptre;
 import skycubedPlatformer.items.weapons.shopWeaponsT3.ExecutionerAxe;
 import skycubedPlatformer.items.weapons.shopWeaponsT3.PoisonEdgeKatana;
 import skycubedPlatformer.items.weapons.shopWeaponsT4.GildedChimeraBlade;
+import skycubedPlatformer.items.weapons.shopWeaponsT4.JadedHalberd;
 import skycubedPlatformer.items.weapons.shopWeaponsT4.VampiricSabre;
 import skycubedPlatformer.items.weapons.starterWeapons.PointedSpear;
 import skycubedPlatformer.items.weapons.starterWeapons.SharpAxe;
@@ -55,6 +59,9 @@ public class Item {
 	}
 	public static void itemListInit() {
 		//ITEMS
+		addItem(new ItemFruit());
+		addItem(new RubberDuck());
+		addItem(new LuckyClover());
 		addItem(new OverhealFruit());
 		addItem(new MegahealFruit());
 		
@@ -78,6 +85,7 @@ public class Item {
 		addItem(new BladeOfImmolation());
 		//exotic weapons (tier 4: diamond)
 		addItem(new GildedChimeraBlade());
+		addItem(new JadedHalberd());
 		addItem(new VampiricSabre());
 		//ultra-exotic weapons (tier 5: crimsonade)
 		addItem(new SpiritScythe());

@@ -7,18 +7,19 @@ import java.awt.Graphics2D;
 import skycubedPlatformer.Main;
 import skycubedPlatformer.assets.PushableObject;
 import skycubedPlatformer.game.GameObject;
+import skycubedPlatformer.game.MovableObject;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
 
 public class TargetRopeObject extends PushableObject {
 
-	public PushableObject obj;
-	public PushableObject target;
+	public MovableObject obj;
+	public MovableObject target;
 	public double ropeLength;
 	public double tension;
 	public boolean snapped;
 	
-	public TargetRopeObject(PushableObject obj, PushableObject target, double ropeLength, double tension) {
+	public TargetRopeObject(MovableObject obj, MovableObject target, double ropeLength, double tension) {
 		super(obj.x, obj.y, obj.size_x, obj.size_y, obj.color, obj.density, obj.slipperiness);
 		
 		this.obj = obj; //purely for drawing purposes

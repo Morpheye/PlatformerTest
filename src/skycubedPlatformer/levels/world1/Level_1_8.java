@@ -9,10 +9,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import skycubedPlatformer.Main;
+import skycubedPlatformer.assets.contraptions.TargetRopeObject;
 import skycubedPlatformer.assets.creature.creatures.goblin.CreatureGoblinGuard;
+import skycubedPlatformer.assets.decoration.objects.Gravestone;
+import skycubedPlatformer.assets.decoration.walls.SolidBackgroundObject;
+import skycubedPlatformer.assets.pushableObjects.PushableBox;
 import skycubedPlatformer.assets.pushableObjects.PushableStone;
 import skycubedPlatformer.assets.pushableObjects.special.PushableExplosive;
 import skycubedPlatformer.assets.solidPlatforms.SandPlatform;
+import skycubedPlatformer.assets.triggers.TextDisplayTrigger;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.items.weapons.starterWeapons.PointedSpear;
 import skycubedPlatformer.levels.Level;
@@ -90,7 +95,20 @@ public class Level_1_8 extends Level {
 		objects.add(new PushableStone(675, 175, 50, 50));
 		objects.add(new PushableExplosive(725, 175, 50, 50, 30));
 		objects.add(new CreatureGoblinGuard(700, 225, 40, 250, 50, 100, new PointedSpear()));
-
+		
+		objects.add(new SandPlatform(1550, -800, 600, 2000));
+		objects.add(new SandPlatform(1950, -800, 600, 2400));
+		objects.add(new PushableBox(1600, 250, 50, 50));
+		objects.add(new Gravestone(1400, 245, 50, 100));
+		objects.add(new Gravestone(1500, 225, 100, 75));
+		objects.add(new SolidBackgroundObject(1750, -400, 550, 2000, GameObject.COLOR_SAND.darker()));
+		
+		objects.add(new TextDisplayTrigger(1650, 500, 200, 200, "Explosions can break lighter blocks.", 300));
+		objects.add(new PushableBox(1800, 500, 50, 50));
+		objects.add(new PushableExplosive(1850, 500, 50, 50, 30));
+		objects.add(new PushableBox(1825, 560, 50, 50));
+		objects.add(new PushableStone(1900, 500, 50, 50));
+		
 	}
 	
 	@Override

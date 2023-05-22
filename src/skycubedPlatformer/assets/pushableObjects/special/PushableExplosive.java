@@ -36,6 +36,8 @@ public class PushableExplosive extends PushableObject {
 		if (this.dmgTime > 0 && this.health > 0) this.dmgTime -= 5;
 		else if (this.health <= 0 && this.dmgTime < 510) this.dmgTime += 5;
 		if (this.dmgTime >= 510) this.explode();
+		
+		super.move();
 	}
 	
 	public void explode() {

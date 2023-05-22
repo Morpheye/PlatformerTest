@@ -452,7 +452,20 @@ public class LevelSelectPanel extends JPanel {
 	}
 	
 	void destroy() {
+		for (BufferedImage img : lvlImages) {
+			if (img != null) {
+				img.flush();
+				img = null;
+			}
+		}
+
+		this.lockImage.flush();
+		this.coinImage.flush();
+		this.gemImage.flush();
 		
+		this.lockImage = null;
+		this.coinImage = null;
+		this.gemImage = null;
 	}
 	
 	@Override

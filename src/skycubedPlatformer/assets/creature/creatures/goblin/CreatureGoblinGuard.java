@@ -16,7 +16,7 @@ import skycubedPlatformer.assets.decoration.particles.CoinParticle;
 import skycubedPlatformer.assets.decoration.particles.ItemParticle;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.Player;
-import skycubedPlatformer.items.consumables.shopItems.OverhealFruit;
+import skycubedPlatformer.items.consumables.shopConsumables.OverhealFruit;
 import skycubedPlatformer.items.weapons.Weapon;
 import skycubedPlatformer.menu.GamePanel;
 import skycubedPlatformer.util.SoundHelper;

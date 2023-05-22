@@ -1,4 +1,4 @@
-package skycubedPlatformer.items.consumables.shopItems;
+package skycubedPlatformer.items.consumables.shopConsumables;
 
 import javax.imageio.ImageIO;
 
@@ -21,7 +21,7 @@ public class MegahealFruit extends Consumable {
 			this.lore = "The typical golden Overheal Apple petrifies into diamond after years of "
 					+ "selective plant breeding, providing an extreme amount of overheal to its consumer.";
 			
-			this.image = ImageIO.read(this.getClass().getResource("/items/shopItems/MegahealFruit.png"));
+			this.image = ImageIO.read(this.getClass().getResource("/items/shopConsumables/MegahealFruit.png"));
 
 		} catch (Exception e) {}
 	}

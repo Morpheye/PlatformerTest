@@ -69,10 +69,11 @@ public class GameObject implements Cloneable {
 		double xDiff = Math.min(
 		Math.min(Math.abs(obj.getLowerBoundX() - this.getLowerBoundX()), Math.abs(obj.getLowerBoundX() - this.getHigherBoundX())), 
 		Math.min(Math.abs(obj.getHigherBoundX() - this.getLowerBoundX()), Math.abs(obj.getHigherBoundX() - this.getHigherBoundX())));
-		
+		if (obj.getLowerBoundX() < this.getHigherBoundX() && obj.getHigherBoundX() > this.getLowerBoundX()) xDiff = 0;
 		double yDiff = Math.min(
 		Math.min(Math.abs(obj.getLowerBoundY() - this.getLowerBoundY()), Math.abs(obj.getLowerBoundY() - this.getHigherBoundY())), 
 		Math.min(Math.abs(obj.getHigherBoundY() - this.getLowerBoundY()), Math.abs(obj.getHigherBoundY() - this.getHigherBoundY())));
+		if (obj.getLowerBoundY() < this.getHigherBoundY() && obj.getHigherBoundY() > this.getLowerBoundY()) yDiff = 0;
 		
 		return Math.hypot(xDiff, yDiff);
 	}
@@ -141,12 +142,6 @@ public class GameObject implements Cloneable {
 			Projectile projectile = (Projectile) this;
 			if (projectile.attackSound != null) if (projectile.attackSound.isOpen()) projectile.attackSound.close();
 			if (projectile.hitSound != null) if (projectile.hitSound.isOpen()) projectile.hitSound.close();
-		}
-		
-		if (this instanceof Particle) { //WARNING: CLOSING WHILE DESPAWNING CAUSES ISSUES
-			Particle particle = (Particle) this;
-			//if (particle.spawnSound != null) if (particle.spawnSound.isOpen()) particle.spawnSound.close();
-			if (particle.despawnSound != null) if (particle.despawnSound.isOpen()) particle.despawnSound.close();
 		}
 		
 		if (this instanceof Powerup) {

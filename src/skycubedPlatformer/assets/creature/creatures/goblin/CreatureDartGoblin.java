@@ -19,8 +19,8 @@ import skycubedPlatformer.assets.decoration.particles.ItemParticle;
 import skycubedPlatformer.assets.projectiles.ProjectileDart;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.Player;
-import skycubedPlatformer.items.consumables.shopItems.MegahealFruit;
-import skycubedPlatformer.items.consumables.shopItems.OverhealFruit;
+import skycubedPlatformer.items.consumables.shopConsumables.MegahealFruit;
+import skycubedPlatformer.items.consumables.shopConsumables.OverhealFruit;
 import skycubedPlatformer.menu.GamePanel;
 
 public class CreatureDartGoblin extends CreatureGoblin {

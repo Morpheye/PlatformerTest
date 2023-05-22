@@ -261,18 +261,18 @@ public class GamePanel extends JPanel {
 			int alpha = 255;
 			if (textDuration <= 120) alpha = 255*textDuration/120;
 			Graphics2D g2d = (Graphics2D) g;
-			GradientPaint gp2 = new GradientPaint(0, Main.SIZE-(int)(75*(Main.SIZE/800.0)), new Color(255,255,255,0),
-					0, Main.SIZE-(int)(50*(Main.SIZE/800.0)), new Color(255,255,255,alpha), false);
+			GradientPaint gp2 = new GradientPaint(0, Main.SIZE-(int)(75*(Main.SIZE_RATIO)), new Color(255,255,255,0),
+					0, Main.SIZE-(int)(50*(Main.SIZE_RATIO)), new Color(255,255,255,alpha), false);
 			g2d.setPaint(gp2);
-			g2d.fillRect(-50, Main.SIZE-(int)(75*(Main.SIZE/800.0)), Main.SIZE+100, Main.SIZE);
-			Font font = new Font(Font.MONOSPACED, Font.BOLD, (int)(25*(Main.SIZE/800.0)));
-			if (g.getFontMetrics(font).stringWidth(displayText) > Main.SIZE - (int)(50*(Main.SIZE/800.0))) {
-				font = new Font(Font.MONOSPACED, Font.BOLD, (int)(20*(Main.SIZE/800.0)));
+			g2d.fillRect(-50, Main.SIZE-(int)(75*(Main.SIZE_RATIO)), Main.SIZE+100, Main.SIZE);
+			Font font = new Font(Font.MONOSPACED, Font.BOLD, (int)(25*(Main.SIZE_RATIO)));
+			if (g.getFontMetrics(font).stringWidth(displayText) > Main.SIZE - (int)(50*(Main.SIZE_RATIO))) {
+				font = new Font(Font.MONOSPACED, Font.BOLD, (int)(20*(Main.SIZE_RATIO)));
 			}
 			g.setFont(font);
 			g.setColor(new Color(100,100,100,alpha));
 			int lvlSelectStringWidth = g.getFontMetrics(font).stringWidth(displayText);
-			g.drawString(displayText, Main.SIZE/2 - lvlSelectStringWidth/2, Main.SIZE-(int)(20*(Main.SIZE/800.0)));
+			g.drawString(displayText, Main.SIZE/2 - lvlSelectStringWidth/2, Main.SIZE-(int)(20*(Main.SIZE_RATIO)));
 			
 			textDuration--;
 		}
@@ -301,21 +301,21 @@ public class GamePanel extends JPanel {
 		
 	}
 	
-	static int buttonSizeX=(int) (400*(Main.SIZE/800.0));
-	static int buttonSizeY=(int) (100*(Main.SIZE/800.0));
+	static int buttonSizeX=(int) (400*(Main.SIZE_RATIO));
+	static int buttonSizeY=(int) (100*(Main.SIZE_RATIO));
 	
 	public void drawPauseMenu(Graphics g) {
 		g.setColor(new Color(0,0,0,200));
 		g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE + 50);
 		
-		Font font = new Font(Font.MONOSPACED, Font.BOLD, (int) (50*(Main.SIZE/800.0)));
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, (int) (50*(Main.SIZE_RATIO)));
 		g.setFont(font);
 		g.setColor(Color.WHITE);
 		int lvlSelectStringWidth = g.getFontMetrics(font).stringWidth("Game Paused");
-		g.drawString("Game Paused", Main.SIZE/2 - lvlSelectStringWidth/2, (int)(75*(Main.SIZE/800.0)));
+		g.drawString("Game Paused", Main.SIZE/2 - lvlSelectStringWidth/2, (int)(75*(Main.SIZE_RATIO)));
 		
 		Graphics2D g2d = (Graphics2D) g;
-		font = new Font(Font.MONOSPACED, Font.BOLD, (int)(40*(Main.SIZE/800.0)));
+		font = new Font(Font.MONOSPACED, Font.BOLD, (int)(40*(Main.SIZE_RATIO)));
 		g.setFont(font);
 		
 		g2d.setColor(Color.GRAY);
@@ -356,21 +356,21 @@ public class GamePanel extends JPanel {
 		
 		int StringWidth = g.getFontMetrics(font).stringWidth("Unpause Game");
 		int StringHeight = g.getFontMetrics(font).getHeight();
-		g2d.drawString("Unpause Game", Main.SIZE/2-StringWidth/2, Main.SIZE/4+(int)(10*(Main.SIZE/800.0)));
+		g2d.drawString("Unpause Game", Main.SIZE/2-StringWidth/2, Main.SIZE/4+(int)(10*(Main.SIZE_RATIO)));
 		
 		g2d.setStroke(new BasicStroke(5));
 		g2d.setColor(Color.WHITE);
 		g.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE/2-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		StringWidth = g.getFontMetrics(font).stringWidth("Restart Level");
-		g2d.drawString("Restart Level", Main.SIZE/2-StringWidth/2, Main.SIZE/2+(int)(10*(Main.SIZE/800.0)));
+		g2d.drawString("Restart Level", Main.SIZE/2-StringWidth/2, Main.SIZE/2+(int)(10*(Main.SIZE_RATIO)));
 		
 		g2d.setStroke(new BasicStroke(5));
 		g2d.setColor(Color.WHITE);
 		g.drawRoundRect(Main.SIZE/2-buttonSizeX/2, Main.SIZE*3/4-buttonSizeY/2, buttonSizeX, buttonSizeY, 5, 5);
 		
 		StringWidth = g.getFontMetrics(font).stringWidth("Exit to Menu");
-		g2d.drawString("Exit to Menu", Main.SIZE/2-StringWidth/2, Main.SIZE*3/4+(int)(10*(Main.SIZE/800.0)));
+		g2d.drawString("Exit to Menu", Main.SIZE/2-StringWidth/2, Main.SIZE*3/4+(int)(10*(Main.SIZE_RATIO)));
 		
 		
 		
@@ -405,52 +405,52 @@ public class GamePanel extends JPanel {
 	int[] powerupY = new int[] {4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29, 4, 29};
 	{
 		for (int i=0; i<powerupX.length; i++) {
-			powerupX[i] = (int) (powerupX[i] * (Main.SIZE/800.0));
-			powerupY[i] = (int) (powerupY[i] * (Main.SIZE/800.0));
+			powerupX[i] = (int) (powerupX[i] * (Main.SIZE_RATIO));
+			powerupY[i] = (int) (powerupY[i] * (Main.SIZE_RATIO));
 		}
 	}
 	
 	public void drawHUD(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		//top
-		GradientPaint gp1 = new GradientPaint(0, (int)(50*(Main.SIZE/800.0)), Color.white, 0, (int)(80*(Main.SIZE/800.0))
-				, new Color(255,255,255,0), false);
+		GradientPaint gp1 = new GradientPaint(0, (int)(50*(Main.SIZE_RATIO)), Color.white, 0, (int)(80*(Main.SIZE_RATIO)),
+			new Color(255,255,255,0), false);
 		g2d.setPaint(gp1);
-		g2d.fillRect(-50, 0, Main.SIZE+100, (int)(80*(Main.SIZE/800.0)));
+		g2d.fillRect(-50, 0, Main.SIZE+100, (int)(80*(Main.SIZE_RATIO)));
 		
 		//render healthbar
 		if (player.health > player.maxHealth) player.health = player.maxHealth;
 		if (player.health < 0) player.health = 0;
 		
-		g2d.drawImage(healthImage, Main.SIZE*3/4+(int)(25*(Main.SIZE/800.0)), (int)(10*(Main.SIZE/800.0)),
-				(int)(30*(Main.SIZE/800.0)), (int)(30*(Main.SIZE/800.0)), null);
+		g2d.drawImage(healthImage, Main.SIZE*3/4+(int)(25*(Main.SIZE_RATIO)), (int)(10*(Main.SIZE_RATIO)),
+				(int)(30*(Main.SIZE_RATIO)), (int)(30*(Main.SIZE_RATIO)), null);
 		g2d.setColor(Color.black);
-		g2d.fillRoundRect(Main.SIZE*3/4 + (int)(70*(Main.SIZE/800.0)), (int)(10*(Main.SIZE/800.0)), (int)(100*(Main.SIZE/800.0)),
-				(int)(30*(Main.SIZE/800.0)), 5, 5);
+		g2d.fillRoundRect(Main.SIZE*3/4 + (int)(70*(Main.SIZE_RATIO)), (int)(10*(Main.SIZE_RATIO)), (int)(100*(Main.SIZE_RATIO)),
+				(int)(30*(Main.SIZE_RATIO)), 5, 5);
 		g2d.setColor(Color.red);
-		g2d.fillRoundRect(Main.SIZE*3/4 + (int)(70*(Main.SIZE/800.0)), (int)(10*(Main.SIZE/800.0)),
-				(int)((player.health*100/player.maxHealth)*(Main.SIZE/800.0)), (int)(30*(Main.SIZE/800.0)), 5, 5);
+		g2d.fillRoundRect(Main.SIZE*3/4 + (int)(70*(Main.SIZE_RATIO)), (int)(10*(Main.SIZE_RATIO)),
+				(int)((player.health*100/player.maxHealth)*(Main.SIZE_RATIO)), (int)(30*(Main.SIZE_RATIO)), 5, 5);
 	
 		if (player.overheal != 0) {
 			int overHeal = player.overheal;
 			if (player.overheal > player.maxHealth) overHeal = player.maxHealth;
 			g2d.setColor(GameObject.COLOR_GOLD);
-			g2d.fillRoundRect(Main.SIZE*3/4 + (int)(70*(Main.SIZE/800.0)), (int)(10*(Main.SIZE/800.0)),
-					(int)(overHeal*100/player.maxHealth*(Main.SIZE/800.0)), (int)(30*(Main.SIZE/800.0)), 5, 5);
+			g2d.fillRoundRect(Main.SIZE*3/4 + (int)(70*(Main.SIZE_RATIO)), (int)(10*(Main.SIZE_RATIO)),
+					(int)(overHeal*100/player.maxHealth*(Main.SIZE_RATIO)), (int)(30*(Main.SIZE_RATIO)), 5, 5);
 		}
 		
 		if (player.overheal > 100) {
 			int gigaHeal = player.overheal-player.maxHealth;
 			if (gigaHeal > player.maxHealth) gigaHeal = player.maxHealth;
 			g2d.setColor(GameObject.COLOR_DIAMOND);
-			g2d.fillRoundRect(Main.SIZE*3/4 + (int)(70*(Main.SIZE/800.0)), (int)(10*(Main.SIZE/800.0)),
-					(int)(gigaHeal*100/player.maxHealth*(Main.SIZE/800.0)), (int)(30*(Main.SIZE/800.0)), 5, 5);
+			g2d.fillRoundRect(Main.SIZE*3/4 + (int)(70*(Main.SIZE_RATIO)), (int)(10*(Main.SIZE_RATIO)),
+					(int)(gigaHeal*100/player.maxHealth*(Main.SIZE_RATIO)), (int)(30*(Main.SIZE_RATIO)), 5, 5);
 		}
 			
 		g2d.setColor(Color.black);
 		g2d.setStroke(new BasicStroke(3));
-		g2d.drawRoundRect(Main.SIZE*3/4 + (int)(70*(Main.SIZE/800.0)), (int)(10*(Main.SIZE/800.0)), 
-				(int)(100*(Main.SIZE/800.0)), (int)(30*(Main.SIZE/800.0)), (int)(5*(Main.SIZE/800.0)), (int)(5*(Main.SIZE/800.0)));
+		g2d.drawRoundRect(Main.SIZE*3/4 + (int)(70*(Main.SIZE_RATIO)), (int)(10*(Main.SIZE_RATIO)), 
+				(int)(100*(Main.SIZE_RATIO)), (int)(30*(Main.SIZE_RATIO)), (int)(5*(Main.SIZE_RATIO)), (int)(5*(Main.SIZE_RATIO)));
 		
 		//COINS COINS COINS COINS COINS COINS COINS COINS COINS COINS
 		
@@ -472,30 +472,30 @@ public class GamePanel extends JPanel {
 		
 		g2d.setColor(GameObject.COLOR_GOLD);
 		g2d.setColor(new Color(200,200,200));
-		g2d.fillRoundRect(diff+(int)(50*(Main.SIZE/800.0)),(int)(10*(Main.SIZE/800.0)),(int)(80*(Main.SIZE/800.0)),
-				(int)(30*(Main.SIZE/800.0)),5,5);
-		g2d.drawImage(goldCoinImage, diff+(int)(5*(Main.SIZE/800.0)), (int)(10*(Main.SIZE/800.0)), (int)(30*(Main.SIZE/800.0)),
-				(int)(30*(Main.SIZE/800.0)), null);
+		g2d.fillRoundRect(diff+(int)(50*(Main.SIZE_RATIO)),(int)(10*(Main.SIZE_RATIO)),(int)(80*(Main.SIZE_RATIO)),
+				(int)(30*(Main.SIZE_RATIO)),5,5);
+		g2d.drawImage(goldCoinImage, diff+(int)(5*(Main.SIZE_RATIO)), (int)(10*(Main.SIZE_RATIO)), (int)(30*(Main.SIZE_RATIO)),
+				(int)(30*(Main.SIZE_RATIO)), null);
 		g2d.setColor(Color.BLACK);
-		g2d.drawRoundRect(diff+(int)(50*(Main.SIZE/800.0)),(int)(10*(Main.SIZE/800.0)),(int)(80*(Main.SIZE/800.0)),
-				(int)(30*(Main.SIZE/800.0)),(int)(5*(Main.SIZE/800.0)),(int)(5*(Main.SIZE/800.0)));
+		g2d.drawRoundRect(diff+(int)(50*(Main.SIZE_RATIO)),(int)(10*(Main.SIZE_RATIO)),(int)(80*(Main.SIZE_RATIO)),
+				(int)(30*(Main.SIZE_RATIO)),(int)(5*(Main.SIZE_RATIO)),(int)(5*(Main.SIZE_RATIO)));
 		
-		Font font = new Font(Font.MONOSPACED, Font.BOLD, (int)(20*(Main.SIZE/800.0)));
+		Font font = new Font(Font.MONOSPACED, Font.BOLD, (int)(20*(Main.SIZE_RATIO)));
 		g2d.setFont(font);
 		g2d.setColor(Color.BLACK);
 		int coinTextWidth = g2d.getFontMetrics(font).stringWidth(coins+"");
 		int coinTextHeight = g2d.getFontMetrics(font).getHeight();
-		g2d.drawString(coins+"", diff+(int)(90*(Main.SIZE/800.0))-(coinTextWidth/2), (int)(31*(Main.SIZE/800.0)));
+		g2d.drawString(coins+"", diff+(int)(90*(Main.SIZE_RATIO))-(coinTextWidth/2), (int)(31*(Main.SIZE_RATIO)));
 		
 		//POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS POWERUPS 
-		g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int)(11*(Main.SIZE/800.0))));
+		g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, (int)(11*(Main.SIZE_RATIO))));
 		
 		int i = 0;
 		BufferedImage image;
 		DecimalFormat df = new DecimalFormat("#");
 		df.setMaximumFractionDigits(2);
 		df.setMinimumIntegerDigits(1);
-		int ovalSize = (int)(22*(Main.SIZE/800.0));
+		int ovalSize = (int)(22*(Main.SIZE_RATIO));
 		
 		//density
 		if (player.density != 1) {
@@ -504,7 +504,7 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(densityImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
 			g2d.setColor((player.density > 1) ? Color.darkGray : Color.gray);
 			g2d.drawString("x"+df.format(player.density), 
-					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
 			i++;}
 		//attack speed
 		if (player.maxAttackCooldown != 40) {
@@ -513,7 +513,7 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(attackSpeedImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
 			g2d.setColor((player.maxAttackCooldown < 40) ? Color.green : Color.red);
 			g2d.drawString("x"+df.format(40.0/player.maxAttackCooldown), 
-					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
 			i++;}
 		//strength
 		if (player.attackDamage != 5) {
@@ -522,7 +522,7 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(strengthImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
 			g2d.setColor((player.attackDamage>5) ? Color.green : Color.red);
 			g2d.drawString("x"+df.format(player.attackDamage/5.0), 
-					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
 			i++;}
 		//fire resistance
 		if (player.fireResistant) {
@@ -531,7 +531,7 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(fireResistanceImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
 			g2d.setColor(new Color(255,100,0));
 			g2d.drawString("✔", 
-					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
 			i++;}
 		//overheal
 		if (player.overheal > 0) {
@@ -540,7 +540,7 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(overhealImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
 			g2d.setColor((player.overheal>100) ? GameObject.COLOR_DIAMOND : new Color(230,230,0));
 			g2d.drawString(""+player.overheal, 
-					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
 			i++;}
 		//jump boost
 		if (player.jumpStrength != 16) {
@@ -549,7 +549,7 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(jumpBoostImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
 			g2d.setColor((player.jumpStrength>16) ? Color.green : Color.red);
 			g2d.drawString(((player.jumpStrength>16)?"+":"-")+Math.abs(player.jumpStrength-16), 
-					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
 			i++;}
 		//camera size
 		if (camera_size != 800) {
@@ -558,8 +558,18 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(cameraSizeImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
 			g2d.setColor((camera_size>800) ? Color.green : Color.red);
 			g2d.drawString("x"+df.format(camera_size/800.0), 
-					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
 			i++;}
+		//luck
+		if (player.luck != 0) {
+			g2d.setColor(Powerup.COLOR_POWERUP_LUCK);
+			g2d.fillOval(powerupX[i], powerupY[i], ovalSize, ovalSize);
+			g2d.drawImage(luckImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
+			g2d.setColor((player.luck>0) ? Color.green : Color.red);
+			g2d.drawString("x"+df.format(player.luck), 
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
+			i++;
+		}
 		//swiftness
 		if (player.movementSpeed != 0.25) {
 			g2d.setColor(Powerup.COLOR_POWERUP_SWIFTNESS);
@@ -567,7 +577,7 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(swiftnessImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
 			g2d.setColor((player.movementSpeed>0.25) ? Color.green : Color.red);
 			g2d.drawString("x"+df.format(player.movementSpeed/0.25), 
-					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
 			i++;}
 		//punch
 		if (player.attackKnockback != 2) {
@@ -576,7 +586,7 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(punchImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
 			g2d.setColor((player.attackKnockback>2) ? Color.green : Color.red);
 			g2d.drawString("x"+df.format(player.attackKnockback/2), 
-					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
 			i++;}
 		//marksman
 		if (player.attackRange != 20) {
@@ -585,7 +595,7 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(rangeImage, powerupX[i], powerupY[i], ovalSize, ovalSize, null);
 			g2d.setColor((player.attackRange>5) ? Color.green : Color.red);
 			g2d.drawString("x"+df.format(player.attackRange/20.0), 
-					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[i]+ovalSize, powerupY[i]+(int)(15*(Main.SIZE_RATIO)));
 			i++;}
 		//effects
 		for (int j=0; j<player.effects.size(); j++) {
@@ -593,7 +603,7 @@ public class GamePanel extends JPanel {
 			g2d.drawImage(e.image, powerupX[j+i], powerupY[j+i], ovalSize, ovalSize, null);
 			g2d.setColor(e.color);
 			g2d.drawString(e.strength + "x" + (e.lifetime / e.delay), 
-					powerupX[j+i]+ovalSize, powerupY[j+i]+(int)(15*(Main.SIZE/800.0)));
+					powerupX[j+i]+ovalSize, powerupY[j+i]+(int)(15*(Main.SIZE_RATIO)));
 		}
 
 	}
@@ -813,7 +823,7 @@ public class GamePanel extends JPanel {
 	
 	public static BufferedImage healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
 	densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,
-	jumpBoostImage, cameraSizeImage, swiftnessImage, punchImage, rangeImage,
+	jumpBoostImage, cameraSizeImage, luckImage, swiftnessImage, punchImage, rangeImage,
 	explosionImage;
 	public void loadImages() {
 		try {
@@ -830,6 +840,7 @@ public class GamePanel extends JPanel {
 			overhealImage = ImageIO.read(this.getClass().getResource("/powerups/overheal.png"));
 			jumpBoostImage = ImageIO.read(this.getClass().getResource("/powerups/jumpboost.png"));
 			cameraSizeImage = ImageIO.read(this.getClass().getResource("/powerups/camerasize.png"));
+			luckImage = ImageIO.read(this.getClass().getResource("/powerups/luck.png"));
 			swiftnessImage = ImageIO.read(this.getClass().getResource("/powerups/swiftness.png"));
 			punchImage = ImageIO.read(this.getClass().getResource("/powerups/punch.png"));
 			rangeImage = ImageIO.read(this.getClass().getResource("/powerups/range.png"));
@@ -867,6 +878,7 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void destroy() {
+		
 	}
 	
 	@Override

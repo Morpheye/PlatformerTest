@@ -231,9 +231,10 @@ public class Creature extends LivingObject {
 	}
 	
 	public static void loot(Creature c) {
-		if (Math.random() > (1 - c.gemChance)) GemParticle.spawnGem(c.x, c.y, 1); //drop gem
+		if (Math.random() > (1 - c.gemChance * (1 + GamePanel.player.luck) )) GemParticle.spawnGem(c.x, c.y, 1); //drop gem
 		
-		int coinAmount = c.minCoins + (int) (Math.random() * (c.maxCoins - c.minCoins + 1));
+		int coinAmount = (int) ((c.minCoins + (int) (Math.random() * (c.maxCoins - c.minCoins + 1))) * (1 + GamePanel.player.luck));
+		if (coinAmount < 0) coinAmount = 0;
 		CoinParticle.spawnCoins(c.x, c.y, (int) Math.ceil(coinAmount / c.coinWeight), coinAmount);
 	}
 	

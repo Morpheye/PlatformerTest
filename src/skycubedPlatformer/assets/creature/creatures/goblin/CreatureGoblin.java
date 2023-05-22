@@ -8,7 +8,7 @@ import skycubedPlatformer.assets.creature.ai.vertical.VerticalFollowAi;
 import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.assets.decoration.particles.CoinParticle;
 import skycubedPlatformer.assets.decoration.particles.ItemParticle;
-import skycubedPlatformer.items.consumables.shopItems.OverhealFruit;
+import skycubedPlatformer.items.consumables.shopConsumables.OverhealFruit;
 import skycubedPlatformer.menu.GamePanel;
 
 public class CreatureGoblin extends Creature {
