@@ -71,39 +71,6 @@ public class Level_1_4 extends Level {
 		
 	}
 	
-	@Override
-	public void drawBackground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-		
-		objects.add(new Gravestone(600, 200, 50, 100));
-		
-		objects.add(new Gravestone(1150, 250, 50, 100));
-		objects.add(new Gravestone(1300, 220, 75, 40));
-		
-		objects.add(new SolidBackgroundObject(2100, 300, 190, 300, GameObject.COLOR_DIRT));
-		objects.add(new SolidBackgroundObject(1900, 225, 500, 100, GameObject.COLOR_DIRT));
-		objects.add(new Gravestone(1900, 255, 75, 110));
-		
-		objects.add(new Gravestone(3350, 400, 50, 100));
-		objects.add(new Gravestone(3500, 390, 150, 80));
-		objects.add(new Gravestone(3650, 400, 50, 100));
-		
-		objects.add(new Gravestone(4300, 450, 100, 150));
-		objects.add(new Gravestone(5100, 500, 200, 100));
-		objects.add(new Gravestone(6000, 400, 200, 100));
-		
-		objects.add(new SolidBackgroundObject(7400, 375, 700, 100, GameObject.COLOR_DIRT));
-		objects.add(new SolidBackgroundObject(7500, 450, 190, 300, GameObject.COLOR_DIRT));
-		
-		objects.add(new Gravestone(8800, 600, 50, 100));
-		objects.add(new Gravestone(9000, 590, 120, 80));
-		
-		objects.add(new Gravestone(9900, 650, 50, 100));
-		
-		objects.add(new FinishFlag(12200, 850, 50, 100));
-		
-	}
-	
 	Creature gatekeeper;
 	SolidPlatform gate;
 	
@@ -196,7 +163,7 @@ public class Level_1_4 extends Level {
 		//waterplatform
 		objects.add(new CreatureUndead(8800, 600, 40, 30, 30, 400));
 		objects.add(new CreatureUndead(8900, 600, 40, 30, 30, 400));
-		objects.add(new WaterPlatform(8600, 450, 800, 195));
+		objects.add(new WaterPlatform(8600, 450, 800, 199));
 		objects.add(new GrassPlatform(8200, -450, 100, 2000));
 		objects.add(new GrassPlatform(8600, -550, 800, 2000));
 		objects.add(new GrassPlatform(8900, -450, 400, 2000));
@@ -226,6 +193,33 @@ public class Level_1_4 extends Level {
 		objects.add(new GrassPlatform(11700, 650, 200, 200));
 		objects.add(new GrassPlatform(12200, 700, 400, 200));
 		
+		objects.add(new FinishFlag(12200, 850, 50, 100));
+		
+		//bg
+		objects.add(new Gravestone(600, 200, 50, 100));
+		
+		objects.add(new Gravestone(1150, 250, 50, 100));
+		objects.add(new Gravestone(1300, 220, 75, 40));
+		
+		objects.add(new SolidBackgroundObject(2100, 300, 190, 300, GameObject.COLOR_DIRT));
+		objects.add(new SolidBackgroundObject(1900, 225, 500, 100, GameObject.COLOR_DIRT));
+		objects.add(new Gravestone(1900, 255, 75, 110));
+		
+		objects.add(new Gravestone(3350, 400, 50, 100));
+		objects.add(new Gravestone(3500, 390, 150, 80));
+		objects.add(new Gravestone(3650, 400, 50, 100));
+		
+		objects.add(new Gravestone(4300, 450, 100, 150));
+		objects.add(new Gravestone(5100, 500, 200, 100));
+		objects.add(new Gravestone(6000, 400, 200, 100));
+		
+		objects.add(new SolidBackgroundObject(7400, 375, 700, 100, GameObject.COLOR_DIRT));
+		objects.add(new SolidBackgroundObject(7500, 450, 190, 300, GameObject.COLOR_DIRT));
+		
+		objects.add(new Gravestone(8800, 600, 50, 100));
+		objects.add(new Gravestone(9000, 590, 120, 80));
+		
+		objects.add(new Gravestone(9900, 650, 50, 100));
 		
 	}
 	

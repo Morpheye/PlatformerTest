@@ -63,15 +63,6 @@ public class Level_1_5 extends Level {
 		panel.camera_y = panel.player.y;
 		panel.displayText("Don't fall behind!", 240);
 	}
-	
-	@Override
-	public void drawBackground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-		
-		finishFlag = new FinishFlag(12100, 1400, 50, 100);
-		objects.add(finishFlag);
-
-	}
 
 	SolidPlatform movingPlatform;
 	SolidPlatform finishPlatform;
@@ -161,6 +152,8 @@ public class Level_1_5 extends Level {
 		objects.add(finalGoblin);
 		
 		finishPlatform = new SandPlatform(12100, 1325, 200, 50);
+		finishFlag = new FinishFlag(12100, 1400, 50, 100);
+		objects.add(finishFlag);
 		objects.add(finishPlatform);
 		
 	}

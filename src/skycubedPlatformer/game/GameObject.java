@@ -9,6 +9,7 @@ import skycubedPlatformer.assets.Projectile;
 import skycubedPlatformer.assets.decoration.Particle;
 import skycubedPlatformer.assets.effects.Effect;
 import skycubedPlatformer.assets.triggers.Powerup;
+import skycubedPlatformer.menu.GamePanel;
 
 public class GameObject implements Cloneable {
 
@@ -92,6 +93,17 @@ public class GameObject implements Cloneable {
 		Math.min(Math.abs(obj.getHigherBoundY() - this.getLowerBoundY()), Math.abs(obj.getHigherBoundY() - this.getHigherBoundY())));
 	
 		return yDiff;
+	}
+	
+	public double collidedArea(GameObject obj) {
+		if (!this.exists || (!obj.exists)) return 0;
+		double x = Math.abs(this.x - obj.x) - 0.5*(this.size_x + obj.size_x);
+		double y = (Math.abs(this.y - obj.y) - 0.5*(this.size_y + obj.size_y));
+		if (-x > this.size_x) x = -this.size_x;
+		if (-y > this.size_y) y = -this.size_y;
+		
+		return (-x)*(-y);
+		
 	}
 	
 	public double getLowerBoundX() {

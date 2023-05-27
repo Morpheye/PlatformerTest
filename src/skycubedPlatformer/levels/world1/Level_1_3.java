@@ -70,25 +70,7 @@ public class Level_1_3 extends Level {
 	public void onStart(GamePanel panel) {
 		panel.displayText("Use space to melee attack. Watch your health!", 240);
 	}
-	
-	@Override
-	public void drawBackground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-		
-		objects.add(new SolidBackgroundObject(2750, 750, 690, 990, GameObject.COLOR_DIRT));
-		objects.add(new SolidBackgroundObject(3050, 2450, 190, 550, GameObject.COLOR_DIRT));
-		objects.add(new SolidBackgroundObject(2450, 2450, 190, 220, GameObject.COLOR_DIRT));
-		
-		objects.add(new FinishFlag(3050, 2800, 50, 100));
-	}
-	
-	@Override
-	public void drawForeground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-		
-		objects.add(new FadingWallObject(2750, 750, 690, 990, GameObject.COLOR_GRASS));
-	}
-	
+
 	@Override
 	public void drawPlatforms(GamePanel panel) {
 		List<GameObject> objects = panel.objects;
@@ -116,6 +98,11 @@ public class Level_1_3 extends Level {
 		objects.add(new GrassPlatform(3000, 250, 200, 2000));
 		objects.add(new GrassPlatform(2500, 950, 200, 600));
 		objects.add(new PushableStone(2600, 500, 100, 100));
+		
+		objects.add(new FadingWallObject(2750, 750, 690, 990, GameObject.COLOR_GRASS));
+		objects.add(new SolidBackgroundObject(2750, 750, 690, 990, GameObject.COLOR_DIRT));
+		objects.add(new SolidBackgroundObject(3050, 2450, 190, 550, GameObject.COLOR_DIRT));
+		objects.add(new SolidBackgroundObject(2450, 2450, 190, 220, GameObject.COLOR_DIRT));
 		
 		objects.add(new GrassPlatform(2600, 675, 200, 50));
 		objects.add(new GrassPlatform(2900, 825, 200, 50));
@@ -159,6 +146,8 @@ public class Level_1_3 extends Level {
 		objects.add(new PushableBox(2450,2650,80,80));
 		objects.add(new CreatureDartGoblin(2950, 2450, 30, 40, 400, 300));
 		objects.add(new TextDisplayTrigger(2300, 2400, 100, 100, "Warning: some creatures have ranged attacks.", 300));
+		
+		objects.add(new FinishFlag(3050, 2800, 50, 100));
 		
 	}
 	

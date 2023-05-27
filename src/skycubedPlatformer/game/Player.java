@@ -101,7 +101,7 @@ public class Player extends LivingObject {
 			if (obj.hasCollided(this) && obj.type.equals(ObjType.FinishFlag) 
 					&& GamePanel.getPanel().levelWon==0 && obj.exists) {
 				GamePanel.getPanel().levelWon=1;
-				SoundHelper.playFinalSound(finishSound);
+				SoundHelper.playFinalSound(finishSound, Main.VOLUME);
 				CoinParticle.spawnCoins(this.x, this.y, 5+(int)(Math.random() * 6), GamePanel.getPanel().level.reward);
 			}
 			//null zone

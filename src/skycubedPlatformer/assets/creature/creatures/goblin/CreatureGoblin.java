@@ -29,6 +29,8 @@ public class CreatureGoblin extends Creature {
 		super(initX, initY, size, COLOR_GOBLIN, Color.RED, 1, 20, 0.15, 12, 3, 7, 30, 1);
 		this.friendlyFire = false;
 		this.gemChance = 0.001;
+		this.maxHealth = (int) (size * 2 / 3);
+		this.health = this.maxHealth;
 		
 		this.aiList.add(new HorizontalFollowAi(minRange, maxRange, GamePanel.getPanel().player));
 		this.aiList.add(new VerticalFollowAi(75, 200, GamePanel.getPanel().player));
@@ -42,6 +44,8 @@ public class CreatureGoblin extends Creature {
 		super(initX, initY, size, COLOR_GOBLIN, Color.RED, 1, 20, 0.15, 12, 3, 7, 30, 1);
 		this.friendlyFire = false;
 		this.gemChance = 0.001;
+		this.maxHealth = (int) (size * 2 / 3);
+		this.health = this.maxHealth;
 		
 		this.aiList.add(new HorizontalFollowAi(minRangeX, maxRangeX, minRangeY, maxRangeY, GamePanel.getPanel().player));
 		this.aiList.add(new VerticalFollowAi(minRangeX, maxRangeX, 75, maxRangeY, 0, maxRangeY, GamePanel.getPanel().player));

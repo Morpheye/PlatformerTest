@@ -45,10 +45,6 @@ public class Level {
 		g.fillRect(-50, -50, Main.SIZE+50, Main.SIZE+50);
 	}
 	
-	public void drawForeground(GamePanel panel) {}
-	
-	public void drawBackground(GamePanel panel) {}
-	
 	public void drawAmbience(Graphics g) {}
 	
 	public void onStart(GamePanel panel) {}

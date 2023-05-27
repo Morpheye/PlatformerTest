@@ -8,7 +8,7 @@ import java.util.List;
 import skycubedPlatformer.Main;
 import skycubedPlatformer.assets.PushableObject;
 import skycubedPlatformer.assets.contraptions.ConveyorBelt;
-import skycubedPlatformer.assets.contraptions.Generator;
+import skycubedPlatformer.assets.contraptions.Factory;
 import skycubedPlatformer.assets.contraptions.RopeObject;
 import skycubedPlatformer.assets.contraptions.TargetRopeObject;
 import skycubedPlatformer.assets.creature.creatures.goblin.CreatureDartGoblin;
@@ -70,18 +70,6 @@ public class Level_1_7 extends Level {
 	}
 	
 	@Override
-	public void drawBackground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-		
-		objects.add(new NullZone(2750, 350, 190, 300));
-	}
-	
-	@Override
-	public void drawForeground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-	}
-	
-	@Override
 	public void drawPlatforms(GamePanel panel) {
 		List<GameObject> objects = panel.objects;
 		
@@ -102,7 +90,7 @@ public class Level_1_7 extends Level {
 		objects.add(new RopeObject(new PushableBox(1800, 250, 100, 100), 2200, 700, 550, 1));
 		
 		objects.add(new StonePlatform(2750, -750, 500, 2000));
-		
+		objects.add(new NullZone(2750, 350, 190, 300));
 		objects.add(new StonePlatform(2750, 550, 300, 200));
 		
 		//chain platform
@@ -189,7 +177,7 @@ public class Level_1_7 extends Level {
 		objects.add(new StonePlatform(10650, 1450, 700, 50));
 		objects.add(new StonePlatform(10300, 1575, 200, 300));
 		objects.add(new ConveyorBelt(10700, 1500, 600, 50, 3));
-		objects.add(new Generator(10430, 1555, 60, new PushableStone(10430, 1555, 50, 50), 180));
+		objects.add(new Factory(10430, 1555, 60, new PushableStone(10430, 1555, 50, 50), 180, 99));
 		
 		objects.add(new StonePlatform(11700, 1200, 400, 100));
 		

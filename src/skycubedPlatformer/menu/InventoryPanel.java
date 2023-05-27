@@ -648,7 +648,7 @@ public class InventoryPanel extends JPanel {
 							if (Weapon.weaponNames.contains(slotNames[guiSelected])) guiOpen = false;
 							buttonCooldown = 10;
 							
-							SoundHelper.playSound(purchaseSound);
+							SoundHelper.playSound(purchaseSound, Main.VOLUME);
 							return;
 						}
 					} else if (slotNames[guiSelected].equals(DataManager.saveData.selectedWeapon)){
@@ -657,19 +657,19 @@ public class InventoryPanel extends JPanel {
 						guiOpen = false;
 						buttonCooldown = 5;
 						
-						SoundHelper.playSound(equipSound);
+						SoundHelper.playSound(equipSound, Main.VOLUME);
 						return;
 					} else if (!Item.getItem(slotNames[guiSelected]).isConsumable) {
 					} else if (!DataManager.saveData.activeItems.contains(slotNames[guiSelected])) { //START USE
 						DataManager.saveData.activeItems.add(slotNames[guiSelected]);
 						buttonCooldown = 5;
-						SoundHelper.playSound(consumeSound);
+						SoundHelper.playSound(consumeSound, Main.VOLUME);
 						return;
 						
 					} else if (DataManager.saveData.activeItems.contains(slotNames[guiSelected])) { //STOP USE
 						DataManager.saveData.activeItems.remove(slotNames[guiSelected]);
 						buttonCooldown = 5;
-						SoundHelper.playSound(consumeSound);
+						SoundHelper.playSound(consumeSound, Main.VOLUME);
 						return;
 					}
 				}

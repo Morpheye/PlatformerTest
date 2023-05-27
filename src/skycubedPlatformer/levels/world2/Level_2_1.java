@@ -76,11 +76,6 @@ public class Level_2_1 extends Level {
 	}
 	
 	@Override
-	public void drawBackground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-	}
-	
-	@Override
 	public void drawPlatforms(GamePanel panel) {
 		List<GameObject> objects = panel.objects;
 		

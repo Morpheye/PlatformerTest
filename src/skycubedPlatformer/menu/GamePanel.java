@@ -63,6 +63,7 @@ public class GamePanel extends JPanel {
 	
 	public boolean isPaused;
 	public int levelWon;
+	public boolean inControl;
 	
 	public Timer timer;
 	public long coins;
@@ -105,13 +106,11 @@ public class GamePanel extends JPanel {
 		destroyLevel();
 		
 		targetCoins = 0;
-		
+		inControl = true;
 		displayText = null;
 		textDuration = 0;
 		
 		level = newLevel;
-		
-		level.drawBackground(this);
 		
 		player = new Player(level.spawnX, level.spawnY, 40);
 		objects.add(player);
@@ -125,7 +124,6 @@ public class GamePanel extends JPanel {
 		gravity = level.gravity;
 		
 		level.drawPlatforms(this);
-		level.drawForeground(this);
 		
 		//background(-10) -> decoration(-7) -> flag(-6) -> movableObj(-5) -> livingObj(-4) -> platforms(0) ->
 		//spirits(1)
@@ -152,14 +150,14 @@ public class GamePanel extends JPanel {
 	public void onTick() {
 		if (timeSinceRestart < 1000) timeSinceRestart++;
 
-		if (!isPaused) {
+		if (!isPaused && inControl) {
 			level.onTick();
 			player.move();
 			moveCamera();
 		}
 		
 		for (GameObject obj : objects) {
-			if (!obj.equals(player) && !isPaused) {
+			if (!obj.equals(player) && !isPaused && inControl) {
 				obj.move();
 			}
 		}
@@ -216,7 +214,7 @@ public class GamePanel extends JPanel {
 		});
 		for (Color c : removedFlashes) flashes.remove(c);
 		
-		if (!this.isFocusOwner()) {
+		if (!this.isFocusOwner()) { //pause when player tabs out
 			if (levelWon == 0 && player.isAlive && !isPaused) isPaused = true;
 		}
 		
@@ -243,7 +241,7 @@ public class GamePanel extends JPanel {
 		
 		for (GameObject obj : objects) {
 			if (obj.hasCollided(MainFrameObj) || obj.type.equals(ObjType.Creature)
-				|| obj.type.equals(ObjType.Player) | obj.type.equals(ObjType.PARTICLE)) {
+				|| obj.type.equals(ObjType.Player) | obj.type.equals(ObjType.Particle)) {
 				obj.draw(g, player, camera_x + shake_x, camera_y + shake_y, camera_size);
 			}
 		}
@@ -763,7 +761,9 @@ public class GamePanel extends JPanel {
 				screenshotTime = 20;
 			}
 			
-			if (isPaused || levelWon > 0) return;
+			//if (e.getKeyCode() == KeyEvent.VK_X) inControl = inControl ? false : true;
+			
+			if (isPaused || levelWon > 0 || !inControl) return;
 			if (player.isAlive) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) player.isAttacking = true; //SPACE
 				
@@ -777,8 +777,9 @@ public class GamePanel extends JPanel {
 					player.movingRight = true; //D
 					player.lastDirection = 1;
 				}
+				
+				if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0 && timeSinceRestart > 90) restartLevel(level);
 			}
-			if (e.getKeyCode() == KeyEvent.VK_R && levelWon == 0 && timeSinceRestart > 90) restartLevel(level);
 
 		}
 
@@ -816,7 +817,7 @@ public class GamePanel extends JPanel {
 		}
 	}
 	
-	public GameObject MainFrameObj = new GameObject(0, 0, Main.SIZE+50, Main.SIZE+50, null);
+	public GameObject MainFrameObj = new GameObject(0, 0, camera_size+50, camera_size+50, null);
 	
 	public BufferedImage healthImage, copperCoinImage, silverCoinImage, goldCoinImage, gemImage,
 	densityImage, attackSpeedImage, strengthImage, fireResistanceImage, overhealImage,

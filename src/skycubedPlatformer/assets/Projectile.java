@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.sound.sampled.Clip;
 
+import skycubedPlatformer.Main;
 import skycubedPlatformer.assets.creature.creatures.Creature;
 import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.LivingObject;
@@ -106,11 +107,19 @@ public class Projectile extends MovableObject {
 	}
 	
 	public void playHitSound() {
-		SoundHelper.playSound(this.hitSound);
+		double proximity = Math.hypot(this.x - GamePanel.getPanel().MainFrameObj.x, this.y - GamePanel.getPanel().MainFrameObj.y);
+		double div = (proximity < GamePanel.getPanel().camera_size/2) ? 1 : 
+			0.03*(Math.abs(proximity - GamePanel.getPanel().camera_size/2));
+		if (div < 1) div = 1;
+		SoundHelper.playSound(this.hitSound, Main.VOLUME/(float) div);
 	}
 	
 	public void playAttackSound() {
-		SoundHelper.playSound(this.attackSound);
+		double proximity = Math.hypot(this.x - GamePanel.getPanel().MainFrameObj.x, this.y - GamePanel.getPanel().MainFrameObj.y);
+		double div = (proximity < GamePanel.getPanel().camera_size/2) ? 1 : 
+			0.03*(Math.abs(proximity - GamePanel.getPanel().camera_size/2));
+		if (div < 1) div = 1;
+		SoundHelper.playSound(this.attackSound, Main.VOLUME/(float) div);
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.sound.sampled.Clip;
 
+import skycubedPlatformer.Main;
 import skycubedPlatformer.assets.LiquidPlatform;
 import skycubedPlatformer.assets.PushableObject;
 import skycubedPlatformer.assets.creature.creatures.Creature;
@@ -25,6 +26,7 @@ public class LivingObject extends MovableObject {
 	public boolean isAlive;
 	
 	public boolean movingInLiquid;
+	public boolean onLadder;
 	
 	public int maxHealth;
 	public int health;
@@ -74,12 +76,18 @@ public class LivingObject extends MovableObject {
 	
 	@Override
 	public void move() {
+		if (this.onLadder) {
+			if (this.vy > 2) this.vy = 2;
+			else if (this.vy < -2) this.vy = -2;
+		}
+		
 		if (!this.isAlive) {
 			this.movingUp = false; this.movingDown = false; this.movingLeft = false; this.movingRight = false;
 			this.isAttacking = false;
 		}
 		
 		this.movingInLiquid = false;
+		this.onLadder = false;
 		this.liquidDensity = 1;
 		
 		if (this.weapon != null) this.weapon.onTick(this);
@@ -90,6 +98,8 @@ public class LivingObject extends MovableObject {
 			if (this.hasCollided(obj) && obj.type.equals(ObjType.LiquidPlatform) && obj.exists) {
 				this.movingInLiquid = true;
 				this.liquidDensity = ((LiquidPlatform) obj).density;
+			} else if (this.hasCollided(obj) && obj.type.equals(ObjType.Ladder) && obj.exists) {
+				this.onLadder = true;
 			}
 		}
 		
@@ -108,9 +118,17 @@ public class LivingObject extends MovableObject {
 			if (this.movingLeft) this.vx -= Math.pow(1, slowdown)*this.movementSpeed;
 			
 		} else {
-			if (this.movingUp & !this.inAir) { //jump
-				this.vy += this.jumpStrength;
-				this.inAir = true;
+			if (this.movingUp) { //jump
+				if (this.onLadder) {
+					this.vy += this.movementSpeed*3;
+					this.inAir = true;
+				} else if (!this.inAir) {
+					this.vy += this.jumpStrength;
+					this.inAir = true;
+				}
+			}
+			if (this.movingDown && this.onLadder) {
+				this.vy -= this.movementSpeed*3;
 			}
 			if (this.movingRight) this.vx += this.movementSpeed;
 			if (this.movingLeft) this.vx -= this.movementSpeed;
@@ -324,11 +342,19 @@ public class LivingObject extends MovableObject {
 	}
 	
 	public void playHitSound(LivingObject attacker) {
-		SoundHelper.playSound(attacker.hitSound);
+		double proximity = Math.hypot(this.x - GamePanel.getPanel().MainFrameObj.x, this.y - GamePanel.getPanel().MainFrameObj.y);
+		double div = (proximity < GamePanel.getPanel().camera_size/2) ? 1 : 
+			0.03*(Math.abs(proximity - GamePanel.getPanel().camera_size/2));
+		if (div < 1) div = 1;
+		SoundHelper.playSound(attacker.hitSound, Main.VOLUME/(float) div);
 	}
 	
 	public void playAttackSound() {
-		SoundHelper.playSound(this.attackSound);
+		double proximity = Math.hypot(this.x - GamePanel.getPanel().MainFrameObj.x, this.y - GamePanel.getPanel().MainFrameObj.y);
+		double div = (proximity < GamePanel.getPanel().camera_size/2) ? 1 : 
+			0.03*(Math.abs(proximity - GamePanel.getPanel().camera_size/2));
+		if (div < 1) div = 1;
+		SoundHelper.playSound(this.attackSound, Main.VOLUME/(float) div);
 	}
 
 }

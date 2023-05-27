@@ -3,6 +3,7 @@ package skycubedPlatformer.assets.decoration.objects;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 
 import skycubedPlatformer.Main;
 import skycubedPlatformer.assets.DecorationObject;
@@ -13,13 +14,23 @@ import skycubedPlatformer.game.GameObject;
 import skycubedPlatformer.game.Player;
 import skycubedPlatformer.menu.GamePanel;
 
-public class Gravestone extends DecorationObject implements Generator {
+public class NecromancyGravestone extends Gravestone implements Generator {
 
 	DecorationObject stone;
 	DecorationObject cross;
 	
-	public Gravestone(double x, double y, double size_x, double size_y) {
-		super(x, y, size_x, size_y, Color.DARK_GRAY);
+	ArrayList<GameObject> generated;
+	int lifetimeGenerated;
+	
+	int max;
+	int lifetimeMax;
+	
+	double range;
+	int maxDelay = 100;
+
+	
+	public NecromancyGravestone(double x, double y, double size_x, double size_y, double range, int max, int lifetimeMax) {
+		super(x, y, size_x, size_y);
 		this.drawLayer = -7;
 		
 		if (size_x > size_y) { 
@@ -30,26 +41,31 @@ public class Gravestone extends DecorationObject implements Generator {
 			this.cross = new DecorationObject(x, y+size_y/4, size_x/5, size_y/2, Color.GRAY);
 		}
 		
+		this.max = max;
+		this.lifetimeMax = lifetimeMax;
+		this.range = range;
+		this.generated = new ArrayList<GameObject>();
+		
+		this.lifetimeGenerated = 0;
+		
 	}
 	
+	public int delay = 0;
 	@Override
 	public void move() {
-		this.stone.vx = this.vx;
-		this.stone.vy = this.vy;
-		
-		if (this.cross != null) {
-			this.cross.vx = this.vx;
-			this.cross.vy = this.vy;
-			this.cross.x += this.cross.vx;
-			this.cross.y += this.cross.vy;
+		if (this.lifetimeGenerated < this.lifetimeMax) { 
+			generated.removeIf(obj -> !GamePanel.getPanel().objects.contains(obj));
+			if (this.delay < maxDelay && generated.size() < max) this.delay++;
+			boolean occupied = false;
+			for (GameObject obj : generated) if (this.hasCollided(obj)) occupied = true;
+			if (!occupied && this.delay >= maxDelay && generated.size() < max
+					&& distanceTo(GamePanel.getPanel().player) < range) {
+				this.generate();
+				this.delay -= maxDelay;
+			}
 		}
 		
-		this.stone.x += this.stone.vx;
-		this.stone.y += this.stone.vy;
-
-		
-		this.x += this.vx;
-		this.y += this.vy;
+		super.move();
 	}
 	
 	
@@ -68,7 +84,9 @@ public class Gravestone extends DecorationObject implements Generator {
 				return;
 			}
 		}
-
+		
+		this.lifetimeGenerated++;
+		this.generated.add(newObj);
 		GamePanel.getPanel().addedObjects.add(newObj);
 	}
 	

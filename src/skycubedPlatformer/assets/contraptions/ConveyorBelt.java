@@ -27,7 +27,7 @@ public class ConveyorBelt extends SolidPlatform {
 	public void move() {
 		this.vx = real_vx;
 		this.scroll += 1 * (Main.SIZE/GamePanel.getPanel().camera_size);
-		if (this.scroll > this.size_x) this.scroll -= this.size_x;
+		if (this.scroll > Double.MAX_VALUE-100) this.scroll -= (Double.MAX_VALUE-100);
 		
 		super.move();
 		

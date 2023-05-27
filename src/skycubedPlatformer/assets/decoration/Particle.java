@@ -27,7 +27,7 @@ public class Particle extends DecorationObject {
 		this.lifetime = 0;
 		
 		this.drawLayer = 10;
-		this.type = ObjType.PARTICLE;
+		this.type = ObjType.Particle;
 		
 	}
 	

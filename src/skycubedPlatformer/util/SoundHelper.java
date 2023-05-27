@@ -17,23 +17,23 @@ public class SoundHelper {
 				AudioInputStream audioStream = AudioSystem.getAudioInputStream(stream);
 				clip.open(audioStream);
 				
-				FloatControl gainControl = (FloatControl) clip
-				        .getControl(FloatControl.Type.MASTER_GAIN);
-				    double gain = .1D; // number between 0 and 1 (loudest)
-				    float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
-				    gainControl.setValue(dB);
-				
 			} catch (Exception e) {e.printStackTrace();}
 		});
 		thread.setPriority(Thread.MIN_PRIORITY);
 		thread.start();
 	}
 	
-	public static void playSound(Clip clip) {
+	public static void playSound(Clip clip, float gain) {
 		Thread thread = new Thread(() -> {
 			try {
 				if (clip != null) {
 					if (!clip.isOpen()) Thread.sleep(10);
+					
+					FloatControl gainControl = (FloatControl) clip
+					        .getControl(FloatControl.Type.MASTER_GAIN);
+					    float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+					    gainControl.setValue(dB);
+					    
 					if (clip.isActive() || clip.isRunning()) {
 						clip.setMicrosecondPosition(0);
 					} else {
@@ -47,11 +47,17 @@ public class SoundHelper {
 		thread.start();
 	}
 	
-	public static void playFinalSound(Clip clip) {
+	public static void playFinalSound(Clip clip, float gain) {
 		Thread thread = new Thread(() -> {
 			try {
 				if (clip != null) {
 					if (!clip.isOpen()) Thread.sleep(10);
+					
+					FloatControl gainControl = (FloatControl) clip
+					        .getControl(FloatControl.Type.MASTER_GAIN);
+					    float dB = (float) (Math.log(gain) / Math.log(10.0) * 20.0);
+					    gainControl.setValue(dB);
+					
 					clip.setMicrosecondPosition(0);
 					clip.start();
 					

@@ -33,7 +33,7 @@ public class GemParticle extends Particle {
 		try {
 			this.spawnSound = AudioSystem.getClip();
 			SoundHelper.loadSound(this, this.spawnSound, "/sounds/coin/gem.wav");
-			SoundHelper.playFinalSound(this.spawnSound);
+			SoundHelper.playFinalSound(this.spawnSound, Main.VOLUME);
 		} catch (Exception e) {}
 		
 	}

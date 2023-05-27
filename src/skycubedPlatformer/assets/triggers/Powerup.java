@@ -43,7 +43,7 @@ public class Powerup extends Trigger {
 	}
 	
 	public void playSound() {
-		SoundHelper.playSound(this.sound);
+		SoundHelper.playSound(this.sound, Main.VOLUME);
 	}
 	
 	@Override

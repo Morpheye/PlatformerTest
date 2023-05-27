@@ -84,13 +84,6 @@ public class Level_1_1 extends Level {
 	SolidPlatform movingPlatform2;
 	
 	@Override
-	public void drawBackground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-		
-		objects.add(new FinishFlag(7750, 700, 50, 100));
-	}
-	
-	@Override
 	public void drawPlatforms(GamePanel panel) {
 		List<GameObject> objects = panel.objects;
 		
@@ -106,7 +99,7 @@ public class Level_1_1 extends Level {
 		
 		//water
 		objects.add(new TextDisplayTrigger(1500, 450, 100, 100, "Most liquids can be swum in.", 240));
-		objects.add(new WaterPlatform(1875, 200, 800, 395));
+		objects.add(new WaterPlatform(1875, 200, 800, 399));
 		objects.add(new GrassPlatform(1500, 200, 200, 400));
 		objects.add(new GrassPlatform(2250, 200, 200, 400));
 		objects.add(new GrassPlatform(1875, 400, 200, 350));
@@ -137,7 +130,7 @@ public class Level_1_1 extends Level {
 		objects.add(new TextDisplayTrigger(5300, 500, 100, 100, "Different objects have different densities.", 240));
 		objects.add(new PushableBox(5750, 500, 60, 60));
 		objects.add(new PushableStone(5300, 500, 60, 60));
-		objects.add(new WaterPlatform(5800, 250, 1025, 395));
+		objects.add(new WaterPlatform(5800, 250, 1025, 399));
 		objects.add(new GrassPlatform(5650, 325, 300, 250));
 		objects.add(new GrassPlatform(5550, 340, 100, 280));
 		objects.add(new GrassPlatform(5300, 150, 100, 600));
@@ -152,6 +145,7 @@ public class Level_1_1 extends Level {
 		objects.add(new GrassPlatform(7200, 550, 300, 100));
 
 		//finish platform
+		objects.add(new FinishFlag(7750, 700, 50, 100));
 		objects.add(new GrassPlatform(7750, 550, 500, 200));
 		
 	}

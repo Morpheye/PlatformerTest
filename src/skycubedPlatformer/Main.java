@@ -8,10 +8,13 @@ import skycubedPlatformer.util.appdata.FileLoader;
 
 public class Main {
 	
-	public static final int SIZE = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()-125); //DOES NOT CHANGE
-	public static final double SIZE_RATIO = SIZE/800.0;
 	public static ApplicationFrame jframe;
-	public static boolean testMode = false;
+	
+	public static final int SIZE = (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight()-125);
+	public static final double SIZE_RATIO = SIZE/800.0;
+	public static final float VOLUME = 1.0f;
+
+	public static boolean testMode = true;
 	
 	public static void main(String[] args) {
 		try {//DiscordRPC.init();

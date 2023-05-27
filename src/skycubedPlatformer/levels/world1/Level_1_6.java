@@ -74,23 +74,6 @@ public class Level_1_6 extends Level {
 	}
 	
 	@Override
-	public void drawBackground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-
-		objects.add(new SolidBackgroundObject(1400, 300, 1790, 990, GameObject.COLOR_DIRT));
-		objects.add(new NullZone(3900, 1400, 190, 250));
-		objects.add(new NullZone(7125, 1400, 190, 250));
-		objects.add(new FinishFlag(10800, 1840, 50, 100));
-	}
-	
-	@Override
-	public void drawForeground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-
-		objects.add(new FadingWallObject(1400, 300, 1790, 990, GameObject.COLOR_GRASS));
-	}
-	
-	@Override
 	public void drawPlatforms(GamePanel panel) {
 		List<GameObject> objects = panel.objects;
 		
@@ -98,6 +81,8 @@ public class Level_1_6 extends Level {
 		objects.add(new GrassPlatform(0, 50, 400, 100));
 		
 		//large cavern
+		objects.add(new SolidBackgroundObject(1400, 300, 1790, 990, GameObject.COLOR_DIRT));
+		objects.add(new FadingWallObject(1400, 300, 1790, 990, GameObject.COLOR_GRASS));
 		objects.add(new GrassPlatform(700, -100, 400, 200));
 		objects.add(new GrassPlatform(600, 500, 200, 600));
 		objects.add(new GrassPlatform(2200, 300, 200, 1000));
@@ -148,6 +133,7 @@ public class Level_1_6 extends Level {
 		
 		//null zone
 		objects.add(new GrassPlatform(3900, 1200, 200, 200));
+		objects.add(new NullZone(3900, 1400, 190, 250));
 		objects.add(new TextDisplayTrigger(3900, 1400, 200, 200, "Null zones clear power-ups.", 300));
 		objects.add(new GrassPlatform(3900, 1600, 200, 200));
 		
@@ -173,7 +159,7 @@ public class Level_1_6 extends Level {
 		objects.add(gatekeeper);
 		
 		//platform continued
-		objects.add(new WaterPlatform(6000, 300, 2000, 1995));
+		objects.add(new WaterPlatform(6000, 300, 2000, 1999));
 		objects.add(new SandPlatform(4800, 300, 500, 2000));
 		objects.add(new GrassPlatform(4500, 300, 400, 2000));
 		objects.add(new SandPlatform(6000, -500, 2000, 2000));
@@ -190,6 +176,7 @@ public class Level_1_6 extends Level {
 		gate = new WoodPlatform(7125, 1400, 50, 200);
 		objects.add(gate);
 		objects.add(new SandPlatform(7125, 1600, 200, 200));
+		objects.add(new NullZone(7125, 1400, 190, 250));
 		
 		//more parkour
 		objects.add(new GrassPlatform(8000, 1250, 200, 200));
@@ -211,6 +198,7 @@ public class Level_1_6 extends Level {
 		objects.add(new PushableStone(9900, 1715, 60, 60));
 		
 		objects.add(new GrassPlatform(10800, 800, 1000, 2000));
+		objects.add(new FinishFlag(10800, 1840, 50, 100));
 		
 		
 	}

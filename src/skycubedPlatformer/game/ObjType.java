@@ -11,10 +11,11 @@ public enum ObjType {
 	LiquidPlatform,
 	MovableObject,
 	DecorationObject,
-	PARTICLE,
+	Particle,
 	
 	FinishFlag,
 	NullZone,
+	Ladder,
 	
 	Trigger,
 	Powerup

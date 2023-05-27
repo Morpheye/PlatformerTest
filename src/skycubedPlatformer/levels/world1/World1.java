@@ -26,7 +26,7 @@ public class World1 extends LevelWorld {
 		levels.add(new Level_1_6());
 		levels.add(new Level_1_7());
 		levels.add(new Level_1_8());
-		
+		levels.add(new Level_1_9());
 		
 		this.levels = levels;
 	}

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import skycubedPlatformer.assets.LiquidPlatform;
 import skycubedPlatformer.assets.SolidPlatform;
+import skycubedPlatformer.assets.pushableObjects.PushableBox;
 import skycubedPlatformer.menu.ApplicationFrame;
 import skycubedPlatformer.menu.GamePanel;
 
@@ -45,6 +46,7 @@ public class MovableObject extends GameObject {
 		this.inLiquid = false;
 		this.liquidSlip = 1;
 		this.liquids.clear();
+		double liquidArea = 0;
 		
 		//CHECK FOR LIQUIDS
 		for (GameObject obj : GamePanel.getPanel().objects) {
@@ -55,6 +57,8 @@ public class MovableObject extends GameObject {
 				inLiquid = true;
 				this.inAir = true;
 				liquidDensity = ((LiquidPlatform) obj).density;
+				liquidArea = this.collidedArea(obj);
+				
 				this.liquids.add(((LiquidPlatform) obj).getClass());
 				((LiquidPlatform) obj).onTick(this);
 		}}
@@ -65,7 +69,9 @@ public class MovableObject extends GameObject {
 		
 		if (this.inLiquid) {
 			double diff = this.density - liquidDensity;
-			double lift = GamePanel.getPanel().gravity * Math.atan(2*diff) / (Math.PI / 2) - GamePanel.getPanel().gravity;
+			//atan() returns negative number if lighter, positive number if lower, highest is 1
+			double lift = ((GamePanel.getPanel().gravity * (Math.atan(2*diff) / (0.5*Math.PI))) //special water gravity
+					  - GamePanel.getPanel().gravity) * Math.pow(liquidArea/getArea(), 0.2);
 			
 			this.vy += lift;
 		}
@@ -418,7 +424,7 @@ public class MovableObject extends GameObject {
 	
 	@Override
 	public void crush() {
-		this.die();
+		if (this.exists) this.die();
 	}
 	
 	public void die() {

@@ -63,23 +63,6 @@ public class Level_1_2 extends Level {
 		
 	}
 	
-	@Override
-	public void drawBackground(GamePanel panel) {
-		List<GameObject> objects = panel.objects;
-		
-		objects.add(new SolidBackgroundObject(700,200,275,275,GameObject.COLOR_DIRT));
-		objects.add(new SolidBackgroundObject(600,150,275,150,GameObject.COLOR_DIRT));
-		
-		objects.add(new SolidBackgroundObject(2100,625,250,175,GameObject.COLOR_STONE.brighter()));
-		
-		//in mountain
-		objects.add(new SolidBackgroundObject(5800,400,820,395,GameObject.COLOR_STONE.brighter()));
-		objects.add(new SolidBackgroundObject(6125,750,790,620,GameObject.COLOR_STONE.brighter()));
-		
-		objects.add(new FinishFlag(6125,1575,50,100));
-		
-	}
-	
 	SolidPlatform crusherPlatform;
 	
 	SolidPlatform mountainCrusher;
@@ -98,6 +81,8 @@ public class Level_1_2 extends Level {
 		objects.add(new GrassPlatform(700,325,300,50));
 		objects.add(new GrassPlatform(825,200,50,300));
 		objects.add(new GrassPlatform(625,100,450,100));
+		objects.add(new SolidBackgroundObject(700,200,275,275,GameObject.COLOR_DIRT));
+		objects.add(new SolidBackgroundObject(600,150,275,150,GameObject.COLOR_DIRT));
 		
 		objects.add(new GrassPlatform(1100,400,200,50));
 		
@@ -107,6 +92,7 @@ public class Level_1_2 extends Level {
 		objects.add(new TextDisplayTrigger(1850,550,200,200,"Caution: Crushing results in instant death.",300));
 		objects.add(new StonePlatform(2100,500,600,100));
 		objects.add(new StonePlatform(2100,750,300,150));
+		objects.add(new SolidBackgroundObject(2100,625,250,175,GameObject.COLOR_STONE.brighter()));
 		objects.add(new PushableBox(1900,625,60,60));
 		crusherPlatform = new StonePlatform(2100,625,150,150);
 		objects.add(crusherPlatform);
@@ -131,7 +117,7 @@ public class Level_1_2 extends Level {
 		objects.add(new PushableStone(6500,650,60,60));
 		objects.add(new PushableBox(6350,650,60,60));
 		
-		objects.add(new WaterPlatform(5800,400,800,395));
+		objects.add(new WaterPlatform(5800,400,800,399));
 		objects.add(new TextDisplayTrigger(5400, 700, 200, 200, "Tip: Use Escape to pause and R to restart.", 300));
 		objects.add(new StonePlatform(5400,0,150,1200));
 		objects.add(new StonePlatform(5800,-50,800,800));
@@ -142,7 +128,7 @@ public class Level_1_2 extends Level {
 		
 		objects.add(new StonePlatform(5800,750,150,600));
 		objects.add(new StonePlatform(6125,1075,800,150));
-		objects.add(new StonePlatform(5850,750,150,100));
+		objects.add(new StonePlatform(5850,725,150,100));
 		
 		objects.add(new StonePlatform(6400,800,500,100));
 		
@@ -152,13 +138,18 @@ public class Level_1_2 extends Level {
 		mountainPlatform = new StonePlatform(6800,830,150,40);
 		objects.add(mountainPlatform);
 		
+		objects.add(new SolidBackgroundObject(5800,400,820,395,GameObject.COLOR_STONE.brighter()));
+		objects.add(new SolidBackgroundObject(6125,750,790,620,GameObject.COLOR_STONE.brighter()));
+		
+		objects.add(new FinishFlag(6125,1575,50,100));
+		
 		//extra pk
 		objects.add( new StonePlatform(7200,1050,300,100));
 		objects.add( new StonePlatform(7700,1150,300,100));
 		objects.add( new StonePlatform(8200,1250,300,100));
 		
 		//jumpboost
-		objects.add(new TextDisplayTrigger(8200,1350,50,50,"Jump boost power-ups grant a higher jump.",300));
+		objects.add(new TextDisplayTrigger(8200,1350,50,50,"Jump boost grants a higher jump. Now go climb the mountain.",300));
 		objects.add(new JumpBoostPowerup(8200, 1350, 50, 4));
 		
 	}

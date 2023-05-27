@@ -74,7 +74,7 @@ public class CoinParticle extends Particle {
 			((Graphics2D) g).drawImage(image, drawX, drawY, 
 					(int) (this.size_x * Main.SIZE/size), (int) (this.size_x * Main.SIZE/size), null);
 		} else {
-			if (this.lifetime == 30) SoundHelper.playFinalSound(this.despawnSound);
+			if (this.lifetime == 30) SoundHelper.playFinalSound(this.despawnSound, Main.VOLUME);
 			Graphics2D g2d = (Graphics2D) g;
 			
 			this.x = GamePanel.getPanel().camera_x;

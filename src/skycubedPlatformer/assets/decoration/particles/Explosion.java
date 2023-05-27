@@ -52,8 +52,12 @@ public class Explosion extends Particle {
 	}
 	
 	private void init() {
-		GamePanel.getPanel().createShake(20, this.radius);
-		SoundHelper.playFinalSound(this.spawnSound);
+		double proximity = Math.hypot(this.x - GamePanel.getPanel().MainFrameObj.x, this.y - GamePanel.getPanel().MainFrameObj.y);
+		double div = (proximity < GamePanel.getPanel().camera_size/2) ? 1 : 
+			0.03*(Math.abs(proximity - GamePanel.getPanel().camera_size/2));
+		if (div < 1) div = 1;
+		GamePanel.getPanel().createShake(20, this.radius/div);
+		SoundHelper.playFinalSound(this.spawnSound, Main.VOLUME/(float) div);
 		
 		//damage
 		for (GameObject obj : GamePanel.getPanel().objects) {
@@ -65,17 +69,17 @@ public class Explosion extends Particle {
 				//push
 				double trueDist = Math.hypot((obj.x - this.x), (obj.y - this.y));
 				
-				obj.vy += 5*Math.pow(knockback, 2) * multiplier * (obj.y-this.y)/trueDist / obj.getWeight();
-				obj.vx += 5*Math.pow(knockback, 2) * multiplier * (obj.x-this.x)/trueDist / obj.getWeight();
+				obj.vy += 500*knockback * multiplier * (obj.y-this.y)/trueDist / obj.getWeight();
+				obj.vx += 500*knockback * multiplier * (obj.x-this.x)/trueDist / obj.getWeight();
 				
 				
 			} else if (obj.type.equals(ObjType.MovableObject) && ((PushableObject) obj).attackable) {
 				double multiplier = 1 - this.distanceTo(obj) / this.radius;
-				((PushableObject) obj).damage((int) Math.ceil(this.damage * multiplier), this.source, "Explosion");
+				((PushableObject) obj).damage((int) Math.pow(Math.ceil(this.damage * multiplier), 2), this.source, "Explosion");
 				//push
 				double trueDist = Math.hypot((obj.x - this.x), (obj.y - this.y));
-				obj.vy += 5*Math.pow(knockback, 2) * multiplier * (obj.y-this.y)/trueDist / obj.getWeight();
-				obj.vx += 5*Math.pow(knockback, 2) * multiplier * (obj.x-this.x)/trueDist / obj.getWeight();
+				obj.vy += 500*knockback * multiplier * (obj.y-this.y)/trueDist / obj.getWeight();
+				obj.vx += 500*knockback * multiplier * (obj.x-this.x)/trueDist / obj.getWeight();
 				
 			}
 		}
